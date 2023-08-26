@@ -11,7 +11,7 @@
   "dependencies": {
     "@antimatter-dimensions/notations": "^3.1.0",
     "@fortawesome/fontawesome-free": "^6.1.1",
-    "break_eternity.js": "github:Patashu/break_eternity.js",
+    "break_eternity.js": "^1.3.1",
     "chevrotain": "^4.8.1",
     "codemirror": "^5.65.1",
     "core-js": "^3.6.5",
