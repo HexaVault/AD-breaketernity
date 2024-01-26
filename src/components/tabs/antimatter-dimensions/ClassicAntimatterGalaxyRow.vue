@@ -93,7 +93,7 @@ export default {
   methods: {
     update() {
       this.type = Galaxy.type;
-      this.galaxies.normal = player.galaxies + GalaxyGenerator.galaxies;
+      this.galaxies.normal = player.galaxies.add(GalaxyGenerator.galaxies);
       this.galaxies.replicanti = Replicanti.galaxies.total;
       this.galaxies.dilation = player.dilation.totalTachyonGalaxies;
       const requirement = Galaxy.requirement;

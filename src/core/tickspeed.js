@@ -3,10 +3,7 @@ import { DC } from "./constants";
 export function effectiveBaseGalaxies() {
   // Note that this already includes the "50% more" active path effect
   let replicantiGalaxies = new Decimal(Replicanti.galaxies.bought);
-  replicantiGalaxies = replicantiGalaxies.times(1 + Effects.sum(
-    TimeStudy(132),
-    TimeStudy(133)
-  ));
+  replicantiGalaxies = replicantiGalaxies.times(1 + TimeStudy(133).effectOrDefault(1) + TimeStudy(132).effectOrDefault(1));
   // "extra" galaxies unaffected by the passive/idle boosts come from studies 225/226 and Effarig Infinity
   replicantiGalaxies = replicantiGalaxies.add(Replicanti.galaxies.extra);
   const nonActivePathReplicantiGalaxies = Decimal.min(Replicanti.galaxies.bought,
@@ -46,8 +43,8 @@ export function getTickSpeedMultiplier() {
       if (player.galaxies.eq(1)) baseMultiplier = 1 / 1.07632;
       if (player.galaxies.eq(2)) baseMultiplier = 1 / 1.072;
     }
-    const perGalaxy = 0.02 * effects;
-    if (Pelle.isDoomed) galaxies *= 0.5;
+    const perGalaxy = effects.div(50);
+    if (Pelle.isDoomed) galaxies.div(2);
 
     galaxies = galaxies.times(Pelle.specialGlyphEffect.power);
     return DC.D0_01.clampMin(baseMultiplier.sub((galaxies.times(perGalaxy))));

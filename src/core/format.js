@@ -70,6 +70,10 @@ window.formatPercents = function formatPercents(value, places) {
   return `${format(value * 100, 2, places)}%`;
 };
 
+window.formatDecimalPercents = function formatDecimalPercents(value, places) {
+  return `${format(value.times(100), 2, places)}%`;
+};
+
 window.formatRarity = function formatRarity(value) {
   // We can, annoyingly, have rounding error here, so even though only rarities
   // are passed in, we can't trust our input to always be some integer divided by 10.

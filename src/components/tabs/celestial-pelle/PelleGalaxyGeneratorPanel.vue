@@ -50,7 +50,7 @@ export default {
       this.isCapped = GalaxyGenerator.isCapped;
       this.isCollapsed = player.celestials.pelle.collapsed.galaxies && !this.isCapped;
       if (this.isCollapsed || !this.isUnlocked) return;
-      this.galaxies = player.galaxies + GalaxyGenerator.galaxies;
+      this.galaxies = player.galaxies.add(GalaxyGenerator.galaxies);
       this.generatedGalaxies = GalaxyGenerator.generatedGalaxies;
       this.galaxiesPerSecond = GalaxyGenerator.gainPerSecond;
       this.cap = GalaxyGenerator.generationCap;

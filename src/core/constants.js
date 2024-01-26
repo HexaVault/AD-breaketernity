@@ -78,7 +78,7 @@ export const DC = deepFreeze({
   C1D1_1245:            new Decimal(1 / 1.1245),
 
   // 1e1 is 10
-  E1:                   new Decimal("1e1"),
+  E1:                   new Decimal("10"),
   E2:                   new Decimal("1e2"),
   E3:                   new Decimal("1e3"),
   E5:                   new Decimal("1e5"),

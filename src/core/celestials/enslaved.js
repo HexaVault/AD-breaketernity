@@ -36,7 +36,7 @@ export const Enslaved = {
   isReleaseTick: false,
   autoReleaseTick: 0,
   autoReleaseSpeed: 0,
-  timeCap: new Decimal("10^^1e8"),
+  timeCap: new Decimal("1F9000000000000000"),
   glyphLevelMin: 5000,
   currentBlackHoleStoreAmountPerMs: 0,
   tachyonNerf: 0.3,
@@ -294,14 +294,14 @@ export const Tesseracts = {
   BASE_COSTS: [new Decimal(2), new Decimal(4), new Decimal(6), new Decimal(12), new Decimal(48), new Decimal(288), new Decimal(2304), new Decimal(23040), new Decimal(276480), new Decimal(3870720), new Decimal(61931520), new Decimal(1114767360)],
   CostScaler: [0, 0, 0, 2, 4, 6, 8, 10, 12, 14, 16, 18],
   costs(index) {
-    // In practice this should never happen, but have it just to be safe
+    // In practice this should never happen more than once, but have it just to be safe
     while (index >= this.BASE_COSTS.length) {
       let TesseractScaler = this.CostScaler[Math.floor(index - 1)] + 2;
-      let nextTesseractCost = new Decimal(6).times(TesseractScaler);
+      let nextTesseractCost = this.CostScaler[Math.floor(index - 1)] * TesseractScaler;
       this.BASE_COSTS.push(nextTesseractCost)
       this.CostScaler.push(TesseractScaler)
     }
-    return Decimal.pow10(1e7 * this.BASE_COSTS[Math.floor(index)]);
+    return Decimal.pow10(this.BASE_COSTS[Math.floor(index)].times(1e7));
   },
 
   get nextCost() {

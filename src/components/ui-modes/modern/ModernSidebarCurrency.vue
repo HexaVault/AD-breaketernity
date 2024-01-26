@@ -7,7 +7,7 @@ export default {
       IP: new Decimal(0),
       EP: new Decimal(0),
       RM: new Decimal(0),
-      IM: 0,
+      IM: new Decimal(0),
       RS: new Decimal(0),
       machineStr: "",
       showIP: false,
@@ -22,7 +22,7 @@ export default {
       this.IP.copyFrom(Currency.infinityPoints.value.floor());
       this.EP.copyFrom(Currency.eternityPoints.value.floor());
       this.RM.copyFrom(Currency.realityMachines.value.floor());
-      this.IM = Currency.imaginaryMachines.value;
+      this.IM.copyFrom(Currency.imaginaryMachines.value.floor());
       this.RS.copyFrom(Currency.realityShards);
       this.machineStr = formatMachines(this.RM, this.IM);
       this.showIP = PlayerProgress.infinityUnlocked();

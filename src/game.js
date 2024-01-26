@@ -858,7 +858,7 @@ export function getTTPerSecond() {
   // Glyph TT generation
   const glyphTT = Teresa.isRunning || Enslaved.isRunning || Pelle.isDoomed
     ? 0
-    : getAdjustedGlyphEffect("dilationTTgen").times(ttMult);
+    : new Decimal(getAdjustedGlyphEffect("dilationTTgen")).times(ttMult);
 
   // Dilation TT generation
   const dilationTT = DilationUpgrade.ttGenerator.isBought

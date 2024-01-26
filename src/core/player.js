@@ -560,7 +560,8 @@ window.player = {
       bestRunAM: DC.D1,
       bestAMSet: [],
       perkShop: Array.repeat(0, 5),
-      lastRepeatedMachines: DC.D0
+      lastRepeatedMachines: DC.D0,
+      lastRepeatediM: DC.D0
     },
     effarig: {
       relicShards: 0,

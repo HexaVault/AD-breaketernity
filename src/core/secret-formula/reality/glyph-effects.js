@@ -2,24 +2,24 @@ import { DC } from "../../constants";
 
 export const GlyphCombiner = Object.freeze({
   /**
-   * @param {number[]} x
-   * @returns {number}
+   * @param {Decimal[]} x
+   * @returns {Decimal}
    */
-  add: x => x.reduce(Number.sumReducer, 0),
+  add: x => x.reduce(Decimal.sumReducer, 0),
   /**
-   * @param {number[]} x
-   * @returns {number}
+   * @param {Decimal[]} x
+   * @returns {Decimal}
    */
-  multiply: x => x.reduce(Number.prodReducer, 1),
+  multiply: x => x.reduce(Decimal.prodReducer, 1),
   /**
    * For exponents, the base value is 1, so when we add two exponents a and b we want to get a + b - 1,
    * so that if a and b are both close to 1 so is their sum. In general, when we add a list x of exponents,
    * we have to add 1 - x.length to the actual sum, so that if all the exponents are close to 1 the result
    * is also close to 1 rather than close to x.length.
-   * @param {number[]} x
-   * @returns {number}
+   * @param {Decimal[]} x
+   * @returns {Decimal}
    */
-  addExponents: x => x.reduce(Number.sumReducer, 1 - x.length),
+  addExponents: x => x.reduce(Decimal.sumReducer, 1 - x.length),
   /**
    * @param {Decimal[]} x
    * @returns {Decimal}
@@ -156,11 +156,11 @@ export const glyphEffects = {
     shortDesc: () => (GlyphAlteration.isAdded("dilation")
       ? "{value} TT/hr and TTgen ×{value2}"
       : "{value} TT/hr"),
-    effect: (level, strength) => Math.pow(level * strength, 0.5) / 10000,
+    effect: (level, strength) => Decimal.pow(level * strength, 0.5).div(10000),
     /** @type {function(number): string} */
-    formatEffect: x => format(3600 * x, 2, 2),
+    formatEffect: x => format(x.times(3600), 2, 2),
     combine: GlyphCombiner.add,
-    conversion: x => Math.clampMin(Math.pow(10000 * x, 1.6), 1),
+    conversion: x => Decimal.max(Decimal.pow(x.times(10000), 1.6), 1),
     formatSecondaryEffect: x => format(x, 2, 2),
     alteredColor: () => GlyphAlteration.getAdditionColor("dilation"),
     alterationType: ALTERATION_TYPE.ADDITION

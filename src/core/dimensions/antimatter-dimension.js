@@ -95,7 +95,7 @@ function applyNDMultipliers(mult, tier) {
   if (Laitela.continuumActive) {
     buy10Value = AntimatterDimension(tier).continuumValue;
   } else {
-    buy10Value = Math.floor(AntimatterDimension(tier).bought.div(10));
+    buy10Value = Decimal.floor(AntimatterDimension(tier).bought.div(10));
   }
 
   multiplier = multiplier.times(Decimal.pow(AntimatterDimensions.buyTenMultiplier, buy10Value));
@@ -372,14 +372,14 @@ class AntimatterDimensionState extends DimensionState {
    * @returns {number}
    */
   get boughtBefore10() {
-    return DC.E1.mult(this.bought.div(10).min(this.bought.div(10).floor()));
+    return DC.E1.times(this.bought.div(10).sub(this.bought.div(10).floor()));
   }
 
   /**
    * @returns {number}
    */
   get remainingUntil10() {
-    return DC.E1.min(this.boughtBefore10);
+    return DC.E1.sub(this.boughtBefore10);
   }
 
   /**
@@ -391,7 +391,7 @@ class AntimatterDimensionState extends DimensionState {
 
   get howManyCanBuy() {
     const ratio = this.currencyAmount.dividedBy(this.cost);
-    return Decimal.floor(Decimal.max(Decimal.min(ratio, 10 - this.boughtBefore10), 0)).toNumber();
+    return Decimal.floor(Decimal.max(Decimal.min(ratio, DC.E1.sub(this.boughtBefore10)), 0));
   }
 
   /**
