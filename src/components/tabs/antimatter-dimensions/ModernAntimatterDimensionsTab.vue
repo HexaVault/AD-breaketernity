@@ -69,7 +69,7 @@ export default {
       return this.buyUntil10 ? "Until 10" : "Buy 1";
     },
     update() {
-      this.hasDimensionBoosts = player.dimensionBoosts > 0;
+      this.hasDimensionBoosts = player.dimensionBoosts.gt(0);
       this.buyUntil10 = player.buyUntil10;
       this.hasContinuum = Laitela.continuumUnlocked;
       this.isContinuumActive = Laitela.continuumActive;

@@ -18,7 +18,7 @@ export default {
     remainingTime() {
       const timeSinceStart = Date.now() - this.progress.startTime;
       const ms = timeSinceStart * (this.progress.max - this.progress.current) / this.progress.current;
-      return TimeSpan.fromMilliseconds(ms).toStringShort();
+      return TimeSpan.fromMilliseconds(new Decimal(ms)).toStringShort();
     },
     buttons() {
       return this.progress.buttons || [];
