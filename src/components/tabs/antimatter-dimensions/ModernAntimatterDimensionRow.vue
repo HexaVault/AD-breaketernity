@@ -111,7 +111,7 @@ export default {
       }
     },
     showCostTitle(value) {
-      return value.exponent < 1000000;
+      return value.lt("1e1000000");
     },
     buttonClass() {
       return {

@@ -358,7 +358,7 @@ export function getGameSpeedupFactor(effectsToConsider, blackHolesActiveOverride
     if (Effarig.isRunning) {
       factor = Effarig.multiplier(factor).toNumber();
     } else if (Laitela.isRunning) {
-      const nerfModifier = Math.clampMax(Time.thisRealityRealTime.totalMinutes / 10, 1);
+      const nerfModifier = Math.clampMax(Time.thisRealityRealTime.totalMinutes.div(10), 1);
       factor = Math.pow(factor, nerfModifier);
     }
   }
@@ -386,6 +386,30 @@ export function getGameSpeedupForDisplay() {
   return speedFactor;
 }
 
+export function trueTimeMechanics(trueDiff) {
+    // Ra-Nameless auto-release stored time (once every 5 ticks)
+    if (Enslaved.isAutoReleasing) {
+      Enslaved.autoReleaseTick++;
+    }
+    if (Enslaved.autoReleaseTick >= 5) {
+      Enslaved.autoReleaseTick = 0;
+      Enslaved.useStoredTime(true);
+      Enslaved.isReleaseTick = true;
+    } else if (!Enslaved.isReleaseTick) {
+      Enslaved.nextTickDiff = realDiff;
+    }
+    if (diff === undefined) {
+      diff = Enslaved.nextTickDiff;
+    }
+  
+    Autobuyers.tick();
+    Tutorial.tutorialLoop();
+  
+    if (Achievement(165).isUnlocked && player.celestials.effarig.autoAdjustGlyphWeights) {
+      autoAdjustGlyphWeights();
+    }
+}
+
 // Separated out for organization; however this is also used in more than one spot in gameLoop() as well. Returns
 // true if the rest of the game loop should be skipped
 export function realTimeMechanics(realDiff) {
@@ -400,10 +424,10 @@ export function realTimeMechanics(realDiff) {
 
   // When storing real time, skip everything else having to do with production once stats are updated
   if (Enslaved.isStoringRealTime) {
-    player.records.realTimePlayed += realDiff;
-    player.records.thisInfinity.realTime += realDiff;
-    player.records.thisEternity.realTime += realDiff;
-    player.records.thisReality.realTime += realDiff;
+    player.records.realTimePlayed = player.records.realTimePlayed.add(realDiff);
+    player.records.thisInfinity.realTime = player.records.thisInfinity.realTime.add(realDiff);
+    player.records.thisEternity.realTime = player.records.thisEternity.realTime.add(realDiff);
+    player.records.thisReality.realTime = player.records.thisReality.realTime.add(realDiff);
     Enslaved.storeRealTime();
     // Most autobuyers will only tick usefully on the very first tick, but this needs to be here in order to allow
     // the autobuyers unaffected by time storage to tick as well
@@ -432,12 +456,13 @@ export function gameLoop(passDiff, options = {}) {
     return;
   }
 
-  let diff = passDiff;
+  let diff = new Decimal(passDiff);
   const thisUpdate = Date.now();
-  const realDiff = diff === undefined
-    ? Math.clamp(thisUpdate - player.lastUpdate, 1, 8.64e7)
-    : diff;
-  if (!GameStorage.ignoreBackupTimer) player.backupTimer += realDiff;
+  const trueDiff = passDiff === undefined
+  ? Math.clamp(thisUpdate - player.lastUpdate, 1, 8.64e7)
+  : diff;
+  let realDiff = diff
+  if (!GameStorage.ignoreBackupTimer) player.backupTimer += trueDiff;
 
   // For single ticks longer than a minute from the GameInterval loop, we assume that the device has gone to sleep or
   // hibernation - in those cases we stop the interval and simulate time instead. The gameLoop interval automatically
@@ -445,9 +470,10 @@ export function gameLoop(passDiff, options = {}) {
   // result in a ~1 second tick rate for browsers.
   // Note that we have to explicitly call all the real-time mechanics with the existing value of realDiff, because
   // simply letting it run through simulateTime seems to result in it using zero
-  if (player.options.hibernationCatchup && passDiff === undefined && realDiff > 6e4) {
+  if (player.options.hibernationCatchup && passDiff === undefined && trueDiff > 6e4) {
     GameIntervals.gameLoop.stop();
-    simulateTime(realDiff / 1000, true);
+    simulateTime(trueDiff / 1000, true);
+    trueTimeMechanics(trueDiff)
     realTimeMechanics(realDiff);
     return;
   }
@@ -455,27 +481,6 @@ export function gameLoop(passDiff, options = {}) {
   // Run all the functions which only depend on real time and not game time, skipping the rest of the loop if needed
   if (realTimeMechanics(realDiff)) return;
 
-  // Ra-Nameless auto-release stored time (once every 5 ticks)
-  if (Enslaved.isAutoReleasing) {
-    Enslaved.autoReleaseTick++;
-  }
-  if (Enslaved.autoReleaseTick >= 5) {
-    Enslaved.autoReleaseTick = 0;
-    Enslaved.useStoredTime(true);
-    Enslaved.isReleaseTick = true;
-  } else if (!Enslaved.isReleaseTick) {
-    Enslaved.nextTickDiff = realDiff;
-  }
-  if (diff === undefined) {
-    diff = Enslaved.nextTickDiff;
-  }
-
-  Autobuyers.tick();
-  Tutorial.tutorialLoop();
-
-  if (Achievement(165).isUnlocked && player.celestials.effarig.autoAdjustGlyphWeights) {
-    autoAdjustGlyphWeights();
-  }
 
   // We do these after autobuyers, since it's possible something there might
   // change a multiplier.
@@ -504,14 +509,13 @@ export function gameLoop(passDiff, options = {}) {
         GAME_SPEED_EFFECT.BLACK_HOLE, GAME_SPEED_EFFECT.SINGULARITY_MILESTONE]);
       const amplification = Ra.unlocks.improvedStoredTime.effects.gameTimeAmplification.effectOrDefault(1);
       const beforeStore = player.celestials.enslaved.stored;
-      player.celestials.enslaved.stored = Math.clampMax(player.celestials.enslaved.stored +
-        diff * (totalTimeFactor - reducedTimeFactor) * amplification, Enslaved.timeCap);
+      player.celestials.enslaved.stored = Decimal.clampMax(player.celestials.enslaved.stored.add(diff.times(totalTimeFactor.sub(reducedTimeFactor))).times(amplification), Enslaved.timeCap);
       Enslaved.currentBlackHoleStoreAmountPerMs = (player.celestials.enslaved.stored - beforeStore) / diff;
       speedFactor = reducedTimeFactor;
     }
-    diff *= speedFactor;
+    diff = diff.times(speedFactor);
   } else if (fixedSpeedActive) {
-    diff *= getGameSpeedupFactor();
+    diff = diff.times(getGameSpeedupFactor());
     Enslaved.currentBlackHoleStoreAmountPerMs = 0;
   }
   player.celestials.ra.peakGamespeed = Math.max(player.celestials.ra.peakGamespeed, getGameSpeedupFactor());
@@ -521,22 +525,22 @@ export function gameLoop(passDiff, options = {}) {
   // updating and game time updating. This is only particularly noticeable when game speed is 1 and the player
   // expects to see identical numbers. We also don't increment the timers if the game has been beaten (Achievement 188)
   if (!Achievement(188).isUnlocked) {
-    player.records.realTimeDoomed += realDiff;
-    player.records.realTimePlayed += realDiff;
-    player.records.totalTimePlayed += diff;
-    player.records.thisInfinity.realTime += realDiff;
-    player.records.thisInfinity.time += diff;
-    player.records.thisEternity.realTime += realDiff;
+    player.records.realTimeDoomed = player.records.realTimeDoomed.add(realDiff);
+    player.records.realTimePlayed = player.records.realTimePlayed.add(realDiff);
+    player.records.totalTimePlayed = player.records.totalTimePlayed.add(diff);
+    player.records.thisInfinity.realTime = player.records.thisInfinity.realTime.add(realDiff);
+    player.records.thisInfinity.time = player.records.thisInfinity.time.add(diff);
+    player.records.thisEternity.realTime = player.records.thisEternity.realTime.add(realDiff);
     if (Enslaved.isRunning && Enslaved.feltEternity && !EternityChallenge(12).isRunning) {
-      player.records.thisEternity.time += diff * (1 + Currency.eternities.value.clampMax(1e66).toNumber());
+      player.records.thisEternity.time = player.records.thisEternity.time.add(diff.times(1 + Currency.eternities.value.min(1e66).toNumber()));
     } else {
-      player.records.thisEternity.time += diff;
+      player.records.thisEternity.time = player.records.thisEternity.time.add(diff);
     }
-    player.records.thisReality.realTime += realDiff;
-    player.records.thisReality.time += diff;
+    player.records.thisReality.realTime = player.records.thisReality.realTime.add(realDiff);
+    player.records.thisReality.time = player.records.thisReality.time.add(diff);
   }
 
-  DeltaTimeState.update(realDiff, diff);
+  DeltaTimeState.update(trueDiff, realDiff, diff);
 
   updateNormalAndInfinityChallenges(diff);
 
@@ -576,11 +580,11 @@ export function gameLoop(passDiff, options = {}) {
   replicantiLoop(diff);
 
   if (PlayerProgress.dilationUnlocked()) {
-    Currency.dilatedTime.add(getDilationGainPerSecond().times(diff / 1000));
+    Currency.dilatedTime.add(getDilationGainPerSecond().times(diff.div(1000)));
   }
 
   updateTachyonGalaxies();
-  Currency.timeTheorems.add(getTTPerSecond().times(diff / 1000));
+  Currency.timeTheorems.add(getTTPerSecond().times(diff.div(1000)));
   InfinityDimensions.tryAutoUnlock();
 
   BlackHoles.updatePhases(blackHoleDiff);
@@ -645,7 +649,7 @@ export function gameLoop(passDiff, options = {}) {
 }
 
 function updatePrestigeRates() {
-  const currentIPmin = gainedInfinityPoints().dividedBy(Math.clampMin(0.0005, Time.thisInfinityRealTime.totalMinutes));
+  const currentIPmin = gainedInfinityPoints().div(Decimal.max(0.0005, Time.thisInfinityRealTime.totalMinutes));
   if (currentIPmin.gt(player.records.thisInfinity.bestIPmin) && Player.canCrunch) {
     player.records.thisInfinity.bestIPmin = currentIPmin;
     player.records.thisInfinity.bestIPminVal = gainedInfinityPoints();

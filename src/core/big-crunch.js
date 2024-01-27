@@ -169,9 +169,9 @@ export function secondSoftReset(enteringAntimatterChallenge) {
 
 export function preProductionGenerateIP(diff) {
   if (InfinityUpgrade.ipGen.isBought) {
-    const genPeriod = Time.bestInfinity.totalMilliseconds * 10;
+    const genPeriod = Time.bestInfinity.totalMilliseconds.times(10);
     let genCount;
-    if (diff >= 1e300 * genPeriod) {
+    if (diff.gte(genPeriod.times(1e300))) {
       genCount = Decimal.div(diff, genPeriod);
     } else {
       // Partial progress (fractions from 0 to 1) are stored in player.partInfinityPoint
@@ -179,10 +179,10 @@ export function preProductionGenerateIP(diff) {
       genCount = Math.floor(player.partInfinityPoint);
       player.partInfinityPoint -= genCount;
     }
-    let gainedPerGen = player.records.bestInfinity.time >= 999999999999 ? DC.D0 : InfinityUpgrade.ipGen.effectValue;
+    let gainedPerGen = player.records.bestInfinity.time.gte("1F9000000000000") ? DC.D0 : InfinityUpgrade.ipGen.effectValue;
     if (Laitela.isRunning) gainedPerGen = dilatedValueOf(gainedPerGen);
     const gainedThisTick = new Decimal(genCount).times(gainedPerGen);
     Currency.infinityPoints.add(gainedThisTick);
   }
-  Currency.infinityPoints.add(BreakInfinityUpgrade.ipGen.effectOrDefault(DC.D0).times(diff / 60000));
+  Currency.infinityPoints.add(BreakInfinityUpgrade.ipGen.effectOrDefault(DC.D0).times(diff.div(60000)));
 }

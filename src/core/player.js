@@ -269,36 +269,37 @@ window.player = {
   },
   records: {
     gameCreatedTime: Date.now(),
-    totalTimePlayed: 0,
-    timePlayedAtBHUnlock: Number.MAX_VALUE,
-    realTimePlayed: 0,
-    realTimeDoomed: 0,
+    trueTimePlayed: 0,
+    totalTimePlayed: DC.D0,
+    timePlayedAtBHUnlock: new Decimal("1F9000000000000000"),
+    realTimePlayed: DC.D0,
+    realTimeDoomed: DC.D0,
     fullGameCompletions: 0,
     previousRunRealTime: 0,
     totalAntimatter: DC.E1,
     recentInfinities: Array.range(0, 10).map(() =>
-      [Number.MAX_VALUE, Number.MAX_VALUE, DC.D1, DC.D1, ""]),
+      [new Decimal("1F9000000000000000"), new Decimal("1F9000000000000000"), DC.D1, DC.D1, ""]),
     recentEternities: Array.range(0, 10).map(() =>
-      [Number.MAX_VALUE, Number.MAX_VALUE, DC.D1, DC.D1, "", DC.D0]),
+      [new Decimal("1F9000000000000000"), new Decimal("1F9000000000000000"), DC.D1, DC.D1, "", DC.D0]),
     recentRealities: Array.range(0, 10).map(() =>
-      [Number.MAX_VALUE, Number.MAX_VALUE, DC.D1, 1, "", 0, 0]),
+      [new Decimal("1F9000000000000000"), new Decimal("1F9000000000000000"), DC.D1, 1, "", 0, 0]),
     thisInfinity: {
-      time: 0,
-      realTime: 0,
-      lastBuyTime: 0,
+      time: DC.D0,
+      realTime: DC.D0,
+      lastBuyTime: DC.D0,
       maxAM: DC.D0,
       bestIPmin: DC.D0,
       bestIPminVal: DC.D0,
     },
     bestInfinity: {
-      time: Number.MAX_VALUE,
-      realTime: Number.MAX_VALUE,
+      time: new Decimal("1F9000000000000000"),
+      realTime: new Decimal("1F9000000000000000"),
       bestIPminEternity: DC.D0,
       bestIPminReality: DC.D0,
     },
     thisEternity: {
-      time: 0,
-      realTime: 0,
+      time: DC.D0,
+      realTime: DC.D0,
       maxAM: DC.D0,
       maxIP: DC.D0,
       bestIPMsWithoutMaxAll: DC.D0,
@@ -307,13 +308,13 @@ window.player = {
       bestInfinitiesPerMs: DC.D0,
     },
     bestEternity: {
-      time: Number.MAX_VALUE,
-      realTime: Number.MAX_VALUE,
+      time: new Decimal("1F9000000000000000"),
+      realTime: new Decimal("1F9000000000000000"),
       bestEPminReality: DC.D0,
     },
     thisReality: {
-      time: 0,
-      realTime: 0,
+      time: DC.D0,
+      realTime: DC.D0,
       maxAM: DC.D0,
       maxIP: DC.D0,
       maxEP: DC.D0,
@@ -1074,7 +1075,7 @@ export function guardFromNaNValues(obj) {
           if (!(newValue instanceof Decimal)) {
             throw new Error("Non-Decimal assignment to Decimal player property");
           }
-          if (!isFinite(newValue.mantissa) || !isFinite(newValue.exponent)) {
+          if (!isFinite(newValue.mag) || !isFinite(newValue.sign) || !isFinite(newValue.layer)) {
             throw new Error("NaN player property assignment");
           }
           value = newValue;

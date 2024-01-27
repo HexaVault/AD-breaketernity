@@ -1,8 +1,10 @@
 export const DeltaTimeState = {
   deltaTime: new TimeSpan(new Decimal(0)),
-  unscaledDeltaTime: new TimeSpan(new Decimal(0)),
-  update(deltaTime, gameDeltaTime) {
-    this.unscaledDeltaTime = TimeSpan.fromMilliseconds(deltaTime);
+  realDeltaTime: new TimeSpan(new Decimal(0)),
+  trueDeltaTime: new TimeSpan(new Decimal(0)),
+  update(trueDeltaTime, deltaTime, gameDeltaTime) {
+    this.trueDeltaTime = TimeSpan.fromMilliseconds(trueDeltaTime)
+    this.realDeltaTime = TimeSpan.fromMilliseconds(deltaTime);
     this.deltaTime = TimeSpan.fromMilliseconds(gameDeltaTime);
   }
 };

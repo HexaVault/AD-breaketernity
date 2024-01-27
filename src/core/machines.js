@@ -65,7 +65,7 @@ export const MachineHandler = {
   },
 
   gainedImaginaryMachines(diff) {
-    return (this.currentIMCap.sub(Currency.imaginaryMachines.value)).times(DC.D1.sub(Decimal.pow(2, (-diff / 1000 / this.scaleTimeForIM))));
+    return (this.currentIMCap.sub(Currency.imaginaryMachines.value)).times(DC.D1.sub(Decimal.pow(2, (new Decimal(0).sub(diff).div(1000).div(this.scaleTimeForIM)))));
   },
 
   estimateIMTimer(cost) {
