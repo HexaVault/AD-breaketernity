@@ -1037,7 +1037,7 @@ export function simulateTime(seconds, real, fast) {
           ui.$viewModel.modal.progressBar.current = doneSoFar;
         },
         asyncExit: () => {
-          // ui.$viewModel.modal.progressBar = undefined;
+          ui.$viewModel.modal.progressBar = undefined;
           // .postLoadStuff will restart GameIntervals
           GameStorage.postLoadStuff();
         },

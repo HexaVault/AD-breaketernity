@@ -120,10 +120,10 @@ class NormalChallengeState extends GameMechanicState {
 
   updateChallengeTime() {
     const bestTimes = player.challenge.normal.bestTimes;
-    if (bestTimes[this.id - 2] <= player.records.thisInfinity.time) {
+    if (player.records.thisInfinity.time.gte(bestTimes[this.id - 2])) {
       return;
     }
-    player.challenge.normal.bestTimes[this.id - 2] = player.records.thisInfinity.time;
+    player.challenge.normal.bestTimes[this.id - 2].copyFrom(player.records.thisInfinity.time);
     GameCache.challengeTimeSum.invalidate();
     GameCache.worstChallengeTime.invalidate();
   }

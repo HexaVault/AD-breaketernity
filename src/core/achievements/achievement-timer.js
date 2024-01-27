@@ -23,7 +23,7 @@ class AchievementTimer {
       return false;
     }
     this.advance();
-    return this.time >= duration;
+    return this.time.gte(duration);
   }
 }
 
