@@ -120,10 +120,7 @@ Decimal.prototype.timesEffectsOf = function(...effectSources) {
   // Normalize is expensive; when we multiply many things together, it's faster
   // to get a big mantissa and then fix it at the end.
   let result = this;
-  applyEffectsOf(effectSources, v => {
-    const decimal = typeof v === "number" ? new Decimal(v) : v;
-    result = result.times(decimal);
-  });
+  applyEffectsOf(effectSources, v => result = result.times(v));
   return result;
 };
 
