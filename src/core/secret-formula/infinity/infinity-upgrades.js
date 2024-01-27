@@ -12,13 +12,12 @@ export const infinityUpgrades = {
     id: "timeMult",
     cost: 1,
     description: "Antimatter Dimensions gain a multiplier based on time played",
-    effect: () => Math.pow(Time.totalTimePlayed.totalMinutes / 2, 0.15),
+    effect: () => Decimal.pow(Time.totalTimePlayed.totalMinutes.div(2), 0.15),
     formatEffect: value => formatX(value, 2, 2),
     charged: {
       description: "Antimatter Dimensions gain a power effect based on time played and Teresa level",
-      effect: () => 1 +
-        Math.log10(Math.log10(Time.totalTimePlayed.totalMilliseconds)) *
-        Math.pow(Ra.pets.teresa.level, 0.5) / 150,
+      effect: () =>
+        Decimal.log10(Decimal.log10(Time.totalTimePlayed.totalMilliseconds)).times(Decimal.pow(Ra.pets.teresa.level, 0.5)).div(150).add(1),
       formatEffect: value => formatPow(value, 4, 4)
     }
   },
@@ -116,14 +115,13 @@ export const infinityUpgrades = {
     id: "timeMult2",
     cost: 3,
     description: "Antimatter Dimensions gain a multiplier based on time spent in current Infinity",
-    effect: () => Decimal.max(Math.pow(Time.thisInfinity.totalMinutes / 4, 0.25), 1),
+    effect: () => Decimal.max(Decimal.pow(Time.thisInfinity.totalMinutes.div(4), 0.25), 1),
     formatEffect: value => formatX(value, 2, 2),
     charged: {
       description:
         "Antimatter Dimensions gain a power effect based on time spent in current Infinity and Teresa level",
-      effect: () => 1 +
-        Math.log10(Math.log10(Time.thisInfinity.totalMilliseconds + 100)) *
-        Math.sqrt(Ra.pets.teresa.level) / 150,
+      effect: () =>
+      Decimal.log10(Decimal.log10(Time.thisInfinity.totalMilliseconds + 100)).times(Math.sqrt(Ra.pets.teresa.level)).div(150).add(1),
       formatEffect: value => formatPow(value, 4, 4)
     }
   },

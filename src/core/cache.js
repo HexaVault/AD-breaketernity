@@ -72,12 +72,12 @@ export const GameCache = {
 
   currentStudyTree: new Lazy(() => new TimeStudyTree(TimeStudyTree.currentStudies)),
 
-  achievementPeriod: new Lazy(() => TimeSpan.fromMinutes(30 - Effects.sum(
+  achievementPeriod: new Lazy(() => TimeSpan.fromMinutes(new Decimal(30 - Effects.sum(
     Perk.achievementGroup1,
     Perk.achievementGroup2,
     Perk.achievementGroup3,
     Perk.achievementGroup4
-  )).totalMilliseconds),
+  ))).totalMilliseconds),
 
   buyablePerks: new Lazy(() => Perks.all.filter(p => p.canBeBought)),
 

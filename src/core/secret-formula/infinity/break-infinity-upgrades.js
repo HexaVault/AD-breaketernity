@@ -65,7 +65,7 @@ export const breakInfinityUpgrades = {
     id: "challengeMult",
     cost: 1e7,
     description: "Antimatter Dimensions gain a multiplier based on slowest challenge run",
-    effect: () => Decimal.clampMin(50 / Time.worstChallenge.totalMinutes, 1),
+    effect: () => Decimal.clampMin(new Decimal(50).div(Time.worstChallenge.totalMinutes), 1),
     formatEffect: value => formatX(value, 2, 2),
     hasCap: true,
     cap: DC.D3E4
