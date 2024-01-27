@@ -509,7 +509,7 @@ export const normalAchievements = [
     checkRequirement: () => Time.totalTimePlayed.totalDays.gte(8),
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     reward: "Extremely small multiplier to Antimatter Dimensions based on time played.",
-    effect: () => Math.max(Math.pow(Time.totalTimePlayed.totalDays / 2, 0.05), 1),
+    effect: () => Decimal.max(Decimal.pow(Time.totalTimePlayed.totalDays / 2, 0.05), 1),
     formatEffect: value => `${formatX(value, 2, 2)}`
   },
   {
