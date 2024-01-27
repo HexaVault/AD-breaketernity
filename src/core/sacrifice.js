@@ -56,17 +56,17 @@ export class Sacrifice {
   static get sacrificeExponent() {
     let base;
     // C8 seems weaker, but it actually follows its own formula which ends up being stronger based on how it stacks
-    if (NormalChallenge(8).isRunning) base = 1;
+    if (NormalChallenge(8).isRunning) base = DC.D1;
     // Pre-Reality this was 100; having ach32/57 results in 1.2x, which is brought back in line by changing to 120
-    else if (InfinityChallenge(2).isCompleted) base = 1 / 120;
-    else base = 2;
+    else if (InfinityChallenge(2).isCompleted) base = DC.D1.div(120);
+    else base = DC.D2;
 
     // All the factors which go into the multiplier have to combine this way in order to replicate legacy behavior
-    const preIC2 = 1 + Effects.sum(Achievement(32), Achievement(57));
-    const postIC2 = 1 + Effects.sum(Achievement(88), TimeStudy(228));
+    const preIC2 = Effects.sum(Achievement(32), Achievement(57)).add(1);
+    const postIC2 = Effects.sum(Achievement(88), TimeStudy(228)).add(1);
     const triad = TimeStudy(304).effectOrDefault(1);
 
-    return base * preIC2 * postIC2 * triad;
+    return base.mul(preIC2).mul(postIC2).mul(triad);
   }
 
   static get nextBoost() {
@@ -84,7 +84,7 @@ export class Sacrifice {
     } else if (InfinityChallenge(2).isCompleted) {
       prePowerSacrificeMult = nd1Amount.dividedBy(sacrificed);
     } else {
-      prePowerSacrificeMult = new Decimal((nd1Amount.log10() / 10) / Math.max(sacrificed.log10() / 10, 1));
+      prePowerSacrificeMult = new Decimal((nd1Amount.log10().div(10)).div(Decimal.max(sacrificed.log10().div(10), 1)));
     }
 
     return prePowerSacrificeMult.clampMin(1).pow(this.sacrificeExponent);
