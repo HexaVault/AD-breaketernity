@@ -63,7 +63,7 @@ export default {
           upgrade.isCapped
         ) {
           // Checking isCapped() prevents text overflow when formatted as "__ ➜ __"
-          return TimeSpan.fromMilliseconds(intervalNum).toStringShort(false);
+          return TimeSpan.fromMilliseconds(new Decimal(intervalNum)).toStringShort(false);
         }
         if (actualInterval.lt(0.01)) return `< ${format(0.01, 2, 2)}ms`;
         if (actualInterval.gt(1000))
@@ -121,7 +121,7 @@ export default {
       if (this.amount.lte(this.replicantiCap)) return null;
       return this.estimateToMax.lt(0.01)
         ? "Currently increasing"
-        : TimeSpan.fromSeconds(this.estimateToMax.toNumber()).toStringShort();
+        : TimeSpan.fromSeconds(this.estimateToMax).toStringShort();
     }
   },
   methods: {

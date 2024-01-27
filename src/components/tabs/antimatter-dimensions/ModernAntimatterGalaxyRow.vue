@@ -5,9 +5,9 @@ export default {
     return {
       type: GALAXY_TYPE.NORMAL,
       galaxies: {
-        normal: 0,
-        replicanti: 0,
-        dilation: 0
+        normal: new Decimal(),
+        replicanti: new Decimal(),
+        dilation: new Decimal()
       },
       requirement: {
         tier: 1,
@@ -89,9 +89,9 @@ export default {
   methods: {
     update() {
       this.type = Galaxy.type;
-      this.galaxies.normal = player.galaxies.add(GalaxyGenerator.galaxies);
-      this.galaxies.replicanti = Replicanti.galaxies.total;
-      this.galaxies.dilation = player.dilation.totalTachyonGalaxies;
+      this.galaxies.normal.copyFrom(player.galaxies.add(GalaxyGenerator.galaxies));
+      this.galaxies.replicanti.copyFrom(Replicanti.galaxies.total);
+      this.galaxies.dilation.copyFrom(player.dilation.totalTachyonGalaxies);
       const requirement = Galaxy.requirement;
       this.requirement.amount = requirement.amount;
       this.requirement.tier = requirement.tier;

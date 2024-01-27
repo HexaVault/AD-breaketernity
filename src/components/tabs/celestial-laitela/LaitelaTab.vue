@@ -58,9 +58,8 @@ export default {
         Laitela.darkMatterMult > 1;
       this.singularityPanelVisible = Currency.singularities.gt(0);
       this.singularitiesUnlocked = Singularity.capIsReached || this.singularityPanelVisible;
-      this.singularityCap = Singularity.cap;
-      this.singularityWaitTime = TimeSpan.fromSeconds((this.singularityCap - this.darkEnergy) /
-        Currency.darkEnergy.productionPerSecond).toStringShort();
+      this.singularityCap = new Decimal(Singularity.cap);
+      this.singularityWaitTime = TimeSpan.fromSeconds((this.singularityCap.sub(this.darkEnergy)).div(Currency.darkEnergy.productionPerSecond)).toStringShort();
       this.showAnnihilation = Laitela.annihilationUnlocked;
 
       const d1 = DarkMatterDimension(1);

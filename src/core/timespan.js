@@ -265,7 +265,7 @@ window.TimeSpan = class TimeSpan {
       if (useHMS && !Notations.current.isPainful) {
         const sec = seconds(this.seconds, this.milliseconds);
         if (Decimal.floor(this.totalHours).eq(0)) return `${formatHMS(this.minutes)}:${sec}`;
-        return `${formatHMS(Math.floor(this.totalHours))}:${formatHMS(this.minutes)}:${sec}`;
+        return `${formatHMS(Decimal.floor(this.totalHours))}:${formatHMS(this.minutes)}:${sec}`;
       }
       if (this.totalMinutes.lt(60)) {
         return `${format(this.totalMinutes, 0, 2)} minutes`;

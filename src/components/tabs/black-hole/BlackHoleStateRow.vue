@@ -33,7 +33,7 @@ export default {
       this.isPermanent = blackHole.isPermanent;
       this.isActive = blackHole.isActive;
       this.isCharged = blackHole.isCharged;
-      this.nextChange = TimeSpan.fromSeconds(blackHole.timeWithPreviousActiveToNextStateChange).toStringShort();
+      this.nextChange = TimeSpan.fromSeconds(new Decimal(blackHole.timeWithPreviousActiveToNextStateChange)).toStringShort();
       this.state = blackHole.displayState;
     }
   }

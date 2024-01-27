@@ -206,7 +206,7 @@ class BlackHoleState {
     if (BlackHoles.arePaused) return `<i class="fas fa-pause"></i> Paused`;
     if (this.isPermanent) return `<i class="fas fa-infinity"></i> Permanent`;
 
-    const timeString = TimeSpan.fromSeconds(this.timeToNextStateChange).toStringShort(true);
+    const timeString = TimeSpan.fromSeconds(new Decimal(this.timeToNextStateChange)).toStringShort(true);
     if (this.isActive) return `<i class="fas fa-play"></i> Active (${timeString})`;
     return `<i class="fas fa-redo"></i> Inactive (${timeString})`;
   }

@@ -7,7 +7,7 @@ export const MatterScale = {
     if (!matter) return ["There is no antimatter yet."];
     if (matter.gt(DC.E1_5E12)) {
       return [
-        `It would take `, TimeSpan.fromSeconds(matter.log10.div(4.320432e17 * 3)).toString(), `%`,
+        `It would take `, TimeSpan.fromSeconds(matter.log10().div(4.320432e17 * 3)).toString(), `%`,
         " of the current age of the Universe to write out your antimatter count"
       ];
     }
@@ -20,7 +20,7 @@ export const MatterScale = {
     }
     if (matter.gt(DC.E1E7)) {
       return [
-        `It would take `, TimeSpan.fromSeconds(matter.log10.div(2437102080 * 3)).toString(), `%`,
+        `It would take `, TimeSpan.fromSeconds(matter.log10().div(2437102080 * 3)).toString(), `%`,
         " of the average American lifespan to write out your antimatter count"
       ];
     }

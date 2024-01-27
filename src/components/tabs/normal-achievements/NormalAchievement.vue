@@ -103,7 +103,7 @@ export default {
       if (this.achievementTime === undefined) return "Not Achieved yet";
       return this.achievementTime === 0
         ? "Given at Speedrun start"
-        : `Achieved after ${TimeSpan.fromMilliseconds(this.achievementTime).toStringShort()}`;
+        : `Achieved after ${TimeSpan.fromMilliseconds(new Decimal(this.achievementTime)).toStringShort()}`;
     }
   },
   beforeDestroy() {

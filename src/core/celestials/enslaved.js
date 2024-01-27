@@ -6,13 +6,13 @@ import { Quotes } from "./quotes";
 export const ENSLAVED_UNLOCKS = {
   FREE_TICKSPEED_SOFTCAP: {
     id: 0,
-    price: TimeSpan.fromYears(1e35).totalMilliseconds,
+    price: TimeSpan.fromYears(new Decimal(1e35)).totalMilliseconds,
     secondaryRequirement: () => true,
     description: () => `Increase the softcap to Tickspeed upgrades from Time Dimensions by ${formatInt(1e5)}`,
   },
   RUN: {
     id: 1,
-    price: TimeSpan.fromYears(1e40).totalMilliseconds,
+    price: TimeSpan.fromYears(new Decimal(1e40)).totalMilliseconds,
     secondaryRequirement() {
       const hasLevelRequirement = player.records.bestReality.glyphLevel >= 5000;
       const hasRarityRequirement = strengthToRarity(player.records.bestReality.glyphStrength) >= 100;
@@ -121,7 +121,7 @@ export const Enslaved = {
     let release = player.celestials.enslaved.stored;
     if (Enslaved.isRunning) {
       release = Enslaved.storedTimeInsideEnslaved(release);
-      if (Time.thisReality.totalYears + TimeSpan.fromMilliseconds(release).totalYears > 1) {
+      if (Time.thisReality.totalYears + TimeSpan.fromMilliseconds(release).totalYears.gt(1)) {
         EnslavedProgress.storedTime.giveProgress();
       }
     }
@@ -209,19 +209,19 @@ export const Enslaved = {
     player.celestials.enslaved.feltEternity = value;
   },
   get nextHintCost() {
-    return TimeSpan.fromYears(1e40 * Math.pow(3, this.hintCostIncreases)).totalMilliseconds;
+    return TimeSpan.fromYears(new Decimal(1e40 * Math.pow(3, this.hintCostIncreases))).totalMilliseconds;
   },
   get hintCostIncreases() {
     const hintTime = player.celestials.enslaved.zeroHintTime - Date.now();
-    return Math.clampMin(hintTime / TimeSpan.fromDays(1).totalMilliseconds, 0);
+    return Math.clampMin(hintTime / TimeSpan.fromDays(new Decimal(1)).totalMilliseconds.toNumber(), 0);
   },
   spendTimeForHint() {
     if (player.celestials.enslaved.stored < this.nextHintCost) return false;
     player.celestials.enslaved.stored -= this.nextHintCost;
     if (Enslaved.hintCostIncreases === 0) {
-      player.celestials.enslaved.zeroHintTime = Date.now() + TimeSpan.fromDays(1).totalMilliseconds;
+      player.celestials.enslaved.zeroHintTime = Date.now() + TimeSpan.fromDays(1).totalMilliseconds.toNumber;
     } else {
-      player.celestials.enslaved.zeroHintTime += TimeSpan.fromDays(1).totalMilliseconds;
+      player.celestials.enslaved.zeroHintTime += TimeSpan.fromDays(1).totalMilliseconds.toNumber();
     }
     return true;
   },
@@ -253,7 +253,7 @@ class EnslavedProgressState extends BitUpgradeState {
   giveProgress() {
     // Bump the last hint time appropriately if the player found the hint
     if (this.hasHint && !this.hasProgress) {
-      player.celestials.enslaved.zeroHintTime -= Math.log(2) / Math.log(3) * TimeSpan.fromDays(1).totalMilliseconds;
+      player.celestials.enslaved.zeroHintTime -= Math.log(2) / Math.log(3) * TimeSpan.fromDays(1).totalMilliseconds.toNumber();
       GameUI.notify.success("You found a crack in The Nameless Ones' Reality!", 10000);
     }
     player.celestials.enslaved.progressBits |= (1 << this.id);

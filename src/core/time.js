@@ -90,8 +90,8 @@ export const Time = {
    */
   get timeSinceBlackHole() {
     return this.fromMilliseconds(() => {
-      const diff = player.records.totalTimePlayed - player.records.timePlayedAtBHUnlock;
-      return Math.max(0, diff);
+      const diff = player.records.totalTimePlayed.sub(player.records.timePlayedAtBHUnlock);
+      return Decimal.max(0, diff);
     });
   },
 

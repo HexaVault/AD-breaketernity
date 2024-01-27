@@ -10,7 +10,7 @@ export default {
     return {
       mult: new Decimal(0),
       tickspeed: new Decimal(0),
-      galaxyCount: 0,
+      galaxyCount: new Decimal(),
       purchasedTickspeed: 0,
       freeTickspeed: 0,
     };
@@ -29,7 +29,7 @@ export default {
     update() {
       this.mult.copyFrom(Tickspeed.multiplier);
       this.tickspeed.copyFrom(Tickspeed.perSecond);
-      this.galaxyCount = player.galaxies;
+      this.galaxyCount.copyFrom(player.galaxies);
       this.purchasedTickspeed = player.totalTickBought;
       this.freeTickspeed = FreeTickspeed.amount;
     },

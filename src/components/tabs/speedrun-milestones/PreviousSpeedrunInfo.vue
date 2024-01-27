@@ -69,7 +69,7 @@ export default {
       return Time.toDateTimeString(this.prevRunInfo.startDate);
     },
     finalTime() {
-      return TimeSpan.fromMilliseconds(this.prevRunInfo.records.max()).toStringShort(true, true);
+      return TimeSpan.fromMilliseconds(new Decimal(this.prevRunInfo.records.max())).toStringShort(true, true);
     },
   },
 };

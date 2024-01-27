@@ -77,7 +77,7 @@ export default {
       this.effarigLayer = [null, "Infinity", "Eternity", "Reality"][effarigStage];
       this.enslavedDone = Enslaved.isCompleted;
       this.laitelaFastest = player.celestials.laitela.fastestCompletion;
-      this.laitelaTime = TimeSpan.fromSeconds(this.laitelaFastest).toStringShort();
+      this.laitelaTime = TimeSpan.fromSeconds(new Decimal(this.laitelaFastest)).toStringShort();
     },
     handleYesClick() {
       beginProcessReality(getRealityProps(true));

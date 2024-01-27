@@ -204,10 +204,10 @@ export function getDilationTimeEstimate(goal) {
     const goalNetRate = rawDTGain.minus(Decimal.multiply(goal, drain));
     const currNetRate = rawDTGain.minus(currentDT.times(drain));
     if (goalNetRate.lt(0)) return "Never affordable due to Rift drain";
-    return TimeSpan.fromSeconds(currNetRate.div(goalNetRate).ln() / drain).toTimeEstimate();
+    return TimeSpan.fromSeconds(currNetRate.div(goalNetRate).ln().div(drain)).toTimeEstimate();
   }
   return TimeSpan.fromSeconds(Decimal.sub(goal, currentDT)
-    .div(rawDTGain).toNumber()).toTimeEstimate();
+    .div(rawDTGain)).toTimeEstimate();
 }
 
 export function dilatedValueOf(value) {

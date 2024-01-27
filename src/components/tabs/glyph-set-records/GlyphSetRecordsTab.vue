@@ -34,7 +34,7 @@ export default {
           `${format(MachineHandler.currentIMCap, 2, 2)} iM`],
         [Laitela.isUnlocked, Glyphs.copyForRecords(bestReality.laitelaSet),
           `Best ${Laitela.displayName} Destabilization`,
-          `${TimeSpan.fromSeconds(player.celestials.laitela.fastestCompletion).toStringShort()},
+          `${TimeSpan.fromSeconds(new Decimal(player.celestials.laitela.fastestCompletion)).toStringShort()},
           ${laitelaDim} ${pluralize("Dimension", laitelaDim)} (${formatX(Laitela.realityReward, 2, 2)} DM)`],
       ];
     },

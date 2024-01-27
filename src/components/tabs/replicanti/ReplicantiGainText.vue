@@ -37,7 +37,7 @@ export default {
         // The calculation seems to choke and return zero if the time is too large, probably because of rounding issues
         const timeEstimateText = timeToThousand.eq(0)
           ? "an extremely long time"
-          : `${TimeSpan.fromSeconds(timeToThousand.toNumber())}`;
+          : `${TimeSpan.fromSeconds(new Decimal(timeToThousand.toNumber()))}`;
         this.remainingTimeText = `You are gaining ${formatX(gainFactorPerSecond, 2, 1)} Replicanti per second` +
           ` (${timeEstimateText} until ${format(nextMilestone)})`;
       } else {
@@ -71,19 +71,19 @@ export default {
       if (this.remainingTimeText === "") {
         if (remainingTime === 0) {
           this.remainingTimeText = `At Infinite Replicanti (normally takes
-            ${TimeSpan.fromSeconds(secondsPerGalaxy.toNumber())})`;
+            ${TimeSpan.fromSeconds(new Decimal(secondsPerGalaxy.toNumber()))})`;
         } else if (replicantiAmount.lt(100)) {
           // Because of discrete replication, we add "Approximately" at very low amounts
-          this.remainingTimeText = `Approximately ${TimeSpan.fromSeconds(remainingTime)} remaining
+          this.remainingTimeText = `Approximately ${TimeSpan.fromSeconds(new Decimal(remainingTime))} remaining
             until Infinite Replicanti`;
         } else {
-          this.remainingTimeText = `${TimeSpan.fromSeconds(remainingTime)} remaining until Infinite Replicanti`;
+          this.remainingTimeText = `${TimeSpan.fromSeconds(new Decimal(remainingTime))} remaining until Infinite Replicanti`;
         }
       }
 
       // If the player can get RG, this text is redundant with text below. It denotes total time from 1 to e308
       if (Replicanti.galaxies.max === 0 && !isAbove308) {
-        this.remainingTimeText += ` (${TimeSpan.fromSeconds(totalTime)} total)`;
+        this.remainingTimeText += ` (${TimeSpan.fromSeconds(new Decimal(totalTime))} total)`;
       }
 
 
@@ -93,7 +93,7 @@ export default {
           this.galaxyText = "You have reached the maximum amount of Replicanti Galaxies";
         } else {
           this.galaxyText = `You are gaining a Replicanti Galaxy every
-            ${TimeSpan.fromSeconds(secondsPerGalaxy.toNumber())}`;
+            ${TimeSpan.fromSeconds(secondsPerGalaxy)}`;
           if (galaxiesPerSecond.gte(1)) {
             this.galaxyText = `You are gaining ${quantify("Replicanti Galaxy", galaxiesPerSecond, 2, 1)} per second`;
           }
@@ -119,7 +119,7 @@ export default {
           }
           const thisGalaxyTime = pending > 0 ? pendingTime : secondsPerGalaxy.toNumber() - remainingTime;
           this.galaxyText += ` (all Replicanti Galaxies within
-            ${TimeSpan.fromSeconds(Math.clampMin(allGalaxyTime - thisGalaxyTime, 0))})`;
+            ${TimeSpan.fromSeconds(Decimal.max(allGalaxyTime - thisGalaxyTime, 0))})`;
         }
       } else {
         this.galaxyText = ``;

@@ -10,7 +10,7 @@ export default {
   },
   data() {
     return {
-      currentStored: 0,
+      currentStored: new Decimal(0),
       nextHintCost: 0,
       canGetHint: false,
       shownEntries: [],
@@ -21,7 +21,7 @@ export default {
   },
   computed: {
     hintCost() {
-      return `${quantify("year", TimeSpan.fromMilliseconds(this.nextHintCost).totalYears, 2)}`;
+      return `${quantify("year", TimeSpan.fromMilliseconds(new Decimal(this.nextHintCost)).totalYears, 2)}`;
     },
     formattedStored() {
       return `${quantify("year", TimeSpan.fromMilliseconds(this.currentStored).totalYears, 2)}`;
@@ -43,8 +43,8 @@ export default {
       const decaylessTime = this.nextHintCost / storeRate;
 
       // Check if decay is irrelevant and don't do the hard calculations if so
-      const minCostEstimate = (TimeSpan.fromYears(1e40).totalMilliseconds - this.currentStored) / storeRate;
-      if (TimeSpan.fromSeconds(minCostEstimate).totalDays > this.hints) {
+      const minCostEstimate = (TimeSpan.fromYears(new Decimal(1e40)).totalMilliseconds.sub(this.currentStored)).div(storeRate);
+      if (TimeSpan.fromSeconds(minCostEstimate).totalDays.gt(this.hints)) {
         return `${TimeSpan.fromSeconds(minCostEstimate).toStringShort(true)}`;
       }
 

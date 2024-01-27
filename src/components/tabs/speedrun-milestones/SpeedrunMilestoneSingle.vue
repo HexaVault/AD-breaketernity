@@ -29,7 +29,7 @@ export default {
     },
     timeDisplay() {
       return this.time
-        ? `Completed in ${TimeSpan.fromMilliseconds(this.time).toStringShort(true, true)}`
+        ? `Completed in ${TimeSpan.fromMilliseconds(new Decimal(this.time)).toStringShort(true, true)}`
         : "Not reached yet";
     },
     classObject() {

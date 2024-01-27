@@ -65,7 +65,7 @@ export default {
     lastSaved() {
       const lastSave = GameStorage.lastBackupTimes[this.slotData.id]?.date ?? 0;
       return lastSave
-        ? `Last saved: ${TimeSpan.fromMilliseconds(this.currTime - lastSave)} ago`
+        ? `Last saved: ${TimeSpan.fromMilliseconds(new Decimal(this.currTime - lastSave))} ago`
         : "Slot not currently in use";
     },
   },

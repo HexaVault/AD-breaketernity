@@ -73,7 +73,7 @@ export default {
     timeEstimate() {
       if (!this.showTTCost || this.ttGen.eq(0)) return "";
       const time = Decimal.sub(this.ttCost, this.currTT).dividedBy(this.ttGen);
-      return time.gt(0) ? `Enough TT in ${TimeSpan.fromSeconds(time.toNumber()).toStringShort()}` : "";
+      return time.gt(0) ? `Enough TT in ${TimeSpan.fromSeconds(time).toStringShort()}` : "";
     }
   },
   watch: {

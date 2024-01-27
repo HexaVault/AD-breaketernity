@@ -11,8 +11,8 @@ export default {
   data() {
     return {
       isUnlocked: false,
-      galaxies: 0,
-      generatedGalaxies: 0,
+      galaxies: new Decimal(),
+      generatedGalaxies: new Decimal(),
       galaxiesPerSecond: 0,
       cap: 0,
       isCapped: false,
@@ -50,8 +50,8 @@ export default {
       this.isCapped = GalaxyGenerator.isCapped;
       this.isCollapsed = player.celestials.pelle.collapsed.galaxies && !this.isCapped;
       if (this.isCollapsed || !this.isUnlocked) return;
-      this.galaxies = player.galaxies.add(GalaxyGenerator.galaxies);
-      this.generatedGalaxies = GalaxyGenerator.generatedGalaxies;
+      this.galaxies.copyFrom(player.galaxies.add(GalaxyGenerator.galaxies));
+      this.generatedGalaxies.copyFrom(GalaxyGenerator.generatedGalaxies);
       this.galaxiesPerSecond = GalaxyGenerator.gainPerSecond;
       this.cap = GalaxyGenerator.generationCap;
       this.capRift = GalaxyGenerator.capRift;

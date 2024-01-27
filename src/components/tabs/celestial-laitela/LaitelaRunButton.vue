@@ -20,7 +20,7 @@ export default {
   computed: {
     completionTime() {
       if (this.tierNotCompleted) return "Not completed at this tier";
-      return `Fastest Completion: ${TimeSpan.fromSeconds(this.realityTime).toStringShort()}`;
+      return `Fastest Completion: ${TimeSpan.fromSeconds(new Decimal(this.realityTime)).toStringShort()}`;
     },
     runEffects() {
       return GameDatabase.celestials.descriptions[5].effects().split("\n");

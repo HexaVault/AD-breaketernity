@@ -85,7 +85,7 @@ export const breakInfinityUpgrades = {
       );
       infinities = infinities.times(getAdjustedGlyphEffect("infinityinfmult"));
       const timeStr = Time.bestInfinity.totalMilliseconds <= 50
-        ? `${TimeSpan.fromMilliseconds(100).toStringShort()} (capped)`
+        ? `${TimeSpan.fromMilliseconds(new Decimal(100)).toStringShort()} (capped)`
         : `${Time.bestInfinity.times(2).toStringShort()}`;
       return `${quantify("Infinity", infinities)} every ${timeStr}`;
     }

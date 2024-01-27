@@ -53,7 +53,7 @@ export default {
     TTgenRateText() {
       if (this.theoremGeneration.lt(1 / 3600)) {
         return `one TT every ${TimeSpan.fromSeconds(
-          this.theoremGeneration.reciprocal().toNumber()).toStringShort(false)}`;
+          this.theoremGeneration.reciprocal()).toStringShort(false)}`;
       }
       if (this.theoremGeneration.lt(0.1)) {
         return `${format(this.theoremGeneration.times(3600), 2, 2)} TT/hour`;

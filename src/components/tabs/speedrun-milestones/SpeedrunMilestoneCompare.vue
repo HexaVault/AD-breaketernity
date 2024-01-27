@@ -46,9 +46,9 @@ export default {
       this.realTime = player.records.realTimePlayed;
     },
     timeString(ms, showGap) {
-      const timeStr = TimeSpan.fromMilliseconds(ms).toStringShort(true, true);
+      const timeStr = TimeSpan.fromMilliseconds(new Decimal(ms)).toStringShort(true, true);
       const diff = this.currTime > 0 ? this.currTime - ms : this.realTime - ms;
-      let gapStr = TimeSpan.fromMilliseconds(Math.abs(diff)).toStringShort(true, true);
+      let gapStr = TimeSpan.fromMilliseconds(new Decimal(Math.abs(diff))).toStringShort(true, true);
       gapStr = `${this.currTime > ms ? "-" : "+"}${gapStr}`;
       return ms > 0
         ? `${timeStr}${showGap ? ` (${gapStr})` : ""}`

@@ -35,7 +35,7 @@ export default {
       return AwayProgressTypes.appearsInAwayModal;
     },
     headerText() {
-      const timeDisplay = TimeSpan.fromSeconds(this.seconds).toString();
+      const timeDisplay = TimeSpan.fromSeconds(new Decimal(this.seconds)).toString();
       if (this.nothingHappened || !this.somethingHappened) {
         return `While you were away for ${timeDisplay}... Nothing happened.`;
       }
