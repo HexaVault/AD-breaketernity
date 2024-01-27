@@ -161,7 +161,7 @@ export const infinityUpgrades = {
     formatEffect: value => {
       if (Teresa.isRunning || V.isRunning) return "Disabled in this reality";
       if (Pelle.isDoomed) return "Disabled";
-      if (player.records.bestInfinity.time >= 999999999999) return "Too slow to generate";
+      if (player.records.bestInfinity.time.gte("10^^9000000000000000")) { return "Too slow to generate"; }
       return `${format(value, 2)} every ${Time.bestInfinity.times(10).toStringShort()}`;
     },
     charged: {

@@ -87,11 +87,11 @@ export function breakInfinity() {
 }
 
 export function gainedInfinityPoints() {
-  const div = Effects.min(
+  const div = new Decimal(Effects.min(
     308,
     Achievement(103),
     TimeStudy(111)
-  );
+  )).toNumber();
   if (Pelle.isDisabled("IPMults")) {
     return Decimal.pow10(player.records.thisInfinity.maxAM.log10() / div - 0.75)
       .timesEffectsOf(PelleRifts.vacuum)
