@@ -15,7 +15,11 @@ export const END_STATE_MARKERS = {
 export const GameEnd = {
   get endState() {
     if (this.removeAdditionalEnd) return this.additionalEnd;
-    return Math.max((Math.log10(player.celestials.pelle.records.totalAntimatter.layer + 1) - 8.7) / (Math.log10(9e15) - 8.7) + (this.additionalEnd), 0);
+    let x = 0
+    if (player.celestials.pelle.records.totalAntimatter.mag >= 2 && player.bypassEnd != true) {
+      x = Math.pow(10, player.celestials.pelle.records.totalAntimatter.layer) - 9e15
+    }
+    return Math.max(x, 0);
   },
 
   _additionalEnd: 0,
@@ -42,7 +46,7 @@ export const GameEnd = {
         this.removeAdditionalEnd = false;
       }
     }
-    if (!(this.removeAdditionalEnd && this.endState.gte(END_STATE_MARKERS.GAME_END)) &&
+    if (!(this.removeAdditionalEnd) && this.endState > END_STATE_MARKERS.GAME_END &&
         ui.$viewModel.modal.progressBar === undefined) {
       player.isGameEnd = true;
       this.additionalEnd += Math.min(diff / 1000 / 20, 0.1);
