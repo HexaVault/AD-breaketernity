@@ -993,12 +993,12 @@ export function simulateTime(seconds, real, fast) {
           GameIntervals.stop();
           ui.$viewModel.modal.progressBar = {
             label: "Offline Progress Simulation",
-            info: () => `The game is being run at a lower accuracy in order to quickly calculate the resources you
+            info: () => "Temp" /* `The game is being run at a lower accuracy in order to quickly calculate the resources you
               gained while you were away. See the How To Play entry on "Offline Progress" for technical details. If
               you are impatient and want to get back to the game sooner, you can click the "Speed up" button to
               simulate the rest of the time with half as many ticks (down to a minimum of ${formatInt(500)} ticks
               remaining). The "SKIP" button will instead use all the remaining offline time in ${formatInt(10)}
-              ticks.`,
+              ticks.` */,
             progressName: "Ticks",
             current: doneSoFar,
             max: ticks,
@@ -1033,7 +1033,7 @@ export function simulateTime(seconds, real, fast) {
           ui.$viewModel.modal.progressBar.current = doneSoFar;
         },
         asyncExit: () => {
-          ui.$viewModel.modal.progressBar = undefined;
+          // ui.$viewModel.modal.progressBar = undefined;
           // .postLoadStuff will restart GameIntervals
           GameStorage.postLoadStuff();
         },

@@ -37,7 +37,7 @@ export default {
           {{ progress.label }}
         </div>
         <div>
-          {{ progress.info() }}
+          {{ progress.info }}
         </div>
         <div class="modal-progress-bar__margin">
           <div>

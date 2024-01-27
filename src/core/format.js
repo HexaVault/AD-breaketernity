@@ -18,7 +18,7 @@ window.formatInt = function formatInt(value) {
   if (Notations.current.isPainful && Notations.current.name !== "Standard") {
     return format(value, 2);
   }
-  return formatWithCommas(typeof value === "number" ? value.toFixed(0) : value.toNumber().toFixed(0));
+  return formatWithCommas(typeof value === "number" ? value.toFixed(0) : (value instanceof Decimal ? value.toNumber().toFixed(0) : 1));
 };
 
 window.formatFloat = function formatFloat(value, digits) {
