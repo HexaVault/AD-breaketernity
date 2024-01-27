@@ -595,7 +595,7 @@ class AntimatterDimensionState extends DimensionState {
       }
       if (production.gt(10)) {
         const log10 = production.log10();
-        production = Decimal.pow10(Math.pow(log10, getAdjustedGlyphEffect("effarigantimatter")));
+        production = Decimal.pow10(Decimal.pow(log10, getAdjustedGlyphEffect("effarigantimatter")));
       }
     }
     production = production.min(this.cappedProductionInNormalChallenges);
