@@ -79,7 +79,7 @@ function bigCrunchUpdateStatistics() {
   player.records.thisInfinity.bestIPmin = DC.D0;
 
   player.records.thisEternity.bestInfinitiesPerMs = player.records.thisEternity.bestInfinitiesPerMs.clampMin(
-    gainedInfinities().round().dividedBy(Math.clampMin(33, player.records.thisInfinity.realTime))
+    gainedInfinities().round().dividedBy(Decimal.clampMin(33, player.records.thisInfinity.realTime))
   );
 
   const infinityPoints = gainedInfinityPoints();
@@ -92,21 +92,21 @@ function bigCrunchUpdateStatistics() {
   );
 
   player.records.bestInfinity.time =
-    Math.min(player.records.bestInfinity.time, player.records.thisInfinity.time);
+  Decimal.min(player.records.bestInfinity.time, player.records.thisInfinity.time);
   player.records.bestInfinity.realTime =
-    Math.min(player.records.bestInfinity.realTime, player.records.thisInfinity.realTime);
+    Decimal.min(player.records.bestInfinity.realTime, player.records.thisInfinity.realTime);
 
   player.requirementChecks.reality.noInfinities = false;
 
   if (!player.requirementChecks.infinity.maxAll) {
-    const bestIpPerMsWithoutMaxAll = infinityPoints.dividedBy(Math.clampMin(33, player.records.thisInfinity.realTime));
+    const bestIpPerMsWithoutMaxAll = infinityPoints.dividedBy(Decimal.clampMin(33, player.records.thisInfinity.realTime));
     player.records.thisEternity.bestIPMsWithoutMaxAll =
       Decimal.max(bestIpPerMsWithoutMaxAll, player.records.thisEternity.bestIPMsWithoutMaxAll);
   }
 }
 
 function bigCrunchTabChange(firstInfinity) {
-  const earlyGame = player.records.bestInfinity.time > 60000 && !player.break;
+  const earlyGame = player.records.bestInfinity.time.gt(60000) && !player.break;
   const inAntimatterChallenge = Player.isInAntimatterChallenge;
   handleChallengeCompletion();
 
@@ -160,9 +160,9 @@ export function secondSoftReset(enteringAntimatterChallenge) {
   InfinityDimensions.resetAmount();
   if (player.replicanti.unl) Replicanti.amount = DC.D1;
   player.replicanti.galaxies = DC.D0;
-  player.records.thisInfinity.time = 0;
-  player.records.thisInfinity.lastBuyTime = 0;
-  player.records.thisInfinity.realTime = 0;
+  player.records.thisInfinity.time = DC.D0;
+  player.records.thisInfinity.lastBuyTime = DC.D0;
+  player.records.thisInfinity.realTime = DC.D0;
   Player.resetRequirements("infinity");
   AchievementTimers.marathon2.reset();
 }

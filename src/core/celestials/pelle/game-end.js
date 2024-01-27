@@ -15,7 +15,7 @@ export const END_STATE_MARKERS = {
 export const GameEnd = {
   get endState() {
     if (this.removeAdditionalEnd) return this.additionalEnd;
-    return Math.max((Math.log10(player.celestials.pelle.records.totalAntimatter.mag + 1) - 8.7) / (Math.log10(9e15) - 8.7) + (this.additionalEnd), 0);
+    return Math.max((Math.log10(player.celestials.pelle.records.totalAntimatter.layer + 1) - 8.7) / (Math.log10(9e15) - 8.7) + (this.additionalEnd), 0);
   },
 
   _additionalEnd: 0,

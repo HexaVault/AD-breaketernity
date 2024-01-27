@@ -38,7 +38,7 @@ function giveEternityRewards(auto) {
   );
 
   player.records.thisReality.bestEternitiesPerMs = player.records.thisReality.bestEternitiesPerMs.clampMin(
-    newEternities.div(Math.clampMin(33, player.records.thisEternity.realTime))
+    newEternities.div(Decimal.clampMin(33, player.records.thisEternity.realTime))
   );
   player.records.bestEternity.bestEPminReality =
     player.records.bestEternity.bestEPminReality.max(player.records.thisEternity.bestEPmin);
