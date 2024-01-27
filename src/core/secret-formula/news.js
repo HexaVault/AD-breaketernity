@@ -1312,7 +1312,7 @@ export const news = [
     id: "a230",
     get text() {
       return `You started playing this game nearly
-        ${TimeSpan.fromMilliseconds(Date.now() - player.records.gameCreatedTime).toString()}
+        ${TimeSpan.fromMilliseconds(new Decimal(Date.now() - player.records.gameCreatedTime)).toString()}
         ago. Thank you for playing!`;
     },
     dynamic: true
@@ -2170,14 +2170,14 @@ export const news = [
   {
     id: "a343",
     get text() {
-      const fakeProgress = Math.pow(player.records.realTimePlayed, 25);
+      const fakeProgress = Decimal.pow(player.records.realTimePlayed, 25);
       // Caps in ~68 years of real playtime then turns into "Infinite%"
       return `Global Challenge - across all AD players, accumulate ${format(Number.MAX_VALUE, 2)} contest-paperclips
         (noted by the
         square ends), to receive an event-exclusive metal bagpipe, capable of giving +2 AM/s, as well as an extra
         tickspeed while above ${format(1e200)} tickspeed upgrades! Current global progress -
         ${format(fakeProgress)}/${format(Number.MAX_VALUE, 2)}
-        (${formatPercents(Math.log10(fakeProgress) / Math.log10(Number.MAX_VALUE), 3)})`;
+        (${formatPercents(Decimal.log10(fakeProgress).div(Decimal.log10(Number.MAX_VALUE)), 3)})`;
     }
   },
   {
@@ -2852,24 +2852,24 @@ export const news = [
   {
     id: "l41",
     text: "I thought the update was 5 hours away... -new players after more than 5 hours of gameplay",
-    get unlocked() { return Time.totalTimePlayed.totalHours >= 5; }
+    get unlocked() { return Time.totalTimePlayed.totalHours.gte(5); }
   },
   {
     id: "l42",
     text:
       `Somebody told me to wait five hours for the update yesterday but it's today
       and it still hasn't come! What do I do?`,
-    get unlocked() { return Time.totalTimePlayed.totalHours >= 5; }
+    get unlocked() { return Time.totalTimePlayed.totalHours.gte(5); }
   },
   {
     id: "l43",
     text: "You do know that you won't reach Infinity in -1 seconds, right?",
-    get unlocked() { return player.records.bestInfinity.time === 0.1; }
+    get unlocked() { return player.records.bestInfinity.time.eq(0.1); }
   },
   {
     id: "l44",
     text: "Where does Antimatter Nemo live? In a NNnNeMI-NNnNe.",
-    get unlocked() { return player.records.totalAntimatter.e >= 3e6; }
+    get unlocked() { return player.records.totalAntimatter.log10().gte(3e6); }
   },
   {
     id: "l45",
@@ -2889,7 +2889,7 @@ export const news = [
   {
     id: "l48",
     text: "Keep up the quick pace!",
-    get unlocked() { return AchievementTimers.marathon1.time > 1200; }
+    get unlocked() { return AchievementTimers.marathon1.time.gt(1200); }
   },
   {
     id: "l49",
@@ -2904,12 +2904,12 @@ export const news = [
   {
     id: "l51",
     text: "Are you serious?",
-    get unlocked() { return Time.worstChallenge.totalSeconds <= 1; }
+    get unlocked() { return Time.worstChallenge.totalSeconds.lte(1); }
   },
   {
     id: "l52",
     text: "Timing is key.",
-    get unlocked() { return player.records.thisEternity.realTime < 10; }
+    get unlocked() { return player.records.thisEternity.realTime.lt(10); }
   },
   {
     id: "l53",

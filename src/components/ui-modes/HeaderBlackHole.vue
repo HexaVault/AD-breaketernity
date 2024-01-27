@@ -58,7 +58,7 @@ export default {
       if (BlackHoles.arePaused && player.blackHoleNegative < 1) return "Uninvert BH";
       if (BlackHoles.arePaused) return "Unpause BH";
       const accel = BlackHoles.unpauseAccelerationFactor;
-      if (accel !== 1) return `${formatPercents(accel, 1)} speed`;
+      if (accel !== 1) return `${formatPercents(new Decimal(accel), 1)} speed`;
       if (player.blackHoleNegative < 1) return "Invert BH";
       return "Pause BH";
     },

@@ -41,9 +41,9 @@ export default {
         : `Reset your ${makeEnumeration(reset)} to increase the power of Tickspeed upgrades`;
     },
     sumText() {
-      const parts = [Math.max(this.galaxies.normal, 0)];
-      if (this.galaxies.replicanti > 0) parts.push(this.galaxies.replicanti);
-      if (this.galaxies.dilation > 0) parts.push(this.galaxies.dilation);
+      const parts = [Decimal.max(this.galaxies.normal, 0)];
+      if (this.galaxies.replicanti.gt(0)) parts.push(this.galaxies.replicanti);
+      if (this.galaxies.dilation.gt(0)) parts.push(this.galaxies.dilation);
       const sum = parts.map(this.formatGalaxies).join(" + ");
       if (parts.length >= 2) {
         return `${sum} = ${this.formatGalaxies(parts.sum())}`;
@@ -114,7 +114,7 @@ export default {
       manualRequestGalaxyReset(this.canBulkBuy && bulk);
     },
     formatGalaxies(num) {
-      return num > 1e8 ? format(num, 2) : formatInt(num);
+      return num.gt(1e8) ? format(num, 2) : formatInt(num);
     },
   }
 };

@@ -5,7 +5,7 @@ export default {
   name: "AntimatterDimensionProgressBar",
   data() {
     return {
-      fill: 0,
+      fill: new Decimal(0),
       tooltip: "",
       displayPercents: "",
     };
@@ -13,7 +13,7 @@ export default {
   computed: {
     progressBarStyle() {
       return {
-        width: `${(this.fill * 100).toFixed(2)}%`
+        width: `${(this.fill.times(100).toNumber()).toFixed(2)}%`
       };
     }
   },
@@ -22,11 +22,11 @@ export default {
     update() {
       this.displayPercents = formatPercents(this.fill, 2);
       const setProgress = (current, goal, tooltip) => {
-        this.fill = Math.clampMax(current.pLog10().div(Decimal.log10(goal)), 1);
+        this.fill = Decimal.min(current.absLog10().div(Decimal.log10(goal)), 1);
         this.tooltip = tooltip;
       };
       const setLinearProgress = (current, goal, tooltip) => {
-        this.fill = Math.clampMax(current / goal, 1);
+        this.fill = Decimal.min(current.div(goal), 1);
         this.tooltip = tooltip;
       };
 
@@ -42,12 +42,12 @@ export default {
         } else if (EternityChallenge.isRunning) {
           if (Perk.studyECBulk.isBought) {
             // Note: If the EC is fully complete, this prop doesn't exist
-            const goal = EternityChallenge.current.gainedCompletionStatus.nextGoalAt;
+            const goal = new Decimal(EternityChallenge.current.gainedCompletionStatus.nextGoalAt);
             if (goal) {
               setProgress(Currency.infinityPoints.value, goal, "Percentage to next Challenge completion");
             } else {
               // In a fully completed EC, there's nothing useful we can show so we just pin it at 100% and say so
-              setProgress(Currency.infinityPoints.value, 10, "This Challenge is already fully completed!");
+              setProgress(Currency.infinityPoints.value, new Decimal(10), "This Challenge is already fully completed!");
             }
           } else {
             setProgress(Currency.infinityPoints.value, Player.eternityGoal, "Percentage to Eternity Challenge goal");
@@ -60,30 +60,30 @@ export default {
           }
         } else {
           // Lai'tela destabilization; since the progress bar is logarithmically-scaled, we need to pow10 the arguments
-          setProgress(Decimal.pow10(player.celestials.laitela.entropy), 10, "Percentage to Destabilized Reality");
+          setProgress(Decimal.pow10(player.celestials.laitela.entropy), new Decimal(10), "Percentage to Destabilized Reality");
         }
       } else if (Pelle.isDoomed) {
-        if (PelleRifts.recursion.milestones[2].canBeApplied || GalaxyGenerator.spentGalaxies > 0) {
+        if (PelleRifts.recursion.milestones[2].canBeApplied || GalaxyGenerator.spentGalaxies.gt(0)) {
           setProgress(Currency.infinityPoints.value, Tesseracts.nextCost, "Percentage to next Tesseract");
         } else if (PelleStrikes.dilation.hasStrike) {
           setProgress(Currency.eternityPoints.value, DC.E4000, "Percentage to Galaxy Generator");
         } else if (PelleStrikes.ECs.hasStrike) {
           setLinearProgress(
-            (Math.min(Currency.timeTheorems.max.toNumber() / 12900, 1) +
-            Math.min(EternityChallenges.completions / 60, 1)) / 2,
+            (Decimal.min(Currency.timeTheorems.max.div(12900), 1).add
+            (Decimal.min(EternityChallenges.completions / 60, 1))).div(2),
             1, "Percentage to fifth Strike");
         } else if (PelleStrikes.eternity.hasStrike) {
-          setLinearProgress(Currency.timeTheorems.max.toNumber(), 115, "Percentage to fourth Strike");
+          setLinearProgress(Currency.timeTheorems.max, new Decimal(115), "Percentage to fourth Strike");
         } else if (PelleStrikes.powerGalaxies.hasStrike) {
           setProgress(Currency.infinityPoints.value, Player.eternityGoal, "Percentage to third Strike");
         } else if (PelleStrikes.infinity.hasStrike) {
           if (player.break) {
-            setProgress(Currency.infinityPoints.value, 5e11, "Percentage to second Strike");
+            setProgress(Currency.infinityPoints.value, new Decimal(5e11), "Percentage to second Strike");
           } else {
-            setProgress(Currency.antimatter.value, Decimal.NUMBER_MAX_VALUE, "Percentage to Infinity");
+            setProgress(Currency.antimatter.value, new Decimal(Number.MAX_VALUE), "Percentage to Infinity");
           }
         } else {
-          setProgress(Currency.antimatter.value, Decimal.NUMBER_MAX_VALUE, "Percentage to first Strike");
+          setProgress(Currency.antimatter.value, new Decimal(Number.MAX_VALUE), "Percentage to first Strike");
         }
       } else if (Enslaved.isCompleted) {
         // Show all other goals from the top down, starting at features in the highest prestige layer
@@ -103,7 +103,7 @@ export default {
           setProgress(player.infinityPoints, nextID.ipRequirement, text);
         }
       } else {
-        setProgress(Currency.antimatter.value, Decimal.NUMBER_MAX_VALUE, "Percentage to Infinity");
+        setProgress(Currency.antimatter.value, new Decimal(Number.MAX_VALUE), "Percentage to Infinity");
       }
     }
   }

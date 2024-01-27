@@ -13,8 +13,8 @@ export default {
   },
   computed: {
     timeString() {
-      const localStr = timeDisplayShort(this.currentTime - this.lastLocalSave);
-      const cloudStr = timeDisplayShort(this.currentTime - this.lastCloudSave);
+      const localStr = timeDisplayShort(new Decimal(this.currentTime - this.lastLocalSave));
+      const cloudStr = timeDisplayShort(new Decimal(this.currentTime - this.lastCloudSave));
       return this.cloudSaveEnabled
         ? `${localStr} (local) | ${cloudStr} (cloud)`
         : localStr;

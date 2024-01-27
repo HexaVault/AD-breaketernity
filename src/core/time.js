@@ -1,6 +1,6 @@
 export const DeltaTimeState = {
-  deltaTime: new TimeSpan(0),
-  unscaledDeltaTime: new TimeSpan(0),
+  deltaTime: new TimeSpan(new Decimal(0)),
+  unscaledDeltaTime: new TimeSpan(new Decimal(0)),
   update(deltaTime, gameDeltaTime) {
     this.unscaledDeltaTime = TimeSpan.fromMilliseconds(deltaTime);
     this.deltaTime = TimeSpan.fromMilliseconds(gameDeltaTime);
