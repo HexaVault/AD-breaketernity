@@ -41,7 +41,7 @@ window.formatPostBreak = function formatPostBreak(value, places, placesUnder1000
   const decimal = Decimal.fromValue_noAlloc(value);
 
   if (decimal.exponent < -300) {
-    return decimal.sign() < 0
+    return decimal.sign < 0
       ? notation.formatVerySmallNegativeDecimal(decimal.abs(), placesUnder1000)
       : notation.formatVerySmallDecimal(decimal, placesUnder1000);
   }
@@ -53,7 +53,7 @@ window.formatPostBreak = function formatPostBreak(value, places, placesUnder1000
       : notation.formatUnder1000(number, placesUnder1000);
   }
 
-  return decimal.sign() < 0
+  return decimal.sign < 0
     ? notation.formatNegativeDecimal(decimal.abs(), places)
     : notation.formatDecimal(decimal, places);
 };
