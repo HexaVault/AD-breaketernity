@@ -32,6 +32,9 @@ export const GameEnd = {
   creditsEverClosed: false,
 
   gameLoop(diff) {
+    if (diff instanceof Decimal) {
+      diff = diff.toNumber()
+    }
     if (this.removeAdditionalEnd) {
       this.additionalEnd -= Math.min(diff / 200, 0.5);
       if (this.additionalEnd < 4) {

@@ -95,7 +95,7 @@ export const Enslaved = {
       player.celestials.enslaved.storedReal = maxTime;
     }
     // More than 24 hours in milliseconds
-    if (player.celestials.enslaved.storedReal > (24 * 60 * 60 * 1000)) SecretAchievement(46).unlock();
+    if (player.celestials.enslaved.storedReal.gte(24 * 60 * 60 * 1000)) SecretAchievement(46).unlock();
     player.lastUpdate = thisUpdate;
   },
   autoStoreRealTime(diffMs) {
@@ -181,11 +181,10 @@ export const Enslaved = {
     return EffarigUnlock.eternity.isUnlocked;
   },
   get realityBoostRatio() {
-    return Math.max(1, Math.floor(player.celestials.enslaved.storedReal /
-      Math.max(1000, Time.thisRealityRealTime.totalMilliseconds)));
+    return Decimal.max(1, Decimal.floor(player.celestials.enslaved.storedReal.div(Decimal.max(1000, Time.thisRealityRealTime.totalMilliseconds))));
   },
   get canAmplify() {
-    return this.realityBoostRatio > 1 && !Pelle.isDoomed && !isInCelestialReality();
+    return this.realityBoostRatio.gt(1) && !Pelle.isDoomed && !isInCelestialReality();
   },
   storedTimeInsideEnslaved(stored) {
     if (stored <= 1e3) return stored;

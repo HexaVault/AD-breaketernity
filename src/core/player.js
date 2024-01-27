@@ -63,7 +63,7 @@ window.player = {
       rm: DC.D1,
       glyph: 0,
       time: 0,
-      shard: 0,
+      shard: DC.D0,
       isActive: false
     },
     eternity: {
@@ -321,8 +321,8 @@ window.player = {
       bestEternitiesPerMs: DC.D0,
       maxReplicanti: DC.D0,
       maxDT: DC.D0,
-      bestRSmin: 0,
-      bestRSminVal: 0,
+      bestRSmin: DC.D0,
+      bestRSminVal: DC.D0,
     },
     bestReality: {
       time: Number.MAX_VALUE,
@@ -509,7 +509,7 @@ window.player = {
     autoAutoClean: false,
     applyFilterToPurge: false,
     moveGlyphsOnProtection: false,
-    perkPoints: 0,
+    perkPoints: DC.D0,
     unlockedEC: 0,
     autoEC: true,
     lastAutoEC: 0,
@@ -565,7 +565,7 @@ window.player = {
       lastRepeatediM: DC.D0
     },
     effarig: {
-      relicShards: 0,
+      relicShards: DC.D0,
       unlockBits: 0,
       run: false,
       quoteBits: 0,
@@ -579,9 +579,9 @@ window.player = {
     },
     enslaved: {
       isStoring: false,
-      stored: 0,
+      stored: DC.D0,
       isStoringReal: false,
-      storedReal: 0,
+      storedReal: DC.D0,
       autoStoreReal: false,
       isAutoReleasing: false,
       quoteBits: 0,
@@ -654,7 +654,7 @@ window.player = {
         effarig: 0
       },
       quoteBits: 0,
-      momentumTime: 0,
+      momentumTime: DC.D0,
       unlockBits: 0,
       run: false,
       charged: new Set(),
@@ -747,8 +747,8 @@ window.player = {
       progressBits: 0,
       galaxyGenerator: {
         unlocked: false,
-        spentGalaxies: 0,
-        generatedGalaxies: 0,
+        spentGalaxies: DC.D0,
+        generatedGalaxies: DC.D0,
         phase: 0,
         sacrificeActive: false
       },

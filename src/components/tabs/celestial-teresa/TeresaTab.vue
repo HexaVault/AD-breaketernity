@@ -28,7 +28,7 @@ export default {
       bestAMSet: [],
       lastMachines: new Decimal(0),
       runReward: 0,
-      perkPoints: 0,
+      perkPoints: DC.D0,
       hasReality: false,
       hasEPGen: false,
       hasPerkShop: false,

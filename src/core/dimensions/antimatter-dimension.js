@@ -143,7 +143,7 @@ function applyNDMultipliers(mult, tier) {
 
 function applyNDPowers(mult, tier) {
   let multiplier = mult;
-  const glyphPowMultiplier = getAdjustedGlyphEffect("powerpow");
+  const glyphPowMultiplier = new Decimal(getAdjustedGlyphEffect("powerpow"));
   const glyphEffarigPowMultiplier = getAdjustedGlyphEffect("effarigdimensions");
 
   if (InfinityChallenge(4).isRunning && player.postC4Tier !== tier) {
@@ -153,7 +153,7 @@ function applyNDPowers(mult, tier) {
     multiplier = multiplier.pow(InfinityChallenge(4).reward.effectValue);
   }
 
-  multiplier = multiplier.pow(glyphPowMultiplier * glyphEffarigPowMultiplier * Ra.momentumValue);
+  multiplier = multiplier.pow(glyphPowMultiplier.times(glyphEffarigPowMultiplier).times(Ra.momentumValue));
 
   multiplier = multiplier
     .powEffectsOf(
@@ -661,7 +661,7 @@ export const AntimatterDimensions = {
       nextTierOffset++;
     }
     for (let tier = maxTierProduced; tier >= 1; --tier) {
-      AntimatterDimension(tier + nextTierOffset).produceDimensions(AntimatterDimension(tier), diff / 10);
+      AntimatterDimension(tier + nextTierOffset).produceDimensions(AntimatterDimension(tier), diff.div(10));
     }
     if (AntimatterDimension(1).amount.gt(0)) {
       player.requirementChecks.eternity.noAD1 = false;

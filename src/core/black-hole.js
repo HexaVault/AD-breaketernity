@@ -373,8 +373,7 @@ export const BlackHoles = {
 
   get unpauseAccelerationFactor() {
     if (this.arePermanent) return 1;
-    return Math.clamp((player.records.realTimePlayed - player.blackHolePauseTime) /
-      (1000 * this.ACCELERATION_TIME), 0, 1);
+    return (player.records.realTimePlayed.sub(player.blackHolePauseTime)).div(1000 * this.ACCELERATION_TIME).max(0).min(1);
   },
 
   get arePaused() {

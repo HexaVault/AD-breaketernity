@@ -3,7 +3,7 @@ export const DeltaTimeState = {
   realDeltaTime: new TimeSpan(new Decimal(0)),
   trueDeltaTime: new TimeSpan(new Decimal(0)),
   update(trueDeltaTime, deltaTime, gameDeltaTime) {
-    this.trueDeltaTime = TimeSpan.fromMilliseconds(trueDeltaTime)
+    this.trueDeltaTime = TimeSpan.fromMilliseconds(new Decimal(trueDeltaTime))
     this.realDeltaTime = TimeSpan.fromMilliseconds(deltaTime);
     this.deltaTime = TimeSpan.fromMilliseconds(gameDeltaTime);
   }
@@ -57,11 +57,19 @@ export const Time = {
     return this.deltaTimeFull.totalMilliseconds;
   },
   /**
-   * Frame delta time, but without EC12 or black hole effects
+   * Frame delta time, but without any game speed effects
    * @returns {TimeSpan}
    */
-  get unscaledDeltaTime() {
-    return DeltaTimeState.unscaledDeltaTime;
+  get realDeltaTime() {
+    return DeltaTimeState.realDeltaTime;
+  },
+
+  /**
+   * Frame delta time, but without any effects
+   * @returns {TimeSpan}
+   */
+  get trueDeltaTime() {
+    return DeltaTimeState.trueDeltaTime;
   },
 
   /**

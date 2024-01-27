@@ -29,7 +29,7 @@ export default {
   },
   methods: {
     update() {
-      this.pp = Math.floor(Currency.perkPoints.value);
+      this.pp = Decimal.floor(Currency.perkPoints.value);
       this.physicsEnabled = player.options.perkPhysicsEnabled;
     },
     togglePhysics() {

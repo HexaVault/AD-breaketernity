@@ -3,7 +3,7 @@ import { GameDatabase } from "./secret-formula/game-database";
 /**
  * Multiple glyph effects are combined into a summary object of this type.
  * @typedef {Object} GlyphEffectConfig__combine_result
- * @property {number | Decimal} value The final effect value (boost to whatever)
+ * @property {eDecimal} value The final effect value (boost to whatever)
  * @property {boolean} capped whether or not a cap or limit was applied (softcaps, etc)
 */
 class GlyphEffectConfig {
@@ -18,13 +18,13 @@ class GlyphEffectConfig {
   * @param {string} [setup.genericDesc] (Defaults to singleDesc with {value} replaced with "x") Generic
   *  description of the glyph's effect
   * @param {string} [setup.shortDesc] Short and condensed version of the glyph's effect for use in the Modal
-  * @param {(function(number, number): number) | function(number, number): Decimal} [setup.effect] Calculate effect
+  * @param {function(Decimal, Decimal): Decimal} [setup.effect] Calculate effect
   *  value from level and strength
-  * @param {function(number | Decimal): string} [setup.formatEffect] Format the effect's value into a string. Defaults
+  * @param {function(Decimal): string} [setup.formatEffect] Format the effect's value into a string. Defaults
   *  to format(x, 3, 3)
-  * @param {function(number | Decimal): string} [setup.formatSingleEffect] Format the effect's value into a string, used
+  * @param {function(Decimal): string} [setup.formatSingleEffect] Format the effect's value into a string, used
   *  for effects which need to display different values in single values versus combined values (eg. power effects)
-  * @param {function(number | Decimal): number | Decimal} [setup.softcap] An optional softcap to be applied after glyph
+  * @param {function(Decimal): Decimal} [setup.softcap] An optional softcap to be applied after glyph
   *  effects are combined.
   * @param {((function(number[]): GlyphEffectConfig__combine_result) | function(number[]): number)} setup.combine
   *  Specification of how multiple glyphs combine. Can be GlyphCombiner.add or GlyphCombiner.multiply for most glyphs.
@@ -51,30 +51,30 @@ class GlyphEffectConfig {
     /** @type {string} shortened description for use in glyph choice info modal */
     this._shortDesc = setup.shortDesc;
     /**
-    * @type {(function(number, number): number) | function(number, number): Decimal} Calculate effect
+    * @type {(function(Decimal, Decimal): Decimal) | function(Decimal, Decimal): Decimal} Calculate effect
     *  value from level and strength
     */
     this.effect = setup.effect;
     /**
-    * @type {function(number | Decimal): string} formatting function for the effect
+    * @type {function(Decimal): string} formatting function for the effect
     * (just the number conversion). Combined with the description strings to make descriptions
     */
     this.formatEffect = setup.formatEffect ?? (x => format(x, 3, 3));
-    /** @type {function(number | Decimal): string} See info about setup, above */
+    /** @type {function(Decimal): string} See info about setup, above */
     this.formatSingleEffect = setup.formatSingleEffect || this.formatEffect;
     /**
-    *  @type {function(number[]): GlyphEffectConfig__combine_result} combine Function that combines
+    *  @type {function(Decimal[]): GlyphEffectConfig__combine_result} combine Function that combines
     * multiple glyph effects into one value (adds up, applies softcaps, etc)
     */
     this.combine = GlyphEffectConfig.setupCombine(setup);
-    /** @type {function(number)} conversion function to produce altered glyph effect */
+    /** @type {function(Decimal)} conversion function to produce altered glyph effect */
     this.conversion = setup.conversion;
     /**
-    * @type {function(number | Decimal): string} formatSecondaryEffect formatting function for
+    * @type {function(Decimal): string} formatSecondaryEffect formatting function for
     * the secondary effect (if there is one)
     */
     this.formatSecondaryEffect = setup.formatSecondaryEffect || (x => format(x, 3, 3));
-    /** @type {function(number | Decimal): string} See info about setup, above */
+    /** @type {function(Decimal): string} See info about setup, above */
     this.formatSingleSecondaryEffect = setup.formatSingleSecondaryEffect || this.formatSecondaryEffect;
     /** @type {string} color to show numbers in glyph tooltips if boosted */
     this.alteredColor = setup.alteredColor;

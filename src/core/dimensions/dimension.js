@@ -33,7 +33,7 @@ export class DimensionState {
   }
 
   productionForDiff(diff) {
-    return this.productionPerSecond.times(diff / 1000);
+    return this.productionPerSecond.times(diff.div(1000));
   }
 
   produceCurrency(currency, diff) {

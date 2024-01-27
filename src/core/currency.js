@@ -407,7 +407,7 @@ Currency.realityMachines = new class extends DecimalCurrency {
   }
 }();
 
-Currency.perkPoints = new class extends NumberCurrency {
+Currency.perkPoints = new class extends DecimalCurrency {
   get value() { return player.reality.perkPoints; }
   set value(value) { player.reality.perkPoints = value; }
 }();
