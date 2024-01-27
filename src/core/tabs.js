@@ -108,7 +108,7 @@ class TabState {
   }
 
   get isPermanentlyHidden() {
-    return this.config.hideAt >= GameEnd.endState && !GameEnd.creditsClosed;
+    return this.config.hideAt <= GameEnd.endState && !GameEnd.creditsClosed;
   }
 
   get hidable() {
@@ -206,7 +206,6 @@ export const Tabs = (function() {
       Tab.eternity,
       Tab.reality,
       Tab.celestials,
-      Tab.shop
     ],
     newUI: [
       Tab.dimensions,
@@ -219,7 +218,6 @@ export const Tabs = (function() {
       Tab.achievements,
       Tab.statistics,
       Tab.options,
-      Tab.shop
     ],
     get currentUIFormat() {
       return ui.view.newUI ? this.newUI : this.oldUI;
