@@ -20,6 +20,7 @@ export const DC = deepFreeze({
   // _: decimal (.) part of the mantissa
   // E[0-9]: Decimal exponent variable
   // C: Calculation. D - .div, P - .pow
+  // There are special values
 
   /* eslint-disable key-spacing */
   DM1:                  new Decimal("-1"),
@@ -200,6 +201,13 @@ export const DC = deepFreeze({
   E1E8:                 new Decimal("1e100000000"),
   E1_5E12:              new Decimal("1e1500000000000"),
   E1E15:                new Decimal("1e1000000000000000"),
+
+  //Special case values
+
+  NUMSAFE:              new Decimal(Number.MAX_SAFE_INTEGER),
+  NUMMAX:               new Decimal(Number.MAX_VALUE),
+  BIMAX:                new Decimal("e9e15"),
+  BEMAX:                new Decimal("10^^9000000000000000")
 });
 
 window.AUTOBUYER_MODE = {

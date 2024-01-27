@@ -38,12 +38,12 @@ window.player = {
   challenge: {
     normal: {
       current: 0,
-      bestTimes: Array.repeat(new Decimal("10^^9000000000000000"), 11),
+      bestTimes: Array.repeat(new Decimal("DC.BEMAX"), 11),
       completedBits: 0,
     },
     infinity: {
       current: 0,
-      bestTimes: Array.repeat(new Decimal("10^^9000000000000000"), 8),
+      bestTimes: Array.repeat(new Decimal("DC.BEMAX"), 8),
       completedBits: 0,
     },
     eternity: {
@@ -271,18 +271,18 @@ window.player = {
     gameCreatedTime: Date.now(),
     trueTimePlayed: 0,
     totalTimePlayed: DC.D0,
-    timePlayedAtBHUnlock: new Decimal("10^^9000000000000000"),
+    timePlayedAtBHUnlock: new Decimal("DC.BEMAX"),
     realTimePlayed: DC.D0,
     realTimeDoomed: DC.D0,
     fullGameCompletions: 0,
     previousRunRealTime: 0,
     totalAntimatter: DC.E1,
     recentInfinities: Array.range(0, 10).map(() =>
-      [new Decimal("10^^9000000000000000"), new Decimal("10^^9000000000000000"), DC.D1, DC.D1, ""]),
+      [new Decimal("DC.BEMAX"), new Decimal("DC.BEMAX"), DC.D1, DC.D1, ""]),
     recentEternities: Array.range(0, 10).map(() =>
-      [new Decimal("10^^9000000000000000"), new Decimal("10^^9000000000000000"), DC.D1, DC.D1, "", DC.D0]),
+      [new Decimal("DC.BEMAX"), new Decimal("DC.BEMAX"), DC.D1, DC.D1, "", DC.D0]),
     recentRealities: Array.range(0, 10).map(() =>
-      [new Decimal("10^^9000000000000000"), new Decimal("10^^9000000000000000"), DC.D1, 1, "", 0, 0]),
+      [new Decimal("DC.BEMAX"), new Decimal("DC.BEMAX"), DC.D1, 1, "", 0, 0]),
     thisInfinity: {
       time: DC.D0,
       realTime: DC.D0,
@@ -292,8 +292,8 @@ window.player = {
       bestIPminVal: DC.D0,
     },
     bestInfinity: {
-      time: new Decimal("10^^9000000000000000"),
-      realTime: new Decimal("10^^9000000000000000"),
+      time: new Decimal("DC.BEMAX"),
+      realTime: new Decimal("DC.BEMAX"),
       bestIPminEternity: DC.D0,
       bestIPminReality: DC.D0,
     },
@@ -308,8 +308,8 @@ window.player = {
       bestInfinitiesPerMs: DC.D0,
     },
     bestEternity: {
-      time: new Decimal("10^^9000000000000000"),
-      realTime: new Decimal("10^^9000000000000000"),
+      time: new Decimal("DC.BEMAX"),
+      realTime: new Decimal("DC.BEMAX"),
       bestEPminReality: DC.D0,
     },
     thisReality: {
