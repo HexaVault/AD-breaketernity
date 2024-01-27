@@ -275,7 +275,7 @@ window.player = {
     realTimePlayed: DC.D0,
     realTimeDoomed: DC.D0,
     fullGameCompletions: 0,
-    previousRunRealTime: 0,
+    previousRunRealTime: DC.D0,
     totalAntimatter: DC.E1,
     recentInfinities: Array.range(0, 10).map(() =>
       [new Decimal("DC.BEMAX"), new Decimal("DC.BEMAX"), DC.D1, DC.D1, ""]),
