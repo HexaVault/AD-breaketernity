@@ -3,15 +3,15 @@ export default {
   name: "TickspeedRow",
   data() {
     return {
-      purchasedTickspeed: 0,
-      freeTickspeed: 0,
+      purchasedTickspeed: new Decimal(0),
+      freeTickspeed: new Decimal(0),
       isVisible: false,
       mult: new Decimal(0),
       cost: new Decimal(0),
       isAffordable: false,
       tickspeed: new Decimal(0),
       gameSpeedMult: 1,
-      galaxyCount: 0,
+      galaxyCount: new Decimal(),
       isContinuumActive: false,
       continuumValue: 0,
       hasTutorial: false,
@@ -41,15 +41,15 @@ export default {
     upgradeCount() {
       const purchased = this.purchasedTickspeed;
       if (!this.freeTickspeed) return quantifyInt("Purchased Upgrade", purchased);
-      if (purchased === 0 || this.isContinuumActive) return `${formatInt(this.freeTickspeed)} Free Upgrades`;
-      return `${formatInt(purchased)} Purchased + ${formatInt(this.freeTickspeed)} Free`;
+      if (purchased === 0 || this.isContinuumActive) return `${format(this.freeTickspeed)} Free Upgrades`;
+      return `${format(purchased)} Purchased + ${format(this.freeTickspeed)} Free`;
     }
   },
   methods: {
     update() {
       this.hasRealityButton = PlayerProgress.realityUnlocked() || TimeStudy.reality.isBought;
-      this.purchasedTickspeed = player.totalTickBought;
-      this.freeTickspeed = FreeTickspeed.amount;
+      this.purchasedTickspeed.copyFrom(player.totalTickBought);
+      this.freeTickspeed.copyFrom(FreeTickspeed.amount);
       this.isEC9 = EternityChallenge(9).isRunning;
       this.isVisible = Tickspeed.isUnlocked || this.isEC9;
       if (!this.isVisible) return;
@@ -58,7 +58,7 @@ export default {
       this.isAffordable = Tickspeed.isAvailableForPurchase && Tickspeed.isAffordable;
       this.tickspeed.copyFrom(Tickspeed.perSecond);
       this.gameSpeedMult = getGameSpeedupForDisplay();
-      this.galaxyCount = player.galaxies;
+      this.galaxyCount.copyFrom(player.galaxies);
       this.isContinuumActive = Laitela.continuumActive;
       if (this.isContinuumActive) this.continuumValue = Tickspeed.continuumValue;
       this.hasTutorial = Tutorial.isActive(TUTORIAL_STATE.TICKSPEED);

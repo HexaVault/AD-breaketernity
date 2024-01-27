@@ -93,9 +93,9 @@ export default {
   methods: {
     update() {
       this.type = Galaxy.type;
-      this.galaxies.normal = player.galaxies.add(GalaxyGenerator.galaxies);
-      this.galaxies.replicanti = Replicanti.galaxies.total;
-      this.galaxies.dilation = player.dilation.totalTachyonGalaxies;
+      this.galaxies.normal.copyFrom(player.galaxies.add(GalaxyGenerator.galaxies));
+      this.galaxies.replicanti.copyFrom(Replicanti.galaxies.total);
+      this.galaxies.dilation.copyFrom(player.dilation.totalTachyonGalaxies);
       const requirement = Galaxy.requirement;
       this.requirement.amount = requirement.amount;
       this.requirement.tier = requirement.tier;

@@ -10,7 +10,7 @@ export default {
   },
   data() {
     return {
-      totalUpgrades: 0,
+      totalUpgrades: new Decimal(0),
       multPerTickspeed: 0,
       tickspeedSoftcap: 0,
       timeShards: new Decimal(0),
@@ -27,7 +27,7 @@ export default {
   methods: {
     update() {
       this.showLockedDimCostNote = !TimeDimension(8).isUnlocked && player.realities >= 1;
-      this.totalUpgrades = player.totalTickGained;
+      this.totalUpgrades.copyFrom(player.totalTickGained);
       this.multPerTickspeed = FreeTickspeed.multToNext;
       this.tickspeedSoftcap = FreeTickspeed.softcap;
       this.timeShards.copyFrom(Currency.timeShards);

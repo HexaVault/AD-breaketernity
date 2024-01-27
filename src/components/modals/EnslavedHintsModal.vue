@@ -57,7 +57,7 @@ export default {
   },
   methods: {
     update() {
-      this.currentStored = player.celestials.enslaved.stored;
+      this.currentStored.copyFrom(player.celestials.enslaved.stored);
       this.nextHintCost = Enslaved.nextHintCost;
       this.canGetHint = this.currentStored >= this.nextHintCost;
       this.shownEntries = [];
