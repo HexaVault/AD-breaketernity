@@ -169,13 +169,14 @@ export function secondSoftReset(enteringAntimatterChallenge) {
 
 export function preProductionGenerateIP(diff) {
   if (InfinityUpgrade.ipGen.isBought) {
-    const genPeriod = Time.bestInfinity.totalMilliseconds.times(10);
+    const genPeriod = Time.bestInfinity.totalMilliseconds.max(0.0000001).times(10);
     let genCount;
-    if (diff.gte(genPeriod.times(1e300))) {
+    if (diff.gte(genPeriod.times(9e15))) {
       genCount = Decimal.div(diff, genPeriod);
     } else {
       // Partial progress (fractions from 0 to 1) are stored in player.partInfinityPoint
-      player.partInfinityPoint += diff / genPeriod;
+      let idk = diff.toNumber()
+      player.partInfinityPoint += idk / genPeriod.min(1e300).toNumber();
       genCount = Math.floor(player.partInfinityPoint);
       player.partInfinityPoint -= genCount;
     }

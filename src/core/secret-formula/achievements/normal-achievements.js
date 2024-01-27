@@ -709,7 +709,7 @@ export const normalAchievements = [
     id: 103,
     name: "Tätä saavutusta ei ole olemassa II",
     get description() { return `Reach ${formatPostBreak(DC.D9_99999E999, 5, 0)} Infinity Points.`; },
-    checkRequirement: () => Currency.infinityPoints.gte(1000),
+    checkRequirement: () => Currency.infinityPoints.gte(new Decimal("1e1000")),
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     get reward() {
       return `Make the Infinity Point formula better. log(x)/${formatInt(308)} ➜ log(x)/${formatFloat(307.8, 1)}`;
