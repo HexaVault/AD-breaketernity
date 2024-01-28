@@ -205,7 +205,7 @@ export function buyOneDimension(tier) {
   const cost = dimension.cost;
 
   if (tier === 8 && Enslaved.isRunning && AntimatterDimension(8).bought.gte(1)) return false;
-
+  
   dimension.currencyAmount = dimension.currencyAmount.minus(cost);
 
   if (dimension.boughtBefore10.eq(9)) {
@@ -252,7 +252,7 @@ export function buyAsManyAsYouCanBuy(tier) {
   dimension.currencyAmount = dimension.currencyAmount.minus(cost);
   dimension.challengeCostBump();
   dimension.amount = dimension.amount.plus(howMany);
-  dimension.bought += howMany;
+  dimension.bought = dimension.bought.add(howMany);
 
   onBuyDimension(tier);
 
@@ -319,7 +319,7 @@ export function buyMaxDimension(tier, bulk = Infinity) {
 
   // This is the bulk-buy math, explicitly ignored if abnormal cost increases are active
   const maxBought = dimension.costScale.getMaxBought(
-    Math.floor(dimension.bought / 10) + dimension.costBumps, dimension.currencyAmount, 10
+    Math.floor(dimension.bought.toNumber() / 10) + dimension.costBumps, dimension.currencyAmount, 10
   );
   if (maxBought === null) {
     return;
@@ -336,6 +336,8 @@ class AntimatterDimensionState extends DimensionState {
     super(() => player.dimensions.antimatter, tier);
     const BASE_COSTS = [null, DC.E1, DC.E2, DC.E4, DC.E6, DC.E9, DC.E13, DC.E18, DC.E24];
     this._baseCost = BASE_COSTS[tier];
+    console.log(tier)
+    console.log(BASE_COSTS)
     const BASE_COST_MULTIPLIERS = [null, 1e3, 1e4, 1e5, 1e6, 1e8, 1e10, 1e12, 1e15];
     this._baseCostMultiplier = BASE_COST_MULTIPLIERS[tier];
     const C6_BASE_COSTS = [null, 10, 100, 100, 500, 2500, 2e4, 2e5, 4e6];

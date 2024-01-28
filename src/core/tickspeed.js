@@ -71,7 +71,7 @@ export function buyTickSpeed() {
   }
   Tutorial.turnOffEffect(TUTORIAL_STATE.TICKSPEED);
   Currency.antimatter.subtract(Tickspeed.cost);
-  player.totalTickBought++;
+  player.totalTickBought = player.totalTickBought.add(1);
   player.records.thisInfinity.lastBuyTime = player.records.thisInfinity.time;
   player.requirementChecks.permanent.singleTickspeed++;
   if (NormalChallenge(2).isRunning) player.chall2Pow = 0;
@@ -90,7 +90,7 @@ export function buyMaxTickSpeed() {
     while (Currency.antimatter.gt(cost) && cost.lt(goal)) {
       Tickspeed.multiplySameCosts();
       Currency.antimatter.subtract(cost);
-      player.totalTickBought++;
+      player.totalTickBought = player.totalTickBought.add(1);
       boughtTickspeed = true;
       cost = Tickspeed.cost;
     }
