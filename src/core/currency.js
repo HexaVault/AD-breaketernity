@@ -190,8 +190,9 @@ class NumberCurrency extends Currency {
  */
 class DecimalCurrency extends Currency {
   get operations() { return MathOperations.decimal; }
-  get mantissa() { return this.value.mantissa; }
-  get exponent() { return this.value.exponent; }
+  get sign() { return this.value.sign; }
+  get mag() { return this.value.mag; }
+  get layer() { return this.value.layer; }
   get startingValue() { return DC.D0; }
 }
 window.DecimalCurrency = DecimalCurrency;
