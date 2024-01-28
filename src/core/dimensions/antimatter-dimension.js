@@ -357,7 +357,7 @@ class AntimatterDimensionState extends DimensionState {
       baseCost: NormalChallenge(6).isRunning ? this._c6BaseCost : this._baseCost,
       baseIncrease: NormalChallenge(6).isRunning ? this._c6BaseCostMultiplier : this._baseCostMultiplier,
       costScale: new Decimal(Player.dimensionMultDecrease),
-      scalingCostThreshold: Number.MAX_VALUE
+      scalingCostThreshold: DC.NUMMAX
     });
   }
 
@@ -367,7 +367,7 @@ class AntimatterDimensionState extends DimensionState {
   get cost() {
     //console.log("above is purcahses")
     //console.log(this.costScale.baseCost)
-    return this.costScale.calculateCost(Decimal.floor(this.bought.div(DC.E1)).add(this.costBumps));
+    return this.costScale.calculateCost(this.bought.div(DC.E1).floor().add(this.costBumps));
   }
 
   /** @returns {number} */
