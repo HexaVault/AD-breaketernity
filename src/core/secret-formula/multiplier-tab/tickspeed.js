@@ -20,7 +20,7 @@ export const tickspeed = {
     multValue: () => Tickspeed.perSecond.pow(MultiplierTabHelper.activeDimCount("AD")),
     // No point in showing this breakdown at all unless both components are nonzero; however they will always be nonzero
     // due to the way the calculation works, so we have to manually hide it here
-    isActive: () => Tickspeed.perSecond.gt(1) && effectiveBaseGalaxies() > 0,
+    isActive: () => Tickspeed.perSecond.gt(1) && effectiveBaseGalaxies().gt(0),
     dilationEffect: () => (Effarig.isRunning ? Effarig.tickDilation : 1),
     overlay: ["<i class='fa-solid fa-clock' />"],
     icon: MultiplierTabIcons.TICKSPEED,
@@ -36,7 +36,7 @@ export const tickspeed = {
       );
       return `${format(val, 2, 2)}/sec`;
     },
-    multValue: () => new Decimal.pow10(100 * MultiplierTabHelper.decomposeTickspeed().base),
+    multValue: () => new Decimal.pow10(MultiplierTabHelper.decomposeTickspeed().base.mul(100)),
     isActive: () => [36, 45, 66, 83].some(a => Achievement(a).canBeApplied),
     icon: MultiplierTabIcons.ACHIEVEMENT,
   },

@@ -623,7 +623,7 @@ export const normalAchievements = [
       first ${formatInt(5)} seconds of Infinities.`;
     },
     effect: () => Decimal.max((new Decimal(5).sub(Time.thisInfinity.totalSeconds)).times(60), 1),
-    effectCondition: () => Time.thisInfinity.totalSeconds < 5,
+  effectCondition: () => Time.thisInfinity.totalSeconds.lt(5),
     formatEffect: value => `${formatX(value, 2, 2)}`
   },
   {

@@ -1,5 +1,6 @@
 <script>
 import { isDecimal, isFunction, isNumber } from "@/utility";
+import { DC } from "../core/constants";
 
 /* eslint-disable no-empty-function */
 export default {
@@ -31,7 +32,7 @@ export default {
       effectValue: 0,
       // Number.MAX_VALUE doesn't really matter here, but we need it because
       // undefined values are not allowed for data properties
-      cap: Number.MAX_VALUE,
+      cap: DC.NUMMAX,
       hasCap: false
     };
   },

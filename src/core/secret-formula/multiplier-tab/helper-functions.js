@@ -31,7 +31,7 @@ export const MultiplierTabHelper = {
       InfinityChallenge(5).reward,
       PelleUpgrade.galaxyPower,
       PelleRifts.decay.milestones[1]
-    ) * Pelle.specialGlyphEffect.power;
+    ).mul(Pelle.specialGlyphEffect.power);
   },
 
   // Helper method for galaxies and tickspeed, broken up as contributions of tickspeed*log(perGalaxy) and galaxyCount to
@@ -41,41 +41,41 @@ export const MultiplierTabHelper = {
     const effects = this.globalGalaxyMult();
 
     let galFrac, tickFrac;
-    if (effectiveCount < 3) {
+    if (effectiveCount.lt(3)) {
       let baseMult = 1.1245;
-      if (player.galaxies === 1) baseMult = 1.11888888;
-      if (player.galaxies === 2) baseMult = 1.11267177;
+      if (player.galaxies.eq(1)) baseMult = 1.11888888;
+      if (player.galaxies.eq(2)) baseMult = 1.11267177;
       if (NormalChallenge(5).isRunning) {
         baseMult = 1.08;
-        if (player.galaxies === 1) baseMult = 1.07632;
-        if (player.galaxies === 2) baseMult = 1.072;
+        if (player.galaxies.eq(1)) baseMult = 1.07632;
+        if (player.galaxies.eq(2)) baseMult = 1.072;
       }
       // This is needed for numerical consistency with the other conditional case
-      baseMult /= 0.965 ** 2;
-      const logBase = Math.log10(baseMult);
+      baseMult = new Decimal(baseMult).div(0.965 ** 2);
+      const logBase = Decimal.log10(baseMult);
 
-      const perGalaxy = 0.02 * effects;
-      effectiveCount *= Pelle.specialGlyphEffect.power;
+      const perGalaxy = effects.mul(0.02);
+      effectiveCount = effectiveCount.mul(Pelle.specialGlyphEffect.power);
 
-      tickFrac = Tickspeed.totalUpgrades * logBase;
-      galFrac = -Math.log10(Math.max(0.01, 1 / baseMult - (effectiveCount * perGalaxy))) / logBase;
+      tickFrac = Tickspeed.totalUpgrades.mul(logBase);
+      galFrac = Decimal.log10(Decimal.max(0.01, new Decimal(1).div(baseMult).sub(effectiveCount.mul(perGalaxy)))).mul(-1).div(logBase);
     } else {
-      effectiveCount -= 2;
-      effectiveCount *= effects;
-      effectiveCount *= getAdjustedGlyphEffect("realitygalaxies") * (1 + ImaginaryUpgrade(9).effectOrDefault(0));
-      effectiveCount *= Pelle.specialGlyphEffect.power;
+      effectiveCount = effectiveCount.sub(2);
+      effectiveCount = effectiveCount.mul(effects);
+      effectiveCount = effectiveCount.mul(getAdjustedGlyphEffect("realitygalaxies").mul(ImaginaryUpgrade(9).effectOrDefault(0).add(1)));
+      effectiveCount = effectiveCount.mul(Pelle.specialGlyphEffect.power);
 
       // These all need to be framed as INCREASING x/sec tick rate (ie. all multipliers > 1, all logs > 0)
-      const baseMult = 0.965 ** 2 / (NormalChallenge(5).isRunning ? 0.83 : 0.8);
-      const logBase = Math.log10(baseMult);
-      const logPerGalaxy = -DC.D0_965.log10();
+      const baseMult = new Decimal(0.965 ** 2).div(NormalChallenge(5).isRunning ? 0.83 : 0.8);
+      const logBase = Decimal.log10(baseMult);
+      const logPerGalaxy = DC.D0_965.log10().mul(-1);
 
-      tickFrac = Tickspeed.totalUpgrades * logBase;
-      galFrac = (1 + effectiveCount / logBase * logPerGalaxy);
+      tickFrac = Tickspeed.totalUpgrades.mul(logBase);
+      galFrac = effectiveCount.div(logBase).mul(logPerGalaxy).add(1);
     }
 
     // Artificially inflate the galaxy portion in order to make the breakdown closer to 50/50 in common situations
-    galFrac *= 3;
+    galFrac = galFrac.mul(3);
 
     // Calculate what proportion base tickspeed takes out of the entire tickspeed multiplier
     const base = DC.D1.dividedByEffectsOf(
@@ -84,22 +84,22 @@ export const MultiplierTabHelper = {
       Achievement(66),
       Achievement(83)
     );
-    let baseFrac = base.log10() / Tickspeed.perSecond.log10();
+    let baseFrac = base.log10().div(Tickspeed.perSecond.log10());
 
     // We want to make sure to zero out components in some edge cases
-    if (base.eq(1)) baseFrac = 0;
-    if (effectiveCount === 0) galFrac = 0;
+    if (base.eq(1)) baseFrac = DC.D0;
+    if (effectiveCount.eq(0)) galFrac = DC.D0;
 
     // Normalize the sum by splitting tickspeed and galaxies across what's leftover besides the base value. These three
     // values must be scaled so that they sum to 1 and none are negative
-    let factor = (1 - baseFrac) / (tickFrac + galFrac);
+    let factor = baseFrac.sub(1).div(tickFrac.add(galFrac));
     // The actual base tickspeed calculation multiplies things in a different order, which can lead to precision issues
     // when no tickspeed upgrades have been bought if we don't explicitly set this to zero
-    if (Tickspeed.totalUpgrades === 0) factor = 0;
+    if (Tickspeed.totalUpgrades.eq(0)) factor = DC.D0;
     return {
       base: baseFrac,
-      tickspeed: tickFrac * factor,
-      galaxies: galFrac * factor,
+      tickspeed: tickFrac.mul(factor),
+      galaxies: galFrac.mul(factor),
     };
   },
 
