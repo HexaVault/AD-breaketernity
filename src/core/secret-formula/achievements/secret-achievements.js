@@ -91,7 +91,7 @@ export const secretAchievements = [
     id: 27,
     name: "It's not called matter dimensions is it?",
     description: "Get Infinite matter.",
-    checkRequirement: () => Currency.matter.gte(Decimal.NUMBER_MAX_VALUE),
+    checkRequirement: () => Currency.matter.gte(DC.NUMMAX),
     checkEvent: GAME_EVENT.GAME_TICK_AFTER
   },
   {
