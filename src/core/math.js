@@ -340,9 +340,9 @@ window.ExponentialCostScaling = class ExponentialCostScaling {
     this._costScale = param.costScale;
     if (typeof this._costScale !== "number" && !(this._costScale instanceof Decimal)) throw new Error("costScale must be a number or a Decimal");
     this._costScale = new Decimal(this._costScale)
-    this._logBaseCost = ExponentialCostScaling.log10(param.baseCost);
-    this._logBaseIncrease = ExponentialCostScaling.log10(param.baseIncrease);
-    this._logCostScale = ExponentialCostScaling.log10(param.costScale);
+    this._logBaseCost = param.baseCost.log10();
+    this._logBaseIncrease = param.baseIncrease.log10();
+    this._logCostScale = param.costScale.log10();
     if (param.purchasesBeforeScaling !== undefined) {
       this._purchasesBeforeScaling = param.purchasesBeforeScaling;
     // eslint-disable-next-line no-negated-condition

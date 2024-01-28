@@ -123,7 +123,7 @@ export class Galaxy {
 
 function galaxyReset() {
   EventHub.dispatch(GAME_EVENT.GALAXY_RESET_BEFORE);
-  player.galaxies++;
+  player.galaxies = player.galaxies.add(1);
   if (!Achievement(143).isUnlocked || (Pelle.isDoomed && !PelleUpgrade.galaxyNoResetDimboost.canBeApplied)) {
     player.dimensionBoosts = DC.D0;
   }
@@ -153,7 +153,7 @@ export function manualRequestGalaxyReset(bulk) {
 export function requestGalaxyReset(bulk, limit = Number.MAX_VALUE) {
   const restrictedLimit = RealityUpgrade(7).isLockingMechanics ? 1 : limit;
   if (EternityMilestone.autobuyMaxGalaxies.isReached && bulk) return maxBuyGalaxies(restrictedLimit);
-  if (player.galaxies >= restrictedLimit || !Galaxy.canBeBought || !Galaxy.requirement.isSatisfied) return false;
+  if (player.galaxies.gte(restrictedLimit) || !Galaxy.canBeBought || !Galaxy.requirement.isSatisfied) return false;
   Tutorial.turnOffEffect(TUTORIAL_STATE.GALAXY);
   galaxyReset();
   return true;

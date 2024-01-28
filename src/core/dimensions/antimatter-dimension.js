@@ -243,6 +243,8 @@ export function buyAsManyAsYouCanBuy(tier) {
   const dimension = AntimatterDimension(tier);
   if (Laitela.continuumActive || !dimension.isAvailableForPurchase || !dimension.isAffordable) return false;
   const howMany = dimension.howManyCanBuy;
+  console.log(tier)
+  console.log(howMany)
   const cost = dimension.cost.times(howMany);
 
   if (tier === 8 && Enslaved.isRunning) return buyOneDimension(8);
@@ -297,6 +299,7 @@ export function buyMaxDimension(tier, bulk = Infinity) {
   // Buy any remaining until 10 before attempting to bulk-buy
   if (dimension.currencyAmount.gte(cost)) {
     console.log(dimension.tier)
+    console.log(cost)
     dimension.currencyAmount = dimension.currencyAmount.minus(cost);
     buyUntilTen(tier);
     bulkLeft = bulkLeft.sub(1);
@@ -337,9 +340,10 @@ class AntimatterDimensionState extends DimensionState {
     this._baseCost = BASE_COSTS[tier];
     console.log(tier)
     console.log(BASE_COSTS)
-    const BASE_COST_MULTIPLIERS = [null, 1e3, 1e4, 1e5, 1e6, 1e8, 1e10, 1e12, 1e15];
+    console.log(this._baseCost)
+    const BASE_COST_MULTIPLIERS = [null, DC.E3, DC.E4, DC.E5, DC.E6, DC.E8, DC.E10, DC.E12, DC.E15];
     this._baseCostMultiplier = BASE_COST_MULTIPLIERS[tier];
-    const C6_BASE_COSTS = [null, 10, 100, 100, 500, 2500, 2e4, 2e5, 4e6];
+    const C6_BASE_COSTS = [null, DC.E1, DC.E2, DC.E2, DC.E2.times(5), DC.E3.times(2.5), DC.E4.times(2), DC.E4.times(20), DC.E6.times(4)];
     this._c6BaseCost = C6_BASE_COSTS[tier];
     const C6_BASE_COST_MULTIPLIERS = [null, 1e3, 5e3, 1e4, 1.2e4, 1.8e4, 2.6e4, 3.2e4, 4.2e4];
     this._c6BaseCostMultiplier = C6_BASE_COST_MULTIPLIERS[tier];
@@ -352,7 +356,7 @@ class AntimatterDimensionState extends DimensionState {
     return new ExponentialCostScaling({
       baseCost: NormalChallenge(6).isRunning ? this._c6BaseCost : this._baseCost,
       baseIncrease: NormalChallenge(6).isRunning ? this._c6BaseCostMultiplier : this._baseCostMultiplier,
-      costScale: Player.dimensionMultDecrease,
+      costScale: new Decimal(Player.dimensionMultDecrease),
       scalingCostThreshold: Number.MAX_VALUE
     });
   }
@@ -361,6 +365,8 @@ class AntimatterDimensionState extends DimensionState {
    * @returns {Decimal}
    */
   get cost() {
+    //console.log("above is purcahses")
+    //console.log(this.costScale.baseCost)
     return this.costScale.calculateCost(Decimal.floor(this.bought.div(DC.E1)).add(this.costBumps));
   }
 

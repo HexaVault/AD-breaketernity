@@ -72,7 +72,7 @@ export const GameCache = {
     EternityChallenge(11).reward
   ))),
 
-  dimensionMultDecrease: new Lazy(() => new Decimal(10).min(Effects.sum(
+  dimensionMultDecrease: new Lazy(() => new Decimal(10).sub(Effects.sum(
     BreakInfinityUpgrade.dimCostMult,
     EternityChallenge(6).reward
   ))),
