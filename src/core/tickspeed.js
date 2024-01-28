@@ -100,7 +100,7 @@ export function buyMaxTickSpeed() {
       return;
     }
     Currency.antimatter.subtract(Decimal.pow10(purchases.logPrice));
-    player.totalTickBought += purchases.quantity;
+    player.totalTickBought = player.totalTickBought.add(purchases.quantity);
     boughtTickspeed = true;
   }
 

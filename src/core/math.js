@@ -405,28 +405,28 @@ window.ExponentialCostScaling = class ExponentialCostScaling {
     const logMult = this._logBaseIncrease;
     const logBase = this._logBaseCost;
     // The 1 + is because the multiplier isn't applied to the first purchase
-    let newPurchases = Math.floor(1 + (logMoney - logBase) / logMult);
+    let newPurchases = Decimal.floor((logMoney.sub(logBase)).div(logMult).add(1));
     // We can use the linear method up to one purchase past the threshold, because the first purchase
     // past the threshold doesn't have cost scaling in it yet.
-    if (newPurchases > this._purchasesBeforeScaling) {
-      const discrim = this._precalcDiscriminant + 8 * this._logCostScale * logMoney;
-      if (discrim < 0) {
+    if (newPurchases.gt(this._purchasesBeforeScaling)) {
+      const discrim = new Decimal(this._precalcDiscriminant + 8).times(this._logCostScale).times(logMoney);
+      if (discrim.lt(0)) {
         return null;
       }
-      newPurchases = Math.floor(this._precalcCenter + Math.sqrt(discrim) / (2 * this._logCostScale));
+      newPurchases = Decimal.floor(new Decimal(this._precalcCenter).add(Decimal.pow(discrim, 0.5).div(2).times(this._logCostScale)));
     }
-    if (newPurchases <= currentPurchases) return null;
+    if (newPurchases.lte(currentPurchases)) return null;
     // There's a narrow edge case where the linear method returns > this._purchasesBeforeScaling + 1
     // but the quadratic method returns less than that. Having this be a separate check covers that
     // case:
     let logPrice;
-    if (newPurchases <= this._purchasesBeforeScaling + 1) {
-      logPrice = (newPurchases - 1) * logMult + logBase;
+    if (newPurchases.lte(new Decimal(this._purchasesBeforeScaling).add(1))) {
+      logPrice = (newPurchases.sub(1)).times(logMult).add(logBase);
     } else {
-      const pExcess = newPurchases - this._purchasesBeforeScaling;
-      logPrice = (newPurchases - 1) * logMult + logBase + 0.5 * pExcess * (pExcess - 1) * this._logCostScale;
+      const pExcess = newPurchases.sub(this._purchasesBeforeScaling);
+      logPrice = (newPurchases.sub(1)).times(logMult).add(logBase).add(pExcess.times(pExcess.sub(1)).times(this._logCostScale).times(0.5));
     }
-    return { quantity: newPurchases - currentPurchases, logPrice: logPrice + Math.log10(numberPerSet) };
+    return { quantity: newPurchases.sub(currentPurchases), logPrice: logPrice.add(Decimal.log10(numberPerSet)) };
   }
 
   /**

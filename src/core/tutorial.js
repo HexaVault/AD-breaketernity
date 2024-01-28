@@ -22,7 +22,7 @@ const tutorialStates = [
   },
   {
     id: TUTORIAL_STATE.TICKSPEED,
-    condition: () => AntimatterDimension(2).bought > 0
+    condition: () => AntimatterDimension(2).bought.gt(0)
   },
   {
     id: TUTORIAL_STATE.DIMBOOST,

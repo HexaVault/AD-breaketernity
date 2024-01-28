@@ -265,7 +265,7 @@ function buyUntilTen(tier) {
   const dimension = AntimatterDimension(tier);
   dimension.challengeCostBump();
   dimension.amount = Decimal.round(dimension.amount.plus(dimension.remainingUntil10));
-  dimension.bought += dimension.remainingUntil10;
+  dimension.bought = dimension.bought.add(dimension.remainingUntil10);
   onBuyDimension(tier);
 }
 
@@ -287,7 +287,7 @@ export function buyMaxDimension(tier, bulk = Infinity) {
   const dimension = AntimatterDimension(tier);
   if (Laitela.continuumActive || !dimension.isAvailableForPurchase || !dimension.isAffordableUntil10) return;
   const cost = dimension.costUntil10;
-  let bulkLeft = bulk;
+  let bulkLeft = new Decimal(bulk);
   const goal = Player.infinityGoal;
   if (dimension.cost.gt(goal) && Player.isInAntimatterChallenge) return;
 
@@ -300,34 +300,34 @@ export function buyMaxDimension(tier, bulk = Infinity) {
   if (dimension.currencyAmount.gte(cost)) {
     dimension.currencyAmount = dimension.currencyAmount.minus(cost);
     buyUntilTen(tier);
-    bulkLeft--;
+    bulkLeft = bulkLeft.sub(1);
   }
 
-  if (bulkLeft <= 0) return;
+  if (bulkLeft.lte(0)) return;
 
   // Buy in a while loop in order to properly trigger abnormal price increases
   if (NormalChallenge(9).isRunning || InfinityChallenge(5).isRunning) {
-    while (dimension.isAffordableUntil10 && dimension.cost.lt(goal) && bulkLeft > 0) {
+    while (dimension.isAffordableUntil10 && dimension.cost.lt(goal) && bulkLeft.gt(0)) {
       // We can use dimension.currencyAmount or Currency.antimatter here, they're the same,
       // but it seems safest to use dimension.currencyAmount for consistency.
       dimension.currencyAmount = dimension.currencyAmount.minus(dimension.costUntil10);
       buyUntilTen(tier);
-      bulkLeft--;
+      bulkLeft = bulkLeft.sub(1);
     }
     return;
   }
 
   // This is the bulk-buy math, explicitly ignored if abnormal cost increases are active
   const maxBought = dimension.costScale.getMaxBought(
-    Math.floor(dimension.bought.toNumber() / 10) + dimension.costBumps, dimension.currencyAmount, 10
+    Decimal.floor(dimension.bought.div(10)).add(dimension.costBumps), dimension.currencyAmount, 10
   );
   if (maxBought === null) {
     return;
   }
   let buying = maxBought.quantity;
-  if (buying > bulkLeft) buying = bulkLeft;
-  dimension.amount = dimension.amount.plus(10 * buying).round();
-  dimension.bought += 10 * buying;
+  if (buying.gt(bulkLeft)) buying = new Decimal(bulkLeft);
+  dimension.amount = dimension.amount.plus(buying.times(10)).round();
+  dimension.bought = dimension.bought.add(buying.times(10));
   dimension.currencyAmount = dimension.currencyAmount.minus(Decimal.pow10(maxBought.logPrice));
 }
 
