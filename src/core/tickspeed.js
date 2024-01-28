@@ -152,8 +152,8 @@ export const Tickspeed = {
     return new ExponentialCostScaling({
       baseCost: DC.E3,
       baseIncrease: DC.E1,
-      costScale: Player.tickSpeedMultDecrease,
-      scalingCostThreshold: Number.MAX_VALUE
+      costScale: new Decimal(Player.tickSpeedMultDecrease),
+      scalingCostThreshold: DC.NUMMAX
     });
   },
 
