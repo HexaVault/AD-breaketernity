@@ -56,7 +56,7 @@ export class DimBoost {
     if (Ra.isRunning) {
       // Ra makes boosting impossible. Note that this function isn't called
       // when giving initial boosts, so the player will still get those.
-      return 0;
+      return DC.D0;
     }
     if (InfinityChallenge(1).isRunning) {
       // Usually, in Challenge 8, the only boosts that are useful are the first 5
@@ -65,14 +65,14 @@ export class DimBoost {
       // (they unlock new dimensions).
       // There's no actual problem with bulk letting the player get
       // more boosts than this; it's just that boosts beyond this are pointless.
-      return 2;
+      return DC.D2;
     }
     if (NormalChallenge(8).isRunning) {
       // See above. It's important we check for this after checking for IC1 since otherwise
       // this case would trigger when we're in IC1.
-      return 5;
+      return DC.D5;
     }
-    return Infinity;
+    return DC.BEMAX;
   }
 
   static get canBeBought() {
@@ -136,7 +136,7 @@ export class DimBoost {
 
     const formattedMultText = `give a ${formatX(DimBoost.power, 2, 1)} multiplier `;
     let dimensionRange = `to the 1st Dimension`;
-    if (boosts.gt(0)) dimensionRange = `to Dimensions 1-${Decimal.min(boosts.add(1), 8).toNumber}`;
+    if (boosts.gt(0)) dimensionRange = `to Dimensions 1-${Decimal.min(boosts.add(1), 8)}`;
     if (boosts.gte(DimBoost.maxDimensionsUnlockable - 1)) dimensionRange = `to all Dimensions`;
 
     let boostEffects;
@@ -175,9 +175,10 @@ export class DimBoost {
 // eslint-disable-next-line max-params
 export function softReset(tempBulk, forcedADReset = false, forcedAMReset = false, enteringAntimatterChallenge = false) {
   if (Currency.antimatter.gt(Player.infinityLimit)) return;
-  const bulk = Math.min(tempBulk, DimBoost.maxBoosts - player.dimensionBoosts);
+  const bulk = Decimal.min(tempBulk, DimBoost.maxBoosts.sub(player.dimensionBoosts));
   EventHub.dispatch(GAME_EVENT.DIMBOOST_BEFORE, bulk);
-  player.dimensionBoosts = Math.max(0, player.dimensionBoosts + bulk);
+  // player.dimensionBoosts = Math.max(0, player.dimensionBoosts + bulk);
+  player.dimensionBoosts.copyFrom(Decimal.max(DC.D0, player.dimensionBoosts.add(bulk)));
   resetChallengeStuff();
   const canKeepDimensions = Pelle.isDoomed
     ? PelleUpgrade.dimBoostResetsNothing.canBeApplied
