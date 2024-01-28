@@ -26,7 +26,7 @@ window.formatFloat = function formatFloat(value, digits) {
   if (Notations.current.isPainful) {
     return format(value, Math.max(2, digits), digits);
   }
-  return formatWithCommas(value.toFixed(digits));
+  return formatWithCommas(value.toFixedf(digits));
 };
 
 window.formatPostBreak = function formatPostBreak(value, places, placesUnder1000) {
