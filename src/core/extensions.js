@@ -68,8 +68,9 @@ Decimal.prototype.copyFrom = function(decimal) {
   if (!(decimal instanceof Decimal) && !(decimal instanceof DecimalCurrency)) {
     throw "Copy value is not Decimal or DecimalCurrency";
   }
-  this.mantissa = decimal.mantissa;
-  this.exponent = decimal.exponent;
+  this.mag = decimal.mag;
+  this.layer = decimal.layer;
+  this.sign = decimal.sign
 };
 
 window.copyToClipboard = (function() {
