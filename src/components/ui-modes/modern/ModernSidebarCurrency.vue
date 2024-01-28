@@ -18,7 +18,7 @@ export default {
   },
   methods: {
     update() {
-      this.AM.copyFrom(Currency.antimatter.value);
+      this.AM.copyFrom(Currency.antimatter.value.floor());
       this.IP.copyFrom(Currency.infinityPoints.value.floor());
       this.EP.copyFrom(Currency.eternityPoints.value.floor());
       this.RM.copyFrom(Currency.realityMachines.value.floor());
