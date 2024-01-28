@@ -409,7 +409,7 @@ window.ExponentialCostScaling = class ExponentialCostScaling {
     // We can use the linear method up to one purchase past the threshold, because the first purchase
     // past the threshold doesn't have cost scaling in it yet.
     if (newPurchases.gt(this._purchasesBeforeScaling)) {
-      const discrim = new Decimal(this._precalcDiscriminant + 8).times(this._logCostScale).times(logMoney);
+      const discrim = new Decimal(this._precalcDiscriminant.add(8)).times(this._logCostScale).times(logMoney);
       if (discrim.lt(0)) {
         return null;
       }

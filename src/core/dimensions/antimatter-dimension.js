@@ -298,6 +298,7 @@ export function buyMaxDimension(tier, bulk = Infinity) {
 
   // Buy any remaining until 10 before attempting to bulk-buy
   if (dimension.currencyAmount.gte(cost)) {
+    console.log(dimension.tier)
     dimension.currencyAmount = dimension.currencyAmount.minus(cost);
     buyUntilTen(tier);
     bulkLeft = bulkLeft.sub(1);

@@ -12,7 +12,7 @@ export default {
       tickspeed: new Decimal(0),
       galaxyCount: new Decimal(),
       purchasedTickspeed: 0,
-      freeTickspeed: 0,
+      freeTickspeed: new Decimal(),
     };
   },
   computed: {
@@ -31,7 +31,7 @@ export default {
       this.tickspeed.copyFrom(Tickspeed.perSecond);
       this.galaxyCount.copyFrom(player.galaxies);
       this.purchasedTickspeed = player.totalTickBought;
-      this.freeTickspeed = FreeTickspeed.amount;
+      this.freeTickspeed.copyFrom(FreeTickspeed.amount);
     },
   },
 };
