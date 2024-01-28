@@ -386,6 +386,7 @@ export function getGameSpeedupForDisplay() {
   return speedFactor;
 }
 
+// Seperated for organisation - Very few things should need this
 export function trueTimeMechanics(trueDiff) {
     // Ra-Nameless auto-release stored time (once every 5 ticks)
     if (Enslaved.isAutoReleasing) {
