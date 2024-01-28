@@ -153,7 +153,7 @@ export default {
       this.hasRaisedCap = EffarigUnlock.infinity.isUnlocked && !this.isUncapped;
       this.replicantiCap.copyFrom(replicantiCap());
       if (this.hasRaisedCap) {
-        const mult = this.replicantiCap.div(Decimal.NUMBER_MAX_VALUE);
+        const mult = this.replicantiCap.div(DC.NUMMAX);
         this.capMultText = TimeStudy(31).canBeApplied
           ? `Base: ${formatX(mult.pow(1 / TimeStudy(31).effectValue), 2)}; after TS31: ${formatX(mult, 2)}`
           : formatX(mult, 2);
@@ -161,7 +161,7 @@ export default {
       this.distantRG = ReplicantiUpgrade.galaxies.distantRGStart;
       this.remoteRG = ReplicantiUpgrade.galaxies.remoteRGStart;
       this.effarigInfinityBonusRG = Effarig.bonusRG;
-      this.nextEffarigRGThreshold = Decimal.NUMBER_MAX_VALUE.pow(
+      this.nextEffarigRGThreshold = DC.NUMMAX.pow(
         Effarig.bonusRG + 2
       );
       this.canSeeGalaxyButton =

@@ -113,10 +113,10 @@ export class Sacrifice {
 export function sacrificeReset() {
   if (!Sacrifice.canSacrifice) return false;
   if ((!player.break || (!InfinityChallenge.isRunning && NormalChallenge.isRunning)) &&
-    Currency.antimatter.gt(Decimal.NUMBER_MAX_VALUE)) return false;
+    Currency.antimatter.gt(DC.NUMMAX)) return false;
   if (
     NormalChallenge(8).isRunning &&
-    (Sacrifice.totalBoost.gte(Decimal.NUMBER_MAX_VALUE))
+    (Sacrifice.totalBoost.gte(DC.NUMMAX))
   ) {
     return false;
   }

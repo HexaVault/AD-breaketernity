@@ -397,7 +397,7 @@ export const celestialNavigation = {
       if (EffarigUnlock.infinity.isUnlocked) return 1;
       if (!Effarig.isRunning) return 0;
 
-      return Currency.antimatter.value.pLog10() / Decimal.NUMBER_MAX_VALUE.log10();
+      return Currency.antimatter.value.pLog10() / DC.NUMMAX.log10();
     },
     node: {
       clickAction: () => Tab.celestials.effarig.show(true),
@@ -438,7 +438,7 @@ export const celestialNavigation = {
       if (EffarigUnlock.eternity.isUnlocked) return 1;
       if (!Effarig.isRunning) return 0;
 
-      return Currency.infinityPoints.value.pLog10() / Decimal.NUMBER_MAX_VALUE.log10();
+      return Currency.infinityPoints.value.pLog10() / DC.NUMMAX.log10();
     },
     node: {
       clickAction: () => Tab.celestials.effarig.show(true),

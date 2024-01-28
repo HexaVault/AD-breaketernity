@@ -512,7 +512,7 @@ class AntimatterDimensionState extends DimensionState {
     */
   get isAffordable() {
     if (Laitela.continuumActive) return false;
-    if (!player.break && this.cost.gt(Decimal.NUMBER_MAX_VALUE)) return false;
+    if (!player.break && this.cost.gt(DC.NUMMAX)) return false;
     return this.cost.lte(this.currencyAmount);
   }
 
@@ -520,7 +520,7 @@ class AntimatterDimensionState extends DimensionState {
    * @returns {boolean}
    */
   get isAffordableUntil10() {
-    if (!player.break && this.cost.gt(Decimal.NUMBER_MAX_VALUE)) return false;
+    if (!player.break && this.cost.gt(DC.NUMMAX)) return false;
     return this.costUntil10.lte(this.currencyAmount);
   }
 

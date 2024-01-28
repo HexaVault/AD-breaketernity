@@ -170,7 +170,7 @@ createInCategory(AutomatorCurrency, "PendingCompletions", /pending[ \t]+completi
   $getter: () => {
     // If we are not in an EC, pretend like we have a ton of completions so any check for sufficient
     // completions returns true
-    if (!EternityChallenge.isRunning) return Decimal.NUMBER_MAX_VALUE;
+    if (!EternityChallenge.isRunning) return DC.NUMMAX;
     return EternityChallenge.current.gainedCompletionStatus.totalCompletions;
   }
 });
