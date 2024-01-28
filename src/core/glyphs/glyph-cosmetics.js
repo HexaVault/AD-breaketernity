@@ -150,7 +150,7 @@ export const GlyphAppearanceHandler = {
   },
   // Note: This can *technically* be inconsistent with the actual number of sets, but only y a cheated save.
   get expectedSetCount() {
-    return ShopPurchaseData.singleCosmeticSet + player.records.fullGameCompletions;
+    return player.records.fullGameCompletions;
   },
 
   // Returns true for "light" BG glyphs and false for "dark" BG glyphs
@@ -218,14 +218,13 @@ export const GlyphAppearanceHandler = {
   },
 
   get unlockedSets() {
-    if (ShopPurchase.allCosmeticSets > 0) return Object.keys(GameDatabase.reality.glyphCosmeticSets);
-    return [...new Set(player.reality.glyphs.cosmetics.unlockedFromNG.concat(ShopPurchaseData.unlockedCosmetics))];
+    return [...new Set(player.reality.glyphs.cosmetics.unlockedFromNG)];
   },
   get lockedSets() {
     return Object.keys(GameDatabase.reality.glyphCosmeticSets).filter(set => !this.unlockedSets.includes(set));
   },
   // Unlocks the set chosen in the modal, choosing a random available one as a fallback. This is only called for
-  // sets unlocked through game completions; STD purchases are handled with ShopPurchaseData
+  // sets unlocked through game completions; 
   unlockSet() {
     const lockedSets = this.lockedSets;
     const toUnlock = GlyphAppearanceHandler.chosenFromModal?.id;

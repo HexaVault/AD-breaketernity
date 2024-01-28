@@ -3,7 +3,7 @@ import { DC } from "../constants";
 import { DimensionState } from "./dimension";
 
 export function infinityDimensionCommonMultiplier() {
-  let mult = new Decimal(ShopPurchase.allDimPurchases.currentMult)
+  let mult = new Decimal(1)
     .timesEffectsOf(
       Achievement(75),
       TimeStudy(82),

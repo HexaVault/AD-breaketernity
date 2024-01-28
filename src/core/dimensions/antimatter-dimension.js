@@ -8,8 +8,6 @@ export function antimatterDimensionCommonMultiplier() {
   let multiplier = DC.D1;
 
   multiplier = multiplier.times(Achievements.power);
-  multiplier = multiplier.times(ShopPurchase.dimPurchases.currentMult);
-  multiplier = multiplier.times(ShopPurchase.allDimPurchases.currentMult);
 
   if (!EternityChallenge(9).isRunning) {
     multiplier = multiplier.times(Currency.infinityPower.value.pow(InfinityDimensions.powerConversionRate).max(1));

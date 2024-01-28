@@ -9,8 +9,6 @@ import { SpeedrunMilestones } from "./core/speedrun";
 import { Cloud } from "./core/storage";
 import { supportedBrowsers } from "./supported-browsers";
 
-import Payments from "./core/payments";
-
 if (GlobalErrorHandler.handled) {
   throw new Error("Initialization failed");
 }
@@ -123,7 +121,6 @@ function totalEPMult() {
   return Pelle.isDisabled("EPMults")
     ? Pelle.specialGlyphEffect.time.timesEffectOf(PelleRifts.vacuum.milestones[2])
     : getAdjustedGlyphEffect("cursedEP")
-      .times(ShopPurchase.EPPurchases.currentMult)
       .timesEffectsOf(
         EternityUpgrade.epMult,
         TimeStudy(61),
@@ -1097,7 +1094,6 @@ export function init() {
   Cloud.init();
   GameStorage.load();
   Tabs.all.find(t => t.config.id === player.options.lastOpenTab).show(true);
-  Payments.init();
 }
 
 window.tweenTime = 0;

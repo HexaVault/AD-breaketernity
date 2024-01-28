@@ -48,19 +48,7 @@ export const Cloud = {
   },
 
   async login() {
-    if (!this.isAvailable) {
-      return;
-    }
-
-    try {
-      await signInWithPopup(this.auth, this.provider);
-      ShopPurchaseData.syncSTD();
-      if (player.options.hideGoogleName) GameUI.notify.success(`Successfully logged in to Google Account`);
-      else GameUI.notify.success(`Successfully logged in as ${this.user.displayName}`);
-      if (ShopPurchaseData.isIAPEnabled) Speedrun.setSTDUse(true);
-    } catch (e) {
-      GameUI.notify.error("Google Account login failed");
-    }
+    return;
   },
 
   async loginWithSteam(accountId, staticAccountId, screenName) {
@@ -278,7 +266,6 @@ export const Cloud = {
     }
 
     signOut(this.auth);
-    ShopPurchaseData.clearLocalSTD();
   },
 
   init() {
@@ -295,9 +282,6 @@ export const Cloud = {
             : user.displayName,
           email: user.email,
         };
-        if (!STEAM) {
-          ShopPurchaseData.syncSTD();
-        }
       } else {
         this.user = null;
       }

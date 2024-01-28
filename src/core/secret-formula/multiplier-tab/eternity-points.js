@@ -84,8 +84,8 @@ export const EP = {
   },
   iap: {
     name: "Shop Tab Purchases",
-    multValue: () => ShopPurchase.EPPurchases.currentMult,
-    isActive: () => ShopPurchaseData.totalSTD > 0,
+    multValue: () => 1,
+    isActive: () => false,
     icon: MultiplierTabIcons.IAP,
   },
 

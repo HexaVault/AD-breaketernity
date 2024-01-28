@@ -76,8 +76,8 @@ export const replicanti = {
   },
   iap: {
     name: "Shop Tab Purchases",
-    multValue: () => ShopPurchase.replicantiPurchases.currentMult,
-    isActive: () => ShopPurchaseData.totalSTD > 0 && ShopPurchase.replicantiPurchases.currentMult > 1,
+    multValue: () => 1,
+    isActive: () => false,
     icon: MultiplierTabIcons.IAP,
   },
 };

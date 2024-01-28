@@ -100,7 +100,7 @@ export function maxAllTimeDimensions() {
 }
 
 export function timeDimensionCommonMultiplier() {
-  let mult = new Decimal(ShopPurchase.allDimPurchases.currentMult)
+  let mult = new Decimal(1)
     .timesEffectsOf(
       Achievement(105),
       Achievement(128),

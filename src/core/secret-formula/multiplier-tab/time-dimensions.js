@@ -246,9 +246,8 @@ export const TD = {
   },
   iap: {
     name: "Shop Tab Purchases",
-    multValue: dim => Decimal.pow(ShopPurchase.allDimPurchases.currentMult,
-      dim ? 1 : MultiplierTabHelper.activeDimCount("TD")),
-    isActive: () => ShopPurchaseData.totalSTD > 0,
+    multValue: 1,
+    isActive: () => false,
     icon: MultiplierTabIcons.IAP,
   },
 
