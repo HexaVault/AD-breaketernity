@@ -1,6 +1,6 @@
 import { BitUpgradeState } from "../game-mechanics";
 import { GameDatabase } from "../secret-formula/game-database";
-
+import { DC } from "../constants";
 import { Quotes } from "./quotes";
 
 export const ENSLAVED_UNLOCKS = {
@@ -36,7 +36,7 @@ export const Enslaved = {
   isReleaseTick: false,
   autoReleaseTick: 0,
   autoReleaseSpeed: 0,
-  timeCap: new Decimal("DC.BEMAX"),
+  timeCap: DC.BEMAX,
   glyphLevelMin: 5000,
   currentBlackHoleStoreAmountPerMs: 0,
   tachyonNerf: 0.3,

@@ -396,10 +396,7 @@ export function trueTimeMechanics(trueDiff) {
       Enslaved.useStoredTime(true);
       Enslaved.isReleaseTick = true;
     } else if (!Enslaved.isReleaseTick) {
-      Enslaved.nextTickDiff = realDiff;
-    }
-    if (diff === undefined) {
-      diff = Enslaved.nextTickDiff;
+      Enslaved.nextTickDiff = trueDiff;
     }
   
     Autobuyers.tick();
@@ -455,13 +452,16 @@ export function gameLoop(passDiff, options = {}) {
     GameUI.update();
     return;
   }
-
-  let diff = new Decimal(passDiff);
   const thisUpdate = Date.now();
+  passDiff = passDiff == undefined ? Math.clamp(thisUpdate - player.lastUpdate, 1, 8.64e7) : passDiff // This is really, really bad but we dont want 0 getting passed into every function on the fucking earth
+  let diff = new Decimal(passDiff);
   const trueDiff = passDiff === undefined
   ? Math.clamp(thisUpdate - player.lastUpdate, 1, 8.64e7)
-  : diff;
+  : passDiff;
   let realDiff = diff
+  if (diff === undefined) {
+    diff = Enslaved.nextTickDiff;
+  }
   if (!GameStorage.ignoreBackupTimer) player.backupTimer += trueDiff;
 
   // For single ticks longer than a minute from the GameInterval loop, we assume that the device has gone to sleep or

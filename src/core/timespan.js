@@ -302,11 +302,11 @@ window.TimeSpan = class TimeSpan {
   }
 
   static get maxValue() {
-    return new TimeSpan(new Decimal("DC.BEMAX"));
+    return new TimeSpan(DC.BEMAX);
   }
 
   static get minValue() {
-    return new TimeSpan(new Decimal(1).div(new Decimal("DC.BEMAX")));
+    return new TimeSpan(new Decimal(1).div(DC.BEMAX));
   }
 };
 
