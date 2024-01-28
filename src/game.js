@@ -91,13 +91,13 @@ export function gainedInfinityPoints() {
     TimeStudy(111)
   )).toNumber();
   if (Pelle.isDisabled("IPMults")) {
-    return Decimal.pow10(player.records.thisInfinity.maxAM.log10() / div - 0.75)
+    return Decimal.pow10(player.records.thisInfinity.maxAM.log10().div(div).sub(0.75))
       .timesEffectsOf(PelleRifts.vacuum)
       .times(Pelle.specialGlyphEffect.infinity)
       .floor();
   }
   let ip = player.break
-    ? Decimal.pow10(player.records.thisInfinity.maxAM.log10().div(div).min(0.75))
+    ? Decimal.pow10(player.records.thisInfinity.maxAM.log10().div(div).sub(0.75))
     : new Decimal(308 / div);
   if (Effarig.isRunning && Effarig.currentStage === EFFARIG_STAGES.ETERNITY) {
     ip = ip.min(DC.E200);

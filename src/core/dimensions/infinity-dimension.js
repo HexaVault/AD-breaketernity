@@ -208,7 +208,7 @@ class InfinityDimensionState extends DimensionState {
 
   get purchases() {
     // Because each ID purchase gives 10 IDs
-    return this.data.baseAmount / 10;
+    return this.data.baseAmount.div(10);
   }
 
   get purchaseCap() {
@@ -221,7 +221,7 @@ class InfinityDimensionState extends DimensionState {
   }
 
   get isCapped() {
-    return this.purchases >= this.purchaseCap;
+    return this.purchases.gte(this.purchaseCap);
   }
 
   get hardcapIPAmount() {
