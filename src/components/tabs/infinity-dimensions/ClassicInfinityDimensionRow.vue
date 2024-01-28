@@ -22,7 +22,7 @@ export default {
       isUnlocked: false,
       canUnlock: false,
       multiplier: new Decimal(0),
-      baseAmount: 0,
+      baseAmount: new Decimal(0),
       amount: new Decimal(0),
       purchases: 0,
       rateOfChange: new Decimal(0),

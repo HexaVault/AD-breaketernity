@@ -149,9 +149,9 @@ export const pelleRifts = {
     baseEffect: x => `EP formula: log(x)/${formatInt(308)} ➜ log(x)/${formatFloat(308 - x.toNumber(), 2)}`,
     additionalEffects: () => [PelleRifts.recursion.milestones[0], PelleRifts.recursion.milestones[1]],
     strike: () => PelleStrikes.ECs,
-    percentage: totalFill => totalFill.plus(1).log10().pow(0.4).div(4000).pow(0.4).mantissa * (10 ** totalFill.plus(1).log10().pow(0.4).div(4000).pow(0.4).exponent),
-    percentageToFill: percentage => Decimal.pow(10, percentage ** 2.5 * 4000).minus(1),
-    effect: totalFill => new Decimal(new Decimal(58).times(totalFill.plus(1).log10().pow(0.2).div(new Decimal(4000)).pow(0.2))),
+    percentage: totalFill => totalFill.pow(0.4).times(3.624).toNumber(),
+    percentageToFill: percentage => percentage ** 2.5 * 0.04,
+    effect: totalFill => 308 - new Decimal(58).times(new Decimal(totalFill).plus(1).log10().pow(0.2).div(new Decimal(4000)).pow(0.2)).toNumber(),
     currency: () => Currency.eternityPoints,
     galaxyGeneratorThreshold: 1e10,
     milestones: [

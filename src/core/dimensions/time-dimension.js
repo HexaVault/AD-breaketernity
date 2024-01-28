@@ -23,7 +23,7 @@ export function buySingleTimeDimension(tier, auto = false) {
 
   Currency.eternityPoints.subtract(dim.cost);
   dim.amount = dim.amount.plus(1);
-  dim.bought += 1;
+  dim.bought = dim.bought.add(1);
   dim.cost = dim.nextCost(dim.bought);
   return true;
 }
@@ -37,7 +37,7 @@ export function fullResetTimeDimensions() {
   for (const dim of TimeDimensions.all) {
     dim.cost = new Decimal(dim.baseCost);
     dim.amount = DC.D0;
-    dim.bought = 0;
+    dim.bought = DC.D0;
   }
 }
 
@@ -159,7 +159,7 @@ class TimeDimensionState extends DimensionState {
   set cost(value) { this.data.cost = value; }
 
   nextCost(bought) {
-    if (this._tier > 4 && bought < this.e6000ScalingAmount) {
+    if (this._tier > 4 && bought.lt(this.e6000ScalingAmount)) {
       const cost = Decimal.pow(this.costMultiplier, bought).times(this.baseCost);
       if (PelleRifts.paradox.milestones[0].canBeApplied) {
         return cost.div("1e2250").pow(0.5);

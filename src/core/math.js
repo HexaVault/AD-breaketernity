@@ -392,7 +392,8 @@ window.ExponentialCostScaling = class ExponentialCostScaling {
    let scale = this.log._costScale
    let purchases = this._purchasesBeforeScaling
    // First, is the currency before the cost of Exponential? If so we solve it here and return
-   if (currency.div(purchasesPerIncrease).lte(Decimal.pow10(base.times(inc.pow(purchases))))) {
+   console.log(currency.div(purchasesPerIncrease).lte(Decimal.pow10(base.add(inc.times(purchases.sub(1).floor())))))
+   if (currency.div(purchasesPerIncrease).lte(Decimal.pow10(base.add(inc.times(purchases.sub(1).floor()))))) {
        let purchaseAmount = currency.div(purchasesPerIncrease).log10().sub(base).div(inc).floor()
        if (purchaseAmount.lte(currentPurchases)) return null
        return { quantity: purchaseAmount, logPrice: Decimal.pow10(purchaseAmount.times(inc).add(base)).times(purchasesPerIncrease)} // We invert the calc after the floor to find the highest cost
@@ -413,7 +414,7 @@ window.ExponentialCostScaling = class ExponentialCostScaling {
    let curremcySqrd = inc.pow(2).times(4)
    let rootOfVal = Decimal.pow(scaleSqrd.add(scaleCenter).add(curremcySqrd), 0.5)
    let additonalAdds = rootOfVal.sub(scale).sub(inc.times(2))
-   let expPurchaseAmount = rootOfVal.div(scale.times(2))
+   let expPurchaseAmount = additonalAdds.div(scale.times(2))
    
    purchaseAmount = purchaseAmount.add(expPurchaseAmount)
    

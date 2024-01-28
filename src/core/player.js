@@ -377,7 +377,7 @@ window.player = {
     chanceCost: DC.E150,
     interval: 1000,
     intervalCost: DC.E140,
-    boughtGalaxyCap: 0,
+    boughtGalaxyCap: DC.D0,
     galaxies: DC.D0,
     galCost: DC.E170,
   },

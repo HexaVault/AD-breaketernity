@@ -235,8 +235,8 @@ class InfinityDimensionState extends DimensionState {
   fullReset() {
     this.cost = new Decimal(this.baseCost);
     this.amount = DC.D0;
-    this.bought = 0;
-    this.baseAmount = 0;
+    this.bought = DC.D0;
+    this.baseAmount = DC.D0;
     this.isUnlocked = false;
   }
 
