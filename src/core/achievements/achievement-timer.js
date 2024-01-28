@@ -12,8 +12,8 @@ class AchievementTimer {
 
   advance() {
     const addedTime = this.realTime
-      ? Time.unscaledDeltaTime.totalSeconds
-      : Time.deltaTime;
+      ? Time.realDeltaTime.totalSeconds
+      : Time.trueDeltaTime;
     this.time = this.time.add(addedTime);
   }
 
