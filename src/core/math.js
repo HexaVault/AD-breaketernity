@@ -385,51 +385,49 @@ window.ExponentialCostScaling = class ExponentialCostScaling {
    return Decimal.pow10(costBeforeExpo.add(scaleCostFinal))
   }
 
-  getMaxBought(currentPurchases, currency, purchasesPerIncrease) {
+  getMaxBought(currentPurchases, currency, purchasesPerIncrease, roundDown = true) {
    //copypaste
    let base = this.log._baseCost
    let inc = this.log._baseIncrease
    let scale = this.log._costScale
    let purchases = this._purchasesBeforeScaling
+   let ppIlog = purchasesPerIncrease.log10()
    // First, is the currency before the cost of Exponential? If so we solve it here and return
    console.log(currency.div(purchasesPerIncrease).lte(Decimal.pow10(base.add(inc.times(purchases.sub(1).floor())))))
    if (currency.div(purchasesPerIncrease).lte(Decimal.pow10(base.add(inc.times(purchases.sub(1).floor()))))) {
-       let purchaseAmount = currency.div(purchasesPerIncrease).log10().sub(base).div(inc).floor()
+       let purchaseAmount = currency.div(purchasesPerIncrease).log10().sub(base).div(inc)
+       if (roundDown) purchaseAmount = purchaseAmount.floor()
        if (purchaseAmount.lte(currentPurchases)) return null
-       return { quantity: purchaseAmount, logPrice: Decimal.pow10(purchaseAmount.times(inc).add(base)).times(purchasesPerIncrease)} // We invert the calc after the floor to find the highest cost
+       return { quantity: purchaseAmount, logPrice: (purchaseAmount.times(inc).add(base)).add(ppIlog)} // We invert the calc after the floor to find the highest cost
    }
 
    // Deduct the cost up to the linear limit
-   let logMoney = currency.log10()
+   let logMoney = currency.log10().sub(ppIlog)
    let purchaseAmount = purchases
-   logMoney = logMoney.sub(base.times(inc.pow(purchases)))
+   logMoney = logMoney.sub(base.add(inc.times(purchases)))
 
-   // Where does this equation come from? IDK i just shoved the formula to find out cost into wolfram and told it to solve for purchases
-   // p = (sqrt(d^2 + 4 d (k - m + v) + 4 k^2) - d - 2 k)/(2 d) and d!=0
-   // if d=0 something fucked up so that doesnt matter anyways (d is log cost scale, v is log currency,  is cost scale, m is log ppi)
+   // Where does this equation come from?
+   // Well it comes from the fact that if we subtract all preScaling costs, the cost is equal to 0.5s(p^2 + p) + ip (i = log(inc), s = log(scale), p = purchases)
+   // solving for p there gives us a quadratic with -0.5s as a, (-0.5s - i) as b and cost as c
+   // Put that into the quadratic (-b - sqrt(b^2 - 4ac))/2a and you get purchases
 
-   let logppi = purchasesPerIncrease
-   let scaleSqrd = scale.pow(2)
-   let scaleCenter = scale.times(4).times(inc.sub(logppi).add(currency))
-   let curremcySqrd = inc.pow(2).times(4)
-   let rootOfVal = Decimal.pow(scaleSqrd.add(scaleCenter).add(curremcySqrd), 0.5)
-   let additonalAdds = rootOfVal.sub(scale).sub(inc.times(2))
-   let expPurchaseAmount = additonalAdds.div(scale.times(2))
+   let a = new Decimal(0).sub(scale).div(2)
+   let b = a.sub(inc)
+   let c = logMoney
    
-   purchaseAmount = purchaseAmount.add(expPurchaseAmount)
-   
+  purchaseAmount = purchaseAmount.add(new Decimal(0).sub(b).sub(Decimal.pow(b.pow(2).sub(a.times(4).times(c)),0.5)).div(a.times(2)))
    if (purchaseAmount.lte(currentPurchases)) return null
    
-   // Now we calculate cost:
-
-   let modVal = purchaseAmount.div(purchasesPerIncrease)
+   // Technically this only buys up to the nearest set, but post exponential thats a minor flaw at most
+   if (roundDown) purchaseAmount = purchaseAmount.floor()
    
-   let purchaseCost = this.calculateCost(purchaseAmount.div(purchasesPerIncrease).floor()).times(modVal.sub(modVal.floor()).max(1))
-   return { quantity: purchaseAmount, logPrice: purchaseCost}
+   let purchaseCost = this.calculateCost(purchaseAmount)
+   purchaseAmount = purchaseAmount.times(purchasesPerIncrease)
+   return { quantity: purchaseAmount, logPrice: purchaseCost.log10()}
   }
 
   getContinuumValue(money, perSet) {
-   return this.getMaxBought(0, money, perSet)
+   return this.getMaxBought(0, money, perSet, false)
   }
 }
 

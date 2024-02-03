@@ -321,7 +321,7 @@ export function buyMaxDimension(tier, bulk = Infinity) {
 
   // This is the bulk-buy math, explicitly ignored if abnormal cost increases are active
   const maxBought = dimension.costScale.getMaxBought(
-    Decimal.floor(dimension.bought.div(10)).add(dimension.costBumps), dimension.currencyAmount, 10
+    Decimal.floor(dimension.bought.div(10)).add(dimension.costBumps), dimension.currencyAmount, DC.E1
   );
   if (maxBought === null) {
     return;
@@ -485,7 +485,7 @@ class AntimatterDimensionState extends DimensionState {
     // It's safe to use dimension.currencyAmount because this is
     // a dimension-only method (so don't just copy it over to tickspeed).
     // We need to use dimension.currencyAmount here because of different costs in NC6.
-    return this.costScale.getContinuumValue(this.currencyAmount, 10) * Laitela.matterExtraPurchaseFactor;
+    return this.costScale.getContinuumValue(this.currencyAmount, DC.E1).times(Laitela.matterExtraPurchaseFactor);
   }
 
   /**
@@ -637,7 +637,7 @@ export const AntimatterDimensions = {
   },
 
   get buyTenMultiplier() {
-    if (NormalChallenge(7).isRunning) return DC.D2.min(1 + DimBoost.totalBoosts / 5);
+    if (NormalChallenge(7).isRunning) return DC.D2.min(DimBoost.totalBoosts.div(5).add(1));
 
     let mult = DC.D2.plusEffectsOf(
       Achievement(141).effects.buyTenMult,

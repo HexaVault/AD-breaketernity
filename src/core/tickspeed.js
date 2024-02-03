@@ -95,7 +95,7 @@ export function buyMaxTickSpeed() {
       cost = Tickspeed.cost;
     }
   } else {
-    const purchases = Tickspeed.costScale.getMaxBought(player.totalTickBought, Currency.antimatter.value, 1);
+    const purchases = Tickspeed.costScale.getMaxBought(player.totalTickBought, Currency.antimatter.value, DC.D1);
     if (purchases === null) {
       return;
     }
@@ -159,7 +159,7 @@ export const Tickspeed = {
 
   get continuumValue() {
     if (!this.isUnlocked) return 0;
-    return this.costScale.getContinuumValue(Currency.antimatter.value, 1) * Laitela.matterExtraPurchaseFactor;
+    return this.costScale.getContinuumValue(Currency.antimatter.value, DC.D1).times(Laitela.matterExtraPurchaseFactor);
   },
 
   get baseValue() {
