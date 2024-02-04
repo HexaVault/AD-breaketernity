@@ -1,3 +1,5 @@
+import { DC } from "./constants";
+
 Array.prototype.distinct = function() {
     return this.filter(function (value, index, self) {
         return self.indexOf(value) === index;
@@ -172,27 +174,27 @@ Array.prototype.mapToObject = function(keyFun, valueFun) {
 Array.dimensionTiers = Array.range(1, 8);
 
 /**
- * @returns {number}
+ * @returns {Decimal}
  */
 Array.prototype.sum = function() {
-  if (this.length === 0) return 0;
-  return this.reduce(Number.sumReducer);
+  if (this.length === 0) return DC.D0;
+  return this.reduce(Decimal.sumReducer);
 };
 
 /**
- * @returns {number}
+ * @returns {Decimal}
  */
 Array.prototype.max = function() {
-  if (this.length === 0) return 0;
-  return this.reduce((a, b) => Math.max(a, b));
+  if (this.length === 0) return DC.D0;
+  return this.reduce((a, b) => Decimal.max(a, b));
 };
 
 /**
- * @returns {number}
+ * @returns {Decimal}
  */
 Array.prototype.min = function() {
-  if (this.length === 0) return 0;
-  return this.reduce((a, b) => Math.min(a, b));
+  if (this.length === 0) return DC.D0;
+  return this.reduce((a, b) => Decimal.min(a, b));
 };
 
 /**
