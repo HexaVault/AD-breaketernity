@@ -1158,7 +1158,7 @@ export const normalAchievements = [
     checkRequirement: () => Glyphs.activeList.concat(Glyphs.inventoryList).map(
       glyph => getGlyphEffectsFromBitmask(glyph.effects, 0, 0)
         .filter(effect => effect.isGenerated).length
-    ).max() >= 4,
+    ).max().toNumber() >= 4,
     checkEvent: GAME_EVENT.GLYPHS_CHANGED
   },
   {
@@ -1191,7 +1191,7 @@ export const normalAchievements = [
       return `Complete all the Eternity Challenges ${formatInt(5)} times with less than ${formatInt(1)}
       second (game time) in your current Reality.`;
     },
-    checkRequirement: () => EternityChallenges.all.map(ec => ec.completions).min() >= 5 &&
+    checkRequirement: () => EternityChallenges.all.map(ec => ec.completions).min().gte(5) &&
       Time.thisReality.totalSeconds.lte(1),
     checkEvent: GAME_EVENT.GAME_TICK_AFTER
   },

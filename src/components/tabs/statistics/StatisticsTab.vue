@@ -1,5 +1,4 @@
 <script>
-import { DC } from "../../../core/constants";
 import { MatterScale } from "./matter-scale";
 import PrimaryButton from "@/components/PrimaryButton";
 
@@ -12,7 +11,7 @@ export default {
     return {
       isDoomed: false,
       realTimeDoomed: TimeSpan.zero,
-      totalAntimatter: DC.D0,
+      totalAntimatter: new Decimal(),
       realTimePlayed: TimeSpan.zero,
       timeSinceCreation: 0,
       uniqueNews: 0,
@@ -20,34 +19,34 @@ export default {
       secretAchievementCount: 0,
       infinity: {
         isUnlocked: false,
-        count: DC.D0,
-        banked: DC.D0,
-        projectedBanked: DC.D0,
-        bankRate: DC.D0,
+        count: new Decimal(),
+        banked: new Decimal(),
+        projectedBanked: new Decimal(),
+        bankRate: new Decimal(),
         hasBest: false,
         best: TimeSpan.zero,
         this: TimeSpan.zero,
         thisReal: TimeSpan.zero,
-        bestRate: DC.D0,
+        bestRate: new Decimal(),
       },
       eternity: {
         isUnlocked: false,
-        count: DC.D0,
+        count: new Decimal(),
         hasBest: false,
         best: TimeSpan.zero,
         this: TimeSpan.zero,
         thisReal: TimeSpan.zero,
-        bestRate: DC.D0,
+        bestRate: new Decimal(),
       },
       reality: {
         isUnlocked: false,
-        count: DC.D0,
+        count: new Decimal(),
         best: TimeSpan.zero,
         bestReal: TimeSpan.zero,
         this: TimeSpan.zero,
         thisReal: TimeSpan.zero,
         totalTimePlayed: TimeSpan.zero,
-        bestRate: DC.D0,
+        bestRate: new Decimal(),
         bestRarity: 0,
       },
       matterScale: [],

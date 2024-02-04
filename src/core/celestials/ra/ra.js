@@ -295,7 +295,7 @@ export const Ra = {
     return "";
   },
   get totalPetLevel() {
-    return this.pets.all.map(pet => (pet.isUnlocked ? pet.level : 0)).sum();
+    return this.pets.all.map(pet => (pet.isUnlocked ? pet.level : 0)).sum().toNumber();
   },
   get levelCap() {
     return 25;

@@ -1,5 +1,4 @@
 <script>
-import { DC } from "@/core/constants";
 
 import CelestialQuoteHistory from "@/components/CelestialQuoteHistory";
 import CustomizeableTooltip from "@/components/CustomizeableTooltip";
@@ -28,7 +27,7 @@ export default {
       bestAMSet: [],
       lastMachines: new Decimal(0),
       runReward: 0,
-      perkPoints: DC.D0,
+      perkPoints: new Decimal(),
       hasReality: false,
       hasEPGen: false,
       hasPerkShop: false,

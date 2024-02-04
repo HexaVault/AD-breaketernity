@@ -1,6 +1,5 @@
 <script>
 import PrimaryButton from "@/components/PrimaryButton";
-import { DC } from "../../../core/constants";
 
 export default {
   name: "ClassicAntimatterGalaxyRow",
@@ -11,9 +10,9 @@ export default {
     return {
       type: GALAXY_TYPE.NORMAL,
       galaxies: {
-        normal: DC.D0,
-        replicanti: DC.D0,
-        dilation: DC.D0
+        normal: new Decimal(),
+        replicanti: new Decimal(),
+        dilation: new Decimal()
       },
       requirement: {
         tier: 1,
