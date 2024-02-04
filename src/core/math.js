@@ -392,17 +392,19 @@ window.ExponentialCostScaling = class ExponentialCostScaling {
    let scale = this.log._costScale
    let purchases = this._purchasesBeforeScaling
    let ppIlog = purchasesPerIncrease.log10()
+   let logMoney = currency.log10().sub(ppIlog)
    // First, is the currency before the cost of Exponential? If so we solve it here and return
-   console.log(currency.div(purchasesPerIncrease).lte(Decimal.pow10(base.add(inc.times(purchases.sub(1).floor())))))
-   if (currency.div(purchasesPerIncrease).lte(Decimal.pow10(base.add(inc.times(purchases.sub(1).floor()))))) {
-       let purchaseAmount = currency.div(purchasesPerIncrease).log10().sub(base).div(inc)
-       if (roundDown) purchaseAmount = purchaseAmount.floor()
-       if (purchaseAmount.lte(currentPurchases)) return null
+   // console.log(logMoney.lte(base.add(inc.times(purchases.sub(1).floor()))))
+   if (logMoney.lte(base.add(inc.times(purchases.floor())))) {
+       let purchaseAmount = logMoney.sub(base).div(inc).add(1)
+       console.log(purchaseAmount)
+       if (roundDown) purchaseAmount = purchaseAmount.floor() // round value DOWN
+       if (purchaseAmount.lte(currentPurchases)) return null // null if its less than the purchases we already have
+       purchaseAmount = purchaseAmount.sub(currentPurchases)
        return { quantity: purchaseAmount, logPrice: (purchaseAmount.times(inc).add(base)).add(ppIlog)} // We invert the calc after the floor to find the highest cost
    }
 
    // Deduct the cost up to the linear limit
-   let logMoney = currency.log10().sub(ppIlog)
    let purchaseAmount = purchases
    logMoney = logMoney.sub(base.add(inc.times(purchases)))
 
@@ -411,6 +413,7 @@ window.ExponentialCostScaling = class ExponentialCostScaling {
    // solving for p there gives us a quadratic with -0.5s as a, (-0.5s - i) as b and cost as c
    // Put that into the quadratic (-b - sqrt(b^2 - 4ac))/2a and you get purchases
 
+   // console.log(currency.lt(1e300))
    let a = new Decimal(0).sub(scale).div(2)
    let b = a.sub(inc)
    let c = logMoney
@@ -423,6 +426,7 @@ window.ExponentialCostScaling = class ExponentialCostScaling {
    
    let purchaseCost = this.calculateCost(purchaseAmount)
    purchaseAmount = purchaseAmount.times(purchasesPerIncrease)
+   purchaseAmount = purchaseAmount.sub(currentPurchases)
    return { quantity: purchaseAmount, logPrice: purchaseCost.log10()}
   }
 
