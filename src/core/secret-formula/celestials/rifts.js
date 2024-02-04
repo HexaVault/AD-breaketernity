@@ -10,7 +10,7 @@ export const pelleRifts = {
     baseEffect: x => `IP gain ${formatX(x, 2, 2)}`,
     additionalEffects: () => [PelleRifts.vacuum.milestones[2]],
     strike: () => PelleStrikes.infinity,
-    percentage: totalFill => Decimal.log10(totalFill.plus(1).log10() * 10 + 1).pow(2.5).div(100).mantissa * (10 ** Decimal.log10(totalFill.plus(1).log10() * 10 + 1).pow(2.5).div(100).exponent),
+    percentage: totalFill => Decimal.log10(totalFill.plus(1).log10().mul(10).add(1)).pow(2.5).div(100).mantissa * (10 ** Decimal.log10(totalFill.plus(1).log10().mul(10).add(1)).pow(2.5).div(100).exponent),
     percentageToFill: percentage => Decimal.pow(10,
       Decimal.pow(10, (percentage * 100) ** (1 / 2.5)).div(10).minus(0.1)
     ).minus(1),

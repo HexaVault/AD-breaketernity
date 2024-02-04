@@ -1,4 +1,5 @@
 <script>
+import { DC } from "../../../core/constants";
 import { MatterScale } from "./matter-scale";
 import PrimaryButton from "@/components/PrimaryButton";
 
@@ -11,7 +12,7 @@ export default {
     return {
       isDoomed: false,
       realTimeDoomed: TimeSpan.zero,
-      totalAntimatter: new Decimal(0),
+      totalAntimatter: DC.D0,
       realTimePlayed: TimeSpan.zero,
       timeSinceCreation: 0,
       uniqueNews: 0,
@@ -19,24 +20,24 @@ export default {
       secretAchievementCount: 0,
       infinity: {
         isUnlocked: false,
-        count: new Decimal(0),
-        banked: new Decimal(0),
-        projectedBanked: new Decimal(0),
-        bankRate: new Decimal(0),
+        count: DC.D0,
+        banked: DC.D0,
+        projectedBanked: DC.D0,
+        bankRate: DC.D0,
         hasBest: false,
         best: TimeSpan.zero,
         this: TimeSpan.zero,
         thisReal: TimeSpan.zero,
-        bestRate: new Decimal(0),
+        bestRate: DC.D0,
       },
       eternity: {
         isUnlocked: false,
-        count: new Decimal(0),
+        count: DC.D0,
         hasBest: false,
         best: TimeSpan.zero,
         this: TimeSpan.zero,
         thisReal: TimeSpan.zero,
-        bestRate: new Decimal(0),
+        bestRate: DC.D0,
       },
       reality: {
         isUnlocked: false,
@@ -46,7 +47,7 @@ export default {
         this: TimeSpan.zero,
         thisReal: TimeSpan.zero,
         totalTimePlayed: TimeSpan.zero,
-        bestRate: new Decimal(0),
+        bestRate: DC.D0,
         bestRarity: 0,
       },
       matterScale: [],
@@ -104,7 +105,7 @@ export default {
           TimeStudy(191)
         );
         infinity.bankRate = infinity.projectedBanked.div(Decimal.clampMin(33, records.thisEternity.time)).times(60000);
-        infinity.hasBest = bestInfinity.time < 999999999999;
+        infinity.hasBest = !bestInfinity.time.eq(DC.BEMAX);
         infinity.best.setFrom(bestInfinity.time);
         infinity.this.setFrom(records.thisInfinity.time);
         infinity.bestRate.copyFrom(bestInfinity.bestIPminEternity);
@@ -116,7 +117,7 @@ export default {
       eternity.isUnlocked = isEternityUnlocked;
       if (isEternityUnlocked) {
         eternity.count.copyFrom(Currency.eternities);
-        eternity.hasBest = bestEternity.time < 999999999999;
+        eternity.hasBest = !bestEternity.time.eq(DC.BEMAX);
         eternity.best.setFrom(bestEternity.time);
         eternity.this.setFrom(records.thisEternity.time);
         eternity.bestRate.copyFrom(bestEternity.bestEPminReality);

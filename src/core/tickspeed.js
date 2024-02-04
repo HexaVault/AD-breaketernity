@@ -39,9 +39,9 @@ export function getTickSpeedMultiplier() {
     if (player.galaxies.eq(1)) baseMultiplier = DC.C1D1_11888888;
     if (player.galaxies.eq(2)) baseMultiplier = DC.C1D1_11267177;
     if (NormalChallenge(5).isRunning) {
-      baseMultiplier = 1 / 1.08;
-      if (player.galaxies.eq(1)) baseMultiplier = 1 / 1.07632;
-      if (player.galaxies.eq(2)) baseMultiplier = 1 / 1.072;
+      baseMultiplier = DC.D1.div(1.08);
+      if (player.galaxies.eq(1)) baseMultiplier = DC.D1.div(1.07632);
+      if (player.galaxies.eq(2)) baseMultiplier = DC.D1.div(1.072);
     }
     const perGalaxy = effects.div(50);
     if (Pelle.isDoomed) galaxies.div(2);
@@ -74,7 +74,7 @@ export function buyTickSpeed() {
   player.totalTickBought = player.totalTickBought.add(1);
   player.records.thisInfinity.lastBuyTime = player.records.thisInfinity.time;
   player.requirementChecks.permanent.singleTickspeed++;
-  if (NormalChallenge(2).isRunning) player.chall2Pow = 0;
+  if (NormalChallenge(2).isRunning) player.chall2Pow = DC.D0;
   GameUI.update();
   return true;
 }
@@ -106,7 +106,7 @@ export function buyMaxTickSpeed() {
 
   if (boughtTickspeed) {
     player.records.thisInfinity.lastBuyTime = player.records.thisInfinity.time;
-    if (NormalChallenge(2).isRunning) player.chall2Pow = 0;
+    if (NormalChallenge(2).isRunning) player.chall2Pow = DC.D0;
   }
 }
 
@@ -185,7 +185,7 @@ export const Tickspeed = {
 
   multiplySameCosts() {
     for (const dimension of AntimatterDimensions.all) {
-      if (dimension.cost.e === this.cost.e) dimension.costBumps++;
+      if (dimension.cost.e === this.cost.e) dimension.costBumps = dimension.costBumps.add(1);
     }
   }
 };

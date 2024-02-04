@@ -73,13 +73,12 @@ export const DC = deepFreeze({
   C2P30:                    Decimal.pow(2, 30),
   C2P1024:                  Decimal.pow(2, 1024),
   C10P16000D3:              Decimal.pow(10, 16000 / 3),
-  CINF:                 new Decimal(Number.MAX_VALUE),
   C1D1_11888888:        new Decimal(1 / 1.11888888), 
   C1D1_11267177:        new Decimal(1 / 1.11267177), 
   C1D1_1245:            new Decimal(1 / 1.1245),
 
   // 1e1 is 10
-  E1:                   new Decimal("10"),
+  E1:                   new Decimal("1e1"),
   E2:                   new Decimal("1e2"),
   E3:                   new Decimal("1e3"),
   E4:                   new Decimal("1e4"),
@@ -207,7 +206,6 @@ export const DC = deepFreeze({
   E1E15:                new Decimal("1e1000000000000000"),
 
   //Special case values
-
   NUMSAFE:              new Decimal(Number.MAX_SAFE_INTEGER),
   NUMMAX:               new Decimal(Number.MAX_VALUE),
   BIMAX:                new Decimal("e9e15"),

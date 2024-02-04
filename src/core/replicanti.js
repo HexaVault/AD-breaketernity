@@ -162,8 +162,8 @@ export function replicantiCap() {
     ? Currency.infinitiesTotal.value
       .pow(TimeStudy(31).isBought ? 120 : 30)
       .clampMin(1)
-      .times(DC.CINF)
-    : DC.CINF;
+      .times(DC.NUMMAX)
+    : DC.NUMMAX;
 }
 
 // eslint-disable-next-line complexity

@@ -20,9 +20,9 @@ export class DimensionState {
   /** @param {Decimal} value */
   set amount(value) { this.data.amount = value; }
 
-  /** @returns {number} */
+  /** @returns {Decimal} */
   get bought() { return this.data.bought; }
-  /** @param {number} value */
+  /** @param {Decimal} value */
   set bought(value) { this.data.bought = value; }
 
   /** @abstract */
