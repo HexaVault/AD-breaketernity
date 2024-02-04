@@ -476,6 +476,7 @@ export function gameLoop(passDiff, options = {}) {
     return;
   }
 
+  trueTimeMechanics(trueDiff)
   // Run all the functions which only depend on real time and not game time, skipping the rest of the loop if needed
   if (realTimeMechanics(realDiff)) return;
 

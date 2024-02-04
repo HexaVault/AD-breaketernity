@@ -764,7 +764,7 @@ export function applyRUPG10() {
     mode: current.mode,
     priority: current.priority,
     isActive: current.isActive,
-    lastTick: player.records.realTimePlayed
+    lastTick: player.records.trueTimePlayed
   }));
 
   for (const autobuyer of Autobuyers.all) {

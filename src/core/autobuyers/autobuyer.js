@@ -101,7 +101,7 @@ export class IntervaledAutobuyerState extends AutobuyerState {
   }
 
   tick() {
-    this.data.lastTick = player.records.realTimePlayed;
+    this.data.lastTick = player.records.trueTimePlayed;
   }
 
   /**
