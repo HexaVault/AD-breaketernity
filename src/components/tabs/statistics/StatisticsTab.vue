@@ -41,7 +41,7 @@ export default {
       },
       reality: {
         isUnlocked: false,
-        count: 0,
+        count: DC.D0,
         best: TimeSpan.zero,
         bestReal: TimeSpan.zero,
         this: TimeSpan.zero,
@@ -129,7 +129,7 @@ export default {
       reality.isUnlocked = isRealityUnlocked;
 
       if (isRealityUnlocked) {
-        reality.count = Math.floor(Currency.realities.value);
+        reality.count.copyFrom(Currency.realities);
         reality.best.setFrom(bestReality.time);
         reality.bestReal.setFrom(bestReality.realTime);
         reality.this.setFrom(records.thisReality.time);
