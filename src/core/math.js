@@ -397,7 +397,7 @@ window.ExponentialCostScaling = class ExponentialCostScaling {
    // console.log(logMoney.lte(base.add(inc.times(purchases.sub(1).floor()))))
    if (logMoney.lte(base.add(inc.times(purchases.floor())))) {
        let purchaseAmount = logMoney.sub(base).div(inc).add(1)
-       console.log(purchaseAmount)
+       // console.log(purchaseAmount)
        if (roundDown) purchaseAmount = purchaseAmount.floor() // round value DOWN
        if (purchaseAmount.lte(currentPurchases)) return null // null if its less than the purchases we already have
        purchaseAmount = purchaseAmount.sub(currentPurchases)
@@ -414,19 +414,25 @@ window.ExponentialCostScaling = class ExponentialCostScaling {
    // Put that into the quadratic (-b - sqrt(b^2 - 4ac))/2a and you get purchases
 
    // console.log(currency.lt(1e300))
+   logMoney = logMoney.sub(ppIlog)
    let a = new Decimal(0).sub(scale).div(2)
    let b = a.sub(inc)
    let c = logMoney
    
   purchaseAmount = purchaseAmount.add(new Decimal(0).sub(b).sub(Decimal.pow(b.pow(2).sub(a.times(4).times(c)),0.5)).div(a.times(2)))
-   if (purchaseAmount.lte(currentPurchases)) return null
    
    // Technically this only buys up to the nearest set, but post exponential thats a minor flaw at most
    if (roundDown) purchaseAmount = purchaseAmount.floor()
+
+   if (purchaseAmount.lte(currentPurchases)) return null
+   // console.log(purchaseAmount.lte(currentPurchases))
    
    let purchaseCost = this.calculateCost(purchaseAmount)
-   purchaseAmount = purchaseAmount.times(purchasesPerIncrease)
+   // console.log(purchaseAmount)
    purchaseAmount = purchaseAmount.sub(currentPurchases)
+   // console.log(purchaseAmount)
+   purchaseAmount = purchaseAmount.times(purchasesPerIncrease)
+   // console.log(purchaseAmount)
    return { quantity: purchaseAmount, logPrice: purchaseCost.log10()}
   }
 

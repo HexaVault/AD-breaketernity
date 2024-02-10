@@ -267,7 +267,7 @@ class InfinityDimensionState extends DimensionState {
     this.cost = Decimal.round(this.cost.times(this.costMultiplier));
     // Because each ID purchase gives 10 IDs
     this.amount = this.amount.plus(10);
-    this.baseAmount += 10;
+    this.baseAmount = this.baseAmount.add(10);
 
     if (EternityChallenge(8).isRunning) {
       player.eterc8ids -= 1;
@@ -304,7 +304,7 @@ class InfinityDimensionState extends DimensionState {
     this.cost = this.cost.times(costScaling.totalCostMultiplier);
     // Because each ID purchase gives 10 IDs
     this.amount = this.amount.plus(10 * costScaling.purchases);
-    this.baseAmount += 10 * costScaling.purchases;
+    this.baseAmount = DC.E1.times(costScaling.purchases()).add(this.baseAmount);
 
     if (EternityChallenge(8).isRunning) {
       player.eterc8ids -= costScaling.purchases;

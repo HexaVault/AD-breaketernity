@@ -49,7 +49,7 @@ export class DimBoost {
   }
 
   static get canUnlockNewDimension() {
-    return DimBoost.purchasedBoosts + 4 < DimBoost.maxDimensionsUnlockable;
+    return DimBoost.purchasedBoosts.add(4).lt(DimBoost.maxDimensionsUnlockable);
   }
 
   static get maxBoosts() {
@@ -178,7 +178,7 @@ export function softReset(tempBulk, forcedADReset = false, forcedAMReset = false
   const bulk = Decimal.min(tempBulk, DimBoost.maxBoosts.sub(player.dimensionBoosts));
   EventHub.dispatch(GAME_EVENT.DIMBOOST_BEFORE, bulk);
   // player.dimensionBoosts = Math.max(0, player.dimensionBoosts + bulk);
-  player.dimensionBoosts.copyFrom(Decimal.max(DC.D0, player.dimensionBoosts.add(bulk)));
+  player.dimensionBoosts = (Decimal.max(DC.D0, player.dimensionBoosts.add(bulk)));
   resetChallengeStuff();
   const canKeepDimensions = Pelle.isDoomed
     ? PelleUpgrade.dimBoostResetsNothing.canBeApplied

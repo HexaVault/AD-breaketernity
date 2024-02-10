@@ -1,5 +1,4 @@
 <script>
-import { DC } from "@/core/constants";
 
 import { BreakdownEntryInfo } from "./breakdown-entry-info";
 import { getResourceEntryInfoGroups } from "./breakdown-entry-info-group";
@@ -47,7 +46,7 @@ export default {
       // multipliers are split up; the animation which results from not doing this looks very awkward
       lastLayoutChange: Date.now(),
       now: Date.now(),
-      totalMultiplier: DC.D1,
+      totalMultiplier: new Decimal(),
       totalPositivePower: 1,
       replacePowers: player.options.multiplierTab.replacePowers,
       inNC12: false,
@@ -334,7 +333,7 @@ export default {
           .filter(entry => entry.isVisible && entry.isDilated)
           .map(entry => entry.mult)
           .map(val => this.applyDilationExp(val, 1 / this.dilationExponent))
-          .reduce((x, y) => x.times(y), DC.D1);
+          .reduce((x, y) => x.times(y), new Decimal(1));
         beforeMult = dilProd.neq(1) ? dilProd : this.applyDilationExp(baseMult, 1 / this.dilationExponent);
         afterMult = resource.mult;
       } else {

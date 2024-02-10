@@ -8,6 +8,8 @@ import FullScreenAnimationHandler from "./full-screen-animation-handler";
 // reasonable, since these are the devtools after all
 export const dev = {};
 
+dev.speedUp = 1
+
 dev.hardReset = function() {
   GameStorage.hardReset();
 };
@@ -528,3 +530,15 @@ dev.forceCloudSave = async function() {
 dev.unlockAllCosmeticSets = function() {
   player.reality.glyphs.cosmetics.unlockedFromNG = Object.keys(GameDatabase.reality.glyphCosmeticSets);
 };
+
+// You would never guess what these are for
+dev.beTests = {}
+
+dev.beTests.speed = function() {
+  dev.speedUp = 1e24
+}
+
+dev.beTests.consecutiveInfinities = function(amnt) {
+  player.infinityPoints = player.infinityPoints.add(gainedInfinityPoints().times(amnt))
+  player.infinities = player.infinities.add(gainedInfinities().round())
+}

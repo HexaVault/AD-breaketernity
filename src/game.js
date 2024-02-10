@@ -314,7 +314,7 @@ export function getGameSpeedupFactor(effectsToConsider, blackHolesActiveOverride
 
   if (effects.includes(GAME_SPEED_EFFECT.FIXED_SPEED)) {
     if (EternityChallenge(12).isRunning) {
-      return 1 / 1000;
+      return 1 / 1000 * dev.speedUp;
     }
   }
 
@@ -362,7 +362,8 @@ export function getGameSpeedupFactor(effectsToConsider, blackHolesActiveOverride
 
 
   factor *= PelleUpgrade.timeSpeedMult.effectValue.toNumber();
-
+  
+  factor *= dev.speedUp
   // 1e-300 is now possible with max inverted BH, going below it would be possible with
   // an effarig glyph.
   factor = Math.clamp(factor, 1e-300, 1e300);
@@ -689,7 +690,7 @@ function passivePrestigeGen() {
     let infGen = DC.D0;
     if (BreakInfinityUpgrade.infinitiedGen.isBought) {
       // Multipliers are done this way to explicitly exclude ach87 and TS32
-      infGen = infGen.plus(0.5 * Time.deltaTimeMs / Math.clampMin(50, player.records.bestInfinity.time));
+      infGen = infGen.plus(Time.deltaTimeMs.div(2).div(Decimal.clampMin(50, player.records.bestInfinity.time)));
       infGen = infGen.timesEffectsOf(
         RealityUpgrade(5),
         RealityUpgrade(7),

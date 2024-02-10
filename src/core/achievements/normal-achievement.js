@@ -111,17 +111,17 @@ export const Achievements = {
   },
 
   get allRows() {
-    const count = Achievements.all.map(a => a.row).max();
+    const count = Achievements.all.map(a => a.row).nMax();
     return Achievements.rows(1, count);
   },
 
   get preRealityRows() {
-    const count = Achievements.preReality.map(a => a.row).max();
+    const count = Achievements.preReality.map(a => a.row).nMax();
     return Achievements.rows(1, count);
   },
 
   get prePelleRows() {
-    const count = Achievements.prePelle.map(a => a.row).max();
+    const count = Achievements.prePelle.map(a => a.row).nMax();
     return Achievements.rows(1, count);
   },
 

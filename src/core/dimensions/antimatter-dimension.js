@@ -243,8 +243,8 @@ export function buyAsManyAsYouCanBuy(tier) {
   const dimension = AntimatterDimension(tier);
   if (Laitela.continuumActive || !dimension.isAvailableForPurchase || !dimension.isAffordable) return false;
   const howMany = dimension.howManyCanBuy;
-  console.log(tier)
-  console.log(howMany)
+  // console.log(tier)
+  //console.log(howMany)
   const cost = dimension.cost.times(howMany);
 
   if (tier === 8 && Enslaved.isRunning) return buyOneDimension(8);
@@ -298,8 +298,8 @@ export function buyMaxDimension(tier, bulk = Infinity) {
 
   // Buy any remaining until 10 before attempting to bulk-buy
   if (dimension.currencyAmount.gte(cost)) {
-    console.log(dimension.tier)
-    console.log(cost)
+    // console.log(dimension.tier)
+    // console.log(cost)
     dimension.currencyAmount = dimension.currencyAmount.minus(cost);
     buyUntilTen(tier);
     bulkLeft = bulkLeft.sub(1);
@@ -327,9 +327,9 @@ export function buyMaxDimension(tier, bulk = Infinity) {
     return;
   }
   let buying = maxBought.quantity;
-  if (buying.gt(bulkLeft)) buying = new Decimal(bulkLeft);
-  dimension.amount = dimension.amount.plus(buying.times(10)).round();
-  dimension.bought = dimension.bought.add(buying.times(10));
+  if (buying.gt(Decimal.times(bulkLeft, 10))) buying = new Decimal(bulkLeft).times(10);
+  dimension.amount = dimension.amount.plus(buying).round();
+  dimension.bought = dimension.bought.add(buying);
   dimension.currencyAmount = dimension.currencyAmount.minus(Decimal.pow10(maxBought.logPrice));
 }
 
@@ -338,9 +338,9 @@ class AntimatterDimensionState extends DimensionState {
     super(() => player.dimensions.antimatter, tier);
     const BASE_COSTS = [null, DC.E1, DC.E2, DC.E4, DC.E6, DC.E9, DC.E13, DC.E18, DC.E24];
     this._baseCost = BASE_COSTS[tier];
-    console.log(tier)
-    console.log(BASE_COSTS)
-    console.log(this._baseCost)
+    // console.log(tier)
+    // console.log(BASE_COSTS)
+    // console.log(this._baseCost)
     const BASE_COST_MULTIPLIERS = [null, DC.E3, DC.E4, DC.E5, DC.E6, DC.E8, DC.E10, DC.E12, DC.E15];
     this._baseCostMultiplier = BASE_COST_MULTIPLIERS[tier];
     const C6_BASE_COSTS = [null, DC.E1, DC.E2, DC.E2, DC.E2.times(5), DC.E3.times(2.5), DC.E4.times(2), DC.E5.times(2), DC.E6.times(4)];

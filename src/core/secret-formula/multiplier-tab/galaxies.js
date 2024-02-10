@@ -33,7 +33,7 @@ export const galaxies = {
       rg *= (1 + Effects.sum(TimeStudy(132), TimeStudy(133)));
       rg += Replicanti.galaxies.extra;
       rg += Math.min(Replicanti.galaxies.bought, ReplicantiUpgrade.galaxies.value) *
-          Effects.sum(EternityChallenge(8).reward);
+          Effectsk(EternityChallenge(8).reward);
       return Decimal.pow10(rg);
     },
     isActive: () => Replicanti.areUnlocked,

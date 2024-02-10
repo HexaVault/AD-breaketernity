@@ -1226,6 +1226,6 @@ export const migrations = {
 
   patchPostReality(saveData) {
     // Plus 1 because this the threshold is exclusive (it migrates up to but not including the maxVersion)
-    return this.patch(saveData, Object.keys(migrations.patches).map(k => Number(k)).max() + 1);
+    return this.patch(saveData, Object.keys(migrations.patches).map(k => Number(k)).nMax() + 1);
   }
 };

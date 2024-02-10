@@ -24,7 +24,7 @@ export default {
       multiplier: new Decimal(0),
       baseAmount: new Decimal(0),
       amount: new Decimal(0),
-      purchases: 0,
+      purchases: new Decimal(0),
       rateOfChange: new Decimal(0),
       isAutobuyerUnlocked: false,
       cost: new Decimal(0),
@@ -86,8 +86,8 @@ export default {
       this.isUnlocked = dimension.isUnlocked;
       this.canUnlock = dimension.canUnlock;
       this.multiplier.copyFrom(dimension.multiplier);
-      this.baseAmount = dimension.baseAmount;
-      this.purchases = dimension.purchases;
+      this.baseAmount.copyFrom(dimension.baseAmount);
+      this.purchases.copyFrom(dimension.purchases);
       this.amount.copyFrom(dimension.amount);
       this.rateOfChange.copyFrom(dimension.rateOfChange);
       this.isAutobuyerUnlocked = Autobuyer.infinityDimension(tier).isUnlocked;

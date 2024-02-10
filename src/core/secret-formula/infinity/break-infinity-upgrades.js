@@ -31,14 +31,14 @@ export const breakInfinityUpgrades = {
     id: "totalMult",
     cost: 1e4,
     description: "Antimatter Dimensions gain a multiplier based on total antimatter produced",
-    effect: () => Math.pow(player.records.totalAntimatter.exponent + 1, 0.5),
+    effect: () => Decimal.pow(player.records.totalAntimatter.log10().add(1), 0.5),
     formatEffect: value => formatX(value, 2, 2)
   },
   currentAMMult: {
     id: "currentMult",
     cost: 5e4,
     description: "Antimatter Dimensions gain a multiplier based on current antimatter",
-    effect: () => Math.pow(Currency.antimatter.exponent + 1, 0.5),
+    effect: () => Decimal.pow(Currency.antimatter.value.log10().add(1), 0.5),
     formatEffect: value => formatX(value, 2, 2)
   },
   galaxyBoost: {
@@ -51,7 +51,7 @@ export const breakInfinityUpgrades = {
     id: "infinitiedMult",
     cost: 1e5,
     description: "Antimatter Dimensions gain a multiplier based on Infinities",
-    effect: () => 1 + Currency.infinitiesTotal.value.pLog10() * 10,
+    effect: () => Currency.infinitiesTotal.value.absLog10().times(10).add(1),
     formatEffect: value => formatX(value, 2, 2)
   },
   achievementMult: {
@@ -84,7 +84,7 @@ export const breakInfinityUpgrades = {
         Ra.unlocks.continuousTTBoost.effects.infinity
       );
       infinities = infinities.times(getAdjustedGlyphEffect("infinityinfmult"));
-      const timeStr = Time.bestInfinity.totalMilliseconds <= 50
+      const timeStr = Time.bestInfinity.totalMilliseconds.lte(50)
         ? `${TimeSpan.fromMilliseconds(new Decimal(100)).toStringShort()} (capped)`
         : `${Time.bestInfinity.times(2).toStringShort()}`;
       return `${quantify("Infinity", infinities)} every ${timeStr}`;

@@ -174,6 +174,30 @@ Array.prototype.mapToObject = function(keyFun, valueFun) {
 Array.dimensionTiers = Array.range(1, 8);
 
 /**
+ * @returns {Number}
+ */
+Array.prototype.nSum = function () {
+  if (this.length === 0) return 0
+  return this.reduce(Number.sumReducer)
+}
+
+/**
+ * @returns {Number}
+ */
+Array.prototype.nMax = function () {
+  if (this.length === 0) return 0
+  return this.reduce((a, b) => Math.max(a, b))
+}
+
+/**
+ * @returns {Number}
+ */
+Array.prototype.nMin = function () {
+  if (this.length === 0) return 0
+  return this.reduce((a, b) => Math.min(a, b))
+}
+
+/**
  * @returns {Decimal}
  */
 Array.prototype.sum = function() {
