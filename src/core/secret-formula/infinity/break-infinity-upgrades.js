@@ -38,7 +38,7 @@ export const breakInfinityUpgrades = {
     id: "currentMult",
     cost: 5e4,
     description: "Antimatter Dimensions gain a multiplier based on current antimatter",
-    effect: () => Decimal.pow(Currency.antimatter.value.log10().add(1), 0.5),
+    effect: () => Decimal.pow(Currency.antimatter.value.max(1).log10().add(1), 0.5),
     formatEffect: value => formatX(value, 2, 2)
   },
   galaxyBoost: {

@@ -51,16 +51,16 @@ export function getTickSpeedMultiplier() {
   }
   let baseMultiplier = 0.8;
   if (NormalChallenge(5).isRunning) baseMultiplier = 0.83;
-  galaxies -= 2;
-  galaxies *= effects;
-  galaxies *= getAdjustedGlyphEffect("cursedgalaxies");
-  galaxies *= getAdjustedGlyphEffect("realitygalaxies");
-  galaxies *= 1 + ImaginaryUpgrade(9).effectOrDefault(0);
-  if (Pelle.isDoomed) galaxies *= 0.5;
+  galaxies = galaxies.sub(2);
+  galaxies = galaxies.times(effects);
+  galaxies = galaxies.times(getAdjustedGlyphEffect("cursedgalaxies"));
+  galaxies = galaxies.times(getAdjustedGlyphEffect("realitygalaxies"));
+  galaxies = galaxies.times(1 + ImaginaryUpgrade(9).effectOrDefault(0));
+  if (Pelle.isDoomed) galaxies = galaxies.div(2);
 
-  galaxies *= Pelle.specialGlyphEffect.power;
+  galaxies = galaxies.times(Pelle.specialGlyphEffect.power);
   const perGalaxy = DC.D0_965;
-  return perGalaxy.pow(galaxies - 2).times(baseMultiplier);
+  return perGalaxy.pow(galaxies.sub(2)).times(baseMultiplier);
 }
 
 export function buyTickSpeed() {
