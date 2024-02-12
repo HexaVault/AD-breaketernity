@@ -192,7 +192,7 @@ export function addInfinityTime(time, realTime, ip, infinities) {
 export function resetInfinityRuns() {
   player.records.recentInfinities = Array.from(
     { length: 10 },
-    () => [Number.MAX_VALUE, Number.MAX_VALUE, DC.D1, DC.D1, ""]
+    () => [DC.BEMAX, DC.BEMAX, DC.D1, DC.D1, ""]
   );
   GameCache.bestRunIPPM.invalidate();
 }
@@ -224,7 +224,7 @@ export function addEternityTime(time, realTime, ep, eternities) {
 export function resetEternityRuns() {
   player.records.recentEternities = Array.from(
     { length: 10 },
-    () => [Number.MAX_VALUE, Number.MAX_VALUE, DC.D1, DC.D1, "", DC.D0]
+    () => [DC.BEMAX, DC.BEMAX, DC.D1, DC.D1, "", DC.D0]
   );
   GameCache.averageRealTimePerEternity.invalidate();
 }
@@ -569,7 +569,7 @@ export function gameLoop(passDiff, options = {}) {
   AntimatterDimensions.tick(diff);
 
   const gain = Decimal.clampMin(FreeTickspeed.fromShards(Currency.timeShards.value).newAmount.sub(player.totalTickGained), 0);
-  player.totalTickGained.add(gain);
+  player.totalTickGained = player.totalTickGained.add(gain);
 
   updatePrestigeRates();
   tryCompleteInfinityChallenges();

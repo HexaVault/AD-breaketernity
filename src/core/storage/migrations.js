@@ -1,4 +1,5 @@
 import { deepmergeAll } from "@/utility/deepmerge";
+import { beMigration } from "./be-migrations";
 
 // WARNING: Don't use state accessors and functions from global scope here, that's not safe in long-term
 export const migrations = {
@@ -404,10 +405,12 @@ export const migrations = {
         }
       }
     },
-  88: player => {
-    player.reality.imCap = new Decimal(player.reality.iMCap)
-    player.reality.imaginaryMachines = new Decimal(player.reality.imaginaryMachines)
-  }
+  83: player => { // 83 is used because 8 = B, and 3 = E, so 83 = BE, short for BE port. Recommended to start any modded migrations at 100.
+    beMigration(player)
+  },
+  90.00001: player => { // This is here just to fix my own saves, ignore
+    beMigration(player)
+  },
   },
 
   normalizeTimespans(player) {

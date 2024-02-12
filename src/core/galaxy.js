@@ -47,15 +47,15 @@ export class Galaxy {
     const type = Galaxy.typeAt(galaxies);
 
     if (type === GALAXY_TYPE.DISTANT && EternityChallenge(5).isRunning) {
-      amount += Math.pow(galaxies, 2) + galaxies;
+      amount = amount.add(Decimal.pow(galaxies, 2).add(galaxies));
     } else if (type === GALAXY_TYPE.DISTANT || type === GALAXY_TYPE.REMOTE) {
       const galaxyCostScalingStart = this.costScalingStart;
-      const galaxiesBeforeDistant = Math.clampMin(galaxies - galaxyCostScalingStart + 1, 0);
-      amount += Math.pow(galaxiesBeforeDistant, 2) + galaxiesBeforeDistant;
+      const galaxiesBeforeDistant = Decimal.clampMin(galaxies.sub(galaxyCostScalingStart.add(1)), 0);
+      amount = amount.add(Decimal.pow(galaxiesBeforeDistant, 2).add(galaxiesBeforeDistant))
     }
 
     if (type === GALAXY_TYPE.REMOTE) {
-      amount *= Math.pow(1.002, galaxies - (Galaxy.remoteStart - 1));
+      amount = amount.times(Decimal.pow(1.002, galaxies.sub(Galaxy.remoteStart.sub(1))));
     }
 
     amount = amount.sub(Effects.sum(InfinityUpgrade.resetBoost));

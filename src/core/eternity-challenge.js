@@ -309,19 +309,19 @@ export const EternityChallenges = {
   get completions() {
     return EternityChallenges.all
       .map(ec => ec.completions)
-      .sum();
+      .nSum();
   },
 
   get maxCompletions() {
     return EternityChallenges.all
       .map(ec => ec.maxCompletions)
-      .sum();
+      .nSum();
   },
 
   get remainingCompletions() {
     return EternityChallenges.all
       .map(ec => ec.remainingCompletions)
-      .sum();
+      .nSum();
   },
 
   autoComplete: {

@@ -20,7 +20,7 @@ export default {
         (Math.log(player.replicanti.chance + 1)), getReplicantiInterval(false)).dividedBy(Math.LN10);
 
       const replicantiAmount = Replicanti.amount;
-      const isAbove308 = Replicanti.isUncapped && replicantiAmount.log10() > LOG10_MAX_VALUE;
+      const isAbove308 = Replicanti.isUncapped && replicantiAmount.log10().gt(DLOG10_MAXNUM);
 
       if (isAbove308) {
         const postScale = Math.log10(ReplicantiGrowth.scaleFactor) / ReplicantiGrowth.scaleLog10;
@@ -31,7 +31,7 @@ export default {
         // The calculations to estimate time to next milestone of OoM based on game state, assumes that uncapped
         // replicanti growth scales as time^1/postScale, which turns out to be a reasonable approximation.
         const milestoneStep = Pelle.isDoomed ? 100 : 1000;
-        const nextMilestone = Decimal.pow10(milestoneStep * Math.floor(replicantiAmount.log10() / milestoneStep + 1));
+        const nextMilestone = Decimal.pow10(Decimal.floor(replicantiAmount.log10().div(milestoneStep).add(1)).div(milestoneStep));
         const coeff = Decimal.divide(updateRateMs / 1000, logGainFactorPerTick.times(postScale));
         const timeToThousand = coeff.times(nextMilestone.divide(replicantiAmount).pow(postScale).minus(1));
         // The calculation seems to choke and return zero if the time is too large, probably because of rounding issues
@@ -44,15 +44,14 @@ export default {
         this.remainingTimeText = "";
       }
 
-      const totalTime = LOG10_MAX_VALUE / (ticksPerSecond * log10GainFactorPerTick.toNumber());
-      let remainingTime = (LOG10_MAX_VALUE - replicantiAmount.log10()) /
-        (ticksPerSecond * log10GainFactorPerTick.toNumber());
-      if (remainingTime < 0) {
+      const totalTime = DLOG10_MAXNUM.div(log10GainFactorPerTick.times(ticksPerSecond));
+      let remainingTime = (DLOG10_MAXNUM.sub(replicantiAmount.log10())).div(log10GainFactorPerTick.times(ticksPerSecond));
+      if (remainingTime.lt(0)) {
         // If the cap is raised via Effarig Infinity but the player doesn't have TS192, this will be a negative number
-        remainingTime = 0;
+        remainingTime.eq(0);
       }
 
-      const galaxiesPerSecond = log10GainFactorPerTickUncapped.times(ticksPerSecond / LOG10_MAX_VALUE);
+      const galaxiesPerSecond = log10GainFactorPerTickUncapped.times(new Decimal(ticksPerSecond).div(DLOG10_MAXNUM));
       const timeFromZeroRG = galaxies => 50 * Math.log((galaxies + 49.5) / 49.5);
       let baseGalaxiesPerSecond, effectiveMaxRG, effectiveCurrentRG;
       if (RealityUpgrade(6).isBought && !Pelle.isDoomed) {
@@ -87,7 +86,7 @@ export default {
       }
 
 
-      if (Replicanti.galaxies.max > 0) {
+      if (Replicanti.galaxies.max.gt(0)) {
         // If the player has max RGs, don't display the "You are gaining blah" text
         if (player.replicanti.galaxies === Replicanti.galaxies.max) {
           this.galaxyText = "You have reached the maximum amount of Replicanti Galaxies";

@@ -36,7 +36,7 @@ export function replicantiGalaxy(auto) {
   if (!Replicanti.galaxies.canBuyMore) return;
   const galaxyGain = Replicanti.galaxies.gain;
   if (galaxyGain < 1) return;
-  player.replicanti.timer = 0;
+  player.replicanti.timer = DC.D0;
   Replicanti.amount = Achievement(126).isUnlocked && !Pelle.isDoomed
     ? Decimal.pow10(Replicanti.amount.log10() - LOG10_MAX_VALUE * galaxyGain)
     : DC.D1;
@@ -61,7 +61,7 @@ function fastReplicantiBelow308(log10GainFactor, isAutobuyerActive) {
   // Checking for uncapped equaling zero is because Decimal.pow returns zero for overflow for some reason
   if (log10GainFactor.gt(Number.MAX_VALUE) || uncappedAmount.eq(0)) {
     if (shouldBuyRG) {
-      addReplicantiGalaxies(Replicanti.galaxies.max - player.replicanti.galaxies);
+      addReplicantiGalaxies(Replicanti.galaxies.max.sub(player.replicanti.galaxies));
     }
     Replicanti.amount = replicantiCap();
     // Basically we've used nothing.
@@ -69,18 +69,18 @@ function fastReplicantiBelow308(log10GainFactor, isAutobuyerActive) {
   }
 
   if (!shouldBuyRG) {
-    const remainingGain = log10GainFactor.minus(replicantiCap().log10() - Replicanti.amount.log10()).clampMin(0);
+    const remainingGain = log10GainFactor.minus(replicantiCap().log10().sub(Replicanti.amount.log10())).clampMin(0);
     Replicanti.amount = Decimal.min(uncappedAmount, replicantiCap());
     return remainingGain;
   }
 
   const gainNeededPerRG = DC.NUMMAX.log10();
   const replicantiExponent = log10GainFactor.toNumber() + Replicanti.amount.log10();
-  const toBuy = Math.floor(Math.min(replicantiExponent / gainNeededPerRG,
-    Replicanti.galaxies.max - player.replicanti.galaxies));
-  const maxUsedGain = gainNeededPerRG * toBuy + replicantiCap().log10() - Replicanti.amount.log10();
+  const toBuy = Decimal.floor(Decimal.min(replicantiExponent.div(gainNeededPerRG),
+    Replicanti.galaxies.max.sub(player.replicanti.galaxies)));
+  const maxUsedGain = gainNeededPerRG.times(toBuy).add(replicantiCap().log10()).sub(Replicanti.amount.log10());
   const remainingGain = log10GainFactor.minus(maxUsedGain).clampMin(0);
-  Replicanti.amount = Decimal.pow10(replicantiExponent - gainNeededPerRG * toBuy)
+  Replicanti.amount = Decimal.pow10(replicantiExponent.sub(gainNeededPerRG.times(toBuy)))
     .clampMax(replicantiCap());
   addReplicantiGalaxies(toBuy);
   return remainingGain;
@@ -181,7 +181,7 @@ export function replicantiLoop(diff) {
   // calculation is skipped if there's more than 100 replicanti ticks per game tick to reduce round-off problems.
   let tickCount = Decimal.divide(diff.add(player.replicanti.timer), interval);
   if (tickCount.lt(100)) player.replicanti.timer = tickCount.minus(tickCount.floor()).times(interval);
-  else player.replicanti.timer = 0;
+  else player.replicanti.timer = DC.D0;
   tickCount = tickCount.floor();
 
   const singleTickAvg = Replicanti.amount.times(player.replicanti.chance);
@@ -233,7 +233,7 @@ export function replicantiLoop(diff) {
 
     // The batching might use partial ticks; we add the rest back to the timer so it gets used next loop
     const leftover = binomialTicks - Math.floor(binomialTicks);
-    player.replicanti.timer += interval.times(leftover).toNumber();
+    player.replicanti.timer = player.replicanti.timer.add(interval.times(leftover));
   } else if (tickCount.eq(1)) {
     // Single tick: Take a single binomial sample to properly simulate replicanti growth with randomness
     const reproduced = binomialDistribution(Replicanti.amount, player.replicanti.chance);
@@ -500,7 +500,7 @@ export const Replicanti = {
     player.replicanti = {
       unl: unlocked,
       amount: unlocked ? DC.D1 : DC.D0,
-      timer: 0,
+      timer: DC.D0,
       chance: 0.01,
       chanceCost: DC.E150,
       interval: 1000,
@@ -516,7 +516,7 @@ export const Replicanti = {
     if (freeUnlock || Currency.infinityPoints.gte(cost)) {
       if (!freeUnlock) Currency.infinityPoints.subtract(cost);
       player.replicanti.unl = true;
-      player.replicanti.timer = 0;
+      player.replicanti.timer = DC.D0;
       Replicanti.amount = DC.D1;
     }
   },

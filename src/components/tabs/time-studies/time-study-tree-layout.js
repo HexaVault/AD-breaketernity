@@ -172,8 +172,8 @@ export class TimeStudyTreeLayout {
       new TimeStudyConnection(TS(11), enslavedStudy)
     );
 
-    this.width = this.rows.map(row => row.width).max();
-    const heightNoSpacing = this.rows.map(r => r.layout.itemHeight).sum();
+    this.width = this.rows.map(row => row.width).nMax();
+    const heightNoSpacing = this.rows.map(r => r.layout.itemHeight).nSum();
     this.height = heightNoSpacing + (this.rows.length - 1) * this.spacing;
 
     for (const study of this.studies) {
@@ -191,7 +191,7 @@ export class TimeStudyTreeLayout {
 
   itemPosition(row) {
     const rows = this.rows.slice(0, row);
-    const heightNoSpacing = rows.map(r => r.layout.itemHeight).sum();
+    const heightNoSpacing = rows.map(r => r.layout.itemHeight).nSum();
     return heightNoSpacing + rows.length * this.spacing;
   }
 

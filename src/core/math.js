@@ -6,6 +6,7 @@ import { DC } from "./constants";
 /* eslint-disable max-params */
 
 window.LOG10_MAX_VALUE = Math.log10(Number.MAX_VALUE);
+window.DLOG10_MAXNUM = Decimal.log10(Number.MAX_VALUE);
 window.LN_SQRT_2_PI = 0.5 * Math.log(2 * Math.PI);
 window.LOG10_2 = Math.log10(2);
 window.LOG10_E = Math.log10(Math.E);
