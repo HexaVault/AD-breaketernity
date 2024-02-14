@@ -57,7 +57,7 @@ export const ecTimeStudies = [
     secondary: {
       resource: "Antimatter Galaxies",
       current: () => player.galaxies,
-      required: completions => 160 + Math.min(completions, 4) * 14,
+      required: completions => Decimal.min(completions, 4).times(14).add(160),
       formatValue: formatInt
     }
   },
@@ -69,7 +69,7 @@ export const ecTimeStudies = [
     secondary: {
       resource: "Replicanti Galaxies",
       current: () => player.replicanti.galaxies,
-      required: completions => 40 + Math.min(completions, 4) * 5,
+      required: completions => Decimal.min(completions, 4).times(5).add(40),
       formatValue: formatInt
     }
   },

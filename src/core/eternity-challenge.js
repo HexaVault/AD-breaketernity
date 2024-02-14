@@ -10,7 +10,7 @@ export function startEternityChallenge() {
   Replicanti.reset();
   resetChallengeStuff();
   AntimatterDimensions.reset();
-  player.replicanti.galaxies = 0;
+  player.replicanti.galaxies = DC.D0;
   Currency.infinityPoints.reset();
   InfinityDimensions.resetAmount();
   player.records.bestInfinity.bestIPminEternity = DC.D0;
