@@ -1,6 +1,7 @@
 <script>
 import { MatterScale } from "./matter-scale";
 import PrimaryButton from "@/components/PrimaryButton";
+import { DC } from "../../../core/constants";
 
 export default {
   name: "StatisticsTab",
