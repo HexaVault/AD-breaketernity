@@ -20,13 +20,13 @@ export default {
       isEnslavedRunning: false,
       isAnyAutobuyerUnlocked: false,
       conversionRate: 0,
-      nextDimCapIncrease: 0,
+      nextDimCapIncrease: new Decimal(0),
       tesseractCost: new Decimal(0),
-      totalDimCap: 0,
+      totalDimCap: new Decimal(0),
       canBuyTesseract: false,
       enslavedCompleted: false,
-      boughtTesseracts: 0,
-      extraTesseracts: 0,
+      boughtTesseracts: new Decimal(0),
+      extraTesseracts: new Decimal(0),
       creditsClosed: false,
       showLockedDimCostNote: true,
     };
@@ -62,13 +62,13 @@ export default {
       }
       this.isEnslavedRunning = Enslaved.isRunning;
       this.isAnyAutobuyerUnlocked = Autobuyer.infinityDimension(1).isUnlocked;
-      this.nextDimCapIncrease = Tesseracts.nextTesseractIncrease;
+      this.nextDimCapIncrease.copyFrom(Tesseracts.nextTesseractIncrease);
       this.tesseractCost.copyFrom(Tesseracts.nextCost);
-      this.totalDimCap = InfinityDimensions.totalDimCap;
+      this.totalDimCap.copyFrom(InfinityDimensions.totalDimCap);
       this.canBuyTesseract = Tesseracts.canBuyTesseract;
       this.enslavedCompleted = Enslaved.isCompleted;
-      this.boughtTesseracts = Tesseracts.bought;
-      this.extraTesseracts = Tesseracts.extra;
+      this.boughtTesseracts.copyFrom(Tesseracts.bought);
+      this.extraTesseracts.copyFrom(Tesseracts.extra);
       this.creditsClosed = GameEnd.creditsEverClosed;
     },
     maxAll() {

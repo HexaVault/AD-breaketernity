@@ -274,21 +274,19 @@ window.LinearCostScaling = class LinearCostScaling {
    * @param {Number} maxPurchases max amount of purchases
    * @param {Boolean} free signifies if the purchase is free -> if we only need to consider the last cost
    */
-  constructor(resourcesAvailable, initialCost, costMultiplier, maxPurchases = Number.MAX_SAFE_INTEGER, free = false) {
+  constructor(resourcesAvailable, initialCost, costMultiplier, maxPurchases = DC.BEMAX, free = false) {
     if (free) {
-      this._purchases = Math.clampMax(Math.floor(
-        resourcesAvailable.div(initialCost).log10() /
-        Math.log10(costMultiplier) + 1), maxPurchases);
+      this._purchases = Decimal.min(Math.floor(
+        resourcesAvailable.div(initialCost).log10().div(Math.log10(costMultiplier).add(1))), maxPurchases);
     } else {
-      this._purchases = Math.clampMax(Math.floor(
-        resourcesAvailable.mul(costMultiplier - 1).div(initialCost).add(1).log10() /
-        Math.log10(costMultiplier)), maxPurchases);
+      this._purchases = Decimal.min(Decimal.floor(
+        resourcesAvailable.mul(costMultiplier.sub(1)).div(initialCost).add(1).log10().div(Decimal.log10(costMultiplier))), maxPurchases);
     }
     this._totalCostMultiplier = Decimal.pow(costMultiplier, this._purchases);
     if (free) {
-      this._totalCost = initialCost.mul(Decimal.pow(costMultiplier, this._purchases - 1));
+      this._totalCost = initialCost.mul(Decimal.pow(costMultiplier, this._purchases.sub(1)));
     } else {
-      this._totalCost = initialCost.mul(Decimal.sub(1, this._totalCostMultiplier)).div(1 - costMultiplier);
+      this._totalCost = initialCost.mul(Decimal.sub(1, this._totalCostMultiplier)).div(DC.D1.sub(costMultiplier));
     }
   }
 

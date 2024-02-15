@@ -271,36 +271,24 @@ export const Tesseracts = {
   },
 
   get extra() {
-    return this.bought * (SingularityMilestone.tesseractMultFromSingularities.effectOrDefault(1) - 1);
-  },
+    return this.bought.times(DC.DM1.add(SingularityMilestone.tesseractMultFromSingularities.effectOrDefault(1)));
+  }, // -1 + x = x - 1, so do this to reduce making more decimals than necessary
 
   get effectiveCount() {
-    return this.bought + this.extra;
+    return this.bought.add(this.extra);
   },
 
   buyTesseract() {
     if (!this.canBuyTesseract) return;
     if (GameEnd.creditsEverClosed) return;
-    player.celestials.enslaved.tesseracts++;
+    player.celestials.enslaved.tesseracts = player.celestials.enslaved.tesseracts.add(1);
   },
 
-  // This used to be a somewhat complicated function which spaced costs out super-exponentially, but the decision to
-  // hardcap all resources (as feasible) to e9e15 meant that in practice only the first 10 or so could actually be
-  // obtained. Changing the function to a hardcoded array is better for understanding the code since it's small.
-  // Note that costs go a bit past e9e15 because while AM is capped at e9e15, most other resources (including IP)
-  // aren't and can go a tiny bit past it.
-  // The formula is a hardcoded 2, 4, 6 followed by successive multiplication by 2x, 4x, 6x, and so on.
-  BASE_COSTS: [new Decimal(2), new Decimal(4), new Decimal(6), new Decimal(12), new Decimal(48), new Decimal(288), new Decimal(2304), new Decimal(23040), new Decimal(276480), new Decimal(3870720), new Decimal(61931520), new Decimal(1114767360)],
-  CostScaler: [0, 0, 0, 2, 4, 6, 8, 10, 12, 14, 16, 18],
+  // This used to be an array, but tess costs are just a super easy thing to calculate in BE so i dont care
+
   costs(index) {
-    // In practice this should never happen more than once, but have it just to be safe
-    while (index >= this.BASE_COSTS.length) {
-      let TesseractScaler = this.CostScaler[Math.floor(index - 1)] + 2;
-      let nextTesseractCost = this.CostScaler[Math.floor(index - 1)] * TesseractScaler;
-      this.BASE_COSTS.push(nextTesseractCost)
-      this.CostScaler.push(TesseractScaler)
-    }
-    return Decimal.pow10(this.BASE_COSTS[Math.floor(index)].times(1e7));
+    if (index.lte(3)) return Decimal.pow10(index.times(2e7))
+    return Decimal.pow10((index.sub(3)).factorial().times(Decimal.pow(2, index.sub(3))).times(6e7))
   },
 
   get nextCost() {
@@ -312,13 +300,13 @@ export const Tesseracts = {
   },
 
   capIncrease(count = this.bought) {
-    const totalCount = count * SingularityMilestone.tesseractMultFromSingularities.effectOrDefault(1);
-    const base = totalCount < 1 ? 0 : 250e3 * Math.pow(2, totalCount);
-    return base * (AlchemyResource.boundless.effectValue + 1);
+    const totalCount = count.times(SingularityMilestone.tesseractMultFromSingularities.effectOrDefault(1));
+    const base = totalCount.lt(1) ? DC.D0 : Decimal.pow(2, totalCount).times(2.5e5);
+    return base.times(DC.D1.add(AlchemyResource.boundless.effectValue));
   },
 
   get nextTesseractIncrease() {
-    return this.capIncrease(this.bought + 1) - this.capIncrease(this.bought);
+    return this.capIncrease(this.bought.add(1)).sub(this.capIncrease(this.bought));
   },
 };
 

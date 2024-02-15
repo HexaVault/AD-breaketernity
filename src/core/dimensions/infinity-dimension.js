@@ -213,10 +213,10 @@ class InfinityDimensionState extends DimensionState {
 
   get purchaseCap() {
     if (Enslaved.isRunning) {
-      return 1;
+      return DC.D1;
     }
-    return InfinityDimensions.capIncrease + (this.tier === 8
-      ? Number.MAX_VALUE
+    return InfinityDimensions.capIncrease.add(this.tier === 8
+      ? DC.BEMAX
       : InfinityDimensions.HARDCAP_PURCHASES);
   }
 
@@ -286,9 +286,9 @@ class InfinityDimensionState extends DimensionState {
       return false;
     }
 
-    let purchasesUntilHardcap = this.purchaseCap - this.purchases;
+    let purchasesUntilHardcap = this.purchaseCap.sub(this.purchases);
     if (EternityChallenge(8).isRunning) {
-      purchasesUntilHardcap = Math.clampMax(purchasesUntilHardcap, player.eterc8ids);
+      purchasesUntilHardcap = Decimal.clampMax(purchasesUntilHardcap, player.eterc8ids);
     }
 
     const costScaling = new LinearCostScaling(
@@ -298,16 +298,16 @@ class InfinityDimensionState extends DimensionState {
       purchasesUntilHardcap
     );
 
-    if (costScaling.purchases <= 0) return false;
+    if (costScaling.purchases.lte(0)) return false;
 
     Currency.infinityPoints.purchase(costScaling.totalCost);
     this.cost = this.cost.times(costScaling.totalCostMultiplier);
     // Because each ID purchase gives 10 IDs
-    this.amount = this.amount.plus(10 * costScaling.purchases);
+    this.amount = this.amount.plus(costScaling.purchases.times(10));
     this.baseAmount = DC.E1.times(costScaling.purchases()).add(this.baseAmount);
 
     if (EternityChallenge(8).isRunning) {
-      player.eterc8ids -= costScaling.purchases;
+      player.eterc8ids -= costScaling.purchases.toNumber();
     }
     return true;
   }
@@ -325,7 +325,7 @@ export const InfinityDimensions = {
    * @type {InfinityDimensionState[]}
    */
   all: InfinityDimension.index.compact(),
-  HARDCAP_PURCHASES: 2000000,
+  HARDCAP_PURCHASES: new Decimal(200000),
 
   unlockNext() {
     if (InfinityDimension(8).isUnlocked) return;
@@ -352,11 +352,11 @@ export const InfinityDimensions = {
   },
 
   get capIncrease() {
-    return Math.floor(Tesseracts.capIncrease());
+    return Decimal.floor(Tesseracts.capIncrease());
   },
 
   get totalDimCap() {
-    return this.HARDCAP_PURCHASES + this.capIncrease;
+    return this.HARDCAP_PURCHASES.add(this.capIncrease);
   },
 
   canBuy() {

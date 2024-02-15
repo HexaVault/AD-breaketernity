@@ -408,7 +408,7 @@ export const migrations = {
   83: player => { // 83 is used because 8 = B, and 3 = E, so 83 = BE, short for BE port. Recommended to start any modded migrations at 100.
     beMigration(player)
   },
-  90.00001: player => { // This is here just to fix my own saves, ignore
+  90.00002: player => { // This is here just to fix my own saves, ignore
     beMigration(player)
   },
   },
