@@ -456,7 +456,7 @@ export const normalAchievements = [
     checkRequirement: () =>
       NormalChallenge(2).isOnlyActiveChallenge &&
       AntimatterDimension(1).amount.eq(1) &&
-      DimBoost.purchasedBoost.eq(0) &&
+      DimBoost.purchasedBoosts.eq(0) &&
       player.galaxies.eq(0),
     checkEvent: GAME_EVENT.BIG_CRUNCH_BEFORE,
     get reward() { return `1st Antimatter Dimensions are ${formatInt(3)} times stronger.`; },
