@@ -405,6 +405,13 @@ export const migrations = {
         }
       }
     },
+    24: player => {
+      // Automator constants didn't copy over properly across new games - retroactively fix bugged saves as well
+      const definedConstants = Object.keys(player.reality.automator.constants);
+      if (definedConstants.length !== player.reality.automator.constantSortOrder.length) {
+        player.reality.automator.constantSortOrder = [...definedConstants];
+      }
+    },
   83: player => { // 83 is used because 8 = B, and 3 = E, so 83 = BE, short for BE port. Recommended to start any modded migrations at 100.
     beMigration(player)
   },
