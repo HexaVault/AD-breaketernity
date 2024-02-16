@@ -51,7 +51,7 @@ export const breakInfinityUpgrades = {
     id: "infinitiedMult",
     cost: 1e5,
     description: "Antimatter Dimensions gain a multiplier based on Infinities",
-    effect: () => Currency.infinitiesTotal.value.absLog10().times(10).add(1),
+    effect: () => Currency.infinitiesTotal.value.max(1).absLog10().times(10).add(1),
     formatEffect: value => formatX(value, 2, 2)
   },
   achievementMult: {

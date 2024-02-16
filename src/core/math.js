@@ -99,6 +99,73 @@ window.bulkBuyBinarySearch = function bulkBuyBinarySearch(money, costInfo, alrea
   return { quantity: canBuy, purchasePrice: totalCost };
 };
 
+ /**
+ * @typedef {Object} dBBBS_result
+ * @property {Decimal} quantity amount purchased (relative)
+ * @property {Decimal} purchasePrice amount that needs to be paid to get that
+ */
+
+/**
+ * dBBBS is the decimal version of bulkBuyBinarySearch
+ * Ironically i think this code might be better then bbbs for values that increment slowly due to the last bit of code
+ * But this is also decimal, so i highly advise against that
+ * 
+ * @param {Decimal} money Amount of currency available
+ * @param {Object} costInfo cost parameters:
+ * @param {function(Decimal): Decimal} costInfo.costFunction price of the n'th purchase (starting from 0)
+ * @param {Decimal} [costInfo.firstCost] Cost of the next purchase; this is usually available/cached. Will
+ *   be calculated from costFunction if not provided.
+ * @param {boolean} [costInfo.cumulative] (Defaults to true) specifies whether one must pay a cumulative
+ *   cost or just the highest cost.
+ * @param {Decimal} alreadyBought amount already purchased
+ * @returns {dBBBS_result | null}
+ */
+window.dBBBS = function dBBBS(money, costInfo, alreadyBought) {
+  const costFunction = costInfo.costFunction;
+  const firstCost = costInfo.firstCost === undefined ? costFunction(alreadyBought) : costInfo.firstCost;
+  const isCumulative = costInfo.cumulative === undefined ? true : costInfo.cumulative;
+  if (money.lt(firstCost)) return null;
+  // Attempt to find the max we can purchase. We know we can buy 1, so we try 2, 4, 8, etc
+  // to figure out the upper limit
+  let canBuy = new Decimal(15.95424252) // Have a mag at 15.95424252 - This means we wont drop mags for the next function, but this actual value is never internally used
+  let totalCost = new Decimal(9e15 - 1) // Smallest value possible
+  let cantBuy = Decimal.tetrate(10, 9e15).times(9e15 - 1)
+  let val = canBuy
+  while (Math.floor((cantBuy.layer + canBuy.layer) / 2) !== cantBuy) {
+    val.layer = Math.floor((cantBuy.layer + canBuy.layer) / 2)
+    if (costInfo.costFunction(val).gt(money)) {
+        cantBuy.layer = Math.floor((cantBuy.layer + canBuy.layer) / 2)
+    }
+    else {
+        canBuy.layer = Math.floor((cantBuy.layer + canBuy.layer) / 2)
+    }
+  }
+  while (!(cantBuy.mag.eq(val) || canBuy.mag.eq(val))) {
+    val.mag = canBuy.mag == 15.95424252 ? cantBuy.mag / 2 : (cantBuy.mag + canBuy.mag) / 2
+    val.layer = Math.floor((cantBuy.layer + canBuy.layer) / 2)
+    if (costInfo.costFunction(val).gt(money)) {
+        cantBuy.mag = (cantBuy.mag + canBuy.mag) / 2
+    }
+    else {
+        canBuy.mag = (cantBuy.mag + canBuy.mag) / 2
+    }
+  }
+  
+  val = canBuy
+  if (costInfo.cumulative) {
+    // If the layer > 0 this is far too insignificant to give a fuck about
+    if (canBuy.layer == 0) {
+        val = Decimal.max(canBuy.sub(100), 0) // go 100 purchases back or to 0. Anything lower shouldnt be significant
+        while (val.neq(canBuy) && totalCost.add(costInfo.costFunction(val)).gt(money)) {
+            totalCost = totalCost.add(costInfo.costFunction(val))
+            val = val.add(1)
+        }
+    }
+  } 
+  if (val.eq(canBuy)) totalCost = costInfo.costFunction(canBuy)
+  return { quantity: canBuy, purchasePrice: totalCost };
+};
+
 /**
  * LinearMultiplierScaling performs calculations for multipliers that scale up
  * linearly. The simplest case you might consider could be a factorial -- or something
