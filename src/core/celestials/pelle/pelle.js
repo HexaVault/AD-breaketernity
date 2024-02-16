@@ -441,4 +441,4 @@ export const PelleUpgrade = mapGameDataToObject(
 );
 
 PelleUpgrade.rebuyables = PelleUpgrade.all.filter(u => u.isRebuyable);
-PelleUpgrade.singles = PelleUpgrade.all.filter(u => !u.isRebuyable);
+PelleUpgrade.singles = PelleUpgrade.all.filter(u => !u.isRebuyable).sort((a, b) => a.cost - b.cost);
