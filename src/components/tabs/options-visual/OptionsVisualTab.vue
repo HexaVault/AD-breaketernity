@@ -7,6 +7,7 @@ import OptionsButton from "@/components/OptionsButton";
 import PrimaryToggleButton from "@/components/PrimaryToggleButton";
 import SelectNotationDropdown from "@/components/tabs/options-visual/SelectNotationDropdown";
 import SelectThemeDropdown from "@/components/tabs/options-visual/SelectThemeDropdown";
+import SelectSidebarDropdown from "@/components/tabs/options-visual/SelectSidebarDropdown";
 import UpdateRateSlider from "./UpdateRateSlider";
 
 export default {
@@ -18,22 +19,28 @@ export default {
     OptionsButton,
     OpenModalHotkeysButton,
     SelectThemeDropdown,
-    SelectNotationDropdown
+    SelectNotationDropdown,
+    SelectSidebarDropdown,
   },
   data() {
     return {
       theme: "",
       notation: "",
       commas: false,
+      sidebarResource: "",
       headerTextColored: true,
     };
   },
   computed: {
+    sidebarDB: () => GameDatabase.sidebarResources,
     themeLabel() {
       return `Theme: ${Themes.find(this.theme).displayName()}`;
     },
     notationLabel() {
       return `Notation: ${this.notation}`;
+    },
+    sidebarLabel() {
+      return `Sidebar (Modern UI): ${this.sidebarResource}`;
     },
     UILabel() {
       return `UI: ${this.$viewModel.newUI ? "Modern" : "Classic"}`;
@@ -54,6 +61,9 @@ export default {
       this.theme = Theme.currentName();
       this.notation = options.notation;
       this.commas = options.commas;
+      this.sidebarResource = player.options.sidebarResourceID === 0
+        ? "Latest Resource"
+        : this.sidebarDB.find(e => e.id === player.options.sidebarResourceID).optionName;
       this.headerTextColored = options.headerTextColored;
     },
   }
@@ -137,6 +147,16 @@ export default {
           class="o-primary-btn--option l-options-grid__button"
           label="Relative prestige gain text coloring:"
         />
+        <ExpandingControlBox
+          v-if="$viewModel.newUI"
+          class="l-options-grid__button c-options-grid__notations"
+          button-class="o-primary-btn o-primary-btn--option l-options-grid__notations-header"
+          :label="sidebarLabel"
+        >
+          <template #dropdown>
+            <SelectSidebarDropdown />
+          </template>
+        </ExpandingControlBox>
       </div>
       <OpenModalHotkeysButton />
     </div>

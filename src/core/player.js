@@ -775,6 +775,7 @@ window.player = {
       includeAnimated: true,
     },
     notation: "Mixed scientific",
+    sidebarResourceID: 0,
     retryChallenge: false,
     retryCelestial: false,
     showAllChallenges: false,
