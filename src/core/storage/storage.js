@@ -336,7 +336,7 @@ export const GameStorage = {
   // since these may cause the backup timer to be significantly behind
   resetBackupTimer() {
     const latestBackupTime = Object.values(this.lastBackupTimes).map(t => t && t.backupTimer).max();
-    player.backupTimer = Math.max(this.oldBackupTimer, player.backupTimer, latestBackupTime);
+    player.backupTimer = Math.max(this.oldBackupTimer, player.backupTimer, latestBackupTime.toNumber());
   },
 
   // Saves the current game state to the first reserve slot it finds
