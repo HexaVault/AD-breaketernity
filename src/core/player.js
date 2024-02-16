@@ -775,6 +775,10 @@ window.player = {
       includeAnimated: true,
     },
     notation: "Mixed scientific",
+    notationDigits: {
+      comma: 5,
+      notation: 9
+    },
     sidebarResourceID: 0,
     retryChallenge: false,
     retryCelestial: false,
@@ -787,7 +791,6 @@ window.player = {
     hotkeys: true,
     themeClassic: "Normal",
     themeModern: "Normal",
-    commas: true,
     updateRate: 33,
     newUI: true,
     offlineProgress: true,

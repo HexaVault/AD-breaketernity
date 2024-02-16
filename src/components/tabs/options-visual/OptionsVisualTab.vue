@@ -26,7 +26,6 @@ export default {
     return {
       theme: "",
       notation: "",
-      commas: false,
       sidebarResource: "",
       headerTextColored: true,
     };
@@ -47,10 +46,6 @@ export default {
     }
   },
   watch: {
-    commas(newValue) {
-      player.options.commas = newValue;
-      ADNotations.Settings.exponentCommas.show = newValue;
-    },
     headerTextColored(newValue) {
       player.options.headerTextColored = newValue;
     },
@@ -60,7 +55,6 @@ export default {
       const options = player.options;
       this.theme = Theme.currentName();
       this.notation = options.notation;
-      this.commas = options.commas;
       this.sidebarResource = player.options.sidebarResourceID === 0
         ? "Latest Resource"
         : this.sidebarDB.find(e => e.id === player.options.sidebarResourceID).optionName;
@@ -107,13 +101,12 @@ export default {
             <SelectNotationDropdown />
           </template>
         </ExpandingControlBox>
-        <PrimaryToggleButton
-          v-model="commas"
-          class="o-primary-btn--option l-options-grid__button"
-          label="Exponent formatting:"
-          on="Commas"
-          off="Notation"
-        />
+        <OptionsButton
+          class="o-primary-btn--option"
+          onclick="Modal.notation.show();"
+        >
+          Open Exponent Notation Options
+        </OptionsButton>
       </div>
       <div class="l-options-grid__row">
         <OptionsButton
