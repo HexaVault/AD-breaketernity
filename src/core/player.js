@@ -360,7 +360,7 @@ window.player = {
     previousRuns: {}
   },
   IPMultPurchases: 0,
-  version: 23,
+  version: 24,
   infinityPower: DC.D1,
   postC4Tier: 0,
   eternityPoints: DC.D0,
@@ -775,6 +775,11 @@ window.player = {
       includeAnimated: true,
     },
     notation: "Mixed scientific",
+    notationDigits: {
+      comma: 5,
+      notation: 9
+    },
+    sidebarResourceID: 0,
     retryChallenge: false,
     retryCelestial: false,
     showAllChallenges: false,
@@ -786,7 +791,6 @@ window.player = {
     hotkeys: true,
     themeClassic: "Normal",
     themeModern: "Normal",
-    commas: true,
     updateRate: 33,
     newUI: true,
     offlineProgress: true,

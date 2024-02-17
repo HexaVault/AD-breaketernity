@@ -266,6 +266,18 @@ export const Pelle = {
   get canDilateInPelle() {
     return this.cel.remnants >= this.remnantRequirementForDilation;
   },
+  
+  resetResourcesForDilation() {
+    this.cel.records.totalAntimatter = new Decimal("1e180000");
+    this.cel.records.totalInfinityPoints = new Decimal("1e60000");
+    Currency.eternityPoints.reset();
+    // Oddly specific number? Yes, it's roughly the amount of EP you have
+    // when starting dilation for the first time
+    // Since 5th strike previously did not reset your current EP the previous reset value was kind of useless which
+    // lead to some balancing problems, this hopefully prevents people starting dilation too early and getting
+    // softlocked, or starting it too late and getting not-softlocked.
+    this.cel.records.totalEternityPoints = new Decimal("1e1050");
+  },
 
   get remnantsGain() {
     let am = this.cel.records.totalAntimatter.plus(1).log10();
@@ -429,4 +441,4 @@ export const PelleUpgrade = mapGameDataToObject(
 );
 
 PelleUpgrade.rebuyables = PelleUpgrade.all.filter(u => u.isRebuyable);
-PelleUpgrade.singles = PelleUpgrade.all.filter(u => !u.isRebuyable);
+PelleUpgrade.singles = PelleUpgrade.all.filter(u => !u.isRebuyable).sort((a, b) => a.cost - b.cost);
