@@ -128,31 +128,53 @@ window.dBBBS = function dBBBS(money, costInfo, alreadyBought) {
   // Attempt to find the max we can purchase. We know we can buy 1, so we try 2, 4, 8, etc
   // to figure out the upper limit
   let canBuy = new Decimal(15.95424252) // Have a mag at 15.95424252 - This means we wont drop mags for the next function, but this actual value is never internally used
-  let totalCost = new Decimal(9e15 - 1) // Smallest value possible
+  let totalCost = new Decimal(0)
   let cantBuy = Decimal.tetrate(10, 9e15).times(9e15 - 1)
-  let val = canBuy
-  while (Math.floor((cantBuy.layer + canBuy.layer) / 2) !== cantBuy) {
+  let val = new Decimal(15.95424252)
+  val.layer = Math.floor((cantBuy.layer + canBuy.layer) / 2)
+  while (val.layer !== cantBuy.layer) {
+
+    let v = (costFunction(val).gt(money))
+    val.layer = Math.ceil((cantBuy.layer + canBuy.layer) / 2) // Stupid hack, i know, but if we dont do this the entire bit of code loops forever
+    let va = (costFunction(val).gt(money))
     val.layer = Math.floor((cantBuy.layer + canBuy.layer) / 2)
-    if (costInfo.costFunction(val).gt(money)) {
+
+    if (v || va) {
         cantBuy.layer = Math.floor((cantBuy.layer + canBuy.layer) / 2)
     }
-    else {
-        canBuy.layer = Math.floor((cantBuy.layer + canBuy.layer) / 2)
+
+    if (!(v || va)) {
+      canBuy.layer = Math.floor((cantBuy.layer + canBuy.layer) / 2)
     }
-  }
-  while (!(cantBuy.mag.eq(val) || canBuy.mag.eq(val))) {
-    val.mag = canBuy.mag == 15.95424252 ? cantBuy.mag / 2 : (cantBuy.mag + canBuy.mag) / 2
+
     val.layer = Math.floor((cantBuy.layer + canBuy.layer) / 2)
-    if (costInfo.costFunction(val).gt(money)) {
-        cantBuy.mag = (cantBuy.mag + canBuy.mag) / 2
+  }
+
+  console.log(val)
+  canBuy = new Decimal(0) // We want to see mag to 0, and since the code doesnt actually care about the code
+  cantBuy = new Decimal(9e15 - 1)
+  //console.log(cantBuy.mag)
+  //console.log((cantBuy.mag + canBuy.mag) / 2)
+  val.mag = ((cantBuy.mag + canBuy.mag) / 2) // No need to round till the end
+  while (cantBuy.mag !== val.mag) {
+
+    let v = (costInfo.costFunction(val).gt(money))
+    
+    console.log(val.mag)
+
+    if (v) {
+        cantBuy.mag = (cantBuy.layer + canBuy.layer) / 2
     }
-    else {
-        canBuy.mag = (cantBuy.mag + canBuy.mag) / 2
+
+    if (!v) {
+      canBuy.mag = (cantBuy.layer + canBuy.layer) / 2
     }
+
+    val.mag = ((cantBuy.mag + canBuy.mag) / 2) // No need to round till the end
   }
   
-  val = canBuy
-  if (costInfo.cumulative) {
+  val = canBuy.floor()
+  if (isCumulative) {
     // If the layer > 0 this is far too insignificant to give a fuck about
     if (canBuy.layer == 0) {
         val = Decimal.max(canBuy.sub(100), 0) // go 100 purchases back or to 0. Anything lower shouldnt be significant
@@ -161,7 +183,8 @@ window.dBBBS = function dBBBS(money, costInfo, alreadyBought) {
             val = val.add(1)
         }
     }
-  } 
+  }
+  val.sub(alreadyBought)
   if (val.eq(canBuy)) totalCost = costInfo.costFunction(canBuy)
   return { quantity: canBuy, purchasePrice: totalCost };
 };

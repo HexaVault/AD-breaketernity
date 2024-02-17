@@ -40,7 +40,7 @@ export class Galaxy {
       cumulative: false,
     }, player.galaxies);
     if (!bulk) throw new Error("Unexpected failure to calculate galaxy purchase");
-    return player.galaxies + bulk.quantity;
+    return player.galaxies.add(bulk.quantity);
   }
 
   static requirementAt(galaxies) {
