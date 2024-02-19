@@ -58,7 +58,7 @@ export const SecretAchievements = {
 
   get allRows() {
     const count = SecretAchievements.all.map(a => a.row).max();
-    return SecretAchievements.rows(1, count);
+    return SecretAchievements.rows(1, count.toNumber());
   },
 
   rows: (start, count) => Array.range(start, count).map(SecretAchievements.row),

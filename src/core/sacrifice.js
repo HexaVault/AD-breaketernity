@@ -103,7 +103,7 @@ export class Sacrifice {
     if (InfinityChallenge(2).isCompleted) {
       prePowerBoost = player.sacrificed;
     } else {
-      prePowerBoost = new Decimal(player.sacrificed.log10() / 10);
+      prePowerBoost = player.sacrificed.log10().div(10);
     }
 
     return prePowerBoost.clampMin(1).pow(this.sacrificeExponent);

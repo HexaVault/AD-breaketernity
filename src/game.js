@@ -157,10 +157,10 @@ export function requiredIPForEP(epAmount) {
 
 export function gainedGlyphLevel() {
   const glyphState = getGlyphLevelInputs();
-  let rawLevel = Math.floor(glyphState.rawLevel);
-  if (!isFinite(rawLevel)) rawLevel = 0;
-  let actualLevel = Math.floor(glyphState.actualLevel);
-  if (!isFinite(actualLevel)) actualLevel = 0;
+  let rawLevel = Decimal.floor(glyphState.rawLevel);
+  if (rawLevel.gte(DC.NUMMAX)) rawLevel = new Decimal();
+  let actualLevel = Decimal.floor(glyphState.actualLevel);
+  if (actualLevel.gte(DC.NUMMAX)) actualLevel = new Decimal();
   return {
     rawLevel,
     actualLevel

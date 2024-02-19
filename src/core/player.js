@@ -535,7 +535,7 @@ window.player = {
       forceUnlock: false,
       currentInfoPane: AutomatorPanels.INTRO_PAGE,
     },
-    achTimer: 0,
+    achTimer: new Decimal(),
     hasCheckedFilter: false,
   },
   blackHole: Array.range(0, 2).map(id => ({

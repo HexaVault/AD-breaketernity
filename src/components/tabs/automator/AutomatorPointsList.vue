@@ -103,7 +103,7 @@ export default {
       some of your Autobuyer settings.
       <br>
       The speed of the Automator gradually increases as you get more Realities. If unlocked right now,
-      it would run {{ format(1000 / automatorInterval, 2, 2) }} commands per real-time second.
+      it would run {{ format(/* temporary comment 1000 / */automatorInterval, 2, 2) }} commands per real-time second.
     </div>
   </div>
 </template>

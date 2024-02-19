@@ -204,7 +204,7 @@ export const AutoGlyphProcessor = {
 
 export function autoAdjustGlyphWeights() {
   const sources = getGlyphLevelSources();
-  const f = x => Math.pow(Math.clampMin(1, Math.log(5 * x)), 3 / 2);
+  const f = x => Decimal.pow(Decimal.clampMin(1, Decimal.log(5 * x)), 3 / 2);
   const totalWeight = Object.values(sources).map(s => f(s.value)).sum();
   const scaledWeight = key => 100 * f(sources[key].value) / totalWeight;
 
@@ -238,39 +238,39 @@ function getGlyphLevelSources() {
     : Currency.eternityPoints.value;
   eternityPoints = Decimal.max(player.records.thisReality.maxEP, eternityPoints);
   const epCoeff = 0.016;
-  const epBase = Decimal.pow(Decimal.max(1, eternityPoints.pLog10()), 0.5) * epCoeff;
+  const epBase = Decimal.pow(Decimal.max(1, eternityPoints.pLog10()), 0.5).mul(epCoeff);
   const replPow = 0.4 + getAdjustedGlyphEffect("replicationglyphlevel");
   const replCoeff = 0.025;
-  const replBase = Decimal.pow(Decimal.max(1, player.records.thisReality.maxReplicanti.log10()), replPow) * replCoeff;
+  const replBase = Decimal.pow(Decimal.max(1, player.records.thisReality.maxReplicanti.log10()), replPow).mul(replCoeff);
   const dtPow = 1.3 + getAdjustedGlyphEffect("realityDTglyph");
   const dtCoeff = 0.025;
-  const dtBase = Decimal.pow(Decimal.max(1, player.records.thisReality.maxDT.pLog10()), dtPow) * dtCoeff;
-  const eterBase = Effects.max(1, RealityUpgrade(18));
+  const dtBase = Decimal.pow(Decimal.max(1, player.records.thisReality.maxDT.pLog10()), dtPow).mul(dtCoeff);
+  const eterBase = Effects.max(new Decimal(1), RealityUpgrade(18));
   return {
     ep: {
       name: "EP",
       value: epBase,
-      coeff: epCoeff,
-      exp: 0.5,
+      coeff: new Decimal(epCoeff),
+      exp: new Decimal(0.5),
     },
     repl: {
       name: "Replicanti",
       value: replBase,
-      coeff: replCoeff,
-      exp: replPow,
+      coeff: new Decimal(replCoeff),
+      exp: new Decimal(replPow),
     },
     dt: {
       name: "DT",
       value: dtBase,
-      coeff: dtCoeff,
-      exp: dtPow,
+      coeff: new Decimal(dtCoeff),
+      exp: new Decimal(dtPow),
     },
     eternities: {
       name: "Eternities",
       value: eterBase,
       // These are copied from Reality Upgrade 18's gameDB entry
-      coeff: 0.45,
-      exp: 0.5,
+      coeff: new Decimal(0.45),
+      exp: new Decimal(0.5),
     }
   };
 }
@@ -307,21 +307,20 @@ export function getGlyphLevelInputs() {
   const weights = player.celestials.effarig.glyphWeights;
   const adjustFactor = (source, weight) => {
     const input = source.value;
-    const powEffect = Math.pow(4 * weight, blendExp);
-    source.value = (input > 0 ? Math.pow(input * preScale, powEffect) / preScale : 0);
-    source.coeff = Math.pow(preScale, powEffect - 1) * Math.pow(source.coeff, powEffect);
-    source.exp *= powEffect;
+    const powEffect = Decimal.pow(4 * weight, blendExp);
+    source.value = (input.gt(0) ? Decimal.pow(input.mul(preScale), powEffect).div(preScale) : new Decimal());
+    source.coeff = Decimal.pow(preScale, powEffect.sub(1)).mul(Decimal.pow(source.coeff, powEffect));
+    source.exp = source.exp.mul(powEffect);
   };
   adjustFactor(sources.ep, weights.ep / 100);
   adjustFactor(sources.repl, weights.repl / 100);
   adjustFactor(sources.dt, weights.dt / 100);
   adjustFactor(sources.eternities, weights.eternities / 100);
-  const shardFactor = Ra.unlocks.relicShardGlyphLevelBoost.effectOrDefault(0);
-  let baseLevel = sources.ep.value * sources.repl.value * sources.dt.value * sources.eternities.value *
-    staticFactors.perkShop + shardFactor;
-
+  const shardFactor = Ra.unlocks.relicShardGlyphLevelBoost.effectOrDefault(new Decimal());
+  let baseLevel = sources.ep.value.mul(sources.repl.value).mul(sources.dt.value).mul(sources.eternities.value)
+    .mul(staticFactors.perkShop).add(shardFactor);
   const singularityEffect = SingularityMilestone.glyphLevelFromSingularities.effectOrDefault(1);
-  baseLevel *= singularityEffect;
+  baseLevel = baseLevel.mul(singularityEffect);
 
   let scaledLevel = baseLevel;
   // The softcap starts at begin and rate determines how quickly level scales after the cap, turning a linear pre-cap
@@ -340,7 +339,7 @@ export function getGlyphLevelInputs() {
   scaledLevel = instabilitySoftcap(scaledLevel, staticFactors.hyperInstability, 400);
 
   const scalePenalty = scaledLevel.gt(0) ? baseLevel.div(scaledLevel) : 1;
-  const incAfterInstability = staticFactors.realityUpgrades + staticFactors.achievements;
+  const incAfterInstability = staticFactors.achievements.add(staticFactors.realityUpgrades);
   baseLevel = scaledLevel.add(incAfterInstability);
   scaledLevel = scaledLevel.add(incAfterInstability);
   return {
@@ -362,7 +361,7 @@ export function getGlyphLevelInputs() {
 // Calculates glyph weights which don't change over the course of a reality unless particular events occur; this is
 // stored in the GameCache and only invalidated as needed
 export function staticGlyphWeights() {
-  const perkShop = Effects.max(1, PerkShopUpgrade.glyphLevel);
+  const perkShop = Effects.max(new Decimal(1), PerkShopUpgrade.glyphLevel);
   const instability = Glyphs.instabilityThreshold;
   const hyperInstability = Glyphs.hyperInstabilityThreshold;
   const realityUpgrades = [Array.range(1, 5).every(x => RealityUpgrade(x).boughtAmount > 0)]

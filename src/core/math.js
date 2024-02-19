@@ -550,7 +550,7 @@ window.productLog = function productLog(x) {
 window.permutationIndex = function permutationIndex(len, lexIndex) {
   let numPerm = 1;
   for (let n = 1; n <= len; n++) numPerm *= n;
-  let index = lexIndex % numPerm;
+  let index = lexIndex.mod(numPerm);
   let remOrder = numPerm / len;
   const ordered = Array.range(0, len);
   const perm = [];

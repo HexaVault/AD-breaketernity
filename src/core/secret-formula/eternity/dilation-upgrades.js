@@ -33,10 +33,10 @@ export const dilationUpgrades = {
         ), 2, 2)} Dilated Time gain`
         : "Double Dilated Time gain"),
     effect: bought => {
-      const base = 2 * Effects.product(
+      const base = Effects.product(
         SingularityMilestone.dilatedTimeFromSingularities,
         Achievement(187)
-      );
+      ).mul(2);
       return Decimal.pow(base, bought);
     },
     formatEffect: value => {
@@ -96,9 +96,9 @@ export const dilationUpgrades = {
     description: () => {
       const rep10 = replicantiMult().pLog10();
       let multiplier = "0.1";
-      if (rep10 > 9000) {
+      if (rep10.gt(9000)) {
         const ratio = DilationUpgrade.tdMultReplicanti.effectValue.pLog10().div(rep10);
-        if (ratio < 0.095) {
+        if (ratio.lt(0.095)) {
           multiplier = ratio.toFixed(2);
         }
       }
