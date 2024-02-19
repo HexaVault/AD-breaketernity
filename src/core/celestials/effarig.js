@@ -75,7 +75,7 @@ export const Effarig = {
     return Decimal.floor(Decimal.pow(Currency.eternityPoints.log10().div(7500), this.glyphEffectAmount)).times(AlchemyResource.effarig.effectValue);
   },
   get maxRarityBoost() {
-    return 5 * Decimal.log10(Decimal.log10(Currency.relicShards.value + 10));
+    return Decimal.log10(Decimal.log10(Currency.relicShards.value.add(10))).times(5);
   },
   nerfFactor(power) {
     let c;
@@ -91,21 +91,21 @@ export const Effarig = {
         c = 25;
         break;
     }
-    return 3 * (1 - c / (c + Math.sqrt(power.pLog10())));
+    return (DC.D1.sub(c.div(Decimal.sqrt(power.pLog10()).add(c) ) ) ).times(3);
   },
   get tickDilation() {
-    return 0.7 + 0.1 * this.nerfFactor(Currency.timeShards.value);
+    return this.nerfFactor(Currency.timeShards.value).div(10).add(0.7);
   },
   get multDilation() {
-    return 0.25 + 0.25 * this.nerfFactor(Currency.infinityPower.value);
+    return this.nerfFactor(Currency.infinityPower.value).div(4).add(0.25);
   },
   get tickspeed() {
-    const base = 3 + Tickspeed.baseValue.reciprocal().log10();
-    return Decimal.pow10(Math.pow(base, this.tickDilation)).reciprocal();
+    const base = Tickspeed.baseValue.reciprocal().log10().add(3);
+    return Decimal.pow10(Decimal.pow(base, this.tickDilation)).reciprocal();
   },
   multiplier(mult) {
     const base = new Decimal(mult).pLog10();
-    return Decimal.pow10(Math.pow(base, this.multDilation));
+    return Decimal.pow10(Decimal.pow(base, this.multDilation));
   },
   get bonusRG() {
     // Will return 0 if Effarig Infinity is uncompleted

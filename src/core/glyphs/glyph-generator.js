@@ -304,13 +304,13 @@ export const GlyphGenerator = {
   uniformGlyphs(level, rng, realityCount) {
     // Reality count divided by 5 determines which group of 5 we're in, while count mod 5 determines the index
     // within that block. Note that we have a minus 1 because we want to exclude the first fixed glyph
-    const groupNum = Decimal.floor(realityCount.sub(1).div(5));
-    const groupIndex = realityCount.sub(1).mod(5);
+    const groupNum = Decimal.floor(realityCount.sub(1).div(5)).min(277).toNumber();
+    const groupIndex = realityCount.sub(1).mod(5).toNumber();
     
     // The usage of the initial seed is complicated in order to prevent future prediction without using information
     // not normally available in-game (ie. the console). This makes it appear less predictable overall
     const initSeed = player.reality.initialSeed;
-    const typePerm = permutationIndex(5, groupNum.mul(31 + initSeed % 7).add(initSeed % 1123));
+    const typePerm = permutationIndex(5, groupNum * (31 + initSeed % 7) + (initSeed % 1123));
 
     // Figure out a permutation index for each generated glyph type this reality by counting through the sets
     // for choices which have already been generated for options in previous realities for this group
