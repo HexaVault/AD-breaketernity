@@ -68,7 +68,7 @@ window.TimeSpan = class TimeSpan {
    */
   setFrom(ms) {
     Guard.isDecimal(ms);
-    this._ms = ms;
+    this._ms = Decimal.fromDecimal(ms);
   }
 
   /**

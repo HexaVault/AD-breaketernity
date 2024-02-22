@@ -214,21 +214,21 @@ export const GlyphGenerator = {
   },
 
   get strengthMultiplier() {
-    return Effects.max(1, RealityUpgrade(16));
+    return Effects.max(new Decimal(1), RealityUpgrade(16));
   },
 
   randomStrength(rng) {
     // Technically getting this upgrade really changes glyph gen but at this point almost all
     // the RNG is gone anyway.
     if (Ra.unlocks.maxGlyphRarityAndShardSacrificeBoost.canBeApplied) return rarityToStrength(100);
-    let result = GlyphGenerator.gaussianBellCurve(rng) * GlyphGenerator.strengthMultiplier;
-    const relicShardFactor = Ra.unlocks.extraGlyphChoicesAndRelicShardRarityAlwaysMax.canBeApplied ? 1 : rng.uniform();
-    const increasedRarity = relicShardFactor * Effarig.maxRarityBoost +
-      Effects.sum(Achievement(146), GlyphSacrifice.effarig);
+    let result = GlyphGenerator.strengthMultiplier.mul(GlyphGenerator.gaussianBellCurve(rng));
+    const relicShardFactor = Ra.unlocks.extraGlyphChoicesAndRelicShardRarityAlwaysMax.canBeApplied ? new Decimal(1) : rng.uniform();
+    const increasedRarity = Effarig.maxRarityBoost.mul(relicShardFactor)
+      .add(Effects.sum(Achievement(146), GlyphSacrifice.effarig));
     // Each rarity% is 0.025 strength.
-    result += increasedRarity / 40;
+    result = result.add(increasedRarity.div(40));
     // Raise the result to the next-highest 0.1% rarity.
-    result = Math.ceil(result * 400) / 400;
+    result = Decimal.ceil(result * 400).div(4000);
     return Math.min(result, rarityToStrength(100));
   },
 
