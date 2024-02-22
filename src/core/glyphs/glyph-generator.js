@@ -228,7 +228,7 @@ export const GlyphGenerator = {
     // Each rarity% is 0.025 strength.
     result = result.add(increasedRarity.div(40));
     // Raise the result to the next-highest 0.1% rarity.
-    result = Decimal.ceil(result * 400).div(4000);
+    result = Decimal.ceil(result * 400).div(400);
     return Math.min(result, rarityToStrength(100));
   },
 
