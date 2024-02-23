@@ -35,12 +35,63 @@ export class Galaxy {
    * @returns {number} Max number of galaxies (total)
    */
   static buyableGalaxies(currency) {
-    const bulk = dBBBS(currency, {
+    // plz no ask how exponential math work i dont know i just code, see https://discord.com/channels/351476683016241162/439241762603663370/1210707188964659230
+    let minV = Galaxy.costScalingStart.min(Galaxy.remoteStart) // Take the smallest of the two values
+    if (currency.lt(Galaxy.baseCost.add(Galaxy.costMult.times(minV) /* Pre exponential/quadratic? */))) {
+      return Decimal.max(currency.sub(Galaxy.baseCost).div(Galaxy.costMult).floor(), player.galaxies)
+    }
+    if (currency.lt(Galaxy.requirementAt(Galaxy.remoteStart))) {
+      let dis = Galaxy.costScalingStart
+      let scale = Galaxy.costMult
+      let base = Galaxy.baseCost
+      // Quadratic equation
+      let a = DC.DM1
+      let b = DC.DM1.times(scale.add(3).sub(DC.D2.times(dis)))
+      let c = DC.DM1.times(base.sub(dis).sub(currency).sub(198).add(dis.pow(2)))
+      let quad = b.neg().sub(b.pow(2).sub( DC.D4.times( a.times(c) ) ) ).div(a.times(2))
+      return Decimal.max(quad, player.galaxies)
+    }
+    // Might not be perfect but at this point who gives a shit - If we can buy more we will loop a bit at the end to go through till we cant
+    let delay = minV
+    let remote = Galaxy.remoteStart
+    let inc = Galaxy.costMult
+    let start = Galaxy.baseCost
+    let A = Decimal.ln(1.008)
+    let B = (inc.sub(delay.times(2)).add(3)).div(2)
+    let C = Decimal.ln(1.008).pow(2).times(Decimal.pow(1.008, inc.add(3).div(2).add(remote).sub(delay).sub(1) ))
+    let D = Decimal.ln(1.008).pow(2).times(inc.pow(2).sub(inc.times(2).times(delay)).add(inc.times(6)).sub(start.times(4).add(1))).div(4)
+    let mzz = C.times(currency)
+    
+    let convFunc = (m) => m.sub(((Decimal.ln(m).pow(2).sub(D)).times(m).sub(c).times(C)).div(Decimal.ln(m).pow(2).add(Decimal.ln(m).times(2)).sub(D)))
+    while (mzz.sub(convFunc(mzz)).abs().lte(0.05)) {
+      mzz = convFunc(mzz)
+    }
+    let pur = Decimal.ln(h).div(A).sub(B).floor()
+    let rep = 0
+    while (this.requirementAt(pur).gt(currency) || rep < 25) {
+      if (pur.sub(1).neq(pur)) {
+        pur = pur.sub(1)
+      } else {
+        pur.mag = pur.mag / 1.001
+        pur.normalize()
+      }
+      rep++
+    }
+    while (this.requirementAt(pur.add(1)).lt(currency) && pur.add(1).neq(pur) || rep < 25) {
+      pur = pur.add(1)
+      rep++
+    }
+    if (rep == 25) {
+      console.log("Repetitions in remote calculations (line 55-80 of galaxy.js) repeated far more than expected, logging.")
+    }
+    return Decimal.max(pur, player.galaxies)
+    
+    /*const bulk = dBBBS(currency, {
       costFunction: x => this.requirementAt(x).amount,
       cumulative: false,
     }, player.galaxies);
     if (!bulk) throw new Error("Unexpected failure to calculate galaxy purchase");
-    return player.galaxies.add(bulk.quantity);
+    return player.galaxies.add(bulk.quantity); */
   }
 
   static requirementAt(galaxies) {
