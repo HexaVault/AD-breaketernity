@@ -134,29 +134,31 @@ export default {
       this.update();
     },
     calculatePercents() {
-      const powList = this.entries.map(e => e.data.pow);
-      const totalPosPow = powList.filter(p => p > 1).reduce((x, y) => x * y, 1);
-      const totalNegPow = powList.filter(p => p < 1).reduce((x, y) => x * y, 1);
-      const log10Mult = (this.resource.fakeValue ?? this.resource.mult).log10() / totalPosPow;
-      const isEmpty = log10Mult === 0;
+      const powList = this.entries.map(e => new Decimal(e.data.pow));
+      const totalPosPow = powList.filter(p => p.gt(1)).reduce((x, y) => x.mul(y), new Decimal(1));
+      const totalNegPow = powList.filter(p => p.lt(1)).reduce((x, y) => x.mul(y), new Decimal(1));
+      const log10Mult = (this.resource.fakeValue ?? this.resource.mult).log10().div(totalPosPow);
+      const isEmpty = log10Mult.eq(0);
       if (!isEmpty) {
         this.lastNotEmptyAt = Date.now();
       }
       let percentList = [];
       for (const entry of this.entries) {
-        const multFrac = log10Mult === 0
-          ? 0
-          : Decimal.log10(entry.data.mult) / log10Mult;
-        const powFrac = totalPosPow === 1 ? 0 : Math.log(entry.data.pow) / Math.log(totalPosPow);
+        const multFrac = log10Mult.eq(0)
+          ? new Decimal()
+          : Decimal.log10(entry.data.mult).div(log10Mult);
+        const powFrac = totalPosPow.eq(1)
+          ? new Decimal()
+          : Decimal.log(entry.data.pow, Math.E).div(Decimal.log(totalPosPow, Math.E));
 
         // Handle nerf powers differently from everything else in order to render them with the correct bar percentage
-        const perc = entry.data.pow >= 1
-          ? multFrac / totalPosPow + powFrac * (1 - 1 / totalPosPow)
-          : Math.log(entry.data.pow) / Math.log(totalNegPow) * (totalNegPow - 1);
+        const perc = entry.data.pow.gte(1)
+          ? multFrac.div(totalPosPow).add(powFrac.mul(new Decimal(1).sub(new Decimal(1).div(totalPosPow))))
+          : Decimal.log(entry.data.pow, Math.E).div(Decimal.log(totalNegPow)).mul(totalNegPow.sub(1));
 
         // This is clamped to a minimum of something that's still nonzero in order to show it at <0.1% instead of 0%
         percentList.push(
-          [entry.ignoresNerfPowers, nerfBlacklist.includes(entry.key) ? Math.clampMin(perc, 0.0001) : perc]
+          [entry.ignoresNerfPowers, nerfBlacklist.includes(entry.key) ? Decimal.clampMin(perc, 0.0001) : perc]
         );
       }
 

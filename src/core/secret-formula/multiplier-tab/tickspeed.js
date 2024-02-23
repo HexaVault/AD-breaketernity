@@ -43,7 +43,7 @@ export const tickspeed = {
   upgrades: {
     name: "Tickspeed Upgrades",
     displayOverride: () => `${formatInt(Tickspeed.totalUpgrades)} Total`,
-    multValue: () => new Decimal.pow10(100 * MultiplierTabHelper.decomposeTickspeed().tickspeed),
+    multValue: () => Decimal.pow10(MultiplierTabHelper.decomposeTickspeed().tickspeed.mul(100)),
     isActive: true,
     icon: MultiplierTabIcons.PURCHASE("AD"),
   },
@@ -55,7 +55,7 @@ export const tickspeed = {
       const tg = player.dilation.totalTachyonGalaxies;
       return `${format(tg.add(ag).add(rg))} Total`;
     },
-    multValue: () => new Decimal.pow10(100 * MultiplierTabHelper.decomposeTickspeed().galaxies),
+    multValue: () => Decimal.pow10(MultiplierTabHelper.decomposeTickspeed().galaxies.mul(100)),
     isActive: true,
     icon: MultiplierTabIcons.GALAXY,
   },

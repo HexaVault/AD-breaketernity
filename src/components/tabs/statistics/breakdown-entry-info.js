@@ -44,15 +44,15 @@ export class BreakdownEntryInfo {
   }
 
   get mult() {
-    return new Decimal(this._multValue() ?? 1);
+    return new Decimal(this._multValue() ?? new Decimal(1));
   }
 
   get pow() {
-    return this._powValue() ?? 1;
+    return this._powValue() ?? new Decimal(1);
   }
 
   get dilationEffect() {
-    return this._dilationEffect() ?? 1;
+    return this._dilationEffect() ?? new Decimal(1);
   }
 
   get isActive() {

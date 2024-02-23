@@ -64,7 +64,7 @@ export const AD = {
     multValue: dim => {
       const getPurchases = ad => (Laitela.continuumActive
         ? AntimatterDimension(ad).continuumValue
-        : Math.floor(AntimatterDimension(ad).bought / 10)
+        : Decimal.floor(AntimatterDimension(ad).bought.div(10))
       );
       if (dim) return Decimal.pow(AntimatterDimensions.buyTenMultiplier, getPurchases(dim));
       return AntimatterDimensions.all
@@ -188,20 +188,20 @@ export const AD = {
       return totalMult;
     },
     powValue: dim => {
-      const allPow = InfinityUpgrade.totalTimeMult.chargedEffect.effectOrDefault(1) *
-          InfinityUpgrade.thisInfinityTimeMult.chargedEffect.effectOrDefault(1);
+      const allPow = InfinityUpgrade.totalTimeMult.chargedEffect.effectOrDefault(new Decimal(1)).mul(
+        InfinityUpgrade.thisInfinityTimeMult.chargedEffect.effectOrDefault(new Decimal(1))) 
 
       const dimPow = Array.repeat(1, 9);
       for (let tier = 1; tier <= 8; tier++) {
-        dimPow[tier] = AntimatterDimension(tier).infinityUpgrade.chargedEffect.effectOrDefault(1);
+        dimPow[tier] = AntimatterDimension(tier).infinityUpgrade.chargedEffect.effectOrDefault(new Decimal(1));
       }
 
-      if (dim) return allPow * dimPow[dim];
+      if (dim) return allPow.mul(dimPow[dim]);
       // This isn't entirely accurate because you can't return a power for all ADs if only some of them actually have
       // it, so we cheat somewhat by returning the geometric mean of all actively producing dimensions (this should
       // be close to the same value if all the base multipliers are similar in magnitude)
-      return allPow * Math.exp(dimPow.slice(1)
-        .map(n => Math.log(n)).sum() / MultiplierTabHelper.activeDimCount("AD"));
+      return allPow.mul(Decimal.exp(dimPow.slice(1)
+        .map(n => Decimal.log(n)).sum().div(MultiplierTabHelper.activeDimCount("AD"))))
     },
     isActive: () => PlayerProgress.infinityUnlocked() && !EternityChallenge(11).isRunning,
     icon: MultiplierTabIcons.UPGRADE("infinity"),

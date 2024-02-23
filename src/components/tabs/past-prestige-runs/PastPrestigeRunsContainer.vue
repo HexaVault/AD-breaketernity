@@ -7,7 +7,7 @@ function averageRun(allRuns) {
 
   const longestRow = allRuns.map(r => r.length).max();
   const avgAttr = [];
-  for (let index = 0; index < longestRow; index++) {
+  for (let index = 0; longestRow.gt(index); index++) {
     if (typeof runs[0][index] === "string") {
       avgAttr.push("");
       continue;

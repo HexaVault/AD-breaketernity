@@ -90,7 +90,7 @@ export const progressStages = [
   {
     id: PROGRESS_STAGE.EARLY_REALITY,
     name: "Reality",
-    hasReached: save => save.realities > 0,
+    hasReached: save => save.realities.gt(0),
     // For the first few realities, we give a bit of extra suggestion just in case the player ended up taking a break
     // and returned in the middle of a reality while they're still relatively slow
     suggestedResource: () => {
@@ -141,7 +141,7 @@ export const progressStages = [
   {
     id: PROGRESS_STAGE.IMAGINARY_MACHINES,
     name: "Imaginary Machines",
-    hasReached: save => save.reality?.iMCap > 0,
+    hasReached: save => save.reality?.iMCap.gt(0),
     suggestedResource: "Imaginary Machines",
     subProgressValue: save => Math.log10(1 + save.reality.iMCap) / 9,
   },
