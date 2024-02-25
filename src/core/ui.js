@@ -201,6 +201,9 @@ export const ui = new Vue({
     notation() {
       return Notations.find(this.notationName);
     },
+    Lnotation() {
+      return LNotations.find(this.LnotationName);
+    },
     currentGlyphTooltip() {
       return this.view.tabs.reality.currentGlyphTooltip;
     },

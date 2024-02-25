@@ -84,7 +84,7 @@ export const LNotations = { // post e9e15
     return notation === undefined ? LNotation.stackedScientific : notation;
   },
   get current() {
-    return GameUI.initialized ? ui.notation : LNotation.stackedScientific;
+    return GameUI.initialized ? ui.Lnotation : LNotation.stackedScientific;
   }
 };
 
