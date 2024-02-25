@@ -775,6 +775,7 @@ window.player = {
       includeAnimated: true,
     },
     notation: "Mixed scientific",
+    lnotation: "Stacked Scientific",
     notationDigits: {
       comma: 5,
       notation: 9

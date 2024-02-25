@@ -9,6 +9,7 @@ import SelectNotationDropdown from "@/components/tabs/options-visual/SelectNotat
 import SelectThemeDropdown from "@/components/tabs/options-visual/SelectThemeDropdown";
 import SelectSidebarDropdown from "@/components/tabs/options-visual/SelectSidebarDropdown";
 import UpdateRateSlider from "./UpdateRateSlider";
+import SelectLargeNotationDropdown from "./SelectLargeNotationDropdown.vue";
 
 export default {
   name: "OptionsVisualTab",
@@ -21,11 +22,13 @@ export default {
     SelectThemeDropdown,
     SelectNotationDropdown,
     SelectSidebarDropdown,
+    SelectLargeNotationDropdown,
   },
   data() {
     return {
       theme: "",
       notation: "",
+      lnotation: "",
       sidebarResource: "",
       headerTextColored: true,
     };
@@ -37,6 +40,9 @@ export default {
     },
     notationLabel() {
       return `Notation: ${this.notation}`;
+    },
+    postNotationLabel() {
+      return `Notation: ${this.lnotation}`;
     },
     sidebarLabel() {
       return `Sidebar (Modern UI): ${this.sidebarResource}`;
@@ -55,6 +61,7 @@ export default {
       const options = player.options;
       this.theme = Theme.currentName();
       this.notation = options.notation;
+      this.lnotation = options.lnotation
       this.sidebarResource = player.options.sidebarResourceID === 0
         ? "Latest Resource"
         : this.sidebarDB.find(e => e.id === player.options.sidebarResourceID).optionName;
@@ -148,6 +155,15 @@ export default {
         >
           <template #dropdown>
             <SelectSidebarDropdown />
+          </template>
+        </ExpandingControlBox>
+        <ExpandingControlBox
+          class="l-options-grid__button c-options-grid__notations"
+          button-class="o-primary-btn o-primary-btn--option l-options-grid__notations-header"
+          :label="postNotationLabel"
+        >
+          <template #dropdown>
+            <SelectLargeNotationDropdown />
           </template>
         </ExpandingControlBox>
       </div>

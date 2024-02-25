@@ -1,4 +1,6 @@
 import * as ADNotations from "adnot-beport-small";
+import * as ADLNotations from "adnot-beport-large";
+
 import { DC } from "./constants";
 
 export const Notation = (function() {
@@ -41,13 +43,52 @@ export const Notation = (function() {
   };
 }());
 
+export const LNotation = (function() {
+  const N = ADLNotations;
+  const notation = type => {
+    const n = new type();
+    n.setAsCurrent = () => {
+      player.options.Lnotation = n.name;
+      ui.LnotationName = n.name;
+    };
+    return n;
+  };
+  return {
+    extendedScientific: notation(N.ExtendedScientificNotation),
+    stackedScientific: notation(N.StackedScientificNotation),
+    semiStackedScientific: notation(N.SemiStackedScientificNotation),
+    entendedLogarithm: notation(N.ExtendedLogarithmNotation),
+    tetrational: notation(N.TetrationalNotation),
+    trueTetrational: notation(N.TrueTetrationalNotation),
+  };
+}());
+
 Notation.emoji.setAsCurrent = (silent = false) => {
   player.options.notation = Notation.emoji.name;
   ui.notationName = Notation.emoji.name;
   if (!silent) GameUI.notify.success("😂😂😂");
 };
 
-export const Notations = {
+export const LNotations = { // post e9e15
+  // Defined as a list here for exact order in options tab.
+  all: [
+    LNotation.extendedScientific,
+    LNotation.stackedScientific,
+    LNotation.semiStackedScientific,
+    LNotation.entendedLogarithm,
+    LNotation.tetrational,
+    LNotation.trueTetrational
+  ],
+  find: name => {
+    const notation = LNotations.all.find(n => n.name === name);
+    return notation === undefined ? LNotation.stackedScientific : notation;
+  },
+  get current() {
+    return GameUI.initialized ? ui.notation : LNotation.stackedScientific;
+  }
+};
+
+export const Notations = { // pre e9e15
   // Defined as a list here for exact order in options tab.
   all: [
     Notation.scientific,
