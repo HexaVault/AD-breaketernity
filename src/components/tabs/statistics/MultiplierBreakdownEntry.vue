@@ -134,7 +134,7 @@ export default {
       this.update();
     },
     calculatePercents() {
-      const powList = this.entries.map(e => new Decimal(e.data.pow));
+      const powList = this.entries.map(e => e.data.pow);
       const totalPosPow = powList.filter(p => p.gt(1)).reduce((x, y) => x.mul(y), new Decimal(1));
       const totalNegPow = powList.filter(p => p.lt(1)).reduce((x, y) => x.mul(y), new Decimal(1));
       const log10Mult = (this.resource.fakeValue ?? this.resource.mult).log10().div(totalPosPow);
