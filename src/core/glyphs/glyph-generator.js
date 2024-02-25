@@ -6,6 +6,7 @@
  * using it, call finalize on it to write the seed out.
  */
 import { deepmerge } from "@/utility/deepmerge";
+import { DC } from "../constants";
 
 class GlyphRNG {
   static get SECOND_GAUSSIAN_DEFAULT_VALUE() {
@@ -228,8 +229,8 @@ export const GlyphGenerator = {
     // Each rarity% is 0.025 strength.
     result = result.add(increasedRarity.div(40));
     // Raise the result to the next-highest 0.1% rarity.
-    result = Decimal.ceil(result * 400).div(400);
-    return Math.min(result, rarityToStrength(100));
+    result = Decimal.ceil(result.times(400)).div(400);
+    return Decimal.min(result, rarityToStrength(100));
   },
 
   // eslint-disable-next-line max-params
@@ -241,10 +242,10 @@ export const GlyphGenerator = {
     const random2 = rng.uniform();
     if (type !== "effarig" && Ra.unlocks.glyphEffectCount.canBeApplied) return 4;
     const maxEffects = Ra.unlocks.glyphEffectCount.canBeApplied ? 7 : 4;
-    let num = Math.min(
+    let num = Decimal.min(
       maxEffects,
-      Math.floor(Math.pow(random1, 1 - (Math.pow(level * strength, 0.5)) / 100) * 1.5 + 1)
-    );
+      Decimal.floor(Decimal.pow(random1, DC.D1.sub(Decimal.pow(level.times(strength), 0.5)).div(100)).times(1.5).add(1))
+    ).toNumber();
     // If we do decide to add anything else that boosts chance of an extra effect, keeping the code like this
     // makes it easier to do (add it to the Effects.max).
     if (RealityUpgrade(17).isBought && random2 < Effects.max(0, RealityUpgrade(17))) {
@@ -342,7 +343,7 @@ export const GlyphGenerator = {
     const glyphs = [];
     for (let i = 0; i < 4; ++i) {
       const newGlyph = GlyphGenerator.randomGlyph(level, rng, BASIC_GLYPH_TYPES[typesThisReality[i]]);
-      const newMask = (initSeed + realityCount + i) % 2 === 0
+      const newMask = (initSeed + realityCount.toNumber() + i) % 2 === 0
         ? (1 << uniformEffects[i])
         : newGlyph.effects | (1 << uniformEffects[i]);
       const maxEffects = RealityUpgrade(17).isBought ? 3 : 2;
@@ -353,7 +354,7 @@ export const GlyphGenerator = {
           .filter(eff => eff.isGenerated)
           .map(eff => eff.bitmaskIndex)
           .filter(eff => ![0, 12, 16].includes(eff));
-        const toRemove = replacable[Math.abs(initSeed + realityCount) % replacable.length];
+        const toRemove = replacable[Math.abs(initSeed + realityCount.toNumber()) % replacable.length];
         newGlyph.effects = newMask & ~(1 << toRemove);
       } else {
         newGlyph.effects = newMask;

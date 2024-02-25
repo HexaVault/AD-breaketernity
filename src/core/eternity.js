@@ -319,47 +319,42 @@ class EPMultiplierState extends GameMechanicState {
       if (!auto) RealityUpgrade(15).tryShowWarningModal();
       return false;
     }
-    // Technically inaccurate, but it works fine (is it inaccurate tho???)
-    // Should probably use hardcoded values but im lazy so no
+    
+    let tempVal = 0
     let bulk = 0
     let cur = Currency.eternityPoints.value
-    if (cur.lt(this.costIncreaseThresholds[0])) {
-      bulk = cur.div(500).log(50).floor()
-    }
-    if (cur.lt(this.costIncreaseThresholds[1])) {
-      bulk = DC.E100.div(500).log(50)
-      cur = cur.div(DC.E2.pow(bulk).times(500)).max(1)
-      bulk = bulk.add(cur.log(100)).floor()
-    }
-    if (cur.lt(this.costIncreaseThresholds[2])) {
-      bulk = DC.E100.div(500).log(50).floor()
-      let tempVal = DC.E2.pow(bulk).times(500)
-      tempVal = DC.NUMMAX.div(tempVal)
-      bulk = bulk.add(tempVal.log(100))
-      tempVal = (DC.E2.times(5)).pow(bulk).times(500)
-      cur = cur.div(tempVal).max(1)
-      bulk = bulk.add(cur.log(500)).floor()
-    } // Probably is faster to do this reverse (if gt then x do y, then if gt then w do z, etc but too bad)
-    if (cur.lt(this.costIncreaseThresholds[3])) {
-      bulk = DC.E100.div(500).log(50).floor()
-      let tempVal = DC.E2.pow(bulk).times(500)
-      tempVal = DC.NUMMAX.div(tempVal)
-      bulk = bulk.add(tempVal.log(100))
-      tempVal = (DC.E2.times(5)).pow(bulk).times(500)
-      tempVal = DC.E1300.div(tempVal)
-      bulk = bulk.add(tempVal.log(500))
-      tempVal = (DC.E3).pow(bulk).times(500)
-      cur = cur.div(tempVal).max(1)
-      bulk = bulk.add(cur.log(1000)).floor()
-    }
     if (cur.gt(this.costIncreaseThresholds[3])) {
       cur = cur.div(500)
       cur = Decimal.log(cur, 1e3)
       bulk = cur.sub(Math.pow(1332, 1.2)).pow(1/1.2).floor()
       bulk = bulk.add(1332)
+    } else {
+      if (cur.gt(this.costIncreaseThresholds[0])) {
+        bulk = DC.E100.div(500).log(50).floor()
+        tempVal = DC.E2.pow(bulk).times(500)
+      } else {
+        bulk = cur.div(500).log(50).floor()
+      }
+      if (cur.gt(this.costIncreaseThresholds[1])) {
+        tempVal = DC.NUMMAX.div(tempVal)
+        bulk = bulk.add(tempVal.log(100))
+        tempVal = (DC.E2.times(5)).pow(bulk).times(500)
+      } else {
+        bulk = bulk.add(cur.div(tempVal).log(100)).floor()
+      }
+      if (cur.gt(this.costIncreaseThresholds[2])) {
+        tempVal = DC.E1300.div(tempVal)
+        bulk = bulk.add(tempVal.log(500)).floor()
+        tempVal = (DC.E3).pow(bulk).times(500)
+        cur = cur.div(tempVal).max(1)
+        bulk = bulk.add(cur.log(1000)).floor()
+      }
     }
+    // Technically inaccurate, but it works fine (is it inaccurate tho???)
+    // Should probably use hardcoded values but im lazy so no
 
-    price = this.costAfterCount(bulk)
+    bulk = bulk.floor()
+    let price = this.costAfterCount(bulk)
     bulk = cur.sub(this.boughtAmount).max(0)
 
     if (!bulk) return false;

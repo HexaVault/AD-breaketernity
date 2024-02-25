@@ -26,8 +26,8 @@ export const GlyphSelection = {
     let newStrength;
     do {
       newStrength = GlyphGenerator.randomStrength(rng);
-    } while (newStrength < strengthThreshold);
-    if (glyphList.some(e => e.strength >= strengthThreshold)) return;
+    } while (newStrength.lt(strengthThreshold));
+    if (glyphList.some(e => e.strength.gte(strengthThreshold))) return;
     glyphList[Math.floor(random * glyphList.length)].strength = newStrength;
   },
 

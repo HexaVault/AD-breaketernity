@@ -14,14 +14,14 @@ export const eternityUpgrades = {
     description: () => `Infinity Dimension multiplier based on Eternities
       ((x/${formatInt(200)})^log4(${formatInt(2)}x), softcap at ${format(1e5)} Eternities)`,
     effect() {
-      const log4 = Math.log4;
-      const eterPreCap = Currency.eternities.value.clampMax(1e5);
+      const log4 = Math.log(4);
+      const eterPreCap = Currency.eternities.value.min(1e5);
       const base = eterPreCap.div(200).add(1);
-      const pow = Decimal.log(eterPreCap.mul(2).add(1)).div(log4);
+      const pow = Decimal.ln(eterPreCap.mul(2).add(1)).div(log4);
       const multPreCap = Decimal.pow(base, pow);
-      const eterPostCap = Currency.eternities.value.sub(1e5);
+      const eterPostCap = Currency.eternities.value.sub(1e5).max(1);
       const mult1 = eterPostCap.divide(200).plus(1);
-      const mult2 = eterPostCap.times(2).plus(1).log(Math.E).div(log4);
+      const mult2 = eterPostCap.times(2).plus(1).ln().div(log4);
       const multPostCap = mult1.times(mult2).clampMin(1);
       return multPostCap.times(multPreCap);
     },

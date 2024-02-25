@@ -288,7 +288,7 @@ Currency.infinityPoints = new class extends DecimalCurrency {
       Perk.startIP1,
       Perk.startIP2,
       Achievement(104)
-    ).toDecimal();
+    );
   }
 
   reset() {
@@ -311,7 +311,7 @@ Currency.eternities = new class extends DecimalCurrency {
     return Effects.max(
       0,
       RealityUpgrade(10)
-    ).toDecimal();
+    );
   }
 }();
 
