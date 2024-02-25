@@ -455,6 +455,19 @@ export const ReplicantiUpgrade = {
       return Effects.max(0, TimeStudy(131)) + PelleRifts.decay.milestones[2].effectOrDefault(0);
     }
 
+    bulkPurchaseCalc() {
+      // copypasted constants
+      const logBase = new Decimal(170);
+      const logBaseIncrease = EternityChallenge(6).isRunning ? 2 : 25;
+      const logCostScaling = EternityChallenge(6).isRunning ? 2 : 5;
+
+      let cur = Currency.infinityPoints.value.log10()
+      let ccost = logBase // logBase (we use ccost since cost is defined and we dont want confusion)
+      if (ccost.div(TimeStudy(233).effectOrDefault(1)).gt(cur)) return
+      if (cur.times(TimeStudy(233).effectOrDefault(1)).lte(ccost.times(decimalQuadraticSolution(logCostScaling, logBaseIncrease.times(2).add(2).sub(logCostScaling), 100)))) {
+        return
+      }
+    }
     autobuyerTick() {
       // This isn't a hot enough autobuyer to worry about doing an actual inverse.
       const bulk = bulkBuyBinarySearch(Currency.infinityPoints.value, {
@@ -469,25 +482,25 @@ export const ReplicantiUpgrade = {
     }
 
     baseCostAfterCount(count) {
-      const logBase = 170;
+      const logBase = new Decimal(170);
       const logBaseIncrease = EternityChallenge(6).isRunning ? 2 : 25;
       const logCostScaling = EternityChallenge(6).isRunning ? 2 : 5;
       const distantReplicatedGalaxyStart = 100 + Effects.sum(GlyphSacrifice.replication);
       const remoteReplicatedGalaxyStart = 1000 + Effects.sum(GlyphSacrifice.replication);
-      let logCost = logBase + count * logBaseIncrease + (count * (count - 1) / 2) * logCostScaling;
+      let logCost = logBase.add(count.times(logBaseIncrease)).add((count.times(count.sub(1)).div(2)).times(logCostScaling));
       if (count > distantReplicatedGalaxyStart) {
-        const logDistantScaling = 50;
+        const logDistantScaling = new Decimal(50);
         // When distant scaling kicks in, the price increase jumps by a few extra steps.
         // So, the difference between successive scales goes 5, 5, 5, 255, 55, 55, ...
         const extraIncrements = 5;
-        const numDistant = count - distantReplicatedGalaxyStart;
-        logCost += logDistantScaling * numDistant * (numDistant + 2 * extraIncrements - 1) / 2;
+        const numDistant = count.sub(distantReplicatedGalaxyStart);
+        logCost = logCost.add(logDistantScaling.times(numDistant).times(numDistant.add(9)).div(2));
       }
       if (count > remoteReplicatedGalaxyStart) {
-        const logRemoteScaling = 5;
-        const numRemote = count - remoteReplicatedGalaxyStart;
+        const logRemoteScaling = DC.D5;
+        const numRemote = count.sub(remoteReplicatedGalaxyStart);
         // The formula x * (x + 1) * (2 * x + 1) / 6 is the sum of the first n squares.
-        logCost += logRemoteScaling * numRemote * (numRemote + 1) * (2 * numRemote + 1) / 6;
+        logCost = logCost.add(logRemoteScaling.times(numRemote).times(numRemote.add(1)).times(numRemote.times(2).add(1)).div(6));
       }
       return Decimal.pow10(logCost);
     }
@@ -509,7 +522,7 @@ export const Replicanti = {
       interval: 1000,
       intervalCost: DC.E140,
       boughtGalaxyCap: 0,
-      galaxies: 0,
+      galaxies: DC.D0,
       galCost: DC.E170,
     };
   },

@@ -59,12 +59,9 @@ export default {
       if (this.bulk) {
         const req = Galaxy.requirement;
         const dim = AntimatterDimension(req.tier);
-        const bulk = bulkBuyBinarySearch(dim.totalAmount, {
-          costFunction: x => Galaxy.requirementAt(x).amount,
-          cumulative: false,
-        }, player.galaxies);
+        const bulk = Galaxy.buyableGalaxies(Decimal.floor(dim.totalAmount.toNumber())).gt(player.galaxies)
         if (bulk) {
-          this.newGalaxies = Galaxy.buyableGalaxies(Math.round(dim.totalAmount.toNumber())) - player.galaxies;
+          this.newGalaxies = Galaxy.buyableGalaxies(Decimal.floor(dim.totalAmount.toNumber())).sub(player.galaxies);
         }
       }
       this.keepAntimatter = Achievement(111).isUnlocked;

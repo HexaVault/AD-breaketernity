@@ -18,6 +18,27 @@ Math.PI_2 = Math.PI * 2;
  */
 
 /**
+ * @param {Decimal|Number} a Variable before x^2 in ax^2 + bx + c = 0
+ * @param {Decimal|Number} a Variable before x in ax^2 + bx + c = 0
+ * @param {Decimal|Number} c Variable after x in ax^2 + bx + c = 0
+ * @param {Boolean} n Should the root be subtracted to -b?
+ * @returns {Decimal}
+*/
+window.decimalQuadraticSolution = function decimalQuadraticSolution(a, b, c, n = false) {
+  // Yes this uses like 7 variables, but i am dum and will fuck up otherwise
+  a = new Decimal(a)
+  b = new Decimal(b)
+  c = new Decimal(c)
+  let divsr = a.times(2)
+  let nb = b.neg()
+  let lroot = b.pow(2)
+  let rroot = a.times(c).times(4)
+  let froot = lroot.add(rroot).pow(0.5)
+  let top = n ? nb.sub(froot) : nb.add(froot)
+  return top.div(divsr)
+};
+
+/**
  * @typedef {Object} bulkBuyBinarySearch_result
  * @property {number} quantity amount purchased (relative)
  * @property {Decimal} purchasePrice amount that needs to be paid to get that

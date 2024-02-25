@@ -291,7 +291,7 @@ class EPMultiplierState extends GameMechanicState {
   set boughtAmount(value) {
     // Reality resets will make this bump amount negative, causing it to visually appear as 0 even when it isn't.
     // A dev migration fixes bad autobuyer states and this change ensures it doesn't happen again
-    const diff = Math.clampMin(value - player.epmultUpgrades, 0);
+    const diff = Decimal.max(value.sub(player.epmultUpgrades), 0);
     player.epmultUpgrades = value;
     this.cachedCost.invalidate();
     this.cachedEffectValue.invalidate();
@@ -319,19 +319,57 @@ class EPMultiplierState extends GameMechanicState {
       if (!auto) RealityUpgrade(15).tryShowWarningModal();
       return false;
     }
-    const bulk = bulkBuyBinarySearch(Currency.eternityPoints.value, {
-      costFunction: this.costAfterCount,
-      cumulative: true,
-      firstCost: this.cost,
-    }, this.boughtAmount);
+    // Technically inaccurate, but it works fine (is it inaccurate tho???)
+    // Should probably use hardcoded values but im lazy so no
+    let bulk = 0
+    let cur = Currency.eternityPoints.value
+    if (cur.lt(this.costIncreaseThresholds[0])) {
+      bulk = cur.div(500).log(50).floor()
+    }
+    if (cur.lt(this.costIncreaseThresholds[1])) {
+      bulk = DC.E100.div(500).log(50)
+      cur = cur.div(DC.E2.pow(bulk).times(500)).max(1)
+      bulk = bulk.add(cur.log(100)).floor()
+    }
+    if (cur.lt(this.costIncreaseThresholds[2])) {
+      bulk = DC.E100.div(500).log(50).floor()
+      let tempVal = DC.E2.pow(bulk).times(500)
+      tempVal = DC.NUMMAX.div(tempVal)
+      bulk = bulk.add(tempVal.log(100))
+      tempVal = (DC.E2.times(5)).pow(bulk).times(500)
+      cur = cur.div(tempVal).max(1)
+      bulk = bulk.add(cur.log(500)).floor()
+    } // Probably is faster to do this reverse (if gt then x do y, then if gt then w do z, etc but too bad)
+    if (cur.lt(this.costIncreaseThresholds[3])) {
+      bulk = DC.E100.div(500).log(50).floor()
+      let tempVal = DC.E2.pow(bulk).times(500)
+      tempVal = DC.NUMMAX.div(tempVal)
+      bulk = bulk.add(tempVal.log(100))
+      tempVal = (DC.E2.times(5)).pow(bulk).times(500)
+      tempVal = DC.E1300.div(tempVal)
+      bulk = bulk.add(tempVal.log(500))
+      tempVal = (DC.E3).pow(bulk).times(500)
+      cur = cur.div(tempVal).max(1)
+      bulk = bulk.add(cur.log(1000)).floor()
+    }
+    if (cur.gt(this.costIncreaseThresholds[3])) {
+      cur = cur.div(500)
+      cur = Decimal.log(cur, 1e3)
+      bulk = cur.sub(Math.pow(1332, 1.2)).pow(1/1.2).floor()
+      bulk = bulk.add(1332)
+    }
+
+    price = this.costAfterCount(bulk)
+    bulk = cur.sub(this.boughtAmount).max(0)
+
     if (!bulk) return false;
-    Currency.eternityPoints.subtract(bulk.purchasePrice);
-    this.boughtAmount += bulk.quantity;
+    Currency.eternityPoints.subtract(price);
+    this.boughtAmount = this.boughtAmount.add(bulk);
     return true;
   }
 
   reset() {
-    this.boughtAmount = 0;
+    this.boughtAmount = DC.D0;
   }
 
   get costIncreaseThresholds() {
@@ -345,7 +383,8 @@ class EPMultiplierState extends GameMechanicState {
       const cost = Decimal.pow(multPerUpgrade[i], count).times(500);
       if (cost.lt(costThresholds[i])) return cost;
     }
-    return DC.E3.pow(count + Math.pow(Math.clampMin(count - 1334, 0), 1.2)).times(500);
+    // This formula is slightly harsher than base AD but who gives a fuck
+    return DC.E3.pow(count.pow(1.2).sub(Math.pow(1332, 1.2))).times(500);
   }
 }
 

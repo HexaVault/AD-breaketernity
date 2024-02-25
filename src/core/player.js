@@ -366,7 +366,7 @@ window.player = {
   eternityPoints: DC.D0,
   eternities: DC.D0,
   eternityUpgrades: new Set(),
-  epmultUpgrades: 0,
+  epmultUpgrades: DC.D0,
   timeShards: DC.D0,
   totalTickGained: DC.D0,
   totalTickBought: DC.D0,
