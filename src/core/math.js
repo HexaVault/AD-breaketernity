@@ -531,18 +531,16 @@ window.ExponentialCostScaling = class ExponentialCostScaling {
    
   purchaseAmount = purchaseAmount.add(new Decimal(0).sub(b).sub(Decimal.pow(b.pow(2).sub(a.times(4).times(c)),0.5)).div(a.times(2)))
    
-   // Technically this only buys up to the nearest set, but post exponential thats a minor flaw at most
+   // Technically this only buys up to the nearest set, but post exponential thats a minor flaw at most (and correct?)
    if (roundDown) purchaseAmount = purchaseAmount.floor()
 
    if (purchaseAmount.lte(currentPurchases)) return null
-   // console.log(purchaseAmount.lte(currentPurchases))
    
    let purchaseCost = this.calculateCost(purchaseAmount)
-   // console.log(purchaseAmount)
    purchaseAmount = purchaseAmount.sub(currentPurchases)
-   // console.log(purchaseAmount)
+   if (roundDown) purchaseAmount = purchaseAmount.floor()
+
    purchaseAmount = purchaseAmount.times(purchasesPerIncrease)
-   // console.log(purchaseAmount)
    return { quantity: purchaseAmount, logPrice: purchaseCost.log10()}
   }
 

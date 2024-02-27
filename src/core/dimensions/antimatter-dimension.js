@@ -365,8 +365,6 @@ class AntimatterDimensionState extends DimensionState {
    * @returns {Decimal}
    */
   get cost() {
-    //console.log("above is purcahses")
-    //console.log(this.costScale.baseCost)
     return this.costScale.calculateCost(this.bought.div(DC.E1).floor().add(this.costBumps));
   }
 
@@ -379,7 +377,7 @@ class AntimatterDimensionState extends DimensionState {
    * @returns {number}
    */
   get boughtBefore10() {
-    return DC.E1.times(this.bought.div(10).sub(this.bought.div(10).floor()));
+    return this.bought.mod(10);
   }
 
   /**
