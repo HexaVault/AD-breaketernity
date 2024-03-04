@@ -1,5 +1,5 @@
 import { GameMechanicState } from "../../game-mechanics";
-
+import { DC } from "../../constants";
 import { deepmergeAll } from "@/utility/deepmerge";
 
 class SingularityMilestoneState extends GameMechanicState {
@@ -37,35 +37,35 @@ class SingularityMilestoneState extends GameMechanicState {
 
   nerfCompletions(completions) {
     const softcap = this.increaseThreshold;
-    if (!softcap || (completions < softcap)) return completions;
-    return softcap + (completions - softcap) / 3;
+    if (!softcap || (completions.lt(softcap))) return completions;
+    return (completions.sub(softcap)).div(3).add(softcap);
   }
 
   unnerfCompletions(completions) {
     const softcap = this.increaseThreshold;
-    if (!softcap || (completions < softcap)) return completions;
-    return softcap + (completions - softcap) * 3;
+    if (!softcap || (completions.lt(softcap))) return completions;
+    return (completions.sub(softcap)).times(3).add(softcap);
   }
 
   get previousGoal() {
-    if (this.isUnique) return 1;
-    if (!this.isUnlocked) return 0;
-    return this.start * Decimal.pow(this.repeat, this.unnerfCompletions(this.completions) - 1);
+    if (this.isUnique) return DC.D1;
+    if (!this.isUnlocked) return DC.D0;
+    return Decimal.pow(this.repeat, this.unnerfCompletions(this.completions).sub(1)).times(this.start);
   }
 
   get nextGoal() {
     if (this.isUnique) return this.start;
-    return this.start * Math.pow(this.repeat, this.unnerfCompletions(this.completions + 1) - 1);
+    return Decimal.pow(this.repeat, this.unnerfCompletions(this.completions.add(1)).sub(1)).times(this.start);
   }
 
   get rawCompletions() {
-    if (this.isUnique) return this.isUnlocked ? 1 : 0;
-    if (!this.isUnlocked) return 0;
-    return 1 + (Math.log(Currency.singularities.value) - Math.log(this.start)) / Math.log(this.repeat);
+    if (this.isUnique) return this.isUnlocked ? DC.D1 : DC.D0;
+    if (!this.isUnlocked) return DC.D0;
+    return (Decimal.log(Currency.singularities.value).sub(Decimal.log(this.start))).div(Decimal.log(this.repeat)).add(1);
   }
 
   get completions() {
-    return Math.min(Math.floor(this.nerfCompletions(this.rawCompletions)), this.limit);
+    return Decimal.min(Decimal.floor(this.nerfCompletions(this.rawCompletions)), this.limit);
   }
 
   get remainingSingularities() {
@@ -78,7 +78,7 @@ class SingularityMilestoneState extends GameMechanicState {
   }
 
   get isMaxed() {
-    return (this.isUnique && this.isUnlocked) || (this.completions >= this.limit);
+    return (this.isUnique && this.isUnlocked) || (this.completions.gte(this.limit));
   }
 
   get effectDisplay() {
@@ -87,7 +87,7 @@ class SingularityMilestoneState extends GameMechanicState {
   }
 
   get nextEffectDisplay() {
-    return this.config.effectFormat(this._rawEffect(this.completions + 1));
+    return this.config.effectFormat(this._rawEffect(this.completions.add(1)));
   }
 
   get description() {

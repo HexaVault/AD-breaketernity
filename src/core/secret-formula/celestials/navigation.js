@@ -397,7 +397,7 @@ export const celestialNavigation = {
       if (EffarigUnlock.infinity.isUnlocked) return 1;
       if (!Effarig.isRunning) return 0;
 
-      return Currency.antimatter.value.pLog10() / DC.NUMMAX.log10();
+      return Currency.antimatter.value.add(1).log10() / DC.NUMMAX.log10();
     },
     node: {
       clickAction: () => Tab.celestials.effarig.show(true),
@@ -438,7 +438,7 @@ export const celestialNavigation = {
       if (EffarigUnlock.eternity.isUnlocked) return 1;
       if (!Effarig.isRunning) return 0;
 
-      return Currency.infinityPoints.value.pLog10() / DC.NUMMAX.log10();
+      return Currency.infinityPoints.value.add(1).log10() / DC.NUMMAX.log10();
     },
     node: {
       clickAction: () => Tab.celestials.effarig.show(true),
@@ -487,7 +487,7 @@ export const celestialNavigation = {
       if (EffarigUnlock.reality.isUnlocked) return 1;
       if (!Effarig.isRunning) return 0;
 
-      return Currency.eternityPoints.value.pLog10() / 4000;
+      return Currency.eternityPoints.value.add(1).log10() / 4000;
     },
     node: {
       clickAction: () => Tab.celestials.effarig.show(true),
@@ -654,7 +654,7 @@ export const celestialNavigation = {
       if (Enslaved.isCompleted) return 1;
       if (!Enslaved.isRunning) return 0;
 
-      return Currency.eternityPoints.value.pLog10() / 4000;
+      return Currency.eternityPoints.value.add(1).log10() / 4000;
     },
     node: {
       clickAction: () => Tab.celestials.enslaved.show(true),
@@ -1430,7 +1430,7 @@ export const celestialNavigation = {
         if (player.requirementChecks.reality.maxID1.neq(0)) return 0.5;
         return 0.5 + 0.5 * Math.clampMax(0.999, player.antimatter.exponent / 1.5e12);
       }
-      return Math.clampMax(0.5, Currency.realityMachines.value.pLog10() / MachineHandler.baseRMCap.exponent);
+      return Math.clampMax(0.5, Currency.realityMachines.value.add(1).log10() / MachineHandler.baseRMCap.log10());
     },
     drawOrder: -1,
     node: {

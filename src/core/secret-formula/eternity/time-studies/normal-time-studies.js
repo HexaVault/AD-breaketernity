@@ -4,7 +4,7 @@ const thisInfinityMult = thisInfinity => {
   // All "this inf time" or "best inf time" mults are * 10
   const scaledInfinity = thisInfinity.times(10).add(1);
   const cappedInfinity = Decimal.min(Decimal.pow(scaledInfinity, 0.125), 500);
-  return DC.D15.pow(Decimal.log(scaledInfinity).times(cappedInfinity));
+  return DC.D15.pow(Decimal.log10(scaledInfinity).times(cappedInfinity));
 };
 const passiveIPMult = () => {
   const isEffarigLimited = Effarig.isRunning && Effarig.currentStage === EFFARIG_STAGES.ETERNITY;

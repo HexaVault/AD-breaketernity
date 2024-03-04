@@ -17,7 +17,7 @@ export const GameEnd = {
     if (this.removeAdditionalEnd) return this.additionalEnd;
     let x = 0
     if (player.celestials.pelle.records.totalAntimatter.mag >= 2 && player.bypassEnd != true) {
-      x = Math.pow(10, player.celestials.pelle.records.totalAntimatter.layer) - 9e15
+      x = player.celestials.pelle.records.totalAntimatter.max(1).log10().sub(9e15).min(5000).toNumber()
     }
     return Math.max(x, 0);
   },

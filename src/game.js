@@ -151,7 +151,7 @@ export function gainedEternityPoints() {
 }
 
 export function requiredIPForEP(epAmount) {
-  return Decimal.pow10((Decimal.log(Decimal.divide(epAmount, totalEPMult()), 5).times(308).plus(0.7)))
+  return Decimal.pow10((Decimal.log10(Decimal.divide(epAmount, totalEPMult()), 5).times(308).plus(0.7)))
     .clampMin(Number.MAX_VALUE);
 }
 

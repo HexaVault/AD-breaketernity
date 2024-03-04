@@ -195,8 +195,8 @@ class InfinityDimensionState extends DimensionState {
   }
 
   get costMultiplier() {
-    let costMult = this._costMultiplier;
-    EternityChallenge(12).reward.applyEffect(v => costMult = Math.pow(costMult, v));
+    let costMult = new Decimal(this._costMultiplier);
+    EternityChallenge(12).reward.applyEffect(v => costMult = Decimal.pow(costMult, v));
     return costMult;
   }
 
@@ -302,9 +302,10 @@ class InfinityDimensionState extends DimensionState {
 
     Currency.infinityPoints.purchase(costScaling.totalCost);
     this.cost = this.cost.times(costScaling.totalCostMultiplier);
+    this.bought = this.bought.plus(costScaling.purchases)
     // Because each ID purchase gives 10 IDs
     this.amount = this.amount.plus(costScaling.purchases.times(10));
-    this.baseAmount = DC.E1.times(costScaling.purchases()).add(this.baseAmount);
+    this.baseAmount = DC.E1.times(costScaling.purchases).add(this.baseAmount);
 
     if (EternityChallenge(8).isRunning) {
       player.eterc8ids -= costScaling.purchases.toNumber();

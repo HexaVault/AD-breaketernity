@@ -204,7 +204,7 @@ export const AutoGlyphProcessor = {
 
 export function autoAdjustGlyphWeights() {
   const sources = getGlyphLevelSources();
-  const f = x => Decimal.pow(Decimal.clampMin(1, Decimal.log(5 * x)), 3 / 2);
+  const f = x => Decimal.pow(Decimal.clampMin(1, Decimal.log10(5 * x)), 3 / 2);
   const totalWeight = Object.values(sources).map(s => f(s.value)).sum();
   const scaledWeight = key => 100 * f(sources[key].value) / totalWeight;
 
@@ -238,13 +238,13 @@ function getGlyphLevelSources() {
     : Currency.eternityPoints.value;
   eternityPoints = Decimal.max(player.records.thisReality.maxEP, eternityPoints);
   const epCoeff = 0.016;
-  const epBase = Decimal.pow(Decimal.max(1, eternityPoints.pLog10()), 0.5).mul(epCoeff);
+  const epBase = Decimal.pow(Decimal.max(1, eternityPoints.add(1).log10()), 0.5).mul(epCoeff);
   const replPow = 0.4 + getAdjustedGlyphEffect("replicationglyphlevel");
   const replCoeff = 0.025;
   const replBase = Decimal.pow(Decimal.max(1, player.records.thisReality.maxReplicanti.log10()), replPow).mul(replCoeff);
   const dtPow = 1.3 + getAdjustedGlyphEffect("realityDTglyph");
   const dtCoeff = 0.025;
-  const dtBase = Decimal.pow(Decimal.max(1, player.records.thisReality.maxDT.pLog10()), dtPow).mul(dtCoeff);
+  const dtBase = Decimal.pow(Decimal.max(1, player.records.thisReality.maxDT.add(1).log10()), dtPow).mul(dtCoeff);
   const eterBase = Effects.max(new Decimal(1), RealityUpgrade(18));
   return {
     ep: {

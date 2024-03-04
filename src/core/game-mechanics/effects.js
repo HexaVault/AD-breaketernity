@@ -54,11 +54,21 @@ export const Effects = {
   /**
    * @param {Number} defaultValue
    * @param effectSources
-   * @return {Number}
+   * @return {Decimal}
    */
   min(defaultValue, ...effectSources) {
     let result = defaultValue;
     applyEffectsOf(effectSources, v => result = Decimal.min(result, v));
+    return result;
+  },
+  /**
+   * @param {Number} defaultValue
+   * @param effectSources
+   * @return {Number}
+   */
+  nMin(defaultValue, ...effectSources) {
+    let result = defaultValue;
+    applyEffectsOf(effectSources, v => result = Math.min(result, v));
     return result;
   }
 };

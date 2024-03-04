@@ -48,6 +48,38 @@ export function toggleAllTimeDims() {
   }
 }
 
+function calcHighestPurchaseableTD(tier, currency) {
+  let logC = currency.log10()
+  let logBase = TimeDimension(tier)._baseCost.log10()
+  let logMult = Decimal.log10(TimeDimension(tier)._costMultiplier)
+  if (tier > 4 && currency.lt(DC.E6000)) {
+    return Decimal.max(0, logC.sub(logBase).div(logMult)).floor()
+  }
+  if (currency.lt(DC.NUMMAX)) {
+    return Decimal.max(0, logC.sub(logBase).div(logMult)).floor()
+  }
+  if (currency.lt(DC.E1300)) {
+    let preInc = Decimal.max(0, DC.NUMMAX.log10().sub(logBase).div(logMult)).floor()
+    logBase = logBase.add(Math.log10(1.5))
+    let postInc = Decimal.max(0, logC.sub(logBase).div(logMult)).floor()
+    return Decimal.max(preInc, postInc)
+  }
+  if (currency.lt(DC.E6000)) {
+    logBase = logBase.add(Math.log10(1.5))
+    let preInc = Decimal.max(0, DC.E1300.log10().sub(logBase).div(logMult)).floor()
+    logBase = logBase.add(Math.log10(2.2) - Math.log10(1.5))
+    let postInc = Decimal.max(0, logC.sub(logBase).div(logMult)).floor()
+    return Decimal.max(preInc, postInc)
+  }
+  if (tier <= 4) {
+    logBase = logBase.add(Math.log10(2.2))
+  }
+  let preInc = Decimal.max(0, DC,E6000.log10().sub(logBase).div(logMult)).floor()
+  logC = logC.sub(6000)
+  let postInc = Decimal.max(0, logC.sub(logBase).div(logMult).div(4)).floor()
+  return postInc.add(preInc)
+}
+
 export function buyMaxTimeDimension(tier, portionToSpend = 1, isMaxAll = false) {
   const canSpend = Currency.eternityPoints.value.times(portionToSpend);
   const dim = TimeDimension(tier);
@@ -67,22 +99,19 @@ export function buyMaxTimeDimension(tier, portionToSpend = 1, isMaxAll = false) 
     return false;
   }
   if (Enslaved.isRunning) return buySingleTimeDimension(tier);
-  const bulk = bulkBuyBinarySearch(canSpend, {
-    costFunction: bought => dim.nextCost(bought),
-    cumulative: true,
-    firstCost: dim.cost,
-  }, dim.bought);
-  if (!bulk) return false;
-  Currency.eternityPoints.subtract(bulk.purchasePrice);
-  dim.amount = dim.amount.plus(bulk.quantity);
-  dim.bought += bulk.quantity;
+  const pur = Decimal.max(dim.bought, calcHighestPurchaseableTD(tier, canSpend))
+  let cost = dim.nextCost(pur.sub(1))
+  if (pur.lte(dim.bought)) return false;
+  Currency.eternityPoints.subtract(cost);
+  dim.amount = dim.amount.plus(pur);
+  dim.bought = dim.bought.add(pur);
   dim.cost = dim.nextCost(dim.bought);
   return true;
 }
 
 export function maxAllTimeDimensions() {
   // Try to buy single from the highest affordable new dimensions
-  for (let i = 8; i > 0 && TimeDimension(i).bought === 0; i--) {
+  for (let i = 8; i > 0 && TimeDimension(i).bought.eq(0); i--) {
     buySingleTimeDimension(i, true);
   }
 
@@ -176,7 +205,7 @@ class TimeDimensionState extends DimensionState {
 
     let base = this.costMultiplier;
     if (this._tier <= 4) base *= 2.2;
-    const exponent = this.e6000ScalingAmount + (bought - this.e6000ScalingAmount) * TimeDimensions.scalingPast1e6000;
+    const exponent = this.e6000ScalingAmount.add((bought.sub(this.e6000ScalingAmount)).times(TimeDimensions.scalingPast1e6000));
     const cost = Decimal.pow(base, exponent).times(this.baseCost);
 
     if (PelleRifts.paradox.milestones[0].canBeApplied && this._tier > 4) {

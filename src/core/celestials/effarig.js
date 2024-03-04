@@ -91,7 +91,7 @@ export const Effarig = {
         c = 25;
         break;
     }
-    return (DC.D1.sub(c.div(Decimal.sqrt(power.pLog10()).add(c) ) ) ).times(3);
+    return (DC.D1.sub(c.div(Decimal.sqrt(power.add(1).absLog10()).add(c) ) ) ).times(3);
   },
   get tickDilation() {
     return this.nerfFactor(Currency.timeShards.value).div(10).add(0.7);
@@ -104,7 +104,7 @@ export const Effarig = {
     return Decimal.pow10(Decimal.pow(base, this.tickDilation)).reciprocal();
   },
   multiplier(mult) {
-    const base = new Decimal(mult).pLog10();
+    const base = new Decimal(mult).add(1).absLog10();
     return Decimal.pow10(Decimal.pow(base, this.multDilation));
   },
   get bonusRG() {
