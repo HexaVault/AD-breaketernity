@@ -328,7 +328,7 @@ export function buyMaxDimension(tier, bulk = Infinity) {
   }
   let buying = maxBought.quantity;
   if (buying.gt(Decimal.times(bulkLeft, 10))) buying = new Decimal(bulkLeft).times(10);
-  dimension.amount = dimension.amount.plus(buying).round();
+  dimension.amount = dimension.amount.plus(buying.mul(10)).round();
   dimension.bought = dimension.bought.add(buying);
   dimension.currencyAmount = dimension.currencyAmount.minus(Decimal.pow10(maxBought.logPrice));
 }
