@@ -104,7 +104,7 @@ export default {
     },
     buy() {
       if (this.isContinuumActive) return;
-      if (this.howManyCanBuy === 1) {
+      if (this.howManyCanBuy.eq(1)) {
         buyOneDimension(this.tier);
       } else {
         buyAsManyAsYouCanBuy(this.tier);

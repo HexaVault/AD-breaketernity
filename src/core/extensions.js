@@ -72,7 +72,7 @@ Decimal.prototype.copyFrom = function(decimal) {
   }
   this.mag = decimal.mag;
   this.layer = decimal.layer;
-  this.sign = decimal.sign
+  this.sign = decimal.sign;
 };
 
 window.copyToClipboard = (function() {
