@@ -260,14 +260,14 @@ export const ra = {
       id: 25,
       reward: "Time Theorems boost all forms of continuous non-dimension production",
       effects: {
-        ttGen: () => Math.pow(10, 5 * Ra.theoremBoostFactor()),
-        eternity: () => Math.pow(10, 2 * Ra.theoremBoostFactor()),
-        infinity: () => Math.pow(10, 15 * Ra.theoremBoostFactor()),
-        replicanti: () => Math.pow(10, 20 * Ra.theoremBoostFactor()),
-        dilatedTime: () => Math.pow(10, 3 * Ra.theoremBoostFactor()),
-        memories: () => 1 + Ra.theoremBoostFactor() / 50,
-        memoryChunks: () => 1 + Ra.theoremBoostFactor() / 50,
-        autoPrestige: () => 1 + 2.4 * Ra.theoremBoostFactor()
+        ttGen: () => Decimal.pow(10, Ra.theoremBoostFactor().mul(5)),
+        eternity: () => Decimal.pow(10, Ra.theoremBoostFactor().mul(2)),
+        infinity: () => Decimal.pow(10, Ra.theoremBoostFactor().mul(15)),
+        replicanti: () => Decimal.pow(10, Ra.theoremBoostFactor().mul(20)),
+        dilatedTime: () => Decimal.pow(10, Ra.theoremBoostFactor().mul(3)),
+        memories: () => Ra.theoremBoostFactor().div(50).add(1),
+        memoryChunks: () => Ra.theoremBoostFactor().div(50).add(1),
+        autoPrestige: () => Ra.theoremBoostFactor().mul(2.4).add(1)
       },
       pet: "v",
       level: 10,

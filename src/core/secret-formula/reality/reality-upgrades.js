@@ -12,11 +12,11 @@ const rebuyable = props => {
     props.initialCost * props.costMult
   );
   const { effect } = props;
-  props.effect = () => Math.pow(
-    effect + ImaginaryUpgrade(props.id).effectOrDefault(0),
-    player.reality.rebuyables[props.id] * getAdjustedGlyphEffect("realityrow1pow"));
+  props.effect = () => Decimal.pow(
+    effect.add(ImaginaryUpgrade(props.id).effectOrDefault(0)),
+    player.reality.rebuyables[props.id].mul(getAdjustedGlyphEffect("realityrow1pow")));
   props.description = () => props.textTemplate.replace("{value}",
-    ImaginaryUpgrade(props.id).effectValue === 0
+    ImaginaryUpgrade(props.id).effectValue.eq(0)
       ? formatInt(effect)
       : format(effect + ImaginaryUpgrade(props.id).effectValue, 2, 2));
   props.formatEffect = value => formatX(value, 2, 0);
@@ -29,42 +29,42 @@ export const realityUpgrades = [
   rebuyable({
     name: "Temporal Amplifier",
     id: 1,
-    initialCost: 1,
-    costMult: 30,
+    initialCost: DC.D1,
+    costMult: new Decimal(30),
     textTemplate: "You gain Dilated Time {value} times faster",
     effect: 3
   }),
   rebuyable({
     name: "Replicative Amplifier",
     id: 2,
-    initialCost: 1,
-    costMult: 30,
+    initialCost: DC.D1,
+    costMult: new Decimal(30),
     textTemplate: "You gain Replicanti {value} times faster",
     effect: 3
   }),
   rebuyable({
     name: "Eternal Amplifier",
     id: 3,
-    initialCost: 2,
-    costMult: 30,
+    initialCost: DC.D2,
+    costMult: new Decimal(30),
     textTemplate: "You gain {value} times more Eternities",
     effect: 3
   }),
   rebuyable({
     name: "Superluminal Amplifier",
     id: 4,
-    initialCost: 2,
-    costMult: 30,
+    initialCost: DC.D2,
+    costMult: new Decimal(30),
     textTemplate: "You gain {value} times more Tachyon Particles",
     effect: 3
   }),
   rebuyable({
     name: "Boundless Amplifier",
     id: 5,
-    initialCost: 3,
-    costMult: 50,
+    initialCost: DC.D3,
+    costMult: new Decimal(50),
     textTemplate: "You gain {value} times more Infinities",
-    effect: 5
+    effect: DC.D5
   }),
   {
     name: "Cosmically Duplicate",

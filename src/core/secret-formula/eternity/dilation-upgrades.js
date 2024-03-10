@@ -56,7 +56,7 @@ export const dilationUpgrades = {
         ? "Reset Tachyon Galaxies, but lower their threshold"
         : "Reset Dilated Time and Tachyon Galaxies, but lower their threshold"),
     // The 38th purchase is at 1e80, and is the last purchase.
-    effect: bought => (bought < 38 ? Math.pow(0.8, bought) : 0),
+    effect: bought => (bought.lt(38) ? Decimal.pow(0.8, bought) : new Decimal()),
     formatEffect: effect => {
       if (effect === 0) return `${formatX(getTachyonGalaxyMult(effect), 4, 4)}`;
       const nextEffect = effect === Math.pow(0.8, 37) ? 0 : 0.8 * effect;
@@ -162,7 +162,7 @@ export const dilationUpgrades = {
     increment: 1000,
     pelleOnly: true,
     description: "Multiply Tachyon Galaxies gained, applies after TG doubling upgrade",
-    effect: bought => bought + 1,
+    effect: bought => bought.add(1),
     formatEffect: value => `${formatX(value, 2)} ➜ ${formatX(value + 1, 2)}`,
     formatCost: value => format(value, 2),
     purchaseCap: Number.MAX_VALUE
