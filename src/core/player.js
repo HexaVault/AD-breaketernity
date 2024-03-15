@@ -351,7 +351,7 @@ window.player = {
     displayAllMilestones: false,
     startDate: 0,
     name: "",
-    offlineTimeUsed: 0,
+    offlineTimeUsed: new Decimal(),
     // One spot for every entry in GameDatabase.speedrunMilestones (note: 1-indexed)
     records: Array.repeat(0, 26),
     achievementTimes: {},

@@ -542,3 +542,23 @@ dev.beTests.consecutiveInfinities = function(amnt) {
   player.infinityPoints = player.infinityPoints.add(gainedInfinityPoints().times(amnt))
   player.infinities = player.infinities.add(gainedInfinities().round())
 }
+
+dev.beTests.completeChalleges = {}
+
+dev.beTests.completeChalleges.normal = function() {
+  for (let i = 1; i < 13; i++) NormalChallenge(i).complete()
+}
+
+dev.beTests.completeChalleges.infinity = function() {
+  for (let i = 1; i < 9; i++) InfinityChallenge(i).complete()
+}
+
+dev.beTests.completeChalleges.eternity = function () {
+  for (let i = 1; i < 13; i++) EternityChallenge(i).completions = 5
+}
+
+dev.beTests.completeChalleges.all = function () {
+  dev.beTests.completeChalleges.normal()
+  dev.beTests.completeChalleges.infinity()
+  dev.beTests.completeChalleges.eternity()
+}

@@ -320,14 +320,12 @@ class EPMultiplierState extends GameMechanicState {
       return false;
     }
     
-    let tempVal = 0
-    let bulk = 0
+    let tempVal = new Decimal()
+    let bulk = new Decimal()
     let cur = Currency.eternityPoints.value
     if (cur.gt(this.costIncreaseThresholds[3])) {
-      cur = cur.div(500)
-      cur = Decimal.log(cur, 1e3)
-      bulk = cur.sub(Math.pow(1332, 1.2)).pow(1/1.2).floor()
-      bulk = bulk.add(1332)
+      cur = Decimal.log(cur.div(500), 1e3)
+      bulk = cur.sub(Math.pow(1332, 1.2)).pow(1/1.2).floor().add(1332)
     } else {
       if (cur.gt(this.costIncreaseThresholds[0])) {
         bulk = DC.E100.div(500).log(50).floor()
@@ -357,7 +355,7 @@ class EPMultiplierState extends GameMechanicState {
     let price = this.costAfterCount(bulk)
     bulk = cur.sub(this.boughtAmount).max(0)
 
-    if (!bulk) return false;
+    if (bulk.eq(0)) return false;
     Currency.eternityPoints.subtract(price);
     this.boughtAmount = this.boughtAmount.add(bulk);
     return true;

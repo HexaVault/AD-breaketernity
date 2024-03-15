@@ -65,7 +65,7 @@ export default {
 
       this.timePlayedStr = Time.realTimePlayed.toStringShort();
       this.offlineProgress = player.options.offlineProgress;
-      this.offlineFraction = speedrun.offlineTimeUsed / Math.clampMin(player.records.realTimePlayed, 1);
+      this.offlineFraction = speedrun.offlineTimeUsed.div(player.records.realTimePlayed.clampMin(1));
       this.mostRecent = Speedrun.mostRecentMilestone();
       this.timeSince = Time.realTimePlayed.minus(TimeSpan.fromMilliseconds(new Decimal(speedrun.records[this.mostRecent] ?? 0)))
         .toStringShort();

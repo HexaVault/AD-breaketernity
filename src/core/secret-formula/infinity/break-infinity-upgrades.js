@@ -16,7 +16,7 @@ function rebuyable(config) {
     formatEffect: config.formatEffect ||
       (value => {
         const afterECText = config.afterEC ? config.afterEC() : "";
-        return value === config.maxUpgrades
+        return value.gte(config.maxUpgrades)
           ? `Currently: ${formatX(DC.E1.sub(value))} ${afterECText}`
           : `Currently: ${formatX(DC.E1.sub(value))} | Next: ${formatX(DC.E1.sub(value).sub(1))}`;
       }),
@@ -86,7 +86,7 @@ export const breakInfinityUpgrades = {
       infinities = infinities.times(getAdjustedGlyphEffect("infinityinfmult"));
       const timeStr = Time.bestInfinity.totalMilliseconds.lte(50)
         ? `${TimeSpan.fromMilliseconds(new Decimal(100)).toStringShort()} (capped)`
-        : `${Time.bestInfinity.times(2).toStringShort()}`;
+        : `${Time.bestInfinity.times(new Decimal(2)).toStringShort()}`;
       return `${quantify("Infinity", infinities)} every ${timeStr}`;
     }
   },
@@ -117,7 +117,7 @@ export const breakInfinityUpgrades = {
     id: 1,
     initialCost: new Decimal(1e7),
     costIncrease: new Decimal(5e3),
-    maxUpgrades: DC.D7,
+    maxUpgrades: new Decimal(7),
     description: "Reduce post-infinity Antimatter Dimension cost multiplier scaling",
     afterEC: () => (EternityChallenge(6).completions > 0
       ? `After EC6: ${formatX(Player.dimensionMultDecrease, 2, 2)}`

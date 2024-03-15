@@ -52,18 +52,18 @@ export function playerInfinityUpgradesOnReset() {
 
   if (RealityUpgrade(10).isBought || EternityMilestone.keepBreakUpgrades.isReached) {
     player.infinityUpgrades = breakInfinityUpgrades;
-    player.infinityRebuyables = [8, 7, 10];
+    player.infinityRebuyables = [new Decimal(8), new Decimal(7), new Decimal(10)];
   } else if (EternityMilestone.keepInfinityUpgrades.isReached) {
     player.infinityUpgrades = infinityUpgrades;
-    player.infinityRebuyables = [0, 0, 0];
+    player.infinityRebuyables = [new Decimal(), new Decimal(), new Decimal()];
   } else {
     player.infinityUpgrades.clear();
-    player.infinityRebuyables = [0, 0, 0];
+    player.infinityRebuyables = [new Decimal(), new Decimal(), new Decimal()];
   }
 
   if (Pelle.isDoomed) {
     player.infinityUpgrades.clear();
-    player.infinityRebuyables = [0, 0, 0];
+    player.infinityRebuyables = [new Decimal(), new Decimal(), new Decimal()];
   }
 
   GameCache.tickSpeedMultDecrease.invalidate();

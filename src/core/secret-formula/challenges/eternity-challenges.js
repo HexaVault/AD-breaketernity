@@ -122,8 +122,8 @@ export const eternityChallenges = [
     reward: {
       description: "Infinity Power strengthens Replicanti Galaxies",
       effect: completions => {
-        const infinityPower = Math.log10(Currency.infinityPower.value.pLog10() + 1);
-        return Math.max(0, Math.pow(infinityPower, 0.03 * completions) - 1);
+        const infinityPower = Currency.infinityPower.value.pLog10().add(1).log10();
+        return Decimal.pow(infinityPower, 0.03 * completions).sub(1).max(0);
       },
       formatEffect: value => formatPercents(value, 2)
     }
@@ -181,7 +181,7 @@ export const eternityChallenges = [
       description: "Further reduce Tickspeed cost multiplier growth",
       effect: completions => completions * 0.07,
       formatEffect: value => {
-        const total = Math.round(Player.tickSpeedMultDecrease + Effects.sum(EternityChallenge(11).reward)) - value;
+        const total = Player.tickSpeedMultDecrease.add(Effects.sum(EternityChallenge(11).reward)).round().sub(value);
         return `-${format(value, 2, 2)} (${formatX(total, 2, 2)} total)`;
       }
     }
