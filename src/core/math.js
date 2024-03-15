@@ -25,7 +25,6 @@ Math.PI_2 = Math.PI * 2;
  * @returns {Decimal}
 */
 window.decimalQuadraticSolution = function decimalQuadraticSolution(a, b, c, n = false) {
-  // Yes this uses like 7 variables, but i am dum and will fuck up otherwise
   a = new Decimal(a)
   b = new Decimal(b)
   c = new Decimal(c)
@@ -37,6 +36,27 @@ window.decimalQuadraticSolution = function decimalQuadraticSolution(a, b, c, n =
   let top = n ? nb.sub(froot) : nb.add(froot)
   return top.div(divsr)
 };
+
+/**
+ * @param {Decimal|Number} a Variable before x^3 in ax^3 + bx^2 + cx + d = 0
+ * @param {Decimal|Number} a Variable before x^2 in ax^3 + bx^2 + cx + d = 0
+ * @param {Decimal|Number} c Variable before x in ax^3 +  bx^2 + cx + d = 0
+ * @param {Decimal|Number} d Variable after x in ax^3 +  bx^2 + cx + d = 0
+ * @param {Boolean} n Should the square root subtract?
+ * @returns {Decimal}
+*/
+window.decimalCubicSolution = function decimalCubicSolution(a, b, c, d, n = false) {
+  a = new Decimal(a)
+  b = new Decimal(b)
+  c = new Decimal(c)
+  d = new Decimal(d)
+  let delta0 = b.pow(2).sub(a.times(3).times(c))
+  let delta1 = b.pow(2).times(2).sub(a.times(b).times(c).times(9)).add(a.pow(2).times(d).times(27))
+  n = n ? Decimal.root(delta1.pow(2).sub(delta0.pow(3).times(4)), 2).neg() : Decimal.root(delta1.pow(2).sub(delta0.pow(3).times(4)), 2)
+  let C = Decimal.root(delta1.add(n).div(2), 3)
+  let x = DC.D1.div(a.times(3)).neg().times(b.add(C).add(delta0.div(C)))
+  return x
+}
 
 /**
  * @typedef {Object} bulkBuyBinarySearch_result

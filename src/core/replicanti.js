@@ -458,15 +458,41 @@ export const ReplicantiUpgrade = {
     bulkPurchaseCalc() {
       // copypasted constants
       const logBase = new Decimal(170);
-      const logBaseIncrease = EternityChallenge(6).isRunning ? 2 : 25;
-      const logCostScaling = EternityChallenge(6).isRunning ? 2 : 5;
+      const logBaseIncrease = EternityChallenge(6).isRunning ? DC.D2 : new Decimal(25);
+      const logCostScaling = EternityChallenge(6).isRunning ? DC.D2 : DC.D5;
+      const distantReplicatedGalaxyStart = Effects.sum(GlyphSacrifice.replication).add(100);
+      const remoteReplicatedGalaxyStart = Effects.sum(GlyphSacrifice.replication).add(1000);
+      const logDistantScaling = new Decimal(50);
+      const logRemoteScaling = DC.D5;
+
+      costFunc = (value) => this.baseCostAfterCount(value)
 
       let cur = Currency.infinityPoints.value.log10()
       let ccost = logBase // logBase (we use ccost since cost is defined and we dont want confusion)
+    
       if (ccost.div(TimeStudy(233).effectOrDefault(1)).gt(cur)) return
-      if (cur.times(TimeStudy(233).effectOrDefault(1)).lte(ccost.times(decimalQuadraticSolution(logCostScaling, logBaseIncrease.times(2).add(2).sub(logCostScaling), 100)))) {
-        return
-      }
+      cur = cur.times(TimeStudy(233).effectOrDefault(1))
+      let a = logCostScaling.div(2)
+      let b = logBaseIncrease.sub(logCostScaling.div(2))
+      let c = logBase.sub(cur)
+      if (decimalQuadraticSolution(a, b, c).lte(distantReplicatedGalaxyStart)) { return decimalQuadraticSolution(a, b, c).floor() }
+
+      a = logBase.sub(cur).add(logDistantScaling.times(distantReplicatedGalaxyStart.pow(2))).sub(logDistantScaling.times(4.5).times(distantReplicatedGalaxyStart))
+      b = logBaseIncrease.sub(logCostScaling)
+      let c1 = logBase.sub(cur).add(distantReplicatedGalaxyStart.pow(2).times(logDistantScaling).div(2))
+      let c2 = distantReplicatedGalaxyStart.times(logDistantScaling).times(4.5)
+      c = c1.add(c2)
+      if (decimalQuadraticSolution(a, b, c).lte(remoteReplicatedGalaxyStart)) { return decimalQuadraticSolution(a, b, c) }
+
+      a = logRemoteScaling.div(3)
+      b = logCostScaling.div(2).add(logDistantScaling).div(2).sub(logRemoteScaling(remoteReplicatedGalaxyStart))
+      c = distantReplicatedGalaxyStart.times(logDistantScaling).neg().add(logRemoteScaling.times(remoteReplicatedGalaxyStart.pow(2))).sub(logRemoteScaling.times(remoteReplicatedGalaxyStart)).add(logRemoteScaling.div(6)).add((logCostScaling.add(logDistantScaling.times(9))).div(2)).add(logBaseIncrease)
+      let d1 = logBase.add(Decimal.pow(distantReplicatedGalaxyStart, 2).times(logDistantScaling.div(2))).sub((logDistantScaling.times(distantReplicatedGalaxyStart)).times(4.5))
+      let d2 = logRemoteScaling.times(Decimal.pow(remoteReplicatedGalaxyStart, 3)).div(3).neg().add(logRemoteScaling.times(Decimal.pow(remoteReplicatedGalaxyStart, 2)).div(2))
+      let d3 = logRemoteScaling.times(remoteReplicatedGalaxyStart).div(6).sub(cur)
+      let d = d1.add(d2).add(d3)
+
+      return decimalCubicSolution(a, b, c, d, false)
     }
     autobuyerTick() {
       // This isn't a hot enough autobuyer to worry about doing an actual inverse.
