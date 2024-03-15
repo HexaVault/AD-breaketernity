@@ -1,5 +1,5 @@
 import { sha512_256 } from "js-sha512";
-
+import { Player } from "./player";
 import { DC } from "./constants";
 import FullScreenAnimationHandler from "./full-screen-animation-handler";
 
@@ -562,3 +562,40 @@ dev.beTests.completeChalleges.all = function () {
   dev.beTests.completeChalleges.infinity()
   dev.beTests.completeChalleges.eternity()
 }
+
+dev.beTests.nanFuckIteration = function (value, value2) {
+  for (let item in value) {
+    console.log(value[item])
+    console.log(value2[item])
+    if (value[item] instanceof Decimal && value2[item] != undefined) {
+      if (value2[item].neq(0)) {
+        if (value[item].lt(0) || value[item].layer > 8e15) {
+          value[item] = value2[item]
+        }} else {
+        if (value[item].layer > 8e15) {
+          value[item] = value2[item]
+        }
+      }
+    }
+    if (value[item] instanceof Number && value2[item] != undefined) {
+      if (value2[item] != 0) {
+        if (value[item] > 1e300 || value[item] < 0) {
+          value[item] = value2[item]
+        }
+      } else {
+        if (value[item] > 1e300) {
+          value[item] = value2[item]
+        }
+      }
+    }
+    if ((value[item] instanceof Object || value[item] instanceof Array) && !(value[item] instanceof Decimal) && value2[item] != undefined) {
+      value[item] = dev.beTests.nanFuckIteration(value[item], value2[item])
+    }
+    if (value[item] == undefined  && value2[item] != undefined) {
+      value[item] = value2[item]
+    }
+}
+return value
+}
+
+ dev.beTests.nanFuck = function () { player = dev.beTests.nanFuckIteration(player, Player.defaultStart), GameStorage.save() }
