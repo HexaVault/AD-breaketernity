@@ -4,11 +4,20 @@ import { Effect } from "./effect";
 export const Effects = {
   /**
    * @param effectSources
-   * @return {Number}
+   * @return {Decimal}
    */
   sum(...effectSources) {
     let result = DC.D0;
     applyEffectsOf(effectSources, v => result = result.add(v));
+    return result;
+  },
+  /**
+   * @param effectSources
+   * @return {Number}
+   */
+  nSum(...effectSources) {
+    let result = 0;
+    applyEffectsOf(effectSources, v => result = result + v);
     return result;
   },
   /**

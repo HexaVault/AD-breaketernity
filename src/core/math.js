@@ -32,7 +32,7 @@ window.decimalQuadraticSolution = function decimalQuadraticSolution(a, b, c, n =
   let nb = b.neg()
   let lroot = b.pow(2)
   let rroot = a.times(c).times(4)
-  let froot = lroot.add(rroot).pow(0.5)
+  let froot = lroot.add(rroot).sqrt()
   let top = n ? nb.sub(froot) : nb.add(froot)
   return top.div(divsr)
 };
@@ -52,10 +52,23 @@ window.decimalCubicSolution = function decimalCubicSolution(a, b, c, d, n = fals
   d = new Decimal(d)
   let delta0 = b.pow(2).sub(a.times(3).times(c))
   let delta1 = b.pow(2).times(2).sub(a.times(b).times(c).times(9)).add(a.pow(2).times(d).times(27))
-  n = n ? Decimal.root(delta1.pow(2).sub(delta0.pow(3).times(4)), 2).neg() : Decimal.root(delta1.pow(2).sub(delta0.pow(3).times(4)), 2)
-  let C = Decimal.root(delta1.add(n).div(2), 3)
+  n = n ? Decimal.sqrt(delta1.pow(2).sub(delta0.pow(3).times(4)), 2).neg() : Decimal.root(delta1.pow(2).sub(delta0.pow(3).times(4)))
+  let C = Decimal.cbrt(delta1.add(n).div(2))
   let x = DC.D1.div(a.times(3)).neg().times(b.add(C).add(delta0.div(C)))
   return x
+}
+
+/**
+ * @param {Decimal|Number} b Variable before x in ax^3 + bx + c = 0
+ * @param {Decimal|Number} c Variable after x in ax^3 + bx + c = 0
+ * @returns {Decimal}
+*/
+window.decimalDepressedCubicSolution = function decimalDepressedCubicSolution(b, c) {
+  b = new Decimal(b)
+  c = new Decimal(c)
+  u1 = Decimal.cbrt(c.neg().div(2).add(Decimal.sqrt(c.pow(2).div(4).add(b.pow(3).div(27)))))
+  u2 = Decimal.cbrt(c.neg().div(2).sub(Decimal.sqrt(c.pow(2).div(4).add(b.pow(3).div(27)))))
+  return u1.add(u2)
 }
 
 /**

@@ -1,4 +1,5 @@
 import { DC } from "./constants";
+import { EternityChallenge } from "./eternity-challenge";
 
 class DimBoostRequirement {
   constructor(tier, amount) {
@@ -104,12 +105,12 @@ export class DimBoost {
       TimeStudy(222)
     );
     if (tier === 6 && NormalChallenge(10).isRunning) {
-      amount += Math.round((targetResets - 3) * (20 - discount));
+      amount = amount.add(Decimal.round((targetResets.sub(3)) * (DC.D20.sub(discount))));
     } else if (tier === 8) {
-      amount += Math.round((targetResets - 5) * (15 - discount));
+      amount = amount.add(Decimal.round((targetResets.sub(5)) * (DC.D15.sub(discount))));
     }
     if (EternityChallenge(5).isRunning) {
-      amount += Math.pow(targetResets - 1, 3) + targetResets - 1;
+      amount = Decimal.pow(targetResets.sub(1), 3).add(targetResets).add(amount).sub(1);
     }
 
     amount = amount.sub(Effects.sum(InfinityUpgrade.resetBoost));
@@ -242,22 +243,38 @@ function maxBuyDimBoosts() {
     softReset(1);
     return;
   }
-  // Linearly extrapolate dimboost costs. req1 = a * 1 + b, req2 = a * 2 + b
-  // so a = req2 - req1, b = req1 - a = 2 req1 - req2, num = (dims - b) / a
-  const increase = req2.amount.sub(req1.amount);
-  const dim = AntimatterDimension(req1.tier);
-  let maxBoosts = Decimal.min(DC.BEMAX,
-    DC.D1.add(Decimal.floor((dim.totalAmount.sub(req1.amount)).div(increase))));
-  if (DimBoost.bulkRequirement(maxBoosts).isSatisfied) {
-    softReset(maxBoosts);
-    return;
-  }
-  // But in case of EC5 it's not, so do binary search for appropriate boost amount
-  let minBoosts = 2;
-  while (maxBoosts !== minBoosts + 1) {
-    const middle = Math.floor((maxBoosts + minBoosts) / 2);
-    if (DimBoost.bulkRequirement(middle).isSatisfied) minBoosts = middle;
-    else maxBoosts = middle;
-  }
+
+  const targetResets = DimBoost.purchasedBoosts.add(bulk);
+    const tier = Decimal.min(targetResets.add(3), this.maxDimensionsUnlockable);
+    let amount = DC.D20;
+    const discount = Effects.sum(
+      TimeStudy(211),
+      TimeStudy(222)
+    );
+    let multiplierPerDB
+    if (tier === 6) {
+      multiplierPerDB = DC.D20.sub(discount);
+    } else if (tier === 8) {
+      multiplierPerDB = DC.D15.sub(discount);
+    }
+
+    amount = amount.sub(Effects.sum(InfinityUpgrade.resetBoost));
+    if (InfinityChallenge(5).isCompleted) amount = amount.sub(1);
+
+    multiplierPerDB = multiplierPerDB.times(InfinityUpgrade.resetBoost.chargedEffect.effectOrDefault(1));
+    amount = amount.times(InfinityUpgrade.resetBoost.chargedEffect.effectOrDefault(1));
+
+    let calcBoosts
+    calcBoosts = AntimatterDimension(tier).sub(amount).div(multiplierPerDB)
+
+
+    if (EternityChallenge(5).isRunning) {
+      calcBoosts = decimalDepressedCubicSolution(DC.D1.add(multiplierPerDB), amount.sub(AntimatterDimension(tier)).sub(1));
+    }
+
+    calcBoosts = calcboosts.add(NormalChallenge(10).isRunning ? 2 : 4) // Dimension boosts 1-4 dont use 8th dims, 1-2 dont use 6th dims, so add those extras afterwards.
+
+  let minBoosts = Decimal.min(DC.BEMAX, calcBoosts.floor());
+
   softReset(minBoosts);
 }
