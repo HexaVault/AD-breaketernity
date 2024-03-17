@@ -273,6 +273,8 @@ function maxBuyDimBoosts() {
 
   calcBoosts = calcBoosts.add(NormalChallenge(10).isRunning ? 2 : 4) // Dimension boosts 1-4 dont use 8th dims, 1-2 dont use 6th dims, so add those extras afterwards.
 
+  if (calcBoosts.floor().lte(DimBoost.purchasedBoosts)) return;
+  calcBoosts = calcBoosts.sub(DimBoost.purchasedBoosts)
   let minBoosts = Decimal.min(DC.BEMAX, calcBoosts.floor());
 
   softReset(minBoosts);

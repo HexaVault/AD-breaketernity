@@ -101,6 +101,11 @@ export function buyMaxTickSpeed() {
     }
     Currency.antimatter.subtract(Decimal.pow10(purchases.logPrice));
     player.totalTickBought = player.totalTickBought.add(purchases.quantity);
+
+    for (let i = 0; i < 5; i++) {
+      buyTickSpeed()
+    }
+    
     boughtTickspeed = true;
   }
 
