@@ -244,7 +244,7 @@ function isOfflineEPGainEnabled() {
 
 export function getOfflineEPGain(ms) {
   if (!EternityMilestone.autoEP.isReached || !isOfflineEPGainEnabled()) return DC.D0;
-  return player.records.bestEternity.bestEPminReality.times(TimeSpan.fromMilliseconds(ms).totalMinutes.div(4));
+  return player.records.bestEternity.bestEPminReality.times(TimeSpan.fromMilliseconds(new Decimal(ms)).totalMinutes.div(4));
 }
 
 // Note: realities and ampFactor must be distinct because there are a few things farther up which only multiply

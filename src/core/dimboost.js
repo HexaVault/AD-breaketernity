@@ -244,35 +244,34 @@ function maxBuyDimBoosts() {
     return;
   }
 
-  const targetResets = DimBoost.purchasedBoosts.add(bulk);
-    const tier = Decimal.min(targetResets.add(3), this.maxDimensionsUnlockable);
-    let amount = DC.D20;
-    const discount = Effects.sum(
-      TimeStudy(211),
-      TimeStudy(222)
-    );
-    let multiplierPerDB
-    if (tier === 6) {
-      multiplierPerDB = DC.D20.sub(discount);
-    } else if (tier === 8) {
-      multiplierPerDB = DC.D15.sub(discount);
-    }
+  const tier = DimBoost.maxDimensionsUnlockable;
+  let amount = DC.D20;
+  const discount = Effects.sum(
+    TimeStudy(211),
+    TimeStudy(222)
+  );
+  let multiplierPerDB
+  if (tier === 6) {
+    multiplierPerDB = DC.D20.sub(discount);
+  } else if (tier === 8) {
+    multiplierPerDB = DC.D15.sub(discount);
+  }
 
-    amount = amount.sub(Effects.sum(InfinityUpgrade.resetBoost));
-    if (InfinityChallenge(5).isCompleted) amount = amount.sub(1);
+  amount = amount.sub(Effects.sum(InfinityUpgrade.resetBoost));
+  if (InfinityChallenge(5).isCompleted) amount = amount.sub(1);
 
-    multiplierPerDB = multiplierPerDB.times(InfinityUpgrade.resetBoost.chargedEffect.effectOrDefault(1));
-    amount = amount.times(InfinityUpgrade.resetBoost.chargedEffect.effectOrDefault(1));
+  multiplierPerDB = multiplierPerDB.times(InfinityUpgrade.resetBoost.chargedEffect.effectOrDefault(1));
+  amount = amount.times(InfinityUpgrade.resetBoost.chargedEffect.effectOrDefault(1));
 
-    let calcBoosts
-    calcBoosts = AntimatterDimension(tier).sub(amount).div(multiplierPerDB)
+  let calcBoosts
+  calcBoosts = AntimatterDimension(tier).amount.sub(amount).div(multiplierPerDB)
 
 
-    if (EternityChallenge(5).isRunning) {
-      calcBoosts = decimalDepressedCubicSolution(DC.D1.add(multiplierPerDB), amount.sub(AntimatterDimension(tier)).sub(1));
-    }
+  if (EternityChallenge(5).isRunning) {
+    calcBoosts = decimalDepressedCubicSolution(DC.D1.add(multiplierPerDB), amount.sub(AntimatterDimension(tier)).sub(1));
+  }
 
-    calcBoosts = calcboosts.add(NormalChallenge(10).isRunning ? 2 : 4) // Dimension boosts 1-4 dont use 8th dims, 1-2 dont use 6th dims, so add those extras afterwards.
+  calcBoosts = calcBoosts.add(NormalChallenge(10).isRunning ? 2 : 4) // Dimension boosts 1-4 dont use 8th dims, 1-2 dont use 6th dims, so add those extras afterwards.
 
   let minBoosts = Decimal.min(DC.BEMAX, calcBoosts.floor());
 

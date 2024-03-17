@@ -1,3 +1,4 @@
+import { isNumber } from "../../utility/type-check";
 import { GameMechanicState } from "./game-mechanic";
 
 /**
@@ -40,7 +41,7 @@ export class RebuyableMechanicState extends GameMechanicState {
   set boughtAmount(value) { throw new NotImplementedError(); }
 
   get isEffectActive() {
-    return this.boughtAmount.gt(0);
+    return isNumber(this.boughtAmount) ? this.boughtAmount > 0 : this.boughtAmount.gt(0);
   }
 
   get canBeBought() {

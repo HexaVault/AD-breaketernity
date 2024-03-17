@@ -569,12 +569,11 @@ dev.beTests.nanFuckIteration = function (value, value2) {
     console.log(value2[item])
     if (value[item] instanceof Decimal && value2[item] != undefined) {
       if (value2[item].neq(0)) {
-        if (value[item].lt(0) || value[item].layer > 8e15) {
+        if (value[item].lt(0) || value[item].layer > 8e15)
           value[item] = value2[item]
-        }} else {
-        if (value[item].layer > 8e15) {
+      } else {
+        if (value[item].layer > 8e15)
           value[item] = value2[item]
-        }
       }
     }
     if (value[item] instanceof Number && value2[item] != undefined) {
@@ -583,19 +582,30 @@ dev.beTests.nanFuckIteration = function (value, value2) {
           value[item] = value2[item]
         }
       } else {
-        if (value[item] > 1e300) {
+        if (value[item] > 1e300)
           value[item] = value2[item]
-        }
       }
     }
-    if ((value[item] instanceof Object || value[item] instanceof Array) && !(value[item] instanceof Decimal) && value2[item] != undefined) {
+    if ((value[item] instanceof Object || value[item] instanceof Array) && !(value[item] instanceof Decimal) && value2[item] != undefined)
       value[item] = dev.beTests.nanFuckIteration(value[item], value2[item])
-    }
-    if (value[item] == undefined  && value2[item] != undefined) {
+    if (value[item] == undefined  && value2[item] != undefined)
       value[item] = value2[item]
-    }
-}
-return value
+  }
+  return value
 }
 
- dev.beTests.nanFuck = function () { player = dev.beTests.nanFuckIteration(player, Player.defaultStart), GameStorage.save() }
+dev.beTests.nanFuck = function () {
+  player = dev.beTests.nanFuckIteration(player, Player.defaultStart)
+  GameStorage.save()
+}
+
+dev.beTests.prepare = function (completeAllChallenges = false) {
+  if(completeAllChallenges) dev.beTests.completeChalleges.all()
+  else dev.beTests.completeChalleges.normal()
+
+  dev.beTests.consecutiveInfinities(new Decimal("1e350"))
+  dev.beTests.speed()
+  Themes.find("S11").set()
+  Notation.scientific.setAsCurrent()
+  Achievement(61).unlock()
+}

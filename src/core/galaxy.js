@@ -122,7 +122,7 @@ export class Galaxy {
   }
 
   static get costMult() {
-    return Effects.min(NormalChallenge(10).isRunning ? 90 : 60, TimeStudy(42));
+    return new Decimal(Effects.min(NormalChallenge(10).isRunning ? 90 : 60, TimeStudy(42)));
   }
 
   static get baseCost() {

@@ -91,7 +91,7 @@ export const eternityChallenges = [
       description: "Further reduce Antimatter Dimension cost multiplier growth",
       effect: completions => completions * 0.2,
       formatEffect: value => {
-        const total = Math.round(Player.dimensionMultDecrease + Effects.sum(EternityChallenge(6).reward)) - value;
+        const total = Player.dimensionMultDecrease.add(Effects.sum(EternityChallenge(6).reward)).round().sub(value);
         return `-${format(value, 2, 1)} (${formatX(total, 2, 1)} total)`;
       }
     },
@@ -122,7 +122,7 @@ export const eternityChallenges = [
     reward: {
       description: "Infinity Power strengthens Replicanti Galaxies",
       effect: completions => {
-        const infinityPower = Currency.infinityPower.value.pLog10().add(1).log10();
+        const infinityPower = Currency.infinityPower.value.add(1).pLog10().add(1).log10();
         return Decimal.pow(infinityPower, 0.03 * completions).sub(1).max(0);
       },
       formatEffect: value => formatPercents(value, 2)
