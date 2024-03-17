@@ -211,8 +211,8 @@ export const FreeTickspeed = {
 
   fromShards(shards) {
     // console.log(shards)
-    const tickmult = (DC.D1.add(Effects.min(1.33, TimeStudy(171)).sub(1)).mul(Decimal.max(getAdjustedGlyphEffect("cursedtickspeed"), 1)));
-    const logTickmult = tickmult.log();
+    const tickmult = DC.D1.add(Effects.min(1.33, TimeStudy(171)).sub(1)).mul(Decimal.max(getAdjustedGlyphEffect("cursedtickspeed"), 1));
+    const logTickmult = tickmult.ln();
     const logShards = shards.ln();
     const uncapped = logShards.div(logTickmult).max(0);
     if (uncapped.lte(FreeTickspeed.softcap)) {
@@ -250,7 +250,7 @@ export const FreeTickspeed = {
     do {
       oldApproximation = approximation;
       approximation = newtonsMethod(approximation);
-    } while (approximation < oldApproximation && ++counter < 100);
+    } while (approximation.lt(oldApproximation) && ++counter < 100);
     const purchases = approximation.floor();
     // This undoes the function we're implicitly applying to costs (the "+ 1") is because we want
     // the cost of the next upgrade.
