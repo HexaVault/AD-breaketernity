@@ -36,7 +36,7 @@ export default {
       isAffordable: false,
       isAutoUnlocked: false,
       isAutobuyerOn: false,
-      boughtAmount: 0,
+      boughtAmount: new Decimal(),
       currentDT: new Decimal(0),
       currentDTGain: new Decimal(0),
       timeEstimate: "",
@@ -87,7 +87,7 @@ export default {
         this.isAffordable = upgrade.isAffordable;
         this.isCapped = upgrade.isCapped;
         const autobuyer = Autobuyer.dilationUpgrade(upgrade.id);
-        this.boughtAmount = upgrade.boughtAmount;
+        this.boughtAmount.copyFrom(upgrade.boughtAmount);
         this.rebuyableBoost = PelleRifts.paradox.milestones[2].canBeApplied;
         if (!autobuyer) return;
         this.isAutoUnlocked = autobuyer.isUnlocked;

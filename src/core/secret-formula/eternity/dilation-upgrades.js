@@ -14,7 +14,7 @@ function rebuyable(config) {
     formatEffect: config.formatEffect,
     formatCost: config.formatCost,
     purchaseCap: config.purchaseCap,
-    reachedCap: () => player.dilation.rebuyables[config.id] >= config.purchaseCap,
+    reachedCap: () => player.dilation.rebuyables[config.id].gte(config.purchaseCap),
     pelleOnly: Boolean(config.pelleOnly),
     rebuyable: true
   };

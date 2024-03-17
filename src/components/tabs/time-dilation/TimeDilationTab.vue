@@ -14,9 +14,9 @@ export default {
       dilatedTime: new Decimal(),
       dilatedTimeIncome: new Decimal(),
       galaxyThreshold: new Decimal(),
-      baseGalaxies: 0,
-      totalGalaxies: 0,
-      tachyonGalaxyGain: 1,
+      baseGalaxies: new Decimal(),
+      totalGalaxies: new Decimal(),
+      tachyonGalaxyGain: new Decimal(),
       hasPelleDilationUpgrades: false,
       galaxyTimeEstimate: "",
       maxDT: new Decimal(),
@@ -69,7 +69,7 @@ export default {
       return DilationUpgrade.ttGenerator;
     },
     baseGalaxyText() {
-      return `${formatInt(this.baseGalaxies)} Base`;
+      return `${format(this.baseGalaxies, 3)} Base`;
     },
     hasMaxText: () => PlayerProgress.realityUnlocked() && !Pelle.isDoomed,
     allRebuyables() {
@@ -104,15 +104,15 @@ export default {
         this.dilatedTimeIncome = rawDTGain;
       }
       this.galaxyThreshold.copyFrom(player.dilation.nextThreshold);
-      this.baseGalaxies = player.dilation.baseTachyonGalaxies;
-      this.totalGalaxies = player.dilation.totalTachyonGalaxies;
+      this.baseGalaxies.copyFrom(player.dilation.baseTachyonGalaxies);
+      this.totalGalaxies.copyFrom(player.dilation.totalTachyonGalaxies);
       this.hasPelleDilationUpgrades = PelleRifts.paradox.milestones[0].canBeApplied;
       if (this.baseGalaxies.lt(500) && DilationUpgrade.doubleGalaxies.isBought) {
         this.tachyonGalaxyGain = DilationUpgrade.doubleGalaxies.effectValue;
       } else {
-        this.tachyonGalaxyGain = 1;
+        this.tachyonGalaxyGain = new Decimal(1);
       }
-      this.tachyonGalaxyGain *= DilationUpgrade.galaxyMultiplier.effectValue;
+      this.tachyonGalaxyGain = this.tachyonGalaxyGain.times(DilationUpgrade.galaxyMultiplier.effectValue);
       this.maxDT.copyFrom(player.records.thisReality.maxDT);
 
       const estimateText = getDilationTimeEstimate(this.maxDT);
@@ -144,7 +144,7 @@ export default {
     </span>
     <span>
       Next
-      <span v-if="tachyonGalaxyGain > 1">{{ formatInt(tachyonGalaxyGain) }}</span>
+      <span v-if="tachyonGalaxyGain.gt(1)">{{ format(tachyonGalaxyGain, 3, 0) }}</span>
       {{ pluralize("Tachyon Galaxy", tachyonGalaxyGain) }} at
       <span
         class="c-dilation-tab__galaxy-threshold"
@@ -154,7 +154,7 @@ export default {
       <span
         class="c-dilation-tab__galaxies"
         :ach-tooltip="baseGalaxyText"
-      >{{ formatInt(totalGalaxies) }}</span>
+      >{{ format(totalGalaxies, 3, 0) }}</span>
       {{ pluralize("Tachyon Galaxy", totalGalaxies) }}
     </span>
     <span v-if="hasMaxText">
