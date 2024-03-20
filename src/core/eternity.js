@@ -313,6 +313,42 @@ class EPMultiplierState extends GameMechanicState {
     return true;
   }
 
+  costInv() {
+    let tempVal = new Decimal(0)
+    let bulk = new Decimal(0)
+    let cur = Currency.eternityPoints.value
+    if (cur.gt(this.costIncreaseThresholds[3])) {
+      console.log("gt threshold 3")
+      cur = Decimal.log(cur.div(500), 1e3)
+      return cur.add(Math.pow(1332, 1.2)).root(1.2).floor()
+    } else {
+      if (cur.gt(this.costIncreaseThresholds[0])) {
+        console.log("gt threshold 0")
+        bulk = DC.E100.div(500).log(50).floor()
+        tempVal = DC.E2.pow(bulk).times(500)
+      } else {
+        console.log(cur.div(500).log(50).floor())
+        return cur.div(500).log(50).floor()
+      }
+      if (cur.gt(this.costIncreaseThresholds[1])) {
+        console.log("gt threshold 1")
+        tempVal = DC.NUMMAX.div(tempVal)
+        bulk = bulk.add(tempVal.log(100))
+        tempVal = (DC.E2.times(5)).pow(bulk).times(500)
+      } else {
+        console.log("not gt thres 1")
+        return bulk.add(cur.div(tempVal).log(100)).floor()
+      }
+      if (cur.gt(this.costIncreaseThresholds[2])) {
+        console.log("gt threshold 2")
+        tempVal = DC.E1300.div(tempVal)
+        bulk = bulk.add(tempVal.log(500)).floor()
+        tempVal = (DC.E3).pow(bulk).times(500)
+        cur = cur.div(tempVal).max(1)
+        return bulk.add(cur.log(1000)).floor()
+      }
+    }
+  }
   buyMax(auto) {
     if (!this.isAffordable) return false;
     if (RealityUpgrade(15).isLockingMechanics) {
@@ -320,44 +356,23 @@ class EPMultiplierState extends GameMechanicState {
       return false;
     }
     
-    let tempVal = new Decimal()
-    let bulk = new Decimal()
-    let cur = Currency.eternityPoints.value
-    if (cur.gt(this.costIncreaseThresholds[3])) {
-      cur = Decimal.log(cur.div(500), 1e3)
-      bulk = cur.sub(Math.pow(1332, 1.2)).pow(1/1.2).floor().add(1332)
-    } else {
-      if (cur.gt(this.costIncreaseThresholds[0])) {
-        bulk = DC.E100.div(500).log(50).floor()
-        tempVal = DC.E2.pow(bulk).times(500)
-      } else {
-        bulk = cur.div(500).log(50).floor()
-      }
-      if (cur.gt(this.costIncreaseThresholds[1])) {
-        tempVal = DC.NUMMAX.div(tempVal)
-        bulk = bulk.add(tempVal.log(100))
-        tempVal = (DC.E2.times(5)).pow(bulk).times(500)
-      } else {
-        bulk = bulk.add(cur.div(tempVal).log(100)).floor()
-      }
-      if (cur.gt(this.costIncreaseThresholds[2])) {
-        tempVal = DC.E1300.div(tempVal)
-        bulk = bulk.add(tempVal.log(500)).floor()
-        tempVal = (DC.E3).pow(bulk).times(500)
-        cur = cur.div(tempVal).max(1)
-        bulk = bulk.add(cur.log(1000)).floor()
-      }
-    }
+
     // Technically inaccurate, but it works fine (is it inaccurate tho???)
     // Should probably use hardcoded values but im lazy so no
 
-    bulk = bulk.floor()
+    let bulk = this.costInv().floor()
     let price = this.costAfterCount(bulk)
-    bulk = cur.sub(this.boughtAmount).max(0)
+    bulk = bulk.sub(this.boughtAmount).max(0)
+    console.log(bulk)
 
     if (bulk.eq(0)) return false;
     Currency.eternityPoints.subtract(price);
     this.boughtAmount = this.boughtAmount.add(bulk);
+    let i = 0
+    while (Currency.eternityPoints.gt(this.costAfterCount(this.boughtAmount.add(1))) && i < 50 && this.boughtAmount.layer < 1) {
+      this.boughtAmount = this.boughtAmount.add(1)
+      Currency.eternityPoints.subtract(this.costAfterCount(this.boughtAmount.add(1)));
+    }
     return true;
   }
 

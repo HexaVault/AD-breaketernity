@@ -512,7 +512,7 @@ window.player = {
     perkPoints: DC.D0,
     unlockedEC: 0,
     autoEC: true,
-    lastAutoEC: 0,
+    lastAutoEC: DC.D0,
     partEternitied: DC.D0,
     autoAchieve: true,
     gainedAutoAchievements: true,

@@ -10,7 +10,7 @@ export default {
     return {
       baseRMCap: new Decimal(),
       capRM: new Decimal(),
-      scaleTime: 0,
+      scaleTime: new Decimal(),
       capStr: "",
     };
   },
@@ -23,7 +23,7 @@ export default {
     update() {
       this.baseRMCap.copyFrom(MachineHandler.baseRMCap);
       this.capRM.copyFrom(MachineHandler.hardcapRM);
-      this.scaleTime = MachineHandler.scaleTimeForIM;
+      this.scaleTime.copyFrom(MachineHandler.scaleTimeForIM);
       this.capStr = formatMachines(MachineHandler.hardcapRM, MachineHandler.currentIMCap);
     },
     id(row, column) {
@@ -47,7 +47,7 @@ export default {
       Imaginary Machines are gained passively over time up to the cap, but gain slows down exponentially
       as you approach the cap.
       <br>
-      Every {{ formatInt(scaleTime) }} seconds the difference in iM between your current amount and the cap
+      Every {{ format(scaleTime, 2, 2) }} seconds the difference in iM between your current amount and the cap
       will be cut in half.
       <br>
       <br>

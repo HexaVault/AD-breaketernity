@@ -6,12 +6,12 @@ const rebuyable = props => {
     1e30,
     props.initialCost,
     props.costMult,
-    props.costMult / 10,
+    props.costMult.div(10),
     DC.E309,
     1e3,
-    props.initialCost * props.costMult
+    props.initialCost.times(props.costMult)
   );
-  const { effect } = props;
+  const effect = props.effect;
   props.effect = () => Decimal.pow(
     effect.add(ImaginaryUpgrade(props.id).effectOrDefault(0)),
     player.reality.rebuyables[props.id].mul(getAdjustedGlyphEffect("realityrow1pow")));
@@ -328,11 +328,11 @@ export const realityUpgrades = [
     cost: 100000,
     requirement: () => `Reality in under ${formatInt(15)} minutes of game time
       (Fastest: ${Time.bestReality.toStringShort()})`,
-    hasFailed: () => Time.thisReality.totalMinutes >= 15,
-    checkRequirement: () => Time.thisReality.totalMinutes < 15,
+    hasFailed: () => Time.thisReality.totalMinutes.gte(15),
+    checkRequirement: () => Time.thisReality.totalMinutes.lt(15),
     checkEvent: GAME_EVENT.REALITY_RESET_BEFORE,
     description: "Replicanti speed is boosted based on your fastest game-time Reality",
-    effect: () => 15 / Math.clamp(Time.bestReality.totalMinutes, 1 / 12, 15),
+    effect: () => 15 / Time.bestReality.totalMinutes.max(1/12).min(15).toNumber(),
     cap: 180,
     formatEffect: value => formatX(value, 2, 2)
   },

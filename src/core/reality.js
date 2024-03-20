@@ -647,7 +647,7 @@ export function finishProcessReality(realityProps) {
   player.totalTickGained = DC.D0;
   if (!PelleUpgrade.keepEternityChallenges.canBeApplied) player.eternityChalls = {};
   player.reality.unlockedEC = 0;
-  player.reality.lastAutoEC = 0;
+  player.reality.lastAutoEC = DC.D0;
   player.challenge.eternity.current = 0;
   if (!PelleUpgrade.timeStudiesNoReset.canBeApplied) player.challenge.eternity.unlocked = 0;
   player.challenge.eternity.requirementBits = 0;

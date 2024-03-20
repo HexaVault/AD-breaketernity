@@ -95,7 +95,7 @@ export function buyMaxTickSpeed() {
       cost = Tickspeed.cost;
     }
   } else {
-    const purchases = Tickspeed.costScale.getMaxBought(player.totalTickBought, Currency.antimatter.value, DC.D1);
+    const purchases = Tickspeed.costScale.getMaxBought(player.totalTickBought, Currency.antimatter.value, DC.D1, true);
     if (purchases === null) {
       return;
     }

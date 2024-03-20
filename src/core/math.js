@@ -362,6 +362,7 @@ window.LinearMultiplierScaling = class LinearMultiplierScaling {
   }
 };
 
+// This function is used once. I get why its seperated, but why make it a window function not a local one?????
 window.getCostWithLinearCostScaling = function getCostWithLinearCostScaling(
   amountOfPurchases, costScalingStart, initialCost, costMult, costMultGrowth
 ) {
@@ -569,10 +570,10 @@ window.ExponentialCostScaling = class ExponentialCostScaling {
 
    if (purchaseAmount.lte(currentPurchases)) return null
    
-   let purchaseCost = this.calculateCost(purchaseAmount)
    purchaseAmount = purchaseAmount.sub(currentPurchases)
    if (roundDown) purchaseAmount = purchaseAmount.floor()
 
+   let purchaseCost = this.calculateCost(purchaseAmount)
    purchaseAmount = purchaseAmount.times(purchasesPerIncrease)
    return { quantity: purchaseAmount, logPrice: purchaseCost.log10()}
   }
@@ -623,8 +624,8 @@ window.getHybridCostScaling = function getHybridCostScaling(
   amountOfPurchases, linCostScalingStart, linInitialCost, linCostMult, linCostMultGrowth,
   expInitialCost, expCostMult, expCostMultGrowth
 ) {
-  const normalCost = getCostWithLinearCostScaling(amountOfPurchases, linCostScalingStart, linInitialCost,
-    linCostMult, linCostMultGrowth);
+  const normalCost = getCostWithLinearCostScaling(amountOfPurchases.toNumber(), linCostScalingStart, linInitialCost.toNumber(),
+    linCostMult.toNumber(), linCostMultGrowth.toNumber());
   if (Number.isFinite(normalCost)) {
     return new Decimal(normalCost);
   }

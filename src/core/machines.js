@@ -61,7 +61,7 @@ export const MachineHandler = {
 
   // Time in seconds to reduce the missing amount by a factor of two
   get scaleTimeForIM() {
-    return 60 / ImaginaryUpgrade(20).effectOrDefault(1);
+    return DC.D60.div(ImaginaryUpgrade(20).effectOrDefault(1));
   },
 
   gainedImaginaryMachines(diff) {
@@ -70,12 +70,11 @@ export const MachineHandler = {
 
   estimateIMTimer(cost) {
     const imCap = this.currentIMCap;
-    if (imCap <= cost) return Infinity;
+    if (imCap.lte(cost)) return Infinity;
     const currentIM = Currency.imaginaryMachines.value;
     // This is doing log(a, 1/2) - log(b, 1/2) where a is % left to imCap of cost and b is % left to imCap of current
     // iM. log(1 - x, 1/2) should be able to estimate the time taken for iM to increase from 0 to imCap * x since every
     // fixed interval the difference between current iM to max iM should decrease by a factor of 1/2.
-    return Math.max(0, Math.log2(imCap / (imCap - cost)) - Math.log2(imCap / (imCap - currentIM))) *
-      this.scaleTimeForIM;
+    return Decimal.max(0, Decimal.log(imCap.div(imCap.sub(cost)), 2).sub(Decimal.log(imCap.div(imCap.sub(currentIM)), 2))).times(this.scaleTimeForIM);
   }
 };

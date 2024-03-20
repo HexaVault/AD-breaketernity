@@ -331,7 +331,7 @@ export const EternityChallenges = {
         (ImaginaryUpgrade(15).isLockingMechanics && shouldPreventEC7 &&
           !Array.range(1, 6).some(ec => !EternityChallenge(ec).isFullyCompleted));
       if (!player.reality.autoEC || Pelle.isDisabled("autoec") || hasUpgradeLock) {
-        player.reality.lastAutoEC = Math.clampMax(player.reality.lastAutoEC, this.interval);
+        player.reality.lastAutoEC = Decimal.clampMax(player.reality.lastAutoEC, this.interval);
         return;
       }
       if (Ra.unlocks.instantECAndRealityUpgradeAutobuyers.canBeApplied) {
@@ -347,12 +347,12 @@ export const EternityChallenges = {
       }
       const interval = this.interval;
       let next = this.nextChallenge;
-      while (player.reality.lastAutoEC - interval > 0 && next !== undefined) {
-        player.reality.lastAutoEC -= interval;
+      while (player.reality.lastAutoEC.sub(interval).gt(0) && next !== undefined) {
+        player.reality.lastAutoEC = player.reality.lastAutoEC.sub(interval);
         next.addCompletion(true);
         next = this.nextChallenge;
       }
-      player.reality.lastAutoEC %= interval;
+      player.reality.lastAutoEC = player.reality.lastAutoEC.mod(interval);
     },
 
     get nextChallenge() {
@@ -360,14 +360,14 @@ export const EternityChallenges = {
     },
 
     get interval() {
-      if (!Perk.autocompleteEC1.canBeApplied) return Infinity;
+      if (!Perk.autocompleteEC1.canBeApplied) return DC.BEMAX;
       let minutes = Effects.min(
         Number.MAX_VALUE,
         Perk.autocompleteEC1,
         Perk.autocompleteEC2,
         Perk.autocompleteEC3
       );
-      minutes /= VUnlocks.fastAutoEC.effectOrDefault(1);
+      minutes = minutes.div(VUnlocks.fastAutoEC.effectOrDefault(1));
       return TimeSpan.fromMinutes(minutes).totalMilliseconds;
     }
   }
