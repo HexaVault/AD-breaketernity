@@ -213,8 +213,8 @@ export function getDilationTimeEstimate(goal) {
 
 export function dilatedValueOf(value) {
   const log10 = value.log10();
-  const dilationPenalty = 0.75 * Effects.product(DilationUpgrade.dilationPenalty);
-  return Decimal.pow10(Math.sign(log10) * Math.pow(Math.abs(log10), dilationPenalty));
+  const dilationPenalty = Effects.product(DilationUpgrade.dilationPenalty).times(0.75);
+  return Decimal.pow10(Decimal.sign(log10).times(Decimal.pow(Decimal.abs(log10), dilationPenalty)));
 }
 
 class DilationUpgradeState extends SetPurchasableMechanicState {
