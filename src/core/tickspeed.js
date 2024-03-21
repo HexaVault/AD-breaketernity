@@ -215,10 +215,9 @@ export const FreeTickspeed = {
   },
 
   fromShards(shards) {
-    // console.log(shards)
-    const tickmult = DC.D1.add(Effects.min(1.33, TimeStudy(171)).sub(1)).mul(Decimal.max(getAdjustedGlyphEffect("cursedtickspeed"), 1));
+    const tickmult = DC.D1.add(Effects.min(new Decimal(1.33), TimeStudy(171)).sub(1)).mul(Decimal.max(getAdjustedGlyphEffect("cursedtickspeed"), 1));
     const logTickmult = tickmult.ln();
-    const logShards = shards.ln();
+    const logShards = shards.clampMin(1).ln();
     const uncapped = logShards.div(logTickmult).max(0);
     if (uncapped.lte(FreeTickspeed.softcap)) {
       this.multToNext = tickmult;

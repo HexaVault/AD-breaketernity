@@ -419,7 +419,7 @@ window.player = {
     lastEP: DC.DM1,
   },
   realities: DC.D0,
-  partSimulatedReality: 0,
+  partSimulatedReality: DC.D0,
   reality: {
     realityMachines: DC.D0,
     maxRM: DC.D0,

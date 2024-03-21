@@ -123,13 +123,13 @@ export function isRealityAvailable() {
 // Returns the number of "extra" realities from stored real time or Multiversal effects, should be called
 // with false for checking and true for actual usage, and only "used" once per reality.
 export function simulatedRealityCount(advancePartSimCounters) {
-  const amplifiedSim = Enslaved.boostReality ? Enslaved.realityBoostRatio - 1 : 0;
+  const amplifiedSim = Enslaved.boostReality ? Enslaved.realityBoostRatio.sub(1) : new Decimal();
   const multiversalSim = AlchemyResource.multiversal.effectValue;
-  const simCount = (multiversalSim + 1) * (amplifiedSim + 1) + player.partSimulatedReality - 1;
+  const simCount = amplifiedSim.add(1).mul(multiversalSim + 1).add(player.partSimulatedReality.sub(1));
   if (advancePartSimCounters) {
-    player.partSimulatedReality = simCount - Math.floor(simCount);
+    player.partSimulatedReality = simCount.sub(simCount.floor());
   }
-  return Math.floor(simCount);
+  return simCount.floor();
 }
 
 /**

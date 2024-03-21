@@ -1,3 +1,4 @@
+import { isDecimal } from "../../utility/type-check";
 import { DC } from "../constants";
 import { Effect } from "./effect";
 
@@ -22,7 +23,7 @@ export const Effects = {
   },
   /**
    * @param effectSources
-   * @return {Number}
+   * @return {Decimal}
    */
   product(...effectSources) {
     let result = DC.D1;
@@ -30,11 +31,12 @@ export const Effects = {
     return result;
   },
   /**
-   * @param {Number} defaultValue
+   * @param {Number | Decimal} defaultValue
    * @param effectSources
-   * @return {Number}
+   * @return {Decimal}
    */
   last(defaultValue, ...effectSources) {
+    if(!isDecimal(defaultValue)) defaultValue = new Decimal(defaultValue);
     let result = defaultValue;
     let foundLast = false;
     const reversedSources = effectSources
@@ -51,11 +53,12 @@ export const Effects = {
     return result;
   },
   /**
-   * @param {Number} defaultValue
+   * @param {Number | Decimal} defaultValue
    * @param effectSources
-   * @return {Number}
+   * @return {Decimal}
    */
   max(defaultValue, ...effectSources) {
+    if(!isDecimal(defaultValue)) defaultValue = new Decimal(defaultValue);
     let result = defaultValue;
     applyEffectsOf(effectSources, v => result = Decimal.max(result, v));
     return result;
@@ -63,9 +66,20 @@ export const Effects = {
   /**
    * @param {Number} defaultValue
    * @param effectSources
+   * @return {Number}
+   */
+  nMax(defaultValue, ...effectSources) {
+    let result = defaultValue;
+    applyEffectsOf(effectSources, v => result = Math.max(result, v));
+    return result;
+  },
+  /**
+   * @param {Number | Decimal} defaultValue
+   * @param effectSources
    * @return {Decimal}
    */
   min(defaultValue, ...effectSources) {
+    if(!isDecimal(defaultValue)) defaultValue = new Decimal(defaultValue);
     let result = defaultValue;
     applyEffectsOf(effectSources, v => result = Decimal.min(result, v));
     return result;
