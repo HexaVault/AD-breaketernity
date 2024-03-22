@@ -104,7 +104,7 @@ export const GlyphGenerator = {
       strength: initialStrength,
       level: level.actualLevel,
       rawLevel: level.rawLevel,
-      effects: makeGlyphEffectBitmask(["powerpow"]),
+      effects: ["powerpow"],
     };
   },
 
@@ -130,7 +130,6 @@ export const GlyphGenerator = {
   realityGlyph(level) {
     const str = rarityToStrength(100);
     const effects = this.generateRealityEffects(level);
-    const effectBitmask = makeGlyphEffectBitmask(effects);
     return {
       id: undefined,
       idx: null,
@@ -138,15 +137,13 @@ export const GlyphGenerator = {
       strength: str,
       level,
       rawLevel: level,
-      effects: effectBitmask,
+      effects: effects,
     };
   },
 
   cursedGlyph() {
     const str = rarityToStrength(100);
-    const effectBitmask = makeGlyphEffectBitmask(
-      orderedEffectList.filter(effect => effect.match("cursed*"))
-    );
+    const effectBitmask = GlyphEffects.all.filter(e => e.glyphTypes.contains("cursed"))
     return {
       id: undefined,
       idx: null,
@@ -163,8 +160,6 @@ export const GlyphGenerator = {
   doomedGlyph(type) {
     const effectList = GlyphEffects.all.filter(e => e.id.startsWith(type));
     effectList.push(GlyphEffects.timespeed);
-    let bitmask = 0;
-    for (const effect of effectList) bitmask |= 1 << effect.bitmaskIndex;
     const glyphLevel = Math.max(player.records.bestReality.glyphLevel, 5000);
     return {
       id: undefined,
@@ -173,7 +168,7 @@ export const GlyphGenerator = {
       strength: 3.5,
       level: glyphLevel,
       rawLevel: glyphLevel,
-      effects: bitmask,
+      effects: effectList,
     };
   },
 
@@ -181,7 +176,6 @@ export const GlyphGenerator = {
     // Store the pre-Reality EP value in the glyph's rarity
     const str = rarityToStrength(eternityPoints.log10() / 1e6);
     const effects = orderedEffectList.filter(effect => effect.match("companion*"));
-    const effectBitmask = makeGlyphEffectBitmask(effects);
     return {
       id: undefined,
       idx: null,
@@ -189,7 +183,7 @@ export const GlyphGenerator = {
       strength: str,
       level: 1,
       rawLevel: 1,
-      effects: effectBitmask,
+      effects: effects,
     };
   },
 
@@ -245,7 +239,7 @@ export const GlyphGenerator = {
     let num = Decimal.min(
       maxEffects,
       Decimal.floor(Decimal.pow(random1, DC.D1.sub(Decimal.pow(level.times(strength), 0.5)).div(100)).times(1.5).add(1))
-    ).toNumber();
+    ).toNumber().min(1e10); // Incase someone somehow forgets to put a limit, this is a final protection
     // If we do decide to add anything else that boosts chance of an extra effect, keeping the code like this
     // makes it easier to do (add it to the Effects.max).
     if (RealityUpgrade(17).isBought && random2 < Effects.max(0, RealityUpgrade(17))) {
@@ -265,9 +259,10 @@ export const GlyphGenerator = {
   },
 
   generateEffects(type, count, rng) {
-    const effectValues = GlyphTypes[type].effects.mapToObject(x => x.bitmaskIndex, () => rng.uniform());
+    const glyphTypeEffects = GlyphTypes[type].effects
+    const effectValues = glyphTypeEffects.mapToObject(x => x.intID, () => rng.uniform());
     // Get a bunch of random numbers so that we always use 7 here.
-    Array.range(0, 7 - GlyphTypes[type].effects.length).forEach(() => rng.uniform());
+    Array.range(0, 7 - glyphTypeEffects.length).forEach(() => rng.uniform());
     if (type === "effarig") {
       // This is effarigrm/effarigglyph
       const unincluded = effectValues[20] < effectValues[21] ? 20 : 21;
@@ -281,7 +276,7 @@ export const GlyphGenerator = {
     }
     // Sort from highest to lowest value.
     const effects = Object.keys(effectValues).sort((a, b) => effectValues[b] - effectValues[a]).slice(0, count);
-    return effects.map(Number).toBitmask();
+    return effects
   },
 
   randomType(rng, typesSoFar = []) {

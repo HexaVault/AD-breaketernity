@@ -136,7 +136,7 @@ class GlyphEffectConfig {
 
   /** @private */
   static checkInputs(setup) {
-    const KNOWN_KEYS = ["id", "bitmaskIndex", "glyphTypes", "singleDesc", "totalDesc", "genericDesc", "effect",
+    const KNOWN_KEYS = ["id", "intID", "glyphTypes", "singleDesc", "totalDesc", "genericDesc", "effect",
       "formatEffect", "formatSingleEffect", "combine", "softcap", "conversion", "formatSecondaryEffect",
       "formatSingleSecondaryEffect", "alteredColor", "alterationType", "isGenerated", "shortDesc", "enabledInDoomed"];
     const unknownField = Object.keys(setup).find(k => !KNOWN_KEYS.includes(k));

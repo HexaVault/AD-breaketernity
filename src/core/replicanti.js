@@ -78,7 +78,7 @@ function fastReplicantiBelow308(log10GainFactor, isAutobuyerActive) {
   }
 
   const gainNeededPerRG = DC.NUMMAX.log10();
-  const replicantiExponent = log10GainFactor.toNumber() + Replicanti.amount.log10();
+  const replicantiExponent = log10GainFactor.add(Replicanti.amount.log10());
   const toBuy = Decimal.floor(Decimal.min(replicantiExponent.div(gainNeededPerRG),
     Replicanti.galaxies.max.sub(player.replicanti.galaxies)));
   const maxUsedGain = gainNeededPerRG.times(toBuy).add(replicantiCap().log10()).sub(Replicanti.amount.log10());
@@ -452,7 +452,7 @@ export const ReplicantiUpgrade = {
     }
 
     get extra() {
-      return Effects.max(0, TimeStudy(131)) + PelleRifts.decay.milestones[2].effectOrDefault(0);
+      return Effects.max(0, TimeStudy(131)).add(PelleRifts.decay.milestones[2].effectOrDefault(0));
     }
 
     bulkPurchaseCalc() {
@@ -590,7 +590,7 @@ export const Replicanti = {
     },
     get canBuyMore() {
       if (!Replicanti.amount.gte(DC.NUMMAX)) return false;
-      return this.bought < this.max;
+      return this.bought.lt(this.max);
     },
     get areBeingBought() {
       const buyer = Autobuyer.replicantiGalaxy;

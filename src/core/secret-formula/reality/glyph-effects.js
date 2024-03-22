@@ -125,7 +125,7 @@ export const glyphEffects = {
     alteredColor: () => GlyphAlteration.getBoostColor("dilation"),
     alterationType: ALTERATION_TYPE.BOOST,
     combine: effects => {
-      const prod = effects.reduce(Decimal.prodReducer, 1);
+      const prod = effects.reduce(Decimal.prodReducer, DC.D1);
       return prod.lt(0.4)
         ? { value: Decimal.pow(prod.neg().add(0.4), 1.7).neg().add(0.4), capped: true }
         : { value: prod, capped: false };
@@ -250,7 +250,7 @@ export const glyphEffects = {
     effect: (level, strength) => Decimal.pow(Decimal.pow(level, 0.25) * Decimal.pow(strength, 0.4), 0.5).div(50),
     formatEffect: x => format(x, 3, 3),
     combine: effects => {
-      let sum = effects.reduce(Decimal.sumReducer, 0);
+      let sum = effects.reduce(Decimal.sumReducer, DC.D0);
       if (effects.length > 2) sum = sum.times(6 / (effects.length + 4));
       return sum.gt(0.1)
         ? { value: (sum.sub(0.1)).div(5).add(1), capped: true }
