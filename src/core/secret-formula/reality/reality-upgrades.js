@@ -32,7 +32,7 @@ export const realityUpgrades = [
     initialCost: DC.D1,
     costMult: new Decimal(30),
     textTemplate: "You gain Dilated Time {value} times faster",
-    effect: 3
+    effect: DC.D3
   }),
   rebuyable({
     name: "Replicative Amplifier",
@@ -40,7 +40,7 @@ export const realityUpgrades = [
     initialCost: DC.D1,
     costMult: new Decimal(30),
     textTemplate: "You gain Replicanti {value} times faster",
-    effect: 3
+    effect: DC.D3
   }),
   rebuyable({
     name: "Eternal Amplifier",
@@ -48,7 +48,7 @@ export const realityUpgrades = [
     initialCost: DC.D2,
     costMult: new Decimal(30),
     textTemplate: "You gain {value} times more Eternities",
-    effect: 3
+    effect: DC.D3
   }),
   rebuyable({
     name: "Superluminal Amplifier",
@@ -56,7 +56,7 @@ export const realityUpgrades = [
     initialCost: DC.D2,
     costMult: new Decimal(30),
     textTemplate: "You gain {value} times more Tachyon Particles",
-    effect: 3
+    effect: DC.D3
   }),
   rebuyable({
     name: "Boundless Amplifier",

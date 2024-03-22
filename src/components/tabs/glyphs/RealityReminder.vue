@@ -9,9 +9,9 @@ export default {
       ecCount: 0,
       missingAchievements: 0,
       unpurchasedDilationUpgrades: 0,
-      currLog10EP: 0,
-      cheapestLog10TD: 0,
-      multEPLog10Cost: 0,
+      currLog10EP: new Decimal(),
+      cheapestLog10TD: new Decimal(),
+      multEPLog10Cost: new Decimal(),
       purchasableTS: 0,
       hasDilated: 0,
       availableCharges: 0,
@@ -29,10 +29,10 @@ export default {
       if (this.unpurchasedDilationUpgrades > 0) {
         arr.push(`Purchase the remaining Dilation Upgrades (${formatInt(this.unpurchasedDilationUpgrades)} left)`);
       }
-      if (this.currLog10EP > 1.3 * this.cheapestLog10TD) {
+      if (this.currLog10EP.gt(this.cheapestLog10TD.mul(1.3))) {
         arr.push(`Purchase more TDs (cheapest: ${format(Decimal.pow10(this.cheapestLog10TD))} EP)`);
       }
-      if (this.currLog10EP > 1.3 * this.multEPLog10Cost) {
+      if (this.currLog10EP.gt(this.multEPLog10Cost.mul(1.3))) {
         arr.push(`Purchase more ${formatX(5)} EP (cost: ${format(Decimal.pow10(this.multEPLog10Cost))} EP)`);
       }
       if (this.ecCount < 60) {

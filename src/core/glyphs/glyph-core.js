@@ -451,7 +451,7 @@ export const Glyphs = {
   },
   removeVisualFlag(target, glyph) {
     const index = Glyphs[target].indexOf(glyph.id);
-    if (index > -1) Glyphs[target].splice(index, 1);
+    if (index.gt(-1)) Glyphs[target].splice(index, 1);
   },
   isMusicGlyph(glyph) {
     return glyph?.cosmetic === "music";

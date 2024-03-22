@@ -156,12 +156,12 @@ export default {
     formatFactor(x) {
       // Not applied to + perks since it's always whole; for factors < 1, the slice makes the
       // factor be fixed point.
-      return Notations.current.isPainful || x > 1000
+      return Notations.current.isPainful || x.gt(1000)
         ? format(x, 2, 2)
         : x.toPrecision(5).slice(0, 6);
     },
     formatLevel(x) {
-      return x > 1000
+      return x.gt(1000)
         ? formatInt(Math.floor(x))
         : format(x, 2, 4);
     },

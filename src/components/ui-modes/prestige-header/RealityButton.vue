@@ -100,16 +100,16 @@ export default {
       this.nextMachineEP.copyFrom(EPforRM(this.machinesGained.plus(1)));
       this.ppGained = multiplier;
       this.shardsGained = Effarig.shardsGained.mul(multiplier);
-      this.currentShardsRate = (this.shardsGained / Time.thisRealityRealTime.totalMinutes);
-      this.bestShardRate = player.records.thisReality.bestRSmin * multiplier;
-      this.bestShardRateVal = player.records.thisReality.bestRSminVal * multiplier;
+      this.currentShardsRate = this.shardsGained.div(Time.thisRealityRealTime.totalMinutes);
+      this.bestShardRate = multiplier.mul(player.records.thisReality.bestRSmin);
+      this.bestShardRateVal = multiplier.mul(player.records.thisReality.bestRSminVal);
 
       const teresaReward = this.formatScalingMultiplierText(
         "Glyph Sacrifice",
         Teresa.runRewardMultiplier,
-        Math.max(Teresa.runRewardMultiplier, Teresa.rewardMultiplier(Currency.antimatter.value)));
+        Decimal.max(Teresa.runRewardMultiplier, Teresa.rewardMultiplier(Currency.antimatter.value)));
       const teresaThreshold = this.formatThresholdText(
-        Teresa.rewardMultiplier(Currency.antimatter.value) > Teresa.runRewardMultiplier,
+        Teresa.rewardMultiplier(Currency.antimatter.value).gt(Teresa.runRewardMultiplier),
         player.celestials.teresa.bestRunAM,
         "antimatter");
       this.celestialRunText = [
