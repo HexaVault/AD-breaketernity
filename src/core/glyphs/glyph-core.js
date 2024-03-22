@@ -23,7 +23,7 @@ export function rarityToStrength(x) {
 }
 
 export function strengthToRarity(x) {
-  return (x - 1) * 100 / 2.5;
+  return x.sub(1).div(40);
 }
 
 export const Glyphs = {

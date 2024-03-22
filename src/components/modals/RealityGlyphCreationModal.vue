@@ -22,7 +22,7 @@ export default {
       this.realityGlyphLevel = AlchemyResource.reality.effectValue;
       const realityEffectConfigs = GlyphEffects.all
         .filter(eff => eff.glyphTypes.includes("reality"))
-        .sort((a, b) => a.bitmaskIndex - b.bitmaskIndex);
+        .sort((a, b) => a.intID - b.intID);
       const minRealityEffectIndex = realityEffectConfigs.map(cfg => cfg.bitmaskIndex).min();
       this.possibleEffects = realityEffectConfigs
         .map(cfg => [realityGlyphEffectLevelThresholds[cfg.bitmaskIndex - minRealityEffectIndex], cfg.id]);
