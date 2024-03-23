@@ -118,12 +118,12 @@ export const realityUpgrades = [
       only a single Glyph which must be level ${formatInt(3)}+.`,
     hasFailed: () => {
       const invalidEquippedGlyphs = Glyphs.activeWithoutCompanion.length > 1 ||
-        (Glyphs.activeWithoutCompanion.length === 1 && Glyphs.activeWithoutCompanion[0].level < 3);
-      const hasValidGlyphInInventory = Glyphs.inventory.countWhere(g => g && g.level >= 3) > 0;
+        (Glyphs.activeWithoutCompanion.length === 1 && Glyphs.activeWithoutCompanion[0].level.lt(3));
+      const hasValidGlyphInInventory = Glyphs.inventory.countWhere(g => g && g.level.gte(3)) > 0;
       return invalidEquippedGlyphs || (Glyphs.activeWithoutCompanion.length === 0 && !hasValidGlyphInInventory);
     },
-    checkRequirement: () => Currency.eternityPoints.exponent >= 4000 &&
-      Glyphs.activeWithoutCompanion.length === 1 && Glyphs.activeWithoutCompanion[0].level >= 3,
+    checkRequirement: () => Currency.eternityPoints.value.log10().gte(4000) &&
+      Glyphs.activeWithoutCompanion.length === 1 && Glyphs.activeWithoutCompanion[0].level.gte(3),
     checkEvent: GAME_EVENT.ETERNITY_RESET_AFTER,
     canLock: true,
     // There are two locking events - equipping a glyph with too low a level, and equipping a second glyph
@@ -136,12 +136,12 @@ export const realityUpgrades = [
     cost: 15,
     requirement: () => `Complete your first manual Eternity with at least ${formatPostBreak(DC.E400)} Infinity Points`,
     hasFailed: () => !player.requirementChecks.reality.noEternities,
-    checkRequirement: () => Currency.infinityPoints.exponent >= 400 &&
+    checkRequirement: () => Currency.infinityPoints.gte("1e400") &&
       player.requirementChecks.reality.noEternities,
     checkEvent: GAME_EVENT.ETERNITY_RESET_BEFORE,
     canLock: true,
     lockEvent: "Eternity",
-    bypassLock: () => Currency.infinityPoints.exponent >= 400,
+    bypassLock: () => Currency.infinityPoints.exponent.gte("1e400"),
     description: () => `Start every Reality with ${formatInt(100)} Eternities (also applies to current Reality)`,
     automatorPoints: 15,
     shortDescription: () => `Start with ${formatInt(100)} Eternities`,
@@ -152,7 +152,7 @@ export const realityUpgrades = [
     id: 11,
     cost: 50,
     requirement: () => `${format(Currency.infinitiesBanked.value, 2)}/${format(DC.E12)} Banked Infinities`,
-    checkRequirement: () => Currency.infinitiesBanked.exponent >= 12,
+    checkRequirement: () => Currency.infinitiesBanked.gte(1e12),
     checkEvent: [GAME_EVENT.ETERNITY_RESET_AFTER, GAME_EVENT.REALITY_FIRST_UNLOCKED],
     description: "Every second, gain 10% of the Infinities you would normally gain by Infinitying",
     automatorPoints: 5,
@@ -166,7 +166,7 @@ export const realityUpgrades = [
     cost: 50,
     requirement: () => `Eternity for ${format(DC.E70)} Eternity Points without completing Eternity Challenge 1`,
     hasFailed: () => EternityChallenge(1).completions !== 0,
-    checkRequirement: () => Currency.eternityPoints.exponent >= 70 && EternityChallenge(1).completions === 0,
+    checkRequirement: () => Currency.eternityPoints.gte(1e70) && EternityChallenge(1).completions === 0,
     checkEvent: GAME_EVENT.ETERNITY_RESET_AFTER,
     canLock: true,
     lockEvent: "complete Eternity Challenge 1",
@@ -182,7 +182,7 @@ export const realityUpgrades = [
     cost: 50,
     requirement: () => `Eternity for ${format(DC.E4000)} Eternity Points without Time Dim. 5-8`,
     hasFailed: () => !Array.range(5, 4).every(i => TimeDimension(i).amount.equals(0)),
-    checkRequirement: () => Currency.eternityPoints.exponent >= 4000 &&
+    checkRequirement: () => Currency.eternityPoints.value.log10().gte(4000) &&
       Array.range(5, 4).every(i => TimeDimension(i).amount.equals(0)),
     checkEvent: GAME_EVENT.ETERNITY_RESET_AFTER,
     canLock: true,
@@ -211,7 +211,7 @@ export const realityUpgrades = [
     requirement: () => `Have ${format(DC.E10)} Eternity Points without purchasing
       the ${formatX(5)} Eternity Point upgrade`,
     hasFailed: () => player.epmultUpgrades.neq(0),
-    checkRequirement: () => Currency.eternityPoints.exponent >= 10 && player.epmultUpgrades.eq(0),
+    checkRequirement: () => Currency.eternityPoints.gte(1e10) && player.epmultUpgrades.eq(0),
     checkEvent: GAME_EVENT.ETERNITY_RESET_AFTER,
     canLock: true,
     lockEvent: () => `purchase a ${formatX(5)} EP upgrade`,
@@ -224,14 +224,14 @@ export const realityUpgrades = [
     id: 16,
     cost: 1500,
     requirement: () => `Reality with ${formatInt(4)} Glyphs equipped of uncommon or better rarity
-      (${formatInt(Glyphs.activeWithoutCompanion.countWhere(g => g && g.strength >= 1.5))} equipped)`,
+      (${formatInt(Glyphs.activeWithoutCompanion.countWhere(g => g && g.strength.gte(1.5)))} equipped)`,
     hasFailed: () => {
-      const availableGlyphs = Glyphs.inventory.countWhere(g => g && g.strength >= 1.5);
-      const equipped = Glyphs.activeWithoutCompanion.countWhere(g => g.strength >= 1.5);
+      const availableGlyphs = Glyphs.inventory.countWhere(g => g && g.strength.gte(1.5));
+      const equipped = Glyphs.activeWithoutCompanion.countWhere(g => g.strength.gte(1.5));
       const availableSlots = Glyphs.activeSlotCount - Glyphs.activeList.length;
       return equipped + Math.min(availableGlyphs, availableSlots) < 4;
     },
-    checkRequirement: () => Glyphs.activeWithoutCompanion.countWhere(g => g.strength >= 1.5) === 4,
+    checkRequirement: () => Glyphs.activeWithoutCompanion.countWhere(g => g.strength.gte(1.5)) === 4,
     checkEvent: GAME_EVENT.REALITY_RESET_BEFORE,
     description: "Improve the Glyph rarity formula",
     effect: new Decimal(1.3),
@@ -242,15 +242,15 @@ export const realityUpgrades = [
     id: 17,
     cost: 1500,
     requirement: () => `Reality with ${formatInt(4)} Glyphs equipped, each having at least ${formatInt(2)} effects
-      (${formatInt(Glyphs.activeWithoutCompanion.countWhere(g => g && countValuesFromBitmask(g.effects) >= 2))}
+      (${formatInt(Glyphs.activeWithoutCompanion.countWhere(g => g && g.effects.length >= 2))}
       equipped)`,
     hasFailed: () => {
-      const availableGlyphs = Glyphs.inventory.countWhere(g => g && countValuesFromBitmask(g.effects) >= 2);
-      const equipped = Glyphs.activeWithoutCompanion.countWhere(g => countValuesFromBitmask(g.effects) >= 2);
+      const availableGlyphs = Glyphs.inventory.countWhere(g => g && g.effects.length >= 2);
+      const equipped = Glyphs.activeWithoutCompanion.countWhere(g => g.effects.length >= 2);
       const availableSlots = Glyphs.activeSlotCount - Glyphs.activeList.length;
       return equipped + Math.min(availableGlyphs, availableSlots) < 4;
     },
-    checkRequirement: () => Glyphs.activeWithoutCompanion.countWhere(g => countValuesFromBitmask(g.effects) >= 2) === 4,
+    checkRequirement: () => Glyphs.activeWithoutCompanion.countWhere(g => g.effects.length >= 2) === 4,
     checkEvent: GAME_EVENT.REALITY_RESET_BEFORE,
     description: () => `${formatPercents(0.5)} chance to get an additional effect on Glyphs`,
     effect: DC.D0_5,
@@ -261,14 +261,14 @@ export const realityUpgrades = [
     id: 18,
     cost: 1500,
     requirement: () => `Reality with ${formatInt(4)} Glyphs equipped, each at level ${formatInt(10)} or higher
-      (${formatInt(Glyphs.activeWithoutCompanion.countWhere(g => g && g.level >= 10))} equipped)`,
+      (${formatInt(Glyphs.activeWithoutCompanion.countWhere(g => g && g.level.gte(10)))} equipped)`,
     hasFailed: () => {
-      const availableGlyphs = Glyphs.inventory.countWhere(g => g && g.level >= 10);
-      const equipped = Glyphs.activeWithoutCompanion.countWhere(g => g.level >= 10);
+      const availableGlyphs = Glyphs.inventory.countWhere(g => g && g.level.gte(10));
+      const equipped = Glyphs.activeWithoutCompanion.countWhere(g => g.level.gte(10));
       const availableSlots = Glyphs.activeSlotCount - Glyphs.activeList.length;
       return equipped + Math.min(availableGlyphs, availableSlots) < 4;
     },
-    checkRequirement: () => Glyphs.activeWithoutCompanion.countWhere(g => g.level >= 10) === 4,
+    checkRequirement: () => Glyphs.activeWithoutCompanion.countWhere(g => g.level.gte(10)) === 4,
     checkEvent: GAME_EVENT.REALITY_RESET_BEFORE,
     description: "Eternity count boosts Glyph level",
     effect: () => Decimal.sqrt(Currency.eternities.value.plus(1).log10()).mul(0.45).max(1),
@@ -304,7 +304,7 @@ export const realityUpgrades = [
     name: "Cosmic Conglomerate",
     id: 21,
     cost: 100000,
-    requirement: () => `${format(player.dilation.totalTachyonGalaxies.add(Replicanti.galaxies.total).add(player.galaxies))}/${format(2800)} total Galaxies from all types`,
+    requirement: () => `${format(player.dilation.totalTachyonGalaxies.add(Replicanti.galaxies.total).add(player.galaxies), 2, 2)}/${format(2800, 2, 2)} total Galaxies from all types`,
     checkRequirement: () =>
     player.dilation.totalTachyonGalaxies.add(Replicanti.galaxies.total).add(player.galaxies).gte(2800),
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
@@ -316,7 +316,7 @@ export const realityUpgrades = [
     id: 22,
     cost: 100000,
     requirement: () => `${format(Currency.timeShards.value, 1)}/${format(DC.E28000)} Time Shards`,
-    checkRequirement: () => Currency.timeShards.exponent >= 28000,
+    checkRequirement: () => Currency.timeShards.value.log10().gt(28000),
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     description: "Time Dimension multiplier based on days spent in this Reality",
     effect: () => Decimal.pow(Decimal.log10(Time.thisReality.totalDays.add(1)).mul(2).add(1), 1.6).pow10(),
@@ -355,7 +355,7 @@ export const realityUpgrades = [
     id: 25,
     cost: 100000,
     requirement: () => `Reach ${format(DC.E11111)} EP (Best: ${format(player.records.bestReality.bestEP, 2)} EP)`,
-    checkRequirement: () => player.records.bestReality.bestEP.exponent >= 11111,
+    checkRequirement: () => player.records.bestReality.bestEP.gt(DC.E11111),
     checkEvent: GAME_EVENT.ETERNITY_RESET_AFTER,
     description: "Unlock the Reality autobuyer and Automator command",
     automatorPoints: 100,
