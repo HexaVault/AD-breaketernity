@@ -55,11 +55,11 @@ export default {
         if (ratio.lt(0.9)) return stepRGB[0][index];
         if (ratio.lt(1)) {
           const r = ratio.sub(0.9).mul(10);
-          return Decimal.round(r.sub(1).mul(stepRGB[0][index]).add(r.mul(stepRGB[1][index])));
+          return Decimal.round(new Decimal(1).sub(r).mul(stepRGB[0][index]).add(r.mul(stepRGB[1][index])));
         }
         if (ratio.lt(1.1)) {
           const r = ratio.sub(1).mul(10);
-          return Decimal.round(r.sub(1).mul(stepRGB[1][index]).add(r.mul(stepRGB[2][index])))
+          return Decimal.round(new Decimal(1).sub(r).mul(stepRGB[1][index]).add(r.mul(stepRGB[2][index])))
         }
         return stepRGB[2][index];
       };

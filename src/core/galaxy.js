@@ -62,13 +62,13 @@ export class Galaxy {
     let D = Decimal.ln(1.008).pow(2).times(inc.pow(2).sub(inc.times(2).times(delay)).add(inc.times(6)).sub(start.times(4).add(1))).div(4)
     let mzz = C.times(currency)
     
-    let convFunc = (m) => m.sub(((Decimal.ln(m).pow(2).sub(D)).times(m).sub(c).times(C)).div(Decimal.ln(m).pow(2).add(Decimal.ln(m).times(2)).sub(D)))
+    let convFunc = (m) => m.sub(((Decimal.ln(m).pow(2).sub(D)).times(m).sub(C).times(C)).div(Decimal.ln(m).pow(2).add(Decimal.ln(m).times(2)).sub(D)))
     while (mzz.sub(convFunc(mzz)).abs().lte(0.05)) {
       mzz = convFunc(mzz)
     }
-    let pur = Decimal.ln(h).div(A).sub(B).floor()
+    let pur = Decimal.ln(mzz).div(A).sub(B).floor()
     let rep = 0
-    while (this.requirementAt(pur).gt(currency) || rep < 25) {
+    while (this.requirementAt(pur).amount.gt(currency) || rep < 25) {
       if (pur.sub(1).neq(pur)) {
         pur = pur.sub(1)
       } else {
@@ -77,7 +77,7 @@ export class Galaxy {
       }
       rep++
     }
-    while (this.requirementAt(pur.add(1)).lt(currency) && pur.add(1).neq(pur) || rep < 25) {
+    while (this.requirementAt(pur.add(1)).amount.lt(currency) && pur.add(1).neq(pur) || rep < 25) {
       pur = pur.add(1)
       rep++
     }

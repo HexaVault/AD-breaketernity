@@ -98,16 +98,16 @@ export class DimBoost {
 
   static bulkRequirement(bulk) {
     const targetResets = DimBoost.purchasedBoosts.add(bulk);
-    const tier = Decimal.min(targetResets.add(3), this.maxDimensionsUnlockable);
+    const tier = Decimal.min(targetResets.add(3), this.maxDimensionsUnlockable).toNumber();
     let amount = DC.D20;
     const discount = Effects.sum(
       TimeStudy(211),
       TimeStudy(222)
     );
     if (tier === 6 && NormalChallenge(10).isRunning) {
-      amount = amount.add(Decimal.round((targetResets.sub(3)) * (DC.D20.sub(discount))));
+      amount = amount.add(targetResets.sub(3).mul(DC.D20.sub(discount)).round());
     } else if (tier === 8) {
-      amount = amount.add(Decimal.round((targetResets.sub(5)) * (DC.D15.sub(discount))));
+      amount = amount.add(targetResets.sub(5).mul(DC.D15.sub(discount)).round());
     }
     if (EternityChallenge(5).isRunning) {
       amount = Decimal.pow(targetResets.sub(1), 3).add(targetResets).add(amount).sub(1);

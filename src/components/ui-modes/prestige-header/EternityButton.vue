@@ -60,16 +60,16 @@ export default {
         ],
         [0, 255, 0]
       ];
-      const ratio = this.gainedEP.log10() / this.currentEP.log10();
+      const ratio = this.gainedEP.log10().div(this.currentEP.log10());
       const interFn = index => {
-        if (ratio < 0.9) return stepRGB[0][index];
-        if (ratio < 1) {
-          const r = 10 * (ratio - 0.9);
-          return Math.round(stepRGB[0][index] * (1 - r) + stepRGB[1][index] * r);
+        if (ratio.lt(0.9)) return stepRGB[0][index];
+        if (ratio.lt(1)) {
+          const r = ratio.sub(0.9).mul(10);
+          return Decimal.round(new Decimal(1).sub(r).mul(stepRGB[0][index]).add(r.mul(stepRGB[1][index])));
         }
-        if (ratio < 1.1) {
-          const r = 10 * (ratio - 1);
-          return Math.round(stepRGB[1][index] * (1 - r) + stepRGB[2][index] * r);
+        if (ratio.lt(1.1)) {
+          const r = ratio.sub(1).mul(10);
+          return Decimal.round(new Decimal(1).sub(r).mul(stepRGB[1][index]).add(r.mul(stepRGB[2][index])));
         }
         return stepRGB[2][index];
       };
