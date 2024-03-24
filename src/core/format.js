@@ -96,6 +96,51 @@ window.formatMachines = function formatMachines(realPart, imagPart) {
   return parts.join(" + ");
 };
 
+window.formatTet = function formatTet(value, places, placesUnder1000) {
+  return `^^${format(value, places, placesUnder1000)}`;
+};
+
+window.formatEffectPos = function formatEffectPos(effect, effectedValue, tet = true) {
+  if (effect.lt(1000)) {
+    return formatInt(effect, 2, 4) + "%"
+  }
+  if (effect.lt("1e100000") || effectedValue.lt(2)) {
+    return formatX(effect, 2, 2)
+  }
+  if ((effect.lt("10^^100") && tet || effect.lt("10^^4")) || effectedValue.lt(10)) {
+    return formatPow(effect.log10(), 2, 2)
+  }
+  if (tet) {
+    return formatTet(value.slog(10), 2, 2) // Not perfect, but close enough that discrepencies dont matter
+  }
+  val = new Decimal(effect)
+  val.layer = 1
+  return formatInt(Math.floor(effect.slog() - 1)) + "th Expo " + formatPow(val, 2, 2)
+}
+
+window.formatEffectNeg = function formatEffectNeg(effect, effectedValue) { // Does not take negative numbers fyi, just ints between 0-1 (excluding)
+  if (effect.gt(0.001)) {
+    return formatInt(effect, 2, 4) + "%"
+  }
+  if (effect.lt("1e100000") || effectedValue.lt(2)) {
+    return "/" + format(effect.recip(), 2, 2)
+  }
+  if (effect.recip().lt("10^^4") || effectedValue.lt(10)) {
+    return formatPow(effect.log10(), 2, 2)
+  }
+  val = new Decimal(effect)
+  val.layer = 1
+  return formatInt(Math.floor(effect.recip().slog().toNumber() - 1)) + "th Expo " + formatPow(val, 2, 2)
+}
+
+window.formatEffectAuto = function formatEffectAuto(value, effectedValue) {
+  if (value.gt(1)) {
+    return formatEffectPos(value, effectedValue)
+  }
+  formatEffectNeg(value, effectedValue, false)
+}
+
+
 window.timeDisplay = function timeDisplay(ms) {
   return TimeSpan.fromMilliseconds(ms).toString();
 };

@@ -228,7 +228,7 @@ export const glyphEffects = {
     // We also introduce a 3x mult per glyph after the first, so that stacking level 1, 0% glyphs still has an effect.
     // This is still just a flat DT mult when stacking multiple glyphs, but at least it's bigger than 2 or 3.
     combine: effects => ({
-      value: effects.length === 0 ? 0 : effects.reduce(Decimal.prodReducer, Math.pow(0.0001, 1 - effects.length)),
+      value: effects.length === 0 ? DC.D0 : effects.reduce(Decimal.prodReducer, Math.pow(0.0001, 1 - effects.length)),
       capped: false
     }),
     conversion: x => x,

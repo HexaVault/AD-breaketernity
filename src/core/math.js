@@ -77,6 +77,12 @@ window.decimalDepressedCubicSolution = function decimalDepressedCubicSolution(b,
  * @property {Decimal} purchasePrice amount that needs to be paid to get that
  */
 
+
+// Please, for the love of god, do not use this for ANY equation that is decimal.
+// BBBS is far too weak and its worth just writing inverses (or picking an equation that has inverses)
+// This is simply because you would need to run cost equations 30+ times which is wasteful
+// Again, avoid if possible.
+
 /**
  * bulkBuyBinarySearch is a helper for bulk buyers of non-linear prices. If the price of
  * a thing is f(n), it's hard to figure out how much of it can be bought without an inverse
@@ -161,8 +167,9 @@ window.bulkBuyBinarySearch = function bulkBuyBinarySearch(money, costInfo, alrea
 
 /**
  * dBBBS is the decimal version of bulkBuyBinarySearch
- * Ironically i think this code might be better then bbbs for values that increment slowly due to the last bit of code
- * But this is also decimal, so i highly advise against that
+ * Ironically I think this code might be better then bbbs for values that increment slowly due to the last bit of code,
+ * but this is also decimal so I highly advise against that. This code also doesnt work properly, but the whole code
+ * no longer uses bbbs (moved to inverses). See BBBS note - dont use this if possible (especially dont use this one).
  * 
  * @param {Decimal} money Amount of currency available
  * @param {Object} costInfo cost parameters:

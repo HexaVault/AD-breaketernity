@@ -48,8 +48,8 @@ export const LNotation = (function() {
   const notation = type => {
     const n = new type();
     n.setAsCurrent = () => {
-      player.options.Lnotation = n.name;
-      ui.LnotationName = n.name;
+      player.options.lnotation = n.name;
+      ui.lnotationName = n.name;
     };
     return n;
   };
@@ -84,7 +84,7 @@ export const LNotations = { // post e9e15
     return notation === undefined ? LNotation.stackedScientific : notation;
   },
   get current() {
-    return GameUI.initialized ? ui.Lnotation : LNotation.stackedScientific;
+    return GameUI.initialized ? ui.lnotation : LNotation.stackedScientific;
   }
 };
 

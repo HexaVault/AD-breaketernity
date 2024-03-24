@@ -61,7 +61,7 @@ export default {
       const options = player.options;
       this.theme = Theme.currentName();
       this.notation = options.notation;
-      this.lnotation = options.Lnotation;
+      this.lnotation = options.lnotation;
       this.sidebarResource = player.options.sidebarResourceID === 0
         ? "Latest Resource"
         : this.sidebarDB.find(e => e.id === player.options.sidebarResourceID).optionName;

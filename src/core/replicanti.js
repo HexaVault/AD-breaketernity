@@ -380,7 +380,7 @@ export const ReplicantiUpgrade = {
     set value(value) { player.replicanti.interval = value; }
 
     get nextValue() {
-      return Math.max(this.value * 0.9, this.cap);
+      return Decimal.max(this.value.times(0.9), this.cap);
     }
 
     get cost() {
@@ -397,7 +397,7 @@ export const ReplicantiUpgrade = {
     }
 
     get isCapped() {
-      return this.value <= this.cap;
+      return this.value.lte(this.cap);
     }
 
     get autobuyerMilestone() {
@@ -426,11 +426,11 @@ export const ReplicantiUpgrade = {
     set baseCost(value) { player.replicanti.galCost = value; }
 
     get distantRGStart() {
-      return 100 + Effects.sum(GlyphSacrifice.replication);
+      return Effects.sum(GlyphSacrifice.replication).add(100);
     }
 
     get remoteRGStart() {
-      return 1000 + Effects.sum(GlyphSacrifice.replication);
+      return Effects.sum(GlyphSacrifice.replication).add(1000);
     }
 
     get costIncrease() {
@@ -439,10 +439,10 @@ export const ReplicantiUpgrade = {
         ? DC.E2.pow(galaxies).times(DC.E2)
         : DC.E5.pow(galaxies).times(DC.E25);
       if (galaxies >= this.distantRGStart) {
-        increase = increase.times(DC.E50.pow(galaxies - this.distantRGStart + 5));
+        increase = increase.times(DC.E50.pow(galaxies.sub(this.distantRGStart).add(5)));
       }
       if (galaxies >= this.remoteRGStart) {
-        increase = increase.times(DC.E5.pow(Math.pow(galaxies - this.remoteRGStart + 1, 2)));
+        increase = increase.times(DC.E5.pow(Math.pow(galaxies.sub(this.remoteRGStart).add(1), 2)));
       }
       return increase;
     }
@@ -496,14 +496,10 @@ export const ReplicantiUpgrade = {
     }
     autobuyerTick() {
       // This isn't a hot enough autobuyer to worry about doing an actual inverse.
-      const bulk = bulkBuyBinarySearch(Currency.infinityPoints.value, {
-        costFunction: x => this.baseCostAfterCount(x).dividedByEffectOf(TimeStudy(233)),
-        firstCost: this.cost,
-        cumulative: true,
-      }, this.value);
-      if (!bulk) return;
-      Currency.infinityPoints.subtract(bulk.purchasePrice);
-      this.value += bulk.quantity;
+      const bulk = this.bulkPurchaseCalc()
+      if (bulk.floor().sub(this.value).lte(0)) return;
+      Currency.infinityPoints.subtract(baseCostAfterCount.sub(1));
+      this.value = this.value.add(bulk);
       this.baseCost = this.baseCostAfterCount(this.value);
     }
 

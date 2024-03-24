@@ -84,7 +84,7 @@ export default {
         value => {
           let description = `Max Replicanti Galaxies: `;
           const extra = upgrade.extra;
-          if (extra > 0) {
+          if (extra.gt(0)) {
             const total = value + extra;
             description += `<br>${formatInt(value)} + ${formatInt(extra)} = ${formatInt(total)}`;
           } else {
@@ -142,7 +142,7 @@ export default {
       this.hasTDMult = DilationUpgrade.tdMultReplicanti.isBought;
       this.multTD.copyFrom(DilationUpgrade.tdMultReplicanti.effectValue);
       this.hasDTMult = getAdjustedGlyphEffect("replicationdtgain").neq(0) && !Pelle.isDoomed;
-      this.multDT = Math.clampMin(
+      this.multDT = Decimal.max(
         Decimal.log10(Replicanti.amount).times(getAdjustedGlyphEffect("replicationdtgain")),
         1
       );
@@ -152,7 +152,7 @@ export default {
       this.hasRaisedCap = EffarigUnlock.infinity.isUnlocked && !this.isUncapped;
       this.replicantiCap.copyFrom(replicantiCap());
       if (this.hasRaisedCap) {
-        const mult = this.replicantiCap.div(DC.NUMMAX);
+        const mult = this.replicantiCap.div(Number.MAX_VALUE);
         this.capMultText = TimeStudy(31).canBeApplied
           ? `Base: ${formatX(mult.pow(1 / TimeStudy(31).effectValue), 2)}; after TS31: ${formatX(mult, 2)}`
           : formatX(mult, 2);
@@ -160,11 +160,11 @@ export default {
       this.distantRG = ReplicantiUpgrade.galaxies.distantRGStart;
       this.remoteRG = ReplicantiUpgrade.galaxies.remoteRGStart;
       this.effarigInfinityBonusRG = Effarig.bonusRG;
-      this.nextEffarigRGThreshold = DC.NUMMAX.pow(
-        Effarig.bonusRG + 2
+      this.nextEffarigRGThreshold = new Decimal(Number.MAX_VALUE).pow(
+        Effarig.bonusRG.add(2)
       );
       this.canSeeGalaxyButton =
-        Replicanti.galaxies.max >= 1 || PlayerProgress.eternityUnlocked();
+        Replicanti.galaxies.max.gte(1) || PlayerProgress.eternityUnlocked();
       this.maxReplicanti.copyFrom(player.records.thisReality.maxReplicanti);
       this.estimateToMax = this.calculateEstimate();
     },

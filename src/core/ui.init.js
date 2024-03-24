@@ -52,7 +52,7 @@ export const state = {
     h2pForcedTab: undefined,
   },
   notationName: "",
-  LnotationName: "",
+  lnotationName: "",
   formatPreBreak: false,
   lastClickTime: 0,
 };

@@ -32,7 +32,7 @@ export default {
       effectValue: 0,
       // Number.MAX_VALUE doesn't really matter here, but we need it because
       // undefined values are not allowed for data properties
-      cap: DC.NUMMAX,
+      cap: new Decimal(Number.MAX_VALUE),
       hasCap: false
     };
   },
