@@ -35,20 +35,24 @@ export class Galaxy {
    * @returns {number} Max number of galaxies (total)
    */
   static buyableGalaxies(currency) {
-    // plz no ask how exponential math work i dont know i just code, see https://discord.com/channels/351476683016241162/439241762603663370/1210707188964659230
+    // plz no ask how exponential math work i dont know i just code, see https://discord.com/channels/351476683016241162/439241762603663370/1210707188964659230m
     let minV = Galaxy.costScalingStart.min(Galaxy.remoteStart) // Take the smallest of the two values
     if (currency.lt(Galaxy.baseCost.add(Galaxy.costMult.times(minV) /* Pre exponential/quadratic? */))) {
       return Decimal.max(currency.sub(Galaxy.baseCost).div(Galaxy.costMult).floor(), player.galaxies)
     }
-    if (currency.lt(Galaxy.requirementAt(Galaxy.remoteStart))) {
+    if (currency.lt(Galaxy.requirementAt(Galaxy.remoteStart).amount)) {
       let dis = Galaxy.costScalingStart
       let scale = Galaxy.costMult
       let base = Galaxy.baseCost
       // Quadratic equation
-      let a = DC.DM1
-      let b = DC.DM1.times(scale.add(3).sub(DC.D2.times(dis)))
-      let c = DC.DM1.times(base.sub(dis).sub(currency).sub(198).add(dis.pow(2)))
-      let quad = b.neg().sub(b.pow(2).sub( DC.D4.times( a.times(c) ) ) ).div(a.times(2))
+      let a = DC.D1
+      let b = scale.sub(1).sub(dis.times(2))
+      let c = base.add(dis.pow(2)).sub(currency).sub(dis)
+      let quad = decimalQuadraticSolution(a, b, c)
+      console.log(a)
+      console.log(b)
+      console.log(c)
+      console.log(quad)
       return Decimal.max(quad, player.galaxies)
     }
     // Might not be perfect but at this point who gives a shit - If we can buy more we will loop a bit at the end to go through till we cant
@@ -68,7 +72,7 @@ export class Galaxy {
     }
     let pur = Decimal.ln(mzz).div(A).sub(B).floor()
     let rep = 0
-    while (this.requirementAt(pur).amount.gt(currency) || rep < 25) {
+    while (Galaxy.requirementAt(pur).amount.gt(currency) || rep < 25) {
       if (pur.sub(1).neq(pur)) {
         pur = pur.sub(1)
       } else {
@@ -218,12 +222,13 @@ function maxBuyGalaxies(limit = DC.BEMAX) {
   const req = Galaxy.requirement;
   if (!req.isSatisfied) return false;
   const dim = AntimatterDimension(req.tier);
-  const newGalaxies = Decimal.clampMax(
+  const newGalaxies = Decimal.min(
     Galaxy.buyableGalaxies(Decimal.round(dim.totalAmount)), limit);
   if (Notations.current === Notation.emoji) {
     player.requirementChecks.permanent.emojiGalaxies += newGalaxies - player.galaxies;
   }
   // Galaxy count is incremented by galaxyReset(), so add one less than we should:
+  console.log(newGalaxies)
   player.galaxies = newGalaxies.sub(1);
   galaxyReset();
   if (Enslaved.isRunning && player.galaxies.gt(1)) EnslavedProgress.c10.giveProgress();

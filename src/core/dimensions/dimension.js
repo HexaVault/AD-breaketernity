@@ -21,7 +21,7 @@ export class DimensionState {
   set amount(value) { this.data.amount = value; }
 
   /** @returns {Decimal} */
-  get bought() { return Decimal.fromDecimal(this.data.bought); }
+  get bought() { return this.data.bought; }
   /** @param {Decimal} value */
   set bought(value) { this.data.bought = value; }
 

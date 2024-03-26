@@ -81,10 +81,10 @@ export const LNotations = { // post e9e15
   ],
   find: name => {
     const notation = LNotations.all.find(n => n.name === name);
-    return notation === undefined ? LNotation.stackedScientific : notation;
+    return notation === undefined ? LNotation.extendedScientific : notation;
   },
   get current() {
-    return GameUI.initialized ? ui.lnotation : LNotation.stackedScientific;
+    return GameUI.initialized ? ui.lnotation : LNotation.extendedScientific;
   }
 };
 

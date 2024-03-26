@@ -141,7 +141,7 @@ export const realityUpgrades = [
     checkEvent: GAME_EVENT.ETERNITY_RESET_BEFORE,
     canLock: true,
     lockEvent: "Eternity",
-    bypassLock: () => Currency.infinityPoints.exponent.gte("1e400"),
+    bypassLock: () => Currency.infinityPoints.value.gte("1e400"),
     description: () => `Start every Reality with ${formatInt(100)} Eternities (also applies to current Reality)`,
     automatorPoints: 15,
     shortDescription: () => `Start with ${formatInt(100)} Eternities`,

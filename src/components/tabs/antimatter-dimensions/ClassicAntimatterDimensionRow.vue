@@ -99,9 +99,8 @@ export default {
       this.isCapped = tier === 8 && Enslaved.isRunning && dimension.bought >= 1;
       this.multiplier.copyFrom(dimension.multiplier);
       this.amount.copyFrom(dimension.totalAmount);
-      this.totalAmount = dimension.totalAmount;
-      this.bought = dimension.bought;
-      this.boughtBefore10 = dimension.boughtBefore10;
+      this.bought.copyFrom(dimension.bought);
+      this.boughtBefore10.copyFrom(dimension.boughtBefore10);
       this.singleCost.copyFrom(dimension.cost);
       this.until10Cost.copyFrom(dimension.costUntil10);
       if (tier < 8) {

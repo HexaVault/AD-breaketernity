@@ -32,7 +32,7 @@ window.decimalQuadraticSolution = function decimalQuadraticSolution(a, b, c, n =
   let nb = b.neg()
   let lroot = b.pow(2)
   let rroot = a.times(c).times(4)
-  let froot = lroot.add(rroot).sqrt()
+  let froot = lroot.sub(rroot).sqrt()
   let top = n ? nb.sub(froot) : nb.add(froot)
   return top.div(divsr)
 };

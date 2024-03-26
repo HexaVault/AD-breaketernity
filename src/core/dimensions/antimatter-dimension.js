@@ -204,7 +204,7 @@ export function buyOneDimension(tier) {
 
   if (tier === 8 && Enslaved.isRunning && AntimatterDimension(8).bought.gte(1)) return false;
   
-  dimension.currencyAmount = dimension.currencyAmount.minus(cost);
+  dimension.currencyAmount = dimension.currencyAmount.minus(cost).max(0);
 
   if (dimension.boughtBefore10.eq(9)) {
     dimension.challengeCostBump();
@@ -229,7 +229,7 @@ export function buyManyDimension(tier) {
 
   if (tier === 8 && Enslaved.isRunning) return buyOneDimension(8);
 
-  dimension.currencyAmount = dimension.currencyAmount.minus(cost);
+  dimension.currencyAmount = dimension.currencyAmount.minus(cost).max(0);
   dimension.challengeCostBump();
   dimension.amount = dimension.amount.plus(dimension.remainingUntil10);
   dimension.bought = dimension.bought.add(dimension.remainingUntil10);
@@ -249,7 +249,7 @@ export function buyAsManyAsYouCanBuy(tier) {
 
   if (tier === 8 && Enslaved.isRunning) return buyOneDimension(8);
 
-  dimension.currencyAmount = dimension.currencyAmount.minus(cost);
+  dimension.currencyAmount = dimension.currencyAmount.minus(cost).max(0);
   dimension.challengeCostBump();
   dimension.amount = dimension.amount.plus(howMany);
   dimension.bought = dimension.bought.add(howMany);
@@ -300,7 +300,7 @@ export function buyMaxDimension(tier, bulk = Infinity) {
   if (dimension.currencyAmount.gte(cost)) {
     // console.log(dimension.tier)
     // console.log(cost)
-    dimension.currencyAmount = dimension.currencyAmount.minus(cost);
+    dimension.currencyAmount = dimension.currencyAmount.minus(cost).max(0);
     buyUntilTen(tier);
     bulkLeft = bulkLeft.sub(1);
   }
@@ -312,7 +312,7 @@ export function buyMaxDimension(tier, bulk = Infinity) {
     while (dimension.isAffordableUntil10 && dimension.cost.lt(goal) && bulkLeft.gt(0)) {
       // We can use dimension.currencyAmount or Currency.antimatter here, they're the same,
       // but it seems safest to use dimension.currencyAmount for consistency.
-      dimension.currencyAmount = dimension.currencyAmount.minus(dimension.costUntil10);
+      dimension.currencyAmount = dimension.currencyAmount.minus(dimension.costUntil10).max(0);
       buyUntilTen(tier);
       bulkLeft = bulkLeft.sub(1);
     }
@@ -330,7 +330,7 @@ export function buyMaxDimension(tier, bulk = Infinity) {
   if (buying.div(10).gt(bulkLeft)) buying = new Decimal(bulkLeft).times(10);
   dimension.amount = dimension.amount.plus(buying).round();
   dimension.bought = dimension.bought.add(buying);
-  dimension.currencyAmount = dimension.currencyAmount.minus(Decimal.pow10(maxBought.logPrice));
+  dimension.currencyAmount = dimension.currencyAmount.minus(Decimal.pow10(maxBought.logPrice)).max(0);
 }
 
 class AntimatterDimensionState extends DimensionState {

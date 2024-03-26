@@ -84,8 +84,8 @@ export default {
       this.multiplier.copyFrom(AntimatterDimension(tier).multiplier);
       this.amount.copyFrom(dimension.totalAmount);
       this.bought.copyFrom(dimension.bought);
-      this.boughtBefore10 = dimension.boughtBefore10;
-      this.howManyCanBuy = buyUntil10 ? dimension.howManyCanBuy : Decimal.min(dimension.howManyCanBuy, 1);
+      this.boughtBefore10.copyFrom(dimension.boughtBefore10);
+      this.howManyCanBuy.copyFrom(buyUntil10 ? dimension.howManyCanBuy : Decimal.min(dimension.howManyCanBuy, 1));
       this.singleCost.copyFrom(dimension.cost);
       this.until10Cost.copyFrom(dimension.cost.times(Decimal.max(dimension.howManyCanBuy, 1)));
       if (tier < 8) {
