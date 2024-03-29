@@ -85,8 +85,8 @@ export default {
           let description = `Max Replicanti Galaxies: `;
           const extra = upgrade.extra;
           if (extra.gt(0)) {
-            const total = value + extra;
-            description += `<br>${formatInt(value)} + ${formatInt(extra)} = ${formatInt(total)}`;
+            const total = extra.add(value);
+            description += `<br>${formatInt(value)} + ${format(extra)} = ${format(total)}`;
           } else {
             description += formatInt(value);
           }
@@ -174,8 +174,8 @@ export default {
     // This is copied out of a short segment of ReplicantiGainText with comments and unneeded variables stripped
     calculateEstimate() {
       const updateRateMs = player.options.updateRate;
-      const logGainFactorPerTick = Decimal.divide(getGameSpeedupForDisplay() * updateRateMs *
-        (Math.log(player.replicanti.chance + 1)), getReplicantiInterval());
+      const logGainFactorPerTick = player.replicanti.chance.add(1).ln().mul(updateRateMs)
+        .mul(getGameSpeedupForDisplay()).div(getReplicantiInterval());
       const postScale = Math.log10(ReplicantiGrowth.scaleFactor) / ReplicantiGrowth.scaleLog10;
       const nextMilestone = this.maxReplicanti;
       const coeff = Decimal.divide(updateRateMs / 1000, logGainFactorPerTick.times(postScale));

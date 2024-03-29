@@ -64,7 +64,7 @@ export default {
       if (this.isUnlocked) return "Start";
       const lockedText = this.lockedAt === undefined
         ? ""
-        : ` (${formatInt(this.infinities)}/${formatInt(this.lockedAt)})`;
+        : ` (${format(this.infinities)}/${formatInt(this.lockedAt)})`;
       return `Locked${lockedText}`;
     }
   },

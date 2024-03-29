@@ -59,7 +59,7 @@ export const dilationUpgrades = {
     effect: bought => (bought.lt(38) ? Decimal.pow(0.8, bought) : new Decimal()),
     formatEffect: effect => {
       if (effect === 0) return `${formatX(getTachyonGalaxyMult(effect), 4, 4)}`;
-      const nextEffect = effect === Math.pow(0.8, 37) ? 0 : 0.8 * effect;
+      const nextEffect = effect === Decimal.pow(0.8, 37) ? new Decimal() : effect.mul(0.8);
       return `${formatX(getTachyonGalaxyMult(effect), 4, 4)} ➜
         Next: ${formatX(getTachyonGalaxyMult(nextEffect), 4, 4)}`;
     },

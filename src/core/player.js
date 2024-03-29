@@ -325,8 +325,8 @@ window.player = {
       bestRSminVal: DC.D0,
     },
     bestReality: {
-      time: Number.MAX_VALUE,
-      realTime: Number.MAX_VALUE,
+      time: DC.BEMAX,
+      realTime: DC.BEMAX,
       glyphStrength: 0,
       RM: DC.D0,
       RMSet: [],
@@ -373,7 +373,7 @@ window.player = {
   replicanti: {
     unl: false,
     amount: DC.D0,
-    chance: 0.01,
+    chance: new Decimal(0.01),
     chanceCost: DC.E150,
     interval: DC.E3,
     intervalCost: DC.E140,

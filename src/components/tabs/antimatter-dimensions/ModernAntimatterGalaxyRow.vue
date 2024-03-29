@@ -14,8 +14,8 @@ export default {
         amount: 0
       },
       canBeBought: false,
-      distantStart: 0,
-      remoteStart: 0,
+      distantStart: new Decimal(),
+      remoteStart: new Decimal(),
       lockText: null,
       canBulkBuy: false,
       creditsClosed: false,
@@ -96,7 +96,7 @@ export default {
       this.requirement.amount = requirement.amount;
       this.requirement.tier = requirement.tier;
       this.canBeBought = requirement.isSatisfied && Galaxy.canBeBought;
-      this.distantStart = EternityChallenge(5).isRunning ? 0 : Galaxy.costScalingStart;
+      this.distantStart = EternityChallenge(5).isRunning ? new Decimal() : Galaxy.costScalingStart;
       this.remoteStart = Galaxy.remoteStart;
       this.lockText = Galaxy.lockText;
       this.canBulkBuy = EternityMilestone.autobuyMaxGalaxies.isReached;
@@ -114,7 +114,7 @@ export default {
       manualRequestGalaxyReset(this.canBulkBuy && bulk);
     },
     formatGalaxies(num) {
-      return num.gt(1e8) ? format(num, 2) : formatInt(num);
+      return num.gt(1e8) ? format(num, 2) : formatInt(num.toNumber());
     },
   }
 };

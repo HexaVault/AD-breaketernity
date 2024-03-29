@@ -38,10 +38,10 @@ export function replicantiGalaxy(auto) {
   }
   if (!Replicanti.galaxies.canBuyMore) return;
   const galaxyGain = Replicanti.galaxies.gain;
-  if (galaxyGain < 1) return;
+  if (galaxyGain.lt(1)) return;
   player.replicanti.timer = DC.D0;
   Replicanti.amount = Achievement(126).isUnlocked && !Pelle.isDoomed
-    ? Decimal.pow10(Replicanti.amount.log10() - LOG10_MAX_VALUE * galaxyGain)
+    ? Decimal.pow10(Replicanti.amount.log10().sub(galaxyGain.mul(LOG10_MAX_VALUE)))
     : DC.D1;
   addReplicantiGalaxies(galaxyGain);
 }
@@ -201,7 +201,7 @@ export function replicantiLoop(diff) {
     }
 
     // Note that remainingGain is in log10 terms.
-    let remainingGain = tickCount.times(Math.log(player.replicanti.chance + 1)).times(LOG10_E);
+    let remainingGain = tickCount.times(player.replicanti.chance.add(1).ln()).times(LOG10_E);
     // It is intended to be possible for both of the below conditionals to trigger.
     if (!isUncapped || Replicanti.amount.lte(replicantiCap())) {
       // Some of the gain is "used up" below e308, but if replicanti are uncapped
@@ -225,17 +225,17 @@ export function replicantiLoop(diff) {
     // Multiple ticks but "slow" gain: This happens at low replicanti chance and amount with a fast interval, which
     // can happen often in early cel7. In this case we "batch" ticks together as full doubling events and then draw
     // from a Poisson distribution for how many times to do that. Any leftover ticks are used as binomial samples
-    const batchTicks = Math.floor(tickCount.toNumber() * Math.log2(1 + player.replicanti.chance));
-    const binomialTicks = tickCount.toNumber() - batchTicks / Math.log2(1 + player.replicanti.chance);
+    const batchTicks = player.replicanti.chance.add(1).log(2).mul(tickCount).floor();
+    const binomialTicks = tickCount.sub(batchTicks.div(player.replicanti.chance.add(1).log(2)));
 
     Replicanti.amount = Replicanti.amount.times(DC.D2.pow(poissonDistribution(batchTicks)));
-    for (let t = 0; t < Math.floor(binomialTicks); t++) {
+    for (let t = 0; t < binomialTicks.floor().toNumber(); t++) {
       const reproduced = binomialDistribution(Replicanti.amount, player.replicanti.chance);
       Replicanti.amount = Replicanti.amount.plus(reproduced);
     }
 
     // The batching might use partial ticks; we add the rest back to the timer so it gets used next loop
-    const leftover = binomialTicks - Math.floor(binomialTicks);
+    const leftover = binomialTicks.sub(binomialTicks.floor());
     player.replicanti.timer = player.replicanti.timer.add(interval.times(leftover));
   } else if (tickCount.eq(1)) {
     // Single tick: Take a single binomial sample to properly simulate replicanti growth with randomness
@@ -347,7 +347,7 @@ export const ReplicantiUpgrade = {
     }
 
     get isCapped() {
-      return this.nearestPercent(this.value) >= this.cap;
+      return this.nearestPercent(this.value).lte(this.cap);
     }
 
     get autobuyerMilestone() {
@@ -360,17 +360,17 @@ export const ReplicantiUpgrade = {
       // N = log(IP * (1e15 - 1) / cost + 1) / log(1e15)
       let N = Currency.infinityPoints.value.times(this.costIncrease - 1)
         .dividedBy(this.cost).plus(1).log(this.costIncrease);
-      N = Math.round((Math.min(this.value + 0.01 * Math.floor(N), this.cap) - this.value) * 100);
-      if (N <= 0) return;
+      N = Decimal.round(Decimal.min(N.floor().div(100).add(this.value), this.cap).sub(this.value).mul(100));
+      if (N.lte(0)) return;
       const totalCost = this.cost.times(Decimal.pow(this.costIncrease, N).minus(1).dividedBy(this.costIncrease - 1));
       Currency.infinityPoints.subtract(totalCost);
       this.baseCost = this.baseCost.times(Decimal.pow(this.costIncrease, N));
-      this.value = this.nearestPercent(this.value + 0.01 * N);
+      this.value = this.nearestPercent(N.div(100).add(this.value));
     }
 
     // Rounding errors suck
     nearestPercent(x) {
-      return Math.round(100 * x) / 100;
+      return Decimal.mul(x, 100).round().div(100);
     }
   }(),
   interval: new class ReplicantiIntervalUpgrade extends ReplicantiUpgradeState {
@@ -415,7 +415,7 @@ export const ReplicantiUpgrade = {
     set value(value) { player.replicanti.boughtGalaxyCap = value; }
 
     get nextValue() {
-      return this.value + 1;
+      return this.value.add(1);
     }
 
     get cost() {
@@ -438,11 +438,11 @@ export const ReplicantiUpgrade = {
       let increase = EternityChallenge(6).isRunning
         ? DC.E2.pow(galaxies).times(DC.E2)
         : DC.E5.pow(galaxies).times(DC.E25);
-      if (galaxies >= this.distantRGStart) {
+      if (galaxies.gte(this.distantRGStart)) {
         increase = increase.times(DC.E50.pow(galaxies.sub(this.distantRGStart).add(5)));
       }
-      if (galaxies >= this.remoteRGStart) {
-        increase = increase.times(DC.E5.pow(Math.pow(galaxies.sub(this.remoteRGStart).add(1), 2)));
+      if (galaxies.gte(this.remoteRGStart)) {
+        increase = increase.times(DC.E5.pow(Decimal.pow(galaxies.sub(this.remoteRGStart).add(1), 2)));
       }
       return increase;
     }
@@ -465,12 +465,9 @@ export const ReplicantiUpgrade = {
       const logDistantScaling = new Decimal(50);
       const logRemoteScaling = DC.D5;
 
-      costFunc = (value) => this.baseCostAfterCount(value)
-
       let cur = Currency.infinityPoints.value.log10()
-      let ccost = logBase // logBase (we use ccost since cost is defined and we dont want confusion)
     
-      if (ccost.div(TimeStudy(233).effectOrDefault(1)).gt(cur)) return
+      if (logBase.div(TimeStudy(233).effectOrDefault(1)).gt(cur)) return
       cur = cur.times(TimeStudy(233).effectOrDefault(1))
       let a = logCostScaling.div(2)
       let b = logBaseIncrease.sub(logCostScaling.div(2))
@@ -497,7 +494,7 @@ export const ReplicantiUpgrade = {
     autobuyerTick() {
       // This isn't a hot enough autobuyer to worry about doing an actual inverse.
       const bulk = this.bulkPurchaseCalc()
-      if (bulk.floor().sub(this.value).lte(0)) return;
+      if (!bulk || bulk.floor().sub(this.value).lte(0)) return;
       Currency.infinityPoints.subtract(baseCostAfterCount.sub(1));
       this.value = this.value.add(bulk);
       this.baseCost = this.baseCostAfterCount(this.value);
@@ -539,11 +536,11 @@ export const Replicanti = {
       unl: unlocked,
       amount: unlocked ? DC.D1 : DC.D0,
       timer: DC.D0,
-      chance: 0.01,
+      chance: new Decimal(0.01),
       chanceCost: DC.E150,
-      interval: 1000,
+      interval: DC.E3,
       intervalCost: DC.E140,
-      boughtGalaxyCap: 0,
+      boughtGalaxyCap: DC.D0,
       galaxies: DC.D0,
       galCost: DC.E170,
     };
@@ -595,13 +592,13 @@ export const Replicanti = {
         (!player.options.confirmations.replicantiGalaxy && this.isPlayerHoldingR);
     },
     get gain() {
-      if (!this.canBuyMore) return 0;
+      if (!this.canBuyMore) return DC.D0;
       if (Achievement(126).isUnlocked) {
-        const maxGain = Replicanti.galaxies.max - player.replicanti.galaxies;
+        const maxGain = Replicanti.galaxies.max.sub(player.replicanti.galaxies);
         const logReplicanti = Replicanti.amount.log10();
-        return Math.min(maxGain, Math.floor(logReplicanti / LOG10_MAX_VALUE));
+        return Decimal.min(maxGain, Decimal.floor(logReplicanti.div(LOG10_MAX_VALUE)));
       }
-      return 1;
+      return DC.D1;
     },
   },
   get isUncapped() {

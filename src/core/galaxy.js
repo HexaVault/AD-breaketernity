@@ -228,7 +228,6 @@ function maxBuyGalaxies(limit = DC.BEMAX) {
     player.requirementChecks.permanent.emojiGalaxies += newGalaxies - player.galaxies;
   }
   // Galaxy count is incremented by galaxyReset(), so add one less than we should:
-  console.log(newGalaxies)
   player.galaxies = newGalaxies.sub(1);
   galaxyReset();
   if (Enslaved.isRunning && player.galaxies.gt(1)) EnslavedProgress.c10.giveProgress();

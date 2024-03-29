@@ -71,15 +71,15 @@ export function buyDilationUpgrade(id, bulk = 1) {
     if (id === 4) player.dilation.totalTachyonGalaxies *= 2;
   } else {
     const upgAmount = player.dilation.rebuyables[id];
-    if (Currency.dilatedTime.lt(upgrade.cost) || upgAmount >= upgrade.config.purchaseCap) return false;
+    if (Currency.dilatedTime.lt(upgrade.cost) || upgAmount.gte(upgrade.config.purchaseCap)) return false;
 
     let buying = Decimal.affordGeometricSeries(Currency.dilatedTime.value,
-      upgrade.config.initialCost, upgrade.config.increment, upgAmount).toNumber();
-    buying = Math.clampMax(buying, bulk);
-    buying = Math.clampMax(buying, upgrade.config.purchaseCap - upgAmount);
+      upgrade.config.initialCost, upgrade.config.increment, upgAmount);
+    buying = Decimal.clampMax(buying, bulk);
+    buying = Decimal.clampMax(buying, upgrade.config.purchaseCap.sub(upgAmount));
     const cost = Decimal.sumGeometricSeries(buying, upgrade.config.initialCost, upgrade.config.increment, upgAmount);
     Currency.dilatedTime.subtract(cost);
-    player.dilation.rebuyables[id] += buying;
+    player.dilation.rebuyables[id] = player.dilation.rebuyables[id].add(buying);
     if (id === 2) {
       if (!Perk.bypassTGReset.isBought || Pelle.isDoomed) Currency.dilatedTime.reset();
       player.dilation.nextThreshold = DC.E3;
@@ -214,7 +214,7 @@ export function getDilationTimeEstimate(goal) {
 export function dilatedValueOf(value) {
   const log10 = value.log10();
   const dilationPenalty = Effects.product(DilationUpgrade.dilationPenalty).times(0.75);
-  return Decimal.pow10(Decimal.sign(log10).times(Decimal.pow(Decimal.abs(log10), dilationPenalty)));
+  return Decimal.pow10(log10.abs().pow(dilationPenalty).times(Decimal.sign(log10)));
 }
 
 class DilationUpgradeState extends SetPurchasableMechanicState {

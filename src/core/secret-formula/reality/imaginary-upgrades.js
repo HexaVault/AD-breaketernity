@@ -108,7 +108,7 @@ export const imaginaryUpgrades = [
     checkRequirement: () => player.celestials.effarig.relicShards >= 1e90,
     checkEvent: GAME_EVENT.REALITY_RESET_AFTER,
     description: "Time Dimension power based on total antimatter",
-    effect: () => 1 + Math.log10(player.records.totalAntimatter.log10()) / 100,
+    effect: () => player.records.totalAntimatter.log10().log10().div(100).add(1),
     formatEffect: value => `${formatPow(value, 0, 4)}`,
     isDisabledInDoomed: true
   },
@@ -123,7 +123,7 @@ export const imaginaryUpgrades = [
       gainedGlyphLevel().actualLevel >= 9000,
     checkEvent: GAME_EVENT.REALITY_RESET_BEFORE,
     description: "Gain free Dimboosts based on Imaginary rebuyable count",
-    effect: () => 2e4 * ImaginaryUpgrades.totalRebuyables,
+    effect: () => ImaginaryUpgrades.totalRebuyables.mul(2e4),
     formatEffect: value => `${format(value, 1)}`,
     isDisabledInDoomed: true
   },
@@ -139,7 +139,7 @@ export const imaginaryUpgrades = [
       MachineHandler.uncappedRM.times(simulatedRealityCount(false) + 1).gte(Number.MAX_VALUE),
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     description: "Increase Imaginary Machine Cap based on Imaginary Upgrades purchased",
-    effect: () => 1 + ImaginaryUpgrades.totalRebuyables / 20 + ImaginaryUpgrades.totalSinglePurchase / 2,
+    effect: () => ImaginaryUpgrades.totalRebuyables.div(20).add(1).add(ImaginaryUpgrades.totalSinglePurchase / 2),
     formatEffect: value => `${formatX(value, 2, 1)}`,
     isDisabledInDoomed: true
   },
@@ -279,7 +279,7 @@ export const imaginaryUpgrades = [
       gainedGlyphLevel().actualLevel >= 20000,
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     description: "Increase free Dimboost count based on Tesseract count",
-    effect: () => Math.floor(0.25 * Math.pow(Tesseracts.effectiveCount, 2)),
+    effect: () => Tesseracts.effectiveCount.pow(2).div(4).floor(),
     formatEffect: value => `${formatX(value)}`,
     isDisabledInDoomed: true
   },

@@ -37,13 +37,10 @@ export default {
       return this.player.options.saveFileName;
     },
     antimatter() {
-      return this.player.antimatter || this.player.money;
+      return this.player.antimatter;
     },
     infinities() {
-      // Infinity count data is stored in either player.infinitied or player.infinities based on if the save is before
-      // or after the reality update, and this explicit check is needed as it runs before any migration code.
-      const infinityData = this.player.infinitied ? this.player.infinitied : this.player.infinities;
-      return new Decimal(infinityData);
+      return this.player.infinities;
     },
     hasInput() {
       return this.input !== "";

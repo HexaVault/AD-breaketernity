@@ -79,7 +79,7 @@ export const realityUpgrades = [
     canLock: true,
     lockEvent: "gain a Replicanti Galaxy",
     description: "Replicanti speed is multiplied based on Replicanti Galaxies",
-    effect: () => 1 + Replicanti.galaxies.total / 50,
+    effect: () => Replicanti.galaxies.total.div(50).add(1),
     formatEffect: value => formatX(value, 2, 2)
   },
   {
@@ -173,7 +173,7 @@ export const realityUpgrades = [
     description: "Eternity Point multiplier based on Reality and Time Theorem count",
     effect: () => Currency.timeTheorems.value
       .minus(DC.E3).clampMin(2)
-      .pow(Math.log2(Math.min(Currency.realities.value, 1e4))).clampMin(1),
+      .pow(Currency.realities.value.clampMax(1e4).log(2)).clampMin(1),
     formatEffect: value => formatX(value, 2, 2)
   },
   {
@@ -332,7 +332,7 @@ export const realityUpgrades = [
     checkRequirement: () => Time.thisReality.totalMinutes.lt(15),
     checkEvent: GAME_EVENT.REALITY_RESET_BEFORE,
     description: "Replicanti speed is boosted based on your fastest game-time Reality",
-    effect: () => 15 / Time.bestReality.totalMinutes.max(1/12).min(15).toNumber(),
+    effect: () => new Decimal(15).div(Time.bestReality.totalMinutes.clamp(1/12, 15)),
     cap: 180,
     formatEffect: value => formatX(value, 2, 2)
   },
@@ -348,7 +348,7 @@ export const realityUpgrades = [
     lockEvent: "equip a non-Companion Glyph",
     checkEvent: GAME_EVENT.REALITY_RESET_BEFORE,
     description: "Gain another Glyph slot",
-    effect: () => 1
+    effect: () => DC.D1
   },
   {
     name: "Effortless Existence",
