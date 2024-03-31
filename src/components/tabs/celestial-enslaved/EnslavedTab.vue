@@ -119,7 +119,7 @@ export default {
   methods: {
     update() {
       this.isStoringBlackHole = Enslaved.isStoringGameTime;
-      this.storedBlackHole.copyfrom(celestials.enslaved.stored);
+      this.storedBlackHole.copyFrom(celestials.enslaved.stored);
       this.isStoringReal = Enslaved.isStoringRealTime;
       this.autoStoreReal = player.celestials.enslaved.autoStoreReal;
       this.offlineEnabled = player.options.offlineProgress;

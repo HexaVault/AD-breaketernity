@@ -1,4 +1,4 @@
-import { isNumber, isString } from "../utility/type-check";
+import { isDecimal } from "../utility/type-check";
 
 function isEND() {
   const threshold = GameEnd.endState >= END_STATE_MARKERS.END_NUMBERS
@@ -11,7 +11,7 @@ function isEND() {
 window.format = function format(value, places = 0, placesUnder1000 = 0) {
   if (isEND()) return "END";
   // eslint-disable-next-line no-param-reassign
-  if(isString(value) || isNumber(value)) value = new Decimal(value)
+  if(!isDecimal(value)) value = new Decimal(value)
   if (value.lt("e9e15")) return Notations.current.format(value, places, placesUnder1000, 3);
   return LNotations.current.formatLDecimal(value, places);
 };

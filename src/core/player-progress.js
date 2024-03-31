@@ -4,15 +4,15 @@ export class PlayerProgress {
   }
 
   get isInfinityUnlocked() {
-    return this._player.infinities.gt(0) || this.isEternityUnlocked;
+    return new Decimal(this._player.infinities).gt(0) || this.isEternityUnlocked;
   }
 
   get isEternityUnlocked() {
-    return this._player.eternities.gt(0) || this.isRealityUnlocked;
+    return new Decimal(this._player.eternities).gt(0) || this.isRealityUnlocked;
   }
 
   get isRealityUnlocked() {
-    return this._player.realities.gt(0);
+    return new Decimal(this._player.realities).gt(0);
   }
 
   get hasFullCompletion() {

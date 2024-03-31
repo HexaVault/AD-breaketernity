@@ -55,7 +55,7 @@ export function getTickSpeedMultiplier() {
   galaxies = galaxies.times(effects);
   galaxies = galaxies.times(getAdjustedGlyphEffect("cursedgalaxies"));
   galaxies = galaxies.times(getAdjustedGlyphEffect("realitygalaxies"));
-  galaxies = galaxies.times(1 + ImaginaryUpgrade(9).effectOrDefault(0));
+  galaxies = galaxies.times(ImaginaryUpgrade(9).effectOrDefault(DC.D0).add(1));
   if (Pelle.isDoomed) galaxies = galaxies.div(2);
 
   galaxies = galaxies.times(Pelle.specialGlyphEffect.power);

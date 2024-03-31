@@ -49,10 +49,6 @@ export class Galaxy {
       const b = scale.sub(1).sub(dis.times(2))
       const c = base.add(dis.pow(2)).sub(currency).sub(dis)
       const quad = decimalQuadraticSolution(a, b, c)
-      console.log(a)
-      console.log(b)
-      console.log(c)
-      console.log(quad)
       return Decimal.max(quad, player.galaxies)
     }
     // Might not be perfect but at this point who gives a shit - If we can buy more we will loop a bit at the end to go through till we cant
