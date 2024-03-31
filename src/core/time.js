@@ -3,7 +3,7 @@ export const DeltaTimeState = {
   realDeltaTime: new TimeSpan(new Decimal(0)),
   trueDeltaTime: new TimeSpan(new Decimal(0)),
   update(trueDeltaTime, deltaTime, gameDeltaTime) {
-    this.trueDeltaTime = TimeSpan.fromMilliseconds(new Decimal(trueDeltaTime))
+    this.trueDeltaTime = TimeSpan.fromMilliseconds(new Decimal(trueDeltaTime));
     this.realDeltaTime = TimeSpan.fromMilliseconds(deltaTime);
     this.deltaTime = TimeSpan.fromMilliseconds(gameDeltaTime);
   }

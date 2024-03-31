@@ -1,9 +1,7 @@
 import { DC } from "./constants";
 
 Array.prototype.distinct = function() {
-    return this.filter(function (value, index, self) {
-        return self.indexOf(value) === index;
-    });
+  return this.filter((value, index, self) => self.indexOf(value) === index);
 };
 
 Math.wrap = function(number, min, max) {
@@ -76,17 +74,18 @@ Decimal.prototype.copyFrom = function(decimal) {
 };
 
 window.copyToClipboard = (function() {
-  const el = document.createElement('textarea');
+  const el = document.createElement("textarea");
   document.body.appendChild(el);
   el.style.position = "absolute";
-  el.style.left = '-9999999px';
-  el.setAttribute('readonly', '');
+  el.style.left = "-9999999px";
+  el.setAttribute("readonly", "");
   return function(str) {
     try {
       el.value = str;
       el.select();
-      return document.execCommand('copy');
-    } catch(ex) {
+      return document.execCommand("copy");
+    } catch (ex) {
+      // eslint-disable-next-line no-console
       console.log(ex);
       return false;
     }
@@ -94,8 +93,8 @@ window.copyToClipboard = (function() {
 }());
 
 window.safeCall = function safeCall(fn) {
-    if (fn) fn();
-}
+  if (fn) fn();
+};
 
 String.prototype.capitalize = function() {
   return this.toLowerCase().replace(/^\w/u, c => c.toUpperCase());
@@ -161,12 +160,12 @@ Array.prototype.last = function(predicate) {
 Array.prototype.mapToObject = function(keyFun, valueFun) {
   if (typeof keyFun !== "function" || typeof valueFun !== "function")
     throw "keyFun and valueFun must be functions";
-  const out = {}
+  const out = {};
   for (let idx = 0; idx < this.length; ++idx) {
     out[keyFun(this[idx], idx)] = valueFun(this[idx], idx);
   }
   return out;
-}
+};
 
 /**
  * @type {number[]}
@@ -176,26 +175,26 @@ Array.dimensionTiers = Array.range(1, 8);
 /**
  * @returns {Number}
  */
-Array.prototype.nSum = function () {
-  if (this.length === 0) return 0
-  return this.reduce(Number.sumReducer)
-}
+Array.prototype.nSum = function() {
+  if (this.length === 0) return 0;
+  return this.reduce(Number.sumReducer);
+};
 
 /**
  * @returns {Number}
  */
-Array.prototype.nMax = function () {
-  if (this.length === 0) return 0
-  return this.reduce((a, b) => Math.max(a, b))
-}
+Array.prototype.nMax = function() {
+  if (this.length === 0) return 0;
+  return this.reduce((a, b) => Math.max(a, b));
+};
 
 /**
  * @returns {Number}
  */
-Array.prototype.nMin = function () {
-  if (this.length === 0) return 0
-  return this.reduce((a, b) => Math.min(a, b))
-}
+Array.prototype.nMin = function() {
+  if (this.length === 0) return 0;
+  return this.reduce((a, b) => Math.min(a, b));
+};
 
 /**
  * @returns {Decimal}

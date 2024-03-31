@@ -12,7 +12,8 @@ export const MachineHandler = {
   },
 
   get realityMachineMultiplier() {
-    return Teresa.rmMultiplier.times(Decimal.max(1, PerkShopUpgrade.rmMult).times(getAdjustedGlyphEffect("effarigrm")).times(Achievement(167).effectOrDefault(1)));
+    return Teresa.rmMultiplier.times(Decimal.max(1, PerkShopUpgrade.rmMult)
+      .times(getAdjustedGlyphEffect("effarigrm")).times(Achievement(167).effectOrDefault(1)));
   },
 
   get uncappedRM() {
@@ -37,7 +38,8 @@ export const MachineHandler = {
   },
 
   get baseIMCap() {
-    return (Decimal.pow(Decimal.clampMin(this.uncappedRM.log10().min(1000), 0), 2)).times((Decimal.pow(Decimal.clampMin(this.uncappedRM.log10().min(100000), 1), 0.2)));
+    return (Decimal.pow(Decimal.clampMin(this.uncappedRM.log10().min(1000), 0), 2))
+      .times((Decimal.pow(Decimal.clampMin(this.uncappedRM.log10().min(100000), 1), 0.2)));
   },
 
   get currentIMCap() {
@@ -65,7 +67,8 @@ export const MachineHandler = {
   },
 
   gainedImaginaryMachines(diff) {
-    return (this.currentIMCap.sub(Currency.imaginaryMachines.value)).times(DC.D1.sub(Decimal.pow(2, (new Decimal(0).sub(diff).div(1000).div(this.scaleTimeForIM)))));
+    return (this.currentIMCap.sub(Currency.imaginaryMachines.value)).times(DC.D1
+      .sub(Decimal.pow(2, (new Decimal(0).sub(diff).div(1000).div(this.scaleTimeForIM)))));
   },
 
   estimateIMTimer(cost) {
@@ -75,6 +78,7 @@ export const MachineHandler = {
     // This is doing log(a, 1/2) - log(b, 1/2) where a is % left to imCap of cost and b is % left to imCap of current
     // iM. log(1 - x, 1/2) should be able to estimate the time taken for iM to increase from 0 to imCap * x since every
     // fixed interval the difference between current iM to max iM should decrease by a factor of 1/2.
-    return Decimal.max(0, Decimal.log(imCap.div(imCap.sub(cost)), 2).sub(Decimal.log(imCap.div(imCap.sub(currentIM)), 2))).times(this.scaleTimeForIM);
+    return Decimal.max(0, Decimal.log(imCap.div(imCap.sub(cost)), 2).sub(Decimal.log(
+      imCap.div(imCap.sub(currentIM)), 2))).times(this.scaleTimeForIM);
   }
 };

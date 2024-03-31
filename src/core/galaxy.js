@@ -1,3 +1,5 @@
+/* eslint-disable line-comment-position */
+/* eslint-disable no-inline-comments */
 import { DC } from "./constants";
 
 export const GALAXY_TYPE = {
@@ -20,9 +22,9 @@ class GalaxyRequirement {
 
 export class Galaxy {
   static get remoteStart() {
-    let amnt = new Decimal(800)
-    if (RealityUpgrade(21).isBought) amnt = DC.E5
-    return amnt
+    let amnt = new Decimal(800);
+    if (RealityUpgrade(21).isBought) amnt = DC.E5;
+    return amnt;
   }
 
   static get requirement() {
@@ -35,63 +37,61 @@ export class Galaxy {
    * @returns {number} Max number of galaxies (total)
    */
   static buyableGalaxies(currency) {
-    // plz no ask how exponential math work i dont know i just code, see https://discord.com/channels/351476683016241162/439241762603663370/1210707188964659230m
-    const minV = Galaxy.costScalingStart.min(Galaxy.remoteStart) // Take the smallest of the two values
+    // eslint-disable-next-line max-len
+    // Plz no ask how exponential math work i dont know i just code, see https://discord.com/channels/351476683016241162/439241762603663370/1210707188964659230m
+    const minV = Galaxy.costScalingStart.min(Galaxy.remoteStart); // Take the smallest of the two values
     if (currency.lt(Galaxy.baseCost.add(Galaxy.costMult.times(minV) /* Pre exponential/quadratic? */))) {
-      return Decimal.max(currency.sub(Galaxy.baseCost).div(Galaxy.costMult).floor(), player.galaxies)
+      return Decimal.max(currency.sub(Galaxy.baseCost).div(Galaxy.costMult).floor(), player.galaxies);
     }
     if (currency.lt(Galaxy.requirementAt(Galaxy.remoteStart).amount)) {
-      const dis = Galaxy.costScalingStart
-      const scale = Galaxy.costMult
-      const base = Galaxy.baseCost
+      const dis = Galaxy.costScalingStart;
+      const scale = Galaxy.costMult;
+      const base = Galaxy.baseCost;
       // Quadratic equation
-      const a = DC.D1
-      const b = scale.sub(1).sub(dis.times(2))
-      const c = base.add(dis.pow(2)).sub(currency).sub(dis)
-      const quad = decimalQuadraticSolution(a, b, c)
-      return Decimal.max(quad, player.galaxies)
+      const a = DC.D1;
+      const b = scale.sub(1).sub(dis.times(2));
+      const c = base.add(dis.pow(2)).sub(currency).sub(dis);
+      const quad = decimalQuadraticSolution(a, b, c);
+      return Decimal.max(quad, player.galaxies);
     }
+    // eslint-disable-next-line max-len
     // Might not be perfect but at this point who gives a shit - If we can buy more we will loop a bit at the end to go through till we cant
-    const delay = minV
-    const remote = Galaxy.remoteStart
-    const inc = Galaxy.costMult
-    const start = Galaxy.baseCost
-    const A = Decimal.ln(1.008)
-    const B = (inc.sub(delay.times(2)).add(3)).div(2)
-    const C = Decimal.ln(1.008).pow(2).times(Decimal.pow(1.008, inc.add(3).div(2).add(remote).sub(delay).sub(1) ))
-    const D = Decimal.ln(1.008).pow(2).times(inc.pow(2).sub(inc.times(2).times(delay)).add(inc.times(6)).sub(start.times(4).add(1))).div(4)
-    let mzz = C.times(currency)
-    
-    const convFunc = (m) => m.sub(((Decimal.ln(m).pow(2).sub(D)).times(m).sub(C).times(C)).div(Decimal.ln(m).pow(2).add(Decimal.ln(m).times(2)).sub(D)))
+    const delay = minV;
+    const remote = Galaxy.remoteStart;
+    const inc = Galaxy.costMult;
+    const start = Galaxy.baseCost;
+    const A = Decimal.ln(1.008);
+    const B = (inc.sub(delay.times(2)).add(3)).div(2);
+    const C = Decimal.ln(1.008).pow(2).times(Decimal.pow(1.008, inc.add(3).div(2).add(remote).sub(delay).sub(1)));
+    const D = Decimal.ln(1.008).pow(2).times(inc.pow(2).sub(inc.times(2).times(delay))
+      .add(inc.times(6)).sub(start.times(4).add(1))).div(4);
+    let mzz = C.times(currency);
+
+    const convFunc = m => m.sub(((Decimal.ln(m).pow(2).sub(D)).times(m).sub(C).times(C))
+      .div(Decimal.ln(m).pow(2).add(Decimal.ln(m).times(2)).sub(D)));
     while (mzz.sub(convFunc(mzz)).abs().lte(0.05)) {
-      mzz = convFunc(mzz)
+      mzz = convFunc(mzz);
     }
-    let pur = Decimal.ln(mzz).div(A).sub(B).floor()
-    let rep = 0
+    let pur = Decimal.ln(mzz).div(A).sub(B).floor();
+    let rep = 0;
     while (Galaxy.requirementAt(pur).amount.gt(currency) || rep < 25) {
       if (pur.sub(1).neq(pur)) {
-        pur = pur.sub(1)
+        pur = pur.sub(1);
       } else {
-        pur.mag = pur.mag / 1.001
-        pur.normalize()
+        pur.mag /= 1.001;
+        pur.normalize();
       }
-      rep++
+      rep++;
     }
     while (this.requirementAt(pur.add(1)).amount.lt(currency) && pur.add(1).neq(pur) || rep < 25) {
-      pur = pur.add(1)
-      rep++
+      pur = pur.add(1);
+      rep++;
     }
-    if (rep == 25) {
-      console.log("Repetitions in remote calculations (line 55-80 of galaxy.js) repeated far more than expected, logging.")
+    if (rep === 25) {
+      // eslint-disable-next-line max-len, no-console
+      console.log("Repetitions in remote calculations (line 55-80 of galaxy.js) repeated far more than expected, logging.");
     }
-    return Decimal.max(pur, player.galaxies)
-    
-    /*const bulk = dBBBS(currency, {
-      costFunction: x => this.requirementAt(x).amount,
-      cumulative: false,
-    }, player.galaxies);
-    if (!bulk) throw new Error("Unexpected failure to calculate galaxy purchase");
-    return player.galaxies.add(bulk.quantity); */
+    return Decimal.max(pur, player.galaxies);
   }
 
   static requirementAt(galaxies) {
@@ -104,7 +104,7 @@ export class Galaxy {
     } else if (type === GALAXY_TYPE.DISTANT || type === GALAXY_TYPE.REMOTE) {
       const galaxyCostScalingStart = this.costScalingStart;
       const galaxiesBeforeDistant = Decimal.clampMin(galaxies.sub(galaxyCostScalingStart.add(1)), 0);
-      amount = amount.add(Decimal.pow(galaxiesBeforeDistant, 2).add(galaxiesBeforeDistant))
+      amount = amount.add(Decimal.pow(galaxiesBeforeDistant, 2).add(galaxiesBeforeDistant));
     }
 
     if (type === GALAXY_TYPE.REMOTE) {

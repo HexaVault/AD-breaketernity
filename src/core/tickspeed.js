@@ -3,16 +3,19 @@ import { DC } from "./constants";
 export function effectiveBaseGalaxies() {
   // Note that this already includes the "50% more" active path effect
   let replicantiGalaxies = new Decimal(Replicanti.galaxies.bought);
-  replicantiGalaxies = replicantiGalaxies.times(1 + TimeStudy(133).effectOrDefault(1) + TimeStudy(132).effectOrDefault(1));
+  replicantiGalaxies = replicantiGalaxies.times(1 + TimeStudy(133).effectOrDefault(1) +
+    TimeStudy(132).effectOrDefault(1));
   // "extra" galaxies unaffected by the passive/idle boosts come from studies 225/226 and Effarig Infinity
   replicantiGalaxies = replicantiGalaxies.add(Replicanti.galaxies.extra);
   const nonActivePathReplicantiGalaxies = Decimal.min(Replicanti.galaxies.bought,
     ReplicantiUpgrade.galaxies.value);
   // Effects.sum is intentional here - if EC8 is not completed,
   // this value should not be contributed to total replicanti galaxies
-  replicantiGalaxies = replicantiGalaxies.add(nonActivePathReplicantiGalaxies.times(Effects.sum(EternityChallenge(8).reward)));
+  replicantiGalaxies = replicantiGalaxies.add(nonActivePathReplicantiGalaxies
+    .times(Effects.sum(EternityChallenge(8).reward)));
   let freeGalaxies = player.dilation.totalTachyonGalaxies;
-  freeGalaxies = DC.D1.add(Decimal.max(0, Replicanti.amount.log10().div(1e6)).times(AlchemyResource.alternation.effectValue));
+  freeGalaxies = DC.D1.add(Decimal.max(0, Replicanti.amount.log10().div(1e6))
+    .times(AlchemyResource.alternation.effectValue));
   return Decimal.max(player.galaxies.add(GalaxyGenerator.galaxies).add(replicantiGalaxies).add(freeGalaxies), 0);
 }
 
@@ -103,9 +106,9 @@ export function buyMaxTickSpeed() {
     player.totalTickBought = player.totalTickBought.add(purchases.quantity);
 
     for (let i = 0; i < 5; i++) {
-      buyTickSpeed()
+      buyTickSpeed();
     }
-    
+
     boughtTickspeed = true;
   }
 
@@ -215,7 +218,8 @@ export const FreeTickspeed = {
   },
 
   fromShards(shards) {
-    const tickmult = DC.D1.add(Effects.min(new Decimal(1.33), TimeStudy(171)).sub(1)).mul(Decimal.max(getAdjustedGlyphEffect("cursedtickspeed"), 1));
+    const tickmult = DC.D1.add(Effects.min(new Decimal(1.33), TimeStudy(171)).sub(1)).mul(
+      Decimal.max(getAdjustedGlyphEffect("cursedtickspeed"), 1));
     const logTickmult = tickmult.ln();
     const logShards = shards.clampMin(1).ln();
     const uncapped = logShards.div(logTickmult).max(0);
@@ -241,7 +245,8 @@ export const FreeTickspeed = {
       bought.max(0).pow(FreeTickspeed.GROWTH_EXP)).add(bought);
     const derivativeOfBoughtToCost = x => FreeTickspeed.GROWTH_EXP.mul(costFormulaCoefficient).mul(
       x.max(0).pow(FreeTickspeed.GROWTH_EXP.sub(1))).add(1);
-    const newtonsMethod = bought => bought.sub(boughtToCost(bought).div(desiredCost)).div(derivativeOfBoughtToCost(bought));
+    const newtonsMethod = bought => bought.sub(boughtToCost(bought).div(desiredCost)).div(
+      derivativeOfBoughtToCost(bought));
     let oldApproximation;
     let approximation = desiredCost.min(
       desiredCost.div(costFormulaCoefficient).pow(DC.D1.div(FreeTickspeed.GROWTH_EXP))

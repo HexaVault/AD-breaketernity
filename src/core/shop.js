@@ -1,1 +1,1 @@
-// no shop for u
+// No shop for u

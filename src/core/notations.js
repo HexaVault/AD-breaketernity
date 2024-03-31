@@ -1,5 +1,5 @@
-import * as ADNotations from "adnot-beport-small";
 import * as ADLNotations from "adnot-beport-large";
+import * as ADNotations from "adnot-beport-small";
 
 import { DC } from "./constants";
 
@@ -69,7 +69,8 @@ Notation.emoji.setAsCurrent = (silent = false) => {
   if (!silent) GameUI.notify.success("😂😂😂");
 };
 
-export const LNotations = { // post e9e15
+// Post e9e15
+export const LNotations = {
   // Defined as a list here for exact order in options tab.
   all: [
     LNotation.extendedScientific,
@@ -88,7 +89,8 @@ export const LNotations = { // post e9e15
   }
 };
 
-export const Notations = { // pre e9e15
+// Pre e9e15
+export const Notations = {
   // Defined as a list here for exact order in options tab.
   all: [
     Notation.scientific,

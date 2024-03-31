@@ -340,7 +340,7 @@ function giveRealityRewards(realityProps) {
 
       // Encode iM values into the RM variable as e10000 * iM in order to only require one prop
       player.celestials.teresa.lastRepeatedMachines = player.reality.maxRM;
-      player.celestials.teresa.lastRepeatediM = Currency.imaginaryMachines.value
+      player.celestials.teresa.lastRepeatediM = Currency.imaginaryMachines.value;
     }
     Teresa.quotes.completeReality.show();
   }
