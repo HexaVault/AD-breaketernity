@@ -266,7 +266,7 @@ export const Pelle = {
   get canDilateInPelle() {
     return this.cel.remnants >= this.remnantRequirementForDilation;
   },
-  
+
   resetResourcesForDilation() {
     this.cel.records.totalAntimatter = new Decimal("1e180000");
     this.cel.records.totalInfinityPoints = new Decimal("1e60000");

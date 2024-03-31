@@ -1,6 +1,8 @@
 import { BitUpgradeState } from "../game-mechanics";
 import { GameDatabase } from "../secret-formula/game-database";
+
 import { DC } from "../constants";
+
 import { Quotes } from "./quotes";
 
 export const ENSLAVED_UNLOCKS = {
@@ -181,7 +183,8 @@ export const Enslaved = {
     return EffarigUnlock.eternity.isUnlocked;
   },
   get realityBoostRatio() {
-    return Decimal.max(1, Decimal.floor(player.celestials.enslaved.storedReal.div(Decimal.max(1000, Time.thisRealityRealTime.totalMilliseconds))));
+    return Decimal.max(1, Decimal.floor(player.celestials.enslaved.storedReal
+      .div(Decimal.max(1000, Time.thisRealityRealTime.totalMilliseconds))));
   },
   get canAmplify() {
     return this.realityBoostRatio.gt(1) && !Pelle.isDoomed && !isInCelestialReality();
@@ -253,7 +256,8 @@ class EnslavedProgressState extends BitUpgradeState {
   giveProgress() {
     // Bump the last hint time appropriately if the player found the hint
     if (this.hasHint && !this.hasProgress) {
-      player.celestials.enslaved.zeroHintTime -= Math.log(2) / Math.log(3) * TimeSpan.fromDays(1).totalMilliseconds.toNumber();
+      player.celestials.enslaved.zeroHintTime -= Math.log(2) /
+        Math.log(3) * TimeSpan.fromDays(1).totalMilliseconds.toNumber();
       GameUI.notify.success("You found a crack in The Nameless Ones' Reality!", 10000);
     }
     player.celestials.enslaved.progressBits |= (1 << this.id);
@@ -272,7 +276,8 @@ export const Tesseracts = {
 
   get extra() {
     return this.bought.times(DC.DM1.add(SingularityMilestone.tesseractMultFromSingularities.effectOrDefault(1)));
-  }, // -1 + x = x - 1, so do this to reduce making more decimals than necessary
+  },
+  // -1 + x = x - 1, so do this to reduce making more decimals than necessary
 
   get effectiveCount() {
     return this.bought.add(this.extra);
@@ -287,8 +292,8 @@ export const Tesseracts = {
   // This used to be an array, but tess costs are just a super easy thing to calculate in BE so i dont care
 
   costs(index) {
-    if (index.lte(3)) return Decimal.pow10(index.times(2e7))
-    return Decimal.pow10((index.sub(3)).factorial().times(Decimal.pow(2, index.sub(3))).times(6e7))
+    if (index.lte(3)) return Decimal.pow10(index.times(2e7));
+    return Decimal.pow10((index.sub(3)).factorial().times(Decimal.pow(2, index.sub(3))).times(6e7));
   },
 
   get nextCost() {

@@ -302,7 +302,7 @@ class InfinityDimensionState extends DimensionState {
 
     Currency.infinityPoints.purchase(costScaling.totalCost);
     this.cost = this.cost.times(costScaling.totalCostMultiplier);
-    this.bought = this.bought.plus(costScaling.purchases)
+    this.bought = this.bought.plus(costScaling.purchases);
     // Because each ID purchase gives 10 IDs
     this.amount = this.amount.plus(costScaling.purchases.times(10));
     this.baseAmount = DC.E1.times(costScaling.purchases).add(this.baseAmount);

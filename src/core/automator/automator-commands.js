@@ -998,7 +998,8 @@ export const AutomatorCommands = [
         const prestigeOccurred = S.commandState.prestigeLevel >= prestigeLevel;
         const prestigeName = ctx.PrestigeEvent[0].image.toUpperCase();
         if (prestigeOccurred) {
-          const timeWaited = TimeSpan.fromMilliseconds(new Decimal(Date.now() - AutomatorData.waitStart)).toStringShort();
+          const timeWaited = TimeSpan.fromMilliseconds(
+            new Decimal(Date.now() - AutomatorData.waitStart)).toStringShort();
           AutomatorData.logCommandEvent(`Continuing after WAIT (${prestigeName} occurred for
             ${findLastPrestigeRecord(prestigeName)}, after ${timeWaited})`, ctx.startLine);
           AutomatorData.isWaiting = false;
