@@ -1,11 +1,12 @@
+/* eslint-disable */
+// Disabling eslint here is fine, this is developer tools and this file does really matter.
+
+
 import { sha512_256 } from "js-sha512";
 import { Player } from "./player";
 import { DC } from "./constants";
 import FullScreenAnimationHandler from "./full-screen-animation-handler";
 
-/* eslint-disable no-console */
-// Disabling no-console here seems
-// reasonable, since these are the devtools after all
 export const dev = {};
 
 dev.speedUp = 1

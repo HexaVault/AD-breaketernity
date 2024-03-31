@@ -475,6 +475,7 @@ Currency.galaxyGeneratorGalaxies = new class extends DecimalCurrency {
 
   set value(value) {
     const spent = player.galaxies.add(GalaxyGenerator.galaxies).sub(value);
-    player.celestials.pelle.galaxyGenerator.spentGalaxies = player.celestials.pelle.galaxyGenerator.spentGalaxies.add(spent);
+    player.celestials.pelle.galaxyGenerator.spentGalaxies =
+      player.celestials.pelle.galaxyGenerator.spentGalaxies.add(spent);
   }
 }();

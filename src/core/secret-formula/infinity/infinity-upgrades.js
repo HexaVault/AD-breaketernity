@@ -17,7 +17,8 @@ export const infinityUpgrades = {
     charged: {
       description: "Antimatter Dimensions gain a power effect based on time played and Teresa level",
       effect: () =>
-        Decimal.log10(Decimal.log10(Time.totalTimePlayed.totalMilliseconds)).times(Decimal.pow(Ra.pets.teresa.level, 0.5)).div(150).add(1),
+        Decimal.log10(Decimal.log10(Time.totalTimePlayed.totalMilliseconds))
+          .times(Decimal.pow(Ra.pets.teresa.level, 0.5)).div(150).add(1),
       formatEffect: value => formatPow(value, 4, 4)
     }
   },
@@ -121,7 +122,8 @@ export const infinityUpgrades = {
       description:
         "Antimatter Dimensions gain a power effect based on time spent in current Infinity and Teresa level",
       effect: () =>
-      Decimal.log10(Decimal.log10(Time.thisInfinity.totalMilliseconds + 100)).times(Math.sqrt(Ra.pets.teresa.level)).div(150).add(1),
+        Decimal.log10(Decimal.log10(Time.thisInfinity.totalMilliseconds + 100))
+          .times(Math.sqrt(Ra.pets.teresa.level)).div(150).add(1),
       formatEffect: value => formatPow(value, 4, 4)
     }
   },

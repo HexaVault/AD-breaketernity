@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import { DC } from "../constants";
 
 import { credits } from "@/core/secret-formula/credits";

@@ -189,7 +189,7 @@ export const AD = {
     },
     powValue: dim => {
       const allPow = InfinityUpgrade.totalTimeMult.chargedEffect.effectOrDefault(new Decimal(1)).mul(
-        InfinityUpgrade.thisInfinityTimeMult.chargedEffect.effectOrDefault(new Decimal(1))) 
+        InfinityUpgrade.thisInfinityTimeMult.chargedEffect.effectOrDefault(new Decimal(1)));
 
       const dimPow = Array.repeat(1, 9);
       for (let tier = 1; tier <= 8; tier++) {
@@ -201,7 +201,7 @@ export const AD = {
       // it, so we cheat somewhat by returning the geometric mean of all actively producing dimensions (this should
       // be close to the same value if all the base multipliers are similar in magnitude)
       return allPow.mul(Decimal.exp(dimPow.slice(1)
-        .map(n => Decimal.log10(n)).sum().div(MultiplierTabHelper.activeDimCount("AD"))))
+        .map(n => Decimal.log10(n)).sum().div(MultiplierTabHelper.activeDimCount("AD"))));
     },
     isActive: () => PlayerProgress.infinityUnlocked() && !EternityChallenge(11).isRunning,
     icon: MultiplierTabIcons.UPGRADE("infinity"),

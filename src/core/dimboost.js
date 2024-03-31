@@ -178,7 +178,6 @@ export function softReset(tempBulk, forcedADReset = false, forcedAMReset = false
   if (Currency.antimatter.gt(Player.infinityLimit)) return;
   const bulk = Decimal.min(tempBulk, DimBoost.maxBoosts.sub(player.dimensionBoosts));
   EventHub.dispatch(GAME_EVENT.DIMBOOST_BEFORE, bulk);
-  // player.dimensionBoosts = Math.max(0, player.dimensionBoosts + bulk);
   player.dimensionBoosts = (Decimal.max(DC.D0, player.dimensionBoosts.add(bulk)));
   resetChallengeStuff();
   const canKeepDimensions = Pelle.isDoomed
@@ -250,7 +249,7 @@ function maxBuyDimBoosts() {
     TimeStudy(211),
     TimeStudy(222)
   );
-  let multiplierPerDB
+  let multiplierPerDB;
   if (tier === 6) {
     multiplierPerDB = DC.D20.sub(discount);
   } else if (tier === 8) {
@@ -263,18 +262,20 @@ function maxBuyDimBoosts() {
   multiplierPerDB = multiplierPerDB.times(InfinityUpgrade.resetBoost.chargedEffect.effectOrDefault(1));
   amount = amount.times(InfinityUpgrade.resetBoost.chargedEffect.effectOrDefault(1));
 
-  let calcBoosts
-  calcBoosts = AntimatterDimension(tier).amount.sub(amount).div(multiplierPerDB)
+  let calcBoosts;
+  calcBoosts = AntimatterDimension(tier).amount.sub(amount).div(multiplierPerDB);
 
 
   if (EternityChallenge(5).isRunning) {
-    calcBoosts = decimalDepressedCubicSolution(DC.D1.add(multiplierPerDB), amount.sub(AntimatterDimension(tier)).sub(1));
+    calcBoosts = decimalDepressedCubicSolution(DC.D1.add(multiplierPerDB),
+      amount.sub(AntimatterDimension(tier)).sub(1));
   }
 
-  calcBoosts = calcBoosts.add(NormalChallenge(10).isRunning ? 2 : 4) // Dimension boosts 1-4 dont use 8th dims, 1-2 dont use 6th dims, so add those extras afterwards.
+  calcBoosts = calcBoosts.add(NormalChallenge(10).isRunning ? 2 : 4);
+  // Dimension boosts 1-4 dont use 8th dims, 1-2 dont use 6th dims, so add those extras afterwards.
 
   if (calcBoosts.floor().lte(DimBoost.purchasedBoosts)) return;
-  calcBoosts = calcBoosts.sub(DimBoost.purchasedBoosts)
+  calcBoosts = calcBoosts.sub(DimBoost.purchasedBoosts);
   const minBoosts = Decimal.min(DC.BEMAX, calcBoosts.floor());
 
   softReset(minBoosts);

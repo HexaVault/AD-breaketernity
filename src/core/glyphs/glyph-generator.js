@@ -5,8 +5,9 @@
  * So, this interface is implemented by a real and fake RNG class; after creating one and
  * using it, call finalize on it to write the seed out.
  */
-import { deepmerge } from "@/utility/deepmerge";
 import { DC } from "../constants";
+
+import { deepmerge } from "@/utility/deepmerge";
 
 class GlyphRNG {
   static get SECOND_GAUSSIAN_DEFAULT_VALUE() {
@@ -129,7 +130,7 @@ export const GlyphGenerator = {
 
   realityGlyph(level) {
     const str = rarityToStrength(100);
-    const effects = this.generateRealityEffects(level);
+    const effectss = this.generateRealityEffects(level);
     return {
       id: undefined,
       idx: null,
@@ -137,13 +138,13 @@ export const GlyphGenerator = {
       strength: str,
       level,
       rawLevel: level,
-      effects: effects,
+      effects: effectss,
     };
   },
 
   cursedGlyph() {
     const str = rarityToStrength(100);
-    const effectBitmask = GlyphEffects.all.filter(e => e.glyphTypes.contains("cursed"))
+    const effectBitmask = GlyphEffects.all.filter(e => e.glyphTypes.contains("cursed"));
     return {
       id: undefined,
       idx: null,
@@ -175,7 +176,7 @@ export const GlyphGenerator = {
   companionGlyph(eternityPoints) {
     // Store the pre-Reality EP value in the glyph's rarity
     const str = rarityToStrength(eternityPoints.log10() / 1e6);
-    const effects = orderedEffectList.filter(effect => effect.match("companion*"));
+    const effectss = orderedEffectList.filter(effect => effect.match("companion*"));
     return {
       id: undefined,
       idx: null,
@@ -183,7 +184,7 @@ export const GlyphGenerator = {
       strength: str,
       level: 1,
       rawLevel: 1,
-      effects: effects,
+      effects: effectss,
     };
   },
 
@@ -217,7 +218,8 @@ export const GlyphGenerator = {
     // the RNG is gone anyway.
     if (Ra.unlocks.maxGlyphRarityAndShardSacrificeBoost.canBeApplied) return rarityToStrength(100);
     let result = GlyphGenerator.strengthMultiplier.mul(GlyphGenerator.gaussianBellCurve(rng));
-    const relicShardFactor = Ra.unlocks.extraGlyphChoicesAndRelicShardRarityAlwaysMax.canBeApplied ? new Decimal(1) : rng.uniform();
+    const relicShardFactor = Ra.unlocks.extraGlyphChoicesAndRelicShardRarityAlwaysMax.canBeApplied
+      ? new Decimal(1) : rng.uniform();
     const increasedRarity = Effarig.maxRarityBoost.mul(relicShardFactor)
       .add(Effects.sum(Achievement(146), GlyphSacrifice.effarig));
     // Each rarity% is 0.025 strength.
@@ -239,7 +241,8 @@ export const GlyphGenerator = {
     let num = Decimal.min(
       maxEffects,
       Decimal.floor(Decimal.pow(random1, DC.D1.sub(Decimal.pow(level.times(strength), 0.5)).div(100)).times(1.5).add(1))
-    ).toNumber().min(1e10); // Incase someone somehow forgets to put a limit, this is a final protection
+    ).toNumber().min(1e10);
+    // Incase someone somehow forgets to put a limit, this .min(1e10) is a final protection
     // If we do decide to add anything else that boosts chance of an extra effect, keeping the code like this
     // makes it easier to do (add it to the Effects.max).
     if (RealityUpgrade(17).isBought && random2 < Effects.max(0, RealityUpgrade(17))) {
@@ -259,7 +262,7 @@ export const GlyphGenerator = {
   },
 
   generateEffects(type, count, rng) {
-    const glyphTypeEffects = GlyphTypes[type].effects
+    const glyphTypeEffects = GlyphTypes[type].effects;
     const effectValues = glyphTypeEffects.mapToObject(x => x.intID, () => rng.uniform());
     // Get a bunch of random numbers so that we always use 7 here.
     Array.range(0, 7 - glyphTypeEffects.length).forEach(() => rng.uniform());
@@ -276,7 +279,7 @@ export const GlyphGenerator = {
     }
     // Sort from highest to lowest value.
     const effects = Object.keys(effectValues).sort((a, b) => effectValues[b] - effectValues[a]).slice(0, count);
-    return effects
+    return effects;
   },
 
   randomType(rng, typesSoFar = []) {
@@ -302,7 +305,7 @@ export const GlyphGenerator = {
     // within that block. Note that we have a minus 1 because we want to exclude the first fixed glyph
     const groupNum = Decimal.floor(realityCount.sub(1).div(5)).min(277).toNumber();
     const groupIndex = realityCount.sub(1).mod(5).toNumber();
-    
+
     // The usage of the initial seed is complicated in order to prevent future prediction without using information
     // not normally available in-game (ie. the console). This makes it appear less predictable overall
     const initSeed = player.reality.initialSeed;

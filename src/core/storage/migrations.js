@@ -1,5 +1,6 @@
-import { deepmergeAll } from "@/utility/deepmerge";
 import { beMigration } from "./be-migrations";
+import { deepmergeAll } from "@/utility/deepmerge";
+
 
 // WARNING: Don't use state accessors and functions from global scope here, that's not safe in long-term
 export const migrations = {
@@ -412,12 +413,15 @@ export const migrations = {
         player.reality.automator.constantSortOrder = [...definedConstants];
       }
     },
-  83: player => { // 83 is used because 8 = B, and 3 = E, so 83 = BE, short for BE port. Recommended to start any modded migrations at 100.
-    beMigration(player)
-  },
-  90.00002: player => { // This is here just to fix my own saves, ignore
-    beMigration(player)
-  },
+    // eslint-disable-next-line max-len
+    // 83 is used because 8 = B, and 3 = E, so 83 = BE, short for BE port. Recommended to start any modded migrations at 100.
+    83: player => {
+      beMigration(player);
+    },
+    // This is here just to fix my own saves, ignore
+    90.00002: player => {
+      beMigration(player);
+    },
   },
 
   normalizeTimespans(player) {

@@ -304,9 +304,10 @@ export const realityUpgrades = [
     name: "Cosmic Conglomerate",
     id: 21,
     cost: 100000,
-    requirement: () => `${format(player.dilation.totalTachyonGalaxies.add(Replicanti.galaxies.total).add(player.galaxies), 2, 2)}/${format(2800, 2, 2)} total Galaxies from all types`,
+    requirement: () => `${format(player.dilation.totalTachyonGalaxies.add(Replicanti.galaxies.total)
+      .add(player.galaxies), 2, 2)}/${format(2800, 2, 2)} total Galaxies from all types`,
     checkRequirement: () =>
-    player.dilation.totalTachyonGalaxies.add(Replicanti.galaxies.total).add(player.galaxies).gte(2800),
+      player.dilation.totalTachyonGalaxies.add(Replicanti.galaxies.total).add(player.galaxies).gte(2800),
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     description: () => `Remote Antimatter Galaxy scaling is moved to ${formatInt(1e5)} galaxies`,
     effect: DC.E5
@@ -332,7 +333,7 @@ export const realityUpgrades = [
     checkRequirement: () => Time.thisReality.totalMinutes.lt(15),
     checkEvent: GAME_EVENT.REALITY_RESET_BEFORE,
     description: "Replicanti speed is boosted based on your fastest game-time Reality",
-    effect: () => new Decimal(15).div(Time.bestReality.totalMinutes.clamp(1/12, 15)),
+    effect: () => new Decimal(15).div(Time.bestReality.totalMinutes.clamp(1 / 12, 15)),
     cap: 180,
     formatEffect: value => formatX(value, 2, 2)
   },

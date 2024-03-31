@@ -224,7 +224,7 @@ export const GlyphAppearanceHandler = {
     return Object.keys(GameDatabase.reality.glyphCosmeticSets).filter(set => !this.unlockedSets.includes(set));
   },
   // Unlocks the set chosen in the modal, choosing a random available one as a fallback. This is only called for
-  // sets unlocked through game completions; 
+  // sets unlocked through game completions
   unlockSet() {
     const lockedSets = this.lockedSets;
     const toUnlock = GlyphAppearanceHandler.chosenFromModal?.id;

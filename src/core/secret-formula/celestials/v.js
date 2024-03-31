@@ -3,7 +3,7 @@ import { DC } from "../../constants";
 // This is supposed to be in ./navigation.js but importing doesn't work for some stupid reason
 function emphasizeEnd(valueA, valueB) {
   // Since we redifine here, lets make it better
-  fraction = valueA.div(valueB).min(1).toNumber()
+  fraction = valueA.div(valueB).min(1).toNumber();
   return Math.pow(fraction, 10);
 }
 

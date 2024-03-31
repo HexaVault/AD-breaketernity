@@ -10,7 +10,8 @@ export const pelleRifts = {
     baseEffect: x => `IP gain ${formatX(x, 2, 2)}`,
     additionalEffects: () => [PelleRifts.vacuum.milestones[2]],
     strike: () => PelleStrikes.infinity,
-    percentage: totalFill => Decimal.log10(totalFill.plus(1).log10().mul(10).add(1)).pow(2.5).div(100).mantissa * (10 ** Decimal.log10(totalFill.plus(1).log10().mul(10).add(1)).pow(2.5).div(100).exponent),
+    percentage: totalFill => Decimal.log10(totalFill.plus(1).log10().mul(10).add(1)).pow(2.5).div(100).mantissa *
+      (10 ** Decimal.log10(totalFill.plus(1).log10().mul(10).add(1)).pow(2.5).div(100).exponent),
     percentageToFill: percentage => Decimal.pow(10,
       Decimal.pow(10, (percentage * 100) ** (1 / 2.5)).div(10).minus(0.1)
     ).minus(1),
@@ -56,7 +57,8 @@ export const pelleRifts = {
     additionalEffects: () => [PelleRifts.decay.milestones[0], PelleRifts.decay.milestones[2]],
     strike: () => PelleStrikes.powerGalaxies,
     // 0 - 1
-    percentage: totalFill => totalFill.plus(1).log10().div(2000).mantissa * (10 ** totalFill.plus(1).log10().div(2000).exponent),
+    percentage: totalFill => totalFill.plus(1).log10().div(2000).mantissa *
+      (10 ** totalFill.plus(1).log10().div(2000).exponent),
     // 0 - 1
     percentageToFill: percentage => Decimal.pow(10, 20 * percentage * 100).minus(1),
     effect: totalFill => (PelleRifts.chaos.milestones[0].canBeApplied
@@ -151,7 +153,8 @@ export const pelleRifts = {
     strike: () => PelleStrikes.ECs,
     percentage: totalFill => totalFill.pow(0.4).times(3.624).toNumber(),
     percentageToFill: percentage => percentage ** 2.5 * 0.04,
-    effect: totalFill => 308 - new Decimal(58).times(new Decimal(totalFill).plus(1).log10().pow(0.2).div(new Decimal(4000)).pow(0.2)).toNumber(),
+    effect: totalFill => 308 - new Decimal(58).times(new Decimal(totalFill).plus(1).log10().pow(0.2)
+      .div(new Decimal(4000)).pow(0.2)).toNumber(),
     currency: () => Currency.eternityPoints,
     galaxyGeneratorThreshold: 1e10,
     milestones: [
@@ -186,7 +189,8 @@ export const pelleRifts = {
     baseEffect: x => `All Dimensions ${formatPow(x, 2, 3)}`,
     additionalEffects: () => [PelleRifts.paradox.milestones[2]],
     strike: () => PelleStrikes.dilation,
-    percentage: totalFill => (totalFill.plus(1).log10().div(100).mantissa * (10**totalFill.plus(1).log10().div(100).exponent)),
+    percentage: totalFill => (totalFill.plus(1).log10().div(100).mantissa *
+      (10 ** totalFill.plus(1).log10().div(100).exponent)),
     percentageToFill: percentage => Decimal.pow10(percentage * 100).minus(1),
     effect: totalFill => new Decimal(1 + totalFill.plus(1).log10() * 0.004),
     currency: () => Currency.dilatedTime,

@@ -99,7 +99,8 @@ function bigCrunchUpdateStatistics() {
   player.requirementChecks.reality.noInfinities = false;
 
   if (!player.requirementChecks.infinity.maxAll) {
-    const bestIpPerMsWithoutMaxAll = infinityPoints.dividedBy(Decimal.clampMin(33, player.records.thisInfinity.realTime));
+    const bestIpPerMsWithoutMaxAll = infinityPoints.dividedBy(
+      Decimal.clampMin(33, player.records.thisInfinity.realTime));
     player.records.thisEternity.bestIPMsWithoutMaxAll =
       Decimal.max(bestIpPerMsWithoutMaxAll, player.records.thisEternity.bestIPMsWithoutMaxAll);
   }
@@ -175,7 +176,7 @@ export function preProductionGenerateIP(diff) {
       genCount = Decimal.div(diff, genPeriod);
     } else {
       // Partial progress (fractions from 0 to 1) are stored in player.partInfinityPoint
-      const idk = diff.toNumber()
+      const idk = diff.toNumber();
       player.partInfinityPoint += idk / genPeriod.min(1e300).toNumber();
       genCount = Math.floor(player.partInfinityPoint);
       player.partInfinityPoint -= genCount;

@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import { DC } from "../../constants";
 
 export const normalAchievements = [
@@ -623,7 +624,7 @@ export const normalAchievements = [
       first ${formatInt(5)} seconds of Infinities.`;
     },
     effect: () => Decimal.max((new Decimal(5).sub(Time.thisInfinity.totalSeconds)).times(60), 1),
-  effectCondition: () => Time.thisInfinity.totalSeconds.lt(5),
+    effectCondition: () => Time.thisInfinity.totalSeconds.lt(5),
     formatEffect: value => `${formatX(value, 2, 2)}`
   },
   {
@@ -785,7 +786,7 @@ export const normalAchievements = [
     id: 113,
     name: "Eternities are the new infinity",
     get description() { return `Eternity in under ${formatInt(250)}ms.`; },
-    checkRequirement: () => Time.thisEternity.totalMilliseconds .lte(250),
+    checkRequirement: () => Time.thisEternity.totalMilliseconds.lte(250),
     checkEvent: GAME_EVENT.ETERNITY_RESET_BEFORE,
     get reward() { return `Gain ${formatX(2)} more Eternities.`; },
     effect: 2,

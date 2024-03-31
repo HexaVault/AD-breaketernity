@@ -58,11 +58,13 @@ export const MultiplierTabHelper = {
       effectiveCount = effectiveCount.mul(Pelle.specialGlyphEffect.power);
 
       tickFrac = Tickspeed.totalUpgrades.mul(logBase);
-      galFrac = Decimal.log10(Decimal.max(0.01, new Decimal(1).div(baseMult).sub(effectiveCount.mul(perGalaxy)))).mul(-1).div(logBase);
+      galFrac = Decimal.log10(Decimal.max(0.01, new Decimal(1).div(baseMult).sub(effectiveCount.mul(perGalaxy))))
+        .mul(-1).div(logBase);
     } else {
       effectiveCount = effectiveCount.sub(2);
       effectiveCount = effectiveCount.mul(effects);
-      effectiveCount = effectiveCount.mul(getAdjustedGlyphEffect("realitygalaxies").mul(ImaginaryUpgrade(9).effectOrDefault(0).add(1)));
+      effectiveCount = effectiveCount.mul(getAdjustedGlyphEffect("realitygalaxies")
+        .mul(ImaginaryUpgrade(9).effectOrDefault(0).add(1)));
       effectiveCount = effectiveCount.mul(Pelle.specialGlyphEffect.power);
 
       // These all need to be framed as INCREASING x/sec tick rate (ie. all multipliers > 1, all logs > 0)

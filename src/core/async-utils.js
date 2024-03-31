@@ -61,6 +61,7 @@ window.Async = {
       fun(i);
     }
     if (config.then) config.then();
+    return false;
   },
   /**
    * @private

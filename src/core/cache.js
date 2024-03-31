@@ -45,13 +45,13 @@ class Lazy {
 window.Lazy = Lazy;
 
 function highestInArray(array, isNum = false) {
-  let i = 0
-  let highestVal = isNum ? 0 : new Decimal(0)
-  while (array[i] != undefined) {
-    highestVal = isNum ? Math.max(highestVal, array[i]) : Decimal.max(highestVal, array[i])
-    i++
+  let i = 0;
+  let highestVal = isNum ? 0 : new Decimal(0);
+  while (array[i] !== undefined) {
+    highestVal = isNum ? Math.max(highestVal, array[i]) : Decimal.max(highestVal, array[i]);
+    i++;
   }
-  return highestVal
+  return highestVal;
 }
 
 export const GameCache = {

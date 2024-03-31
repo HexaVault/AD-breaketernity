@@ -165,7 +165,7 @@ export const eternityMilestones = {
       ? `Must be outside of all Challenges and Dilation, and the Eternity Autobuyer must be set to Eternity at zero EP.
         This milestone's effect is capped at ${formatInt(33)}ms.`
       : ""),
-      pelleUseless: true
+    pelleUseless: true
   },
   autoInfinities: {
     eternities: 1000,
@@ -184,6 +184,6 @@ export const eternityMilestones = {
         the Big Crunch Autobuyer must be turned on and set to time mode with less than ${formatInt(60)} seconds,
         and the Eternity Autobuyer must be turned off.`
       : ""),
-      pelleUseless: true
+    pelleUseless: true
   }
 };

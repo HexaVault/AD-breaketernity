@@ -823,8 +823,10 @@ export function calculateGlyph(glyph) {
     if (glyph.rawLevel === undefined) {
       // Only correct below the second round of instability, but it only matters for glyphs produced before
       // this was merged, so it's not a big deal.
-      glyph.rawLevel = glyph.level.lt(1000) ? glyph.level : (Decimal.pow(glyph.level.times(0.004).min(3), 2) - 1).times(125).add(1000);
-    }  // Used to randomly generate strength in this case; I don't think we actually care.
+      glyph.rawLevel = glyph.level.lt(1000) ? glyph.level
+        : (Decimal.pow(glyph.level.times(0.004).min(3), 2) - 1).times(125).add(1000);
+    }
+    // Used to randomly generate strength in this case; I don't think we actually care.
     if (glyph.strength === 1) glyph.strength = 1.5;
     glyph.strength = Math.min(rarityToStrength(100), glyph.strength);
   }
