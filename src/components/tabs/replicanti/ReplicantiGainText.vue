@@ -24,21 +24,17 @@ export default {
 
       if (isAbove308) {
         const postScale = Math.log10(ReplicantiGrowth.scaleFactor) / ReplicantiGrowth.scaleLog10;
-        const gainFactorPerSecond = logGainFactorPerTick
-          .times(postScale)
-          .plus(1)
-          .pow(ticksPerSecond / postScale);
+        const gainFactorPerSecond = logGainFactorPerTick.times(postScale).plus(1).pow(ticksPerSecond / postScale);
         // The calculations to estimate time to next milestone of OoM based on game state, assumes that uncapped
         // replicanti growth scales as time^1/postScale, which turns out to be a reasonable approximation.
         const milestoneStep = Pelle.isDoomed ? 100 : 1000;
-        const nextMilestone = Decimal.pow10(Decimal.floor(replicantiAmount.log10().div(milestoneStep).add(1))
-          .div(milestoneStep));
+        const nextMilestone = replicantiAmount.log10().div(milestoneStep).add(1).floor().mul(milestoneStep).pow10();
         const coeff = Decimal.divide(updateRateMs / 1000, logGainFactorPerTick.times(postScale));
         const timeToThousand = coeff.times(nextMilestone.divide(replicantiAmount).pow(postScale).minus(1));
         // The calculation seems to choke and return zero if the time is too large, probably because of rounding issues
         const timeEstimateText = timeToThousand.eq(0)
           ? "an extremely long time"
-          : `${TimeSpan.fromSeconds(new Decimal(timeToThousand.toNumber()))}`;
+          : `${TimeSpan.fromSeconds(timeToThousand)}`;
         this.remainingTimeText = `You are gaining ${formatX(gainFactorPerSecond, 2, 1)} Replicanti per second` +
           ` (${timeEstimateText} until ${format(nextMilestone)})`;
       } else {
@@ -46,22 +42,22 @@ export default {
       }
 
       const totalTime = DLOG10_MAXNUM.div(log10GainFactorPerTick.times(ticksPerSecond));
-      const remainingTime = (DLOG10_MAXNUM.sub(replicantiAmount.log10()))
+      let remainingTime = DLOG10_MAXNUM.sub(replicantiAmount.log10())
         .div(log10GainFactorPerTick.times(ticksPerSecond));
       if (remainingTime.lt(0)) {
         // If the cap is raised via Effarig Infinity but the player doesn't have TS192, this will be a negative number
-        remainingTime.eq(0);
+        remainingTime = new Decimal();
       }
 
       const galaxiesPerSecond = log10GainFactorPerTickUncapped.times(new Decimal(ticksPerSecond).div(DLOG10_MAXNUM));
-      const timeFromZeroRG = galaxies => 50 * Math.log((galaxies + 49.5) / 49.5);
+      const timeFromZeroRG = galaxies => galaxies.add(49.5).div(49.5).ln().mul(50);
       let baseGalaxiesPerSecond, effectiveMaxRG, effectiveCurrentRG;
       if (RealityUpgrade(6).isBought && !Pelle.isDoomed) {
         baseGalaxiesPerSecond = galaxiesPerSecond.divide(RealityUpgrade(6).effectValue);
-        effectiveMaxRG = timeFromZeroRG(Replicanti.galaxies.max + Replicanti.galaxies.extra) -
-          timeFromZeroRG(Replicanti.galaxies.extra);
-        effectiveCurrentRG = timeFromZeroRG(Replicanti.galaxies.bought + Replicanti.galaxies.extra) -
-          timeFromZeroRG(Replicanti.galaxies.extra);
+        effectiveMaxRG = timeFromZeroRG(Replicanti.galaxies.max.add(Replicanti.galaxies.extra))
+          .sub(timeFromZeroRG(Replicanti.galaxies.extra));
+        effectiveCurrentRG = timeFromZeroRG(Replicanti.galaxies.bought.add(Replicanti.galaxies.extra))
+          .sub(timeFromZeroRG(Replicanti.galaxies.extra));
       } else {
         baseGalaxiesPerSecond = galaxiesPerSecond;
         effectiveMaxRG = Replicanti.galaxies.max;
@@ -70,16 +66,15 @@ export default {
       const secondsPerGalaxy = galaxiesPerSecond.reciprocal();
 
       if (this.remainingTimeText === "") {
-        if (remainingTime === 0) {
+        if (remainingTime.eq(0)) {
           this.remainingTimeText = `At Infinite Replicanti (normally takes
-            ${TimeSpan.fromSeconds(new Decimal(secondsPerGalaxy.toNumber()))})`;
+            ${TimeSpan.fromSeconds(secondsPerGalaxy)})`;
         } else if (replicantiAmount.lt(100)) {
           // Because of discrete replication, we add "Approximately" at very low amounts
-          this.remainingTimeText = `Approximately ${TimeSpan.fromSeconds(new Decimal(remainingTime))} remaining
+          this.remainingTimeText = `Approximately ${TimeSpan.fromSeconds(remainingTime)} remaining
             until Infinite Replicanti`;
         } else {
-          const timeTxt = TimeSpan.fromSeconds(new Decimal(remainingTime));
-          this.remainingTimeText = `${timeTxt} remaining until Infinite Replicanti`;
+          this.remainingTimeText = `${TimeSpan.fromSeconds(remainingTime)} remaining until Infinite Replicanti`;
         }
       }
 
@@ -116,12 +111,12 @@ export default {
           let pendingTime = pending.mul(secondsPerGalaxy);
           // If popular music is unlocked add the divide amount
           if (Achievement(126).isUnlocked && !Pelle.isDoomed) {
-            const leftPercentAfterGalaxy = replicantiAmount.log10().div(LOG10_MAX_VALUE).sub(pending).toNumber();
+            const leftPercentAfterGalaxy = replicantiAmount.log10().div(LOG10_MAX_VALUE).sub(pending);
             pendingTime = pendingTime.add(secondsPerGalaxy.times(leftPercentAfterGalaxy));
           }
           const thisGalaxyTime = pending.gt(0) ? pendingTime : secondsPerGalaxy.sub(remainingTime);
           this.galaxyText += ` (all Replicanti Galaxies within
-            ${TimeSpan.fromSeconds(Decimal.max(allGalaxyTime.sub(thisGalaxyTime), 0))})`;
+            ${TimeSpan.fromSeconds(allGalaxyTime.sub(thisGalaxyTime).clampMin(0))})`;
         }
       } else {
         this.galaxyText = ``;

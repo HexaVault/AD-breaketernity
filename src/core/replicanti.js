@@ -43,9 +43,11 @@ export function replicantiGalaxy(auto) {
   Replicanti.amount = Achievement(126).isUnlocked && !Pelle.isDoomed
     ? Decimal.pow10(Replicanti.amount.log10().sub(galaxyGain.mul(LOG10_MAX_VALUE)))
     : new Decimal(1);
-  console.log(Replicanti.amount)
+  // eslint-disable-next-line no-console
+  console.log(Replicanti.amount);
   addReplicantiGalaxies(galaxyGain);
-  console.log(Replicanti.amount)
+  // eslint-disable-next-line no-console
+  console.log(Replicanti.amount);
 }
 
 // Only called on manual RG requests
@@ -110,7 +112,8 @@ export function getReplicantiInterval(overCapOverride, intervalIn) {
     if (PelleStrikes.eternity.hasStrike && amount.gte(DC.E2000)) {
       // The above code assumes in this case there's 10x scaling for every 1e308 increase;
       // in fact, before e2000 it's only 2x.
-      increases = increases.sub(Decimal.log10(5).times(DC.E2000.sub(replicantiCap()).log10()).div(ReplicantiGrowth.scaleLog10));
+      increases = increases.sub(Decimal.log10(5).times(DC.E2000.sub(replicantiCap()).log10())
+        .div(ReplicantiGrowth.scaleLog10));
     }
     interval = interval.times(Decimal.pow(ReplicantiGrowth.scaleFactor, increases));
   }
@@ -219,9 +222,8 @@ export function replicantiLoop(diff) {
       // in a single tick in Pelle.
       const intervalRatio = getReplicantiInterval(true).div(interval);
       remainingGain = remainingGain.div(intervalRatio);
-      Replicanti.amount =
-        remainingGain.div(LOG10_E).times(postScale).plus(1).ln().div(postScale).add(
-        Replicanti.amount.clampMin(1).ln()).exp();
+      Replicanti.amount = remainingGain.div(LOG10_E).times(postScale).plus(1).ln().div(postScale)
+        .add(Replicanti.amount.clampMin(1).ln()).exp();
     }
   } else if (tickCount.gt(1)) {
     // Multiple ticks but "slow" gain: This happens at low replicanti chance and amount with a fast interval, which
@@ -458,7 +460,7 @@ export const ReplicantiUpgrade = {
     }
 
     bulkPurchaseCalc() {
-      // copypasted constants
+      // Copypasted constants
       const logBase = new Decimal(170);
       const logBaseIncrease = EternityChallenge(6).isRunning ? DC.D2 : new Decimal(25);
       const logCostScaling = EternityChallenge(6).isRunning ? DC.D2 : DC.D5;
@@ -467,39 +469,49 @@ export const ReplicantiUpgrade = {
       const logDistantScaling = new Decimal(50);
       const logRemoteScaling = DC.D5;
 
-      let cur = Currency.infinityPoints.value.log10()
-    
-      if (logBase.div(TimeStudy(233).effectOrDefault(1)).gt(cur)) return
-      cur = cur.times(TimeStudy(233).effectOrDefault(1))
-      let a = logCostScaling.div(2)
-      let b = logBaseIncrease.sub(logCostScaling.div(2))
-      let c = logBase.sub(cur)
+      let cur = Currency.infinityPoints.value.log10();
+
+      if (logBase.div(TimeStudy(233).effectOrDefault(1)).gt(cur)) return;
+      cur = cur.times(TimeStudy(233).effectOrDefault(1));
+      let a = logCostScaling.div(2);
+      let b = logBaseIncrease.sub(logCostScaling.div(2));
+      let c = logBase.sub(cur);
       if (decimalQuadraticSolution(a, b, c).lte(distantReplicatedGalaxyStart)) {
-        return decimalQuadraticSolution(a, b, c).floor()
+        // eslint-disable-next-line consistent-return
+        return decimalQuadraticSolution(a, b, c).floor();
       }
 
-      a = logBase.sub(cur).add(logDistantScaling.times(distantReplicatedGalaxyStart.pow(2))).sub(logDistantScaling.times(4.5).times(distantReplicatedGalaxyStart))
-      b = logBaseIncrease.sub(logCostScaling)
-      const c1 = logBase.sub(cur).add(distantReplicatedGalaxyStart.pow(2).times(logDistantScaling).div(2))
-      const c2 = distantReplicatedGalaxyStart.times(logDistantScaling).times(4.5)
-      c = c1.add(c2)
+      a = logBase.sub(cur).add(logDistantScaling.times(distantReplicatedGalaxyStart.pow(2)))
+        .sub(logDistantScaling.times(4.5).times(distantReplicatedGalaxyStart));
+      b = logBaseIncrease.sub(logCostScaling);
+      const c1 = logBase.sub(cur).add(distantReplicatedGalaxyStart.pow(2).times(logDistantScaling).div(2));
+      const c2 = distantReplicatedGalaxyStart.times(logDistantScaling).times(4.5);
+      c = c1.add(c2);
       if (decimalQuadraticSolution(a, b, c).lte(remoteReplicatedGalaxyStart)) {
-        return decimalQuadraticSolution(a, b, c)
+        // eslint-disable-next-line consistent-return
+        return decimalQuadraticSolution(a, b, c);
       }
 
-      a = logRemoteScaling.div(3)
-      b = logCostScaling.div(2).add(logDistantScaling).div(2).sub(logRemoteScaling(remoteReplicatedGalaxyStart))
-      c = distantReplicatedGalaxyStart.times(logDistantScaling).neg().add(logRemoteScaling.times(remoteReplicatedGalaxyStart.pow(2))).sub(logRemoteScaling.times(remoteReplicatedGalaxyStart)).add(logRemoteScaling.div(6)).add((logCostScaling.add(logDistantScaling.times(9))).div(2)).add(logBaseIncrease)
-      const d1 = logBase.add(Decimal.pow(distantReplicatedGalaxyStart, 2).times(logDistantScaling.div(2))).sub((logDistantScaling.times(distantReplicatedGalaxyStart)).times(4.5))
-      const d2 = logRemoteScaling.times(Decimal.pow(remoteReplicatedGalaxyStart, 3)).div(3).neg().add(logRemoteScaling.times(Decimal.pow(remoteReplicatedGalaxyStart, 2)).div(2))
-      const d3 = logRemoteScaling.times(remoteReplicatedGalaxyStart).div(6).sub(cur)
-      const d = d1.add(d2).add(d3)
+      a = logRemoteScaling.div(3);
+      b = logCostScaling.div(2).add(logDistantScaling).div(2).sub(logRemoteScaling(remoteReplicatedGalaxyStart));
+      c = distantReplicatedGalaxyStart.times(logDistantScaling).neg()
+        .add(logRemoteScaling.times(remoteReplicatedGalaxyStart.pow(2)))
+        .sub(logRemoteScaling.times(remoteReplicatedGalaxyStart))
+        .add(logRemoteScaling.div(6)).add((logCostScaling.add(logDistantScaling.times(9))).div(2)).add(logBaseIncrease);
+      const d1 = logBase.add(distantReplicatedGalaxyStart.pow(2).times(logDistantScaling.div(2)))
+        .sub((logDistantScaling.times(distantReplicatedGalaxyStart)).times(4.5));
+      const d2 = logRemoteScaling.times(remoteReplicatedGalaxyStart.pow(3)).div(3).neg()
+        .add(logRemoteScaling.times(remoteReplicatedGalaxyStart.pow(2)).div(2));
+      const d3 = logRemoteScaling.times(remoteReplicatedGalaxyStart).div(6).sub(cur);
+      const d = d1.add(d2).add(d3);
 
-      return decimalCubicSolution(a, b, c, d, false)
+      // eslint-disable-next-line consistent-return
+      return decimalCubicSolution(a, b, c, d, false);
     }
+
     autobuyerTick() {
       // This isn't a hot enough autobuyer to worry about doing an actual inverse.
-      const bulk = this.bulkPurchaseCalc()
+      const bulk = this.bulkPurchaseCalc();
       if (!bulk || bulk.floor().sub(this.value).lte(0)) return;
       Currency.infinityPoints.subtract(baseCostAfterCount.sub(1));
       this.value = this.value.add(bulk);
@@ -512,7 +524,8 @@ export const ReplicantiUpgrade = {
       const logCostScaling = EternityChallenge(6).isRunning ? 2 : 5;
       const distantReplicatedGalaxyStart = 100 + Effects.sum(GlyphSacrifice.replication);
       const remoteReplicatedGalaxyStart = 1000 + Effects.sum(GlyphSacrifice.replication);
-      let logCost = logBase.add(count.times(logBaseIncrease)).add((count.times(count.sub(1)).div(2)).times(logCostScaling));
+      let logCost = logBase.add(count.times(logBaseIncrease))
+        .add((count.times(count.sub(1)).div(2)).times(logCostScaling));
       if (count > distantReplicatedGalaxyStart) {
         const logDistantScaling = new Decimal(50);
         // When distant scaling kicks in, the price increase jumps by a few extra steps.
@@ -524,7 +537,8 @@ export const ReplicantiUpgrade = {
         const logRemoteScaling = DC.D5;
         const numRemote = count.sub(remoteReplicatedGalaxyStart);
         // The formula x * (x + 1) * (2 * x + 1) / 6 is the sum of the first n squares.
-        logCost = logCost.add(logRemoteScaling.times(numRemote).times(numRemote.add(1)).times(numRemote.times(2).add(1)).div(6));
+        logCost = logCost.add(logRemoteScaling.times(numRemote).times(numRemote.add(1))
+          .times(numRemote.times(2).add(1)).div(6));
       }
       return Decimal.pow10(logCost);
     }
