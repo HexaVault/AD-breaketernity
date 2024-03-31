@@ -59,7 +59,7 @@ export default {
         }
         if (ratio.lt(1.1)) {
           const r = ratio.sub(1).mul(10);
-          return Decimal.round(new Decimal(1).sub(r).mul(stepRGB[1][index]).add(r.mul(stepRGB[2][index])))
+          return Decimal.round(new Decimal(1).sub(r).mul(stepRGB[1][index]).add(r.mul(stepRGB[2][index])));
         }
         return stepRGB[2][index];
       };

@@ -14,6 +14,7 @@ export default {
   }
 };
 </script>
+
 <template>
   <div class="l-select-theme">
     <div class="l-select-theme__inner">

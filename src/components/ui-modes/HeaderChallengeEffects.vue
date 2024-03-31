@@ -43,7 +43,8 @@ export default {
           this.laitelaTimer = Time.thisRealityRealTime.toStringShort();
         } else {
           this.laitelaEntropy = `${formatPercents(1, 2, 2)}`;
-          this.laitelaTimer = TimeSpan.fromSeconds(new Decimal(player.celestials.laitela.thisCompletion)).toStringShort();
+          this.laitelaTimer = TimeSpan.fromSeconds(new Decimal(player.celestials.laitela.thisCompletion))
+            .toStringShort();
         }
       }
 

@@ -3,11 +3,11 @@ import ExpandingControlBox from "@/components/ExpandingControlBox";
 import OpenModalHotkeysButton from "@/components/OpenModalHotkeysButton";
 import OptionsButton from "@/components/OptionsButton";
 import PrimaryToggleButton from "@/components/PrimaryToggleButton";
+import SelectLargeNotationDropdown from "./SelectLargeNotationDropdown";
 import SelectNotationDropdown from "@/components/tabs/options-visual/SelectNotationDropdown";
-import SelectThemeDropdown from "@/components/tabs/options-visual/SelectThemeDropdown";
 import SelectSidebarDropdown from "@/components/tabs/options-visual/SelectSidebarDropdown";
+import SelectThemeDropdown from "@/components/tabs/options-visual/SelectThemeDropdown";
 import UpdateRateSlider from "./UpdateRateSlider";
-import SelectLargeNotationDropdown from "./SelectLargeNotationDropdown.vue";
 
 export default {
   name: "OptionsVisualTab",

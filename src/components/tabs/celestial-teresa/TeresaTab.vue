@@ -1,5 +1,4 @@
 <script>
-
 import CelestialQuoteHistory from "@/components/CelestialQuoteHistory";
 import CustomizeableTooltip from "@/components/CustomizeableTooltip";
 import GlyphSetPreview from "@/components/GlyphSetPreview";

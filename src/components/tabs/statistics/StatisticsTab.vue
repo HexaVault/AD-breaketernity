@@ -1,7 +1,9 @@
 <script>
-import { MatterScale } from "./matter-scale";
-import PrimaryButton from "@/components/PrimaryButton";
 import { DC } from "../../../core/constants";
+
+import { MatterScale } from "./matter-scale";
+
+import PrimaryButton from "@/components/PrimaryButton";
 
 export default {
   name: "StatisticsTab",
@@ -86,7 +88,8 @@ export default {
       const records = player.records;
       this.totalAntimatter.copyFrom(records.totalAntimatter);
       this.realTimePlayed.setFrom(records.realTimePlayed);
-      this.fullTimePlayed = TimeSpan.fromMilliseconds(new Decimal(records.previousRunRealTime.add(records.realTimePlayed)));
+      this.fullTimePlayed = TimeSpan.fromMilliseconds(
+        new Decimal(records.previousRunRealTime.add(records.realTimePlayed)));
       this.uniqueNews = NewsHandler.uniqueTickersSeen;
       this.totalNews = player.news.totalSeen;
       this.secretAchievementCount = SecretAchievements.all.filter(a => a.isUnlocked).length;
@@ -136,7 +139,8 @@ export default {
         reality.totalTimePlayed.setFrom(records.totalTimePlayed);
         // Real time tracking is only a thing once reality is unlocked:
         infinity.thisReal.setFrom(records.thisInfinity.realTime);
-        infinity.bankRate = infinity.projectedBanked.div(Decimal.clampMin(33, records.thisEternity.realTime)).times(60000);
+        infinity.bankRate = infinity.projectedBanked.div(Decimal.clampMin(33, records.thisEternity.realTime))
+          .times(60000);
         eternity.thisReal.setFrom(records.thisEternity.realTime);
         reality.thisReal.setFrom(records.thisReality.realTime);
         reality.bestRate.copyFrom(bestReality.RMmin);

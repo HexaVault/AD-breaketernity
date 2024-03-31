@@ -1,11 +1,13 @@
 <script>
+import { Replicanti } from "../../../core/replicanti";
+
 import wordShift from "@/core/word-shift";
 
 import ReplicantiUpgradeButton, { ReplicantiUpgradeButtonSetup } from "./ReplicantiUpgradeButton";
 import PrimaryButton from "@/components/PrimaryButton";
 import ReplicantiGainText from "./ReplicantiGainText";
+
 import ReplicantiGalaxyButton from "./ReplicantiGalaxyButton";
-import { Replicanti } from "../../../core/replicanti";
 
 export default {
   name: "ReplicantiTab",
@@ -139,7 +141,6 @@ export default {
         this.ec8Purchases = player.eterc8repl;
       }
       this.amount.copyFrom(Replicanti.amount);
-      if (Replicanti.amount.lt(1e100)) console.log(Replicanti.amount);
       this.mult.copyFrom(replicantiMult());
       this.hasTDMult = DilationUpgrade.tdMultReplicanti.isBought;
       this.multTD.copyFrom(DilationUpgrade.tdMultReplicanti.effectValue);

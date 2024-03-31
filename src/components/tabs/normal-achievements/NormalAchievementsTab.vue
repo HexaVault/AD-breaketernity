@@ -74,8 +74,9 @@ export default {
       this.achievementPower = Achievements.power;
       this.achTPEffect = RealityUpgrade(8).config.effect();
       this.achCountdown = Achievements.timeToNextAutoAchieve.div(gameSpeedupFactor);
-      this.totalCountdown = (new Decimal((Achievements.preReality.countWhere(a => !a.isUnlocked))).sub(1).times(Achievements.period).add(
-        Achievements.timeToNextAutoAchieve)).div(gameSpeedupFactor);
+      this.totalCountdown = (new Decimal((Achievements.preReality.countWhere(a => !a.isUnlocked)))
+        .sub(1).times(Achievements.period)
+        .add(Achievements.timeToNextAutoAchieve)).div(gameSpeedupFactor);
       this.missingAchievements = Achievements.preReality.countWhere(a => !a.isUnlocked);
       this.showAutoAchieve = PlayerProgress.realityUnlocked() && !Perk.achievementGroup5.isBought;
       this.isAutoAchieveActive = player.reality.autoAchieve;

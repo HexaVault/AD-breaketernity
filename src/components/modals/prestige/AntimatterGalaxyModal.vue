@@ -59,7 +59,7 @@ export default {
       if (this.bulk) {
         const req = Galaxy.requirement;
         const dim = AntimatterDimension(req.tier);
-        const bulk = Galaxy.buyableGalaxies(Decimal.floor(dim.totalAmount.toNumber())).gt(player.galaxies)
+        const bulk = Galaxy.buyableGalaxies(Decimal.floor(dim.totalAmount.toNumber())).gt(player.galaxies);
         if (bulk) {
           this.newGalaxies = Galaxy.buyableGalaxies(Decimal.floor(dim.totalAmount.toNumber())).sub(player.galaxies);
         }

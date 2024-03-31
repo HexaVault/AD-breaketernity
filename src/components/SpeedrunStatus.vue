@@ -67,7 +67,8 @@ export default {
       this.offlineProgress = player.options.offlineProgress;
       this.offlineFraction = speedrun.offlineTimeUsed.div(player.records.realTimePlayed.clampMin(1));
       this.mostRecent = Speedrun.mostRecentMilestone();
-      this.timeSince = Time.realTimePlayed.minus(TimeSpan.fromMilliseconds(new Decimal(speedrun.records[this.mostRecent] ?? 0)))
+      this.timeSince = Time.realTimePlayed.minus(TimeSpan.fromMilliseconds(
+        new Decimal(speedrun.records[this.mostRecent] ?? 0)))
         .toStringShort();
       this.seedText = Speedrun.seedModeText();
     },

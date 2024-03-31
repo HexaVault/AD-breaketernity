@@ -60,7 +60,8 @@ export default {
           }
         } else {
           // Lai'tela destabilization; since the progress bar is logarithmically-scaled, we need to pow10 the arguments
-          setProgress(Decimal.pow10(player.celestials.laitela.entropy), new Decimal(10), "Percentage to Destabilized Reality");
+          setProgress(Decimal.pow10(player.celestials.laitela.entropy), new Decimal(10),
+            "Percentage to Destabilized Reality");
         }
       } else if (Pelle.isDoomed) {
         if (PelleRifts.recursion.milestones[2].canBeApplied || GalaxyGenerator.spentGalaxies.gt(0)) {
@@ -70,7 +71,7 @@ export default {
         } else if (PelleStrikes.ECs.hasStrike) {
           setLinearProgress(
             (Decimal.min(Currency.timeTheorems.max.div(12900), 1)
-            .add(Decimal.min(EternityChallenges.completions / 60, 1))).div(2),
+              .add(Decimal.min(EternityChallenges.completions / 60, 1))).div(2),
             1, "Percentage to fifth Strike");
         } else if (PelleStrikes.eternity.hasStrike) {
           setLinearProgress(Currency.timeTheorems.max, new Decimal(115), "Percentage to fourth Strike");

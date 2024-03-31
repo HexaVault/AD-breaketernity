@@ -24,7 +24,8 @@ export default {
     timeString() {
       // If diff is zero, that means we opened it up via the button and don't need the text for last opening
       if (!this.diff) return null;
-      return `It has been ${TimeSpan.fromMilliseconds(new Decimal(this.diff)).toString()} since you last loaded up the game.`;
+      const string = TimeSpan.fromMilliseconds(new Decimal(this.diff)).toString();
+      return `It has been ${string} since you last loaded up the game.`;
     },
     titleText() {
       return this.diff ? "Content Catch-up" : "Content Summary";

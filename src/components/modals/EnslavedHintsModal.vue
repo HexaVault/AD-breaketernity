@@ -43,7 +43,8 @@ export default {
       const decaylessTime = this.nextHintCost / storeRate;
 
       // Check if decay is irrelevant and don't do the hard calculations if so
-      const minCostEstimate = (TimeSpan.fromYears(new Decimal(1e40)).totalMilliseconds.sub(this.currentStored)).div(storeRate);
+      const minCostEstimate = (TimeSpan.fromYears(new Decimal(1e40)).totalMilliseconds.sub(this.currentStored))
+        .div(storeRate);
       if (TimeSpan.fromSeconds(minCostEstimate).totalDays.gt(this.hints)) {
         return `${TimeSpan.fromSeconds(minCostEstimate).toStringShort(true)}`;
       }

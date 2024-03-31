@@ -147,6 +147,7 @@ export default {
         X
       </div>
     </div>
+    <!-- eslint-disable vue/no-mutating-props -->
     <draggable
       v-if="block.nested"
       v-model="block.nest"
