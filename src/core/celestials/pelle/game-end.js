@@ -36,6 +36,7 @@ export const GameEnd = {
   creditsEverClosed: false,
 
   gameLoop(diffr) {
+    let diff
     if (diffr instanceof Decimal) {
       diff = diffr.toNumber()
     } else {
