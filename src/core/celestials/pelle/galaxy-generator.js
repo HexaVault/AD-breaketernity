@@ -1,5 +1,7 @@
-import { RebuyableMechanicState } from "../../game-mechanics/rebuyable";
 import { DC } from "../../constants";
+
+import { RebuyableMechanicState } from "../../game-mechanics/rebuyable";
+
 import { PelleRifts } from "./rifts";
 
 export const GalaxyGenerator = {
@@ -92,7 +94,8 @@ export const GalaxyGenerator = {
       }
 
     }
-    player.celestials.pelle.galaxyGenerator.generatedGalaxies = player.celestials.pelle.galaxyGenerator.generatedGalaxies.add(this.gainPerSecond.times(diff.div(1000)));
+    player.celestials.pelle.galaxyGenerator.generatedGalaxies =
+      player.celestials.pelle.galaxyGenerator.generatedGalaxies.add(this.gainPerSecond.times(diff.div(1000)));
     player.celestials.pelle.galaxyGenerator.generatedGalaxies = Decimal.min(
       player.celestials.pelle.galaxyGenerator.generatedGalaxies,
       this.generationCap

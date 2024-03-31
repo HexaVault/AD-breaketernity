@@ -1,5 +1,7 @@
-import { GameMechanicState } from "../../game-mechanics";
 import { DC } from "../../constants";
+
+import { GameMechanicState } from "../../game-mechanics";
+
 import { deepmergeAll } from "@/utility/deepmerge";
 
 class SingularityMilestoneState extends GameMechanicState {
@@ -61,7 +63,8 @@ class SingularityMilestoneState extends GameMechanicState {
   get rawCompletions() {
     if (this.isUnique) return this.isUnlocked ? DC.D1 : DC.D0;
     if (!this.isUnlocked) return DC.D0;
-    return (Decimal.log(Currency.singularities.value).sub(Decimal.log(this.start))).div(Decimal.log(this.repeat)).add(1);
+    return (Decimal.log(Currency.singularities.value).sub(Decimal.log(this.start)))
+      .div(Decimal.log(this.repeat)).add(1);
   }
 
   get completions() {

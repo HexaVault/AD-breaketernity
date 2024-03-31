@@ -203,7 +203,7 @@ export function buyOneDimension(tier) {
   const cost = dimension.cost;
 
   if (tier === 8 && Enslaved.isRunning && AntimatterDimension(8).bought.gte(1)) return false;
-  
+
   dimension.currencyAmount = dimension.currencyAmount.minus(cost).max(0);
 
   if (dimension.boughtBefore10.eq(9)) {
@@ -336,8 +336,10 @@ class AntimatterDimensionState extends DimensionState {
     this._baseCost = BASE_COSTS[tier];
     const BASE_COST_MULTIPLIERS = [null, DC.E3, DC.E4, DC.E5, DC.E6, DC.E8, DC.E10, DC.E12, DC.E15];
     this._baseCostMultiplier = BASE_COST_MULTIPLIERS[tier];
+    // eslint-disable-next-line max-len
     const C6_BASE_COSTS = [null, DC.E1, DC.E2, DC.E2, DC.E2.times(5), DC.E3.times(2.5), DC.E4.times(2), DC.E5.times(2), DC.E6.times(4)];
     this._c6BaseCost = C6_BASE_COSTS[tier];
+    // eslint-disable-next-line max-len
     const C6_BASE_COST_MULTIPLIERS = [null, DC.E3, DC.E3.times(5), DC.E4, DC.E4.times(1.2), DC.E4.times(1.8), DC.E4.times(2.6), DC.E4.times(3.2), DC.E4.times(4.2)];
     this._c6BaseCostMultiplier = C6_BASE_COST_MULTIPLIERS[tier];
   }
@@ -568,11 +570,11 @@ class AntimatterDimensionState extends DimensionState {
   }
 
   get cappedProductionInNormalChallenges() {
-    const postBI = true
+    const postBI = true;
     const postBreak = (player.break && !NormalChallenge.isRunning) ||
       InfinityChallenge.isRunning ||
       Enslaved.isRunning;
-    if (postBI && postBreak) return DC.BEMAX
+    if (postBI && postBreak) return DC.BEMAX;
     return postBreak ? DC.BIMAX : DC.E315;
   }
 

@@ -1,4 +1,5 @@
 import { isDecimal } from "../../utility/type-check";
+
 import { DC } from "../constants";
 
 export const Effects = {
@@ -17,7 +18,7 @@ export const Effects = {
    */
   nSum(...effectSources) {
     let result = 0;
-    applyEffectsOf(effectSources, v => result = result + v);
+    applyEffectsOf(effectSources, v => result += v);
     return result;
   },
   /**
@@ -36,7 +37,7 @@ export const Effects = {
    */
   last(defaultValue, ...effectSources) {
     // eslint-disable-next-line no-param-reassign
-    if(!isDecimal(defaultValue)) defaultValue = new Decimal(defaultValue);
+    if (!isDecimal(defaultValue)) defaultValue = new Decimal(defaultValue);
     let result = defaultValue;
     let foundLast = false;
     const reversedSources = effectSources
@@ -59,7 +60,7 @@ export const Effects = {
    */
   max(defaultValue, ...effectSources) {
     // eslint-disable-next-line no-param-reassign
-    if(!isDecimal(defaultValue)) defaultValue = new Decimal(defaultValue);
+    if (!isDecimal(defaultValue)) defaultValue = new Decimal(defaultValue);
     let result = defaultValue;
     applyEffectsOf(effectSources, v => result = Decimal.max(result, v));
     return result;
@@ -81,7 +82,7 @@ export const Effects = {
    */
   min(defaultValue, ...effectSources) {
     // eslint-disable-next-line no-param-reassign
-    if(!isDecimal(defaultValue)) defaultValue = new Decimal(defaultValue);
+    if (!isDecimal(defaultValue)) defaultValue = new Decimal(defaultValue);
     let result = defaultValue;
     applyEffectsOf(effectSources, v => result = Decimal.min(result, v));
     return result;
@@ -154,6 +155,7 @@ Decimal.prototype.timesEffectOf = function(effectSource) {
 Decimal.prototype.timesEffectsOf = function(...effectSources) {
   // Normalize is expensive; when we multiply many things together, it's faster
   // to get a big mantissa and then fix it at the end.
+  // eslint-disable-next-line consistent-this
   let result = this;
   applyEffectsOf(effectSources, v => result = result.times(v));
   return result;
