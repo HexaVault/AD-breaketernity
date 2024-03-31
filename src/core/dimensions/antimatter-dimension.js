@@ -244,7 +244,7 @@ export function buyAsManyAsYouCanBuy(tier) {
   if (Laitela.continuumActive || !dimension.isAvailableForPurchase || !dimension.isAffordable) return false;
   const howMany = dimension.howManyCanBuy;
   // console.log(tier)
-  //console.log(howMany)
+  // console.log(howMany)
   const cost = dimension.cost.times(howMany);
 
   if (tier === 8 && Enslaved.isRunning) return buyOneDimension(8);

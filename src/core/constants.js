@@ -205,7 +205,7 @@ export const DC = deepFreeze({
   E1_5E12:              new Decimal("1e1500000000000"),
   E1E15:                new Decimal("1e1000000000000000"),
 
-  //Special case values
+  // Special case values
   NUMSAFE:              new Decimal(Number.MAX_SAFE_INTEGER),
   NUMMAX:               new Decimal(Number.MAX_VALUE),
   BIMAX:                new Decimal("e9e15"),

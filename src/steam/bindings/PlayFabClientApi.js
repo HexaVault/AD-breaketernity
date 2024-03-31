@@ -1,5 +1,5 @@
 /* eslint-disable */
-/// <reference path="../typings/PlayFab/PlayFabClientApi.d.ts" />
+// <reference path="../typings/PlayFab/PlayFabClientApi.d.ts" />
 
 export var PlayFab = typeof PlayFab != "undefined" ? PlayFab : {};
 

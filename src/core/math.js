@@ -179,7 +179,8 @@ window.dBBBS = function dBBBS(money, costInfo, alreadyBought) {
   if (money.lt(firstCost)) return null;
   // Attempt to find the max we can purchase. We know we can buy 1, so we try 2, 4, 8, etc
   // to figure out the upper limit
-  let canBuy = new Decimal(15.95424252) // Have a mag at 15.95424252 - This means we wont drop mags for the next function, but this actual value is never internally used
+  let canBuy = new Decimal(15.95424252)
+  // Have a mag at 15.95424252 - This means we wont drop mags for the next function, but this actual value is never internally used
   let totalCost = new Decimal(0)
   let cantBuy = Decimal.tetrate(10, 9e15).times(9e15 - 1)
   let val = new Decimal(15.95424252)
@@ -187,7 +188,8 @@ window.dBBBS = function dBBBS(money, costInfo, alreadyBought) {
   while (val.layer !== cantBuy.layer) {
 
     const v = (costFunction(val).gt(money))
-    val.layer = Math.ceil((cantBuy.layer + canBuy.layer) / 2) // Stupid hack, i know, but if we dont do this the entire bit of code loops forever
+    val.layer = Math.ceil((cantBuy.layer + canBuy.layer) / 2)
+    // Stupid hack, i know, but if we dont do this the entire bit of code loops forever
     const va = (costFunction(val).gt(money))
     val.layer = Math.floor((cantBuy.layer + canBuy.layer) / 2)
 
@@ -205,8 +207,8 @@ window.dBBBS = function dBBBS(money, costInfo, alreadyBought) {
   console.log(val)
   canBuy = new Decimal(0) // We want to see mag to 0, and since the code doesnt actually care about the code
   cantBuy = new Decimal(9e15 - 1)
-  //console.log(cantBuy.mag)
-  //console.log((cantBuy.mag + canBuy.mag) / 2)
+  // console.log(cantBuy.mag)
+  // console.log((cantBuy.mag + canBuy.mag) / 2)
   val.mag = ((cantBuy.mag + canBuy.mag) / 2) // No need to round till the end
   while (cantBuy.mag !== val.mag) {
 
@@ -528,7 +530,7 @@ window.ExponentialCostScaling = class ExponentialCostScaling {
   }
 
   getMaxBought(currentPurchases, currency, purchasesPerIncrease, roundDown = true) {
-   //copypaste
+   // copypaste
    const base = this.log._baseCost
    const inc = this.log._baseIncrease
    const scale = this.log._costScale

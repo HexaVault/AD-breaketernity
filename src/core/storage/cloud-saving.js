@@ -1,6 +1,3 @@
-/* eslint-disable import/extensions */
-import pako from "pako/dist/pako.esm.mjs";
-/* eslint-enable import/extensions */
 
 import {
   createUserWithEmailAndPassword,
@@ -15,7 +12,6 @@ import { sha512_256 } from "js-sha512";
 
 import { STEAM } from "@/env";
 
-import { decodeBase64Binary } from "./base64-binary";
 import { firebaseConfig } from "./firebase-config";
 import { ProgressChecker } from "./progress-checker";
 import { SteamRuntime } from "@/steam";

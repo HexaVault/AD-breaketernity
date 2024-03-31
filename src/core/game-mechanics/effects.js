@@ -35,6 +35,7 @@ export const Effects = {
    * @return {Decimal}
    */
   last(defaultValue, ...effectSources) {
+    // eslint-disable-next-line no-param-reassign
     if(!isDecimal(defaultValue)) defaultValue = new Decimal(defaultValue);
     let result = defaultValue;
     let foundLast = false;
@@ -57,6 +58,7 @@ export const Effects = {
    * @return {Decimal}
    */
   max(defaultValue, ...effectSources) {
+    // eslint-disable-next-line no-param-reassign
     if(!isDecimal(defaultValue)) defaultValue = new Decimal(defaultValue);
     let result = defaultValue;
     applyEffectsOf(effectSources, v => result = Decimal.max(result, v));
@@ -78,6 +80,7 @@ export const Effects = {
    * @return {Decimal}
    */
   min(defaultValue, ...effectSources) {
+    // eslint-disable-next-line no-param-reassign
     if(!isDecimal(defaultValue)) defaultValue = new Decimal(defaultValue);
     let result = defaultValue;
     applyEffectsOf(effectSources, v => result = Decimal.min(result, v));
