@@ -147,6 +147,7 @@ export default {
   max-width: 45rem;
   text-align: left;
 }
+
 .c-modal-celestial__run-effects__line {
   display: flex;
   margin-bottom: 0.5rem;

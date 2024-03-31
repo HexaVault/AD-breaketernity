@@ -70,7 +70,7 @@ export default {
   transform: scale(1.1);
 }
 
-[ach-tooltip]:before {
+[ach-tooltip]::before {
   width: 20rem;
   font-size: 1.5rem;
 }

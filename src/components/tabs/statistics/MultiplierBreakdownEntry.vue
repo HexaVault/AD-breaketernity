@@ -1,5 +1,4 @@
 <script>
-
 import { BreakdownEntryInfo } from "./breakdown-entry-info";
 import { getResourceEntryInfoGroups } from "./breakdown-entry-info-group";
 import { PercentageRollingAverage } from "./percentage-rolling-average";
@@ -506,10 +505,12 @@ export default {
 
 @keyframes a-glow-bar {
   0% { box-shadow: inset 0 0 0.3rem 0; }
+
   50% {
     box-shadow: inset 0 0 0.6rem 0;
     filter: brightness(130%);
   }
+
   100% { box-shadow: inset 0 0 0.3rem 0; }
 }
 

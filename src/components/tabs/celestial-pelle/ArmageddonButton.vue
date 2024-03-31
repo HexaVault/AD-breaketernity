@@ -87,7 +87,7 @@ export default {
 .l-armageddon-button--header {
   font-size: 1rem;
   font-weight: bold;
-  padding: 0rem;
+  padding: 0;
 }
 
 .c-armageddon-button:hover {

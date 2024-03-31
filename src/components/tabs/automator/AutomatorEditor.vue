@@ -113,7 +113,7 @@ export default {
   z-index: 1;
 }
 
-.c-slider-toggle-button:before {
+.c-slider-toggle-button::before {
   content: "";
   width: 3rem;
   height: 100%;
@@ -126,12 +126,12 @@ export default {
   transition: 0.3s ease all;
 }
 
-.c-slider-toggle-button--right:before {
+.c-slider-toggle-button--right::before {
   left: 3rem;
   background-color: white;
 }
 
-.tutorial--glow:after {
+.tutorial--glow::after {
   z-index: 2;
 }
 </style>
