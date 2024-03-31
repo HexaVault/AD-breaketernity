@@ -25,9 +25,6 @@ Math.PI_2 = Math.PI * 2;
  * @returns {Decimal}
 */
 window.decimalQuadraticSolution = function decimalQuadraticSolution(a, b, c, n = false) {
-  a = new Decimal(a)
-  b = new Decimal(b)
-  c = new Decimal(c)
   const divsr = a.times(2)
   const nb = b.neg()
   const lroot = b.pow(2)
@@ -46,14 +43,10 @@ window.decimalQuadraticSolution = function decimalQuadraticSolution(a, b, c, n =
  * @returns {Decimal}
 */
 window.decimalCubicSolution = function decimalCubicSolution(a, b, c, d, n = false) {
-  a = new Decimal(a)
-  b = new Decimal(b)
-  c = new Decimal(c)
-  d = new Decimal(d)
   const delta0 = b.pow(2).sub(a.times(3).times(c))
   const delta1 = b.pow(2).times(2).sub(a.times(b).times(c).times(9)).add(a.pow(2).times(d).times(27))
-  n = n ? Decimal.sqrt(delta1.pow(2).sub(delta0.pow(3).times(4)), 2).neg() : Decimal.root(delta1.pow(2).sub(delta0.pow(3).times(4)))
-  const C = Decimal.cbrt(delta1.add(n).div(2))
+  ne = n ? Decimal.sqrt(delta1.pow(2).sub(delta0.pow(3).times(4)), 2).neg() : Decimal.root(delta1.pow(2).sub(delta0.pow(3).times(4)))
+  const C = Decimal.cbrt(delta1.add(ne).div(2))
   const x = DC.D1.div(a.times(3)).neg().times(b.add(C).add(delta0.div(C)))
   return x
 }
@@ -64,8 +57,6 @@ window.decimalCubicSolution = function decimalCubicSolution(a, b, c, d, n = fals
  * @returns {Decimal}
 */
 window.decimalDepressedCubicSolution = function decimalDepressedCubicSolution(b, c) {
-  b = new Decimal(b)
-  c = new Decimal(c)
   u1 = Decimal.cbrt(c.neg().div(2).add(Decimal.sqrt(c.pow(2).div(4).add(b.pow(3).div(27)))))
   u2 = Decimal.cbrt(c.neg().div(2).sub(Decimal.sqrt(c.pow(2).div(4).add(b.pow(3).div(27)))))
   return u1.add(u2)
@@ -714,6 +705,7 @@ window.normalDistribution = (function() {
 
 // Helper function for BTRD
 window.binomialGeneratorFC = (function() {
+  // eslint-disable-next-line no-loss-of-precision
   const stirlingBase = x => -8.10614667953272582e-2 + (x + 0.5) * Math.log1p(x) - x;
   const TABLE = Array.range(0, 20).map(x => logFactorial(x) - stirlingBase(x));
   return x => {

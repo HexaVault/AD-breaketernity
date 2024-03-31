@@ -249,7 +249,6 @@ export default {
           v-else
           v-tooltip="'This will connect your Google Account to your Antimatter Dimensions savefiles'"
           :class="{ 'o-pelle-disabled-pointer': creditsClosed }"
-          onclick="GameOptions.login()"
         >
           Login with Google to enable Cloud Saving
         </OptionsButton>

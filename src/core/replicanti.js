@@ -474,14 +474,18 @@ export const ReplicantiUpgrade = {
       let a = logCostScaling.div(2)
       let b = logBaseIncrease.sub(logCostScaling.div(2))
       let c = logBase.sub(cur)
-      if (decimalQuadraticSolution(a, b, c).lte(distantReplicatedGalaxyStart)) { return decimalQuadraticSolution(a, b, c).floor() }
+      if (decimalQuadraticSolution(a, b, c).lte(distantReplicatedGalaxyStart)) {
+        return decimalQuadraticSolution(a, b, c).floor()
+      }
 
       a = logBase.sub(cur).add(logDistantScaling.times(distantReplicatedGalaxyStart.pow(2))).sub(logDistantScaling.times(4.5).times(distantReplicatedGalaxyStart))
       b = logBaseIncrease.sub(logCostScaling)
       const c1 = logBase.sub(cur).add(distantReplicatedGalaxyStart.pow(2).times(logDistantScaling).div(2))
       const c2 = distantReplicatedGalaxyStart.times(logDistantScaling).times(4.5)
       c = c1.add(c2)
-      if (decimalQuadraticSolution(a, b, c).lte(remoteReplicatedGalaxyStart)) { return decimalQuadraticSolution(a, b, c) }
+      if (decimalQuadraticSolution(a, b, c).lte(remoteReplicatedGalaxyStart)) {
+        return decimalQuadraticSolution(a, b, c)
+      }
 
       a = logRemoteScaling.div(3)
       b = logCostScaling.div(2).add(logDistantScaling).div(2).sub(logRemoteScaling(remoteReplicatedGalaxyStart))
@@ -513,7 +517,6 @@ export const ReplicantiUpgrade = {
         const logDistantScaling = new Decimal(50);
         // When distant scaling kicks in, the price increase jumps by a few extra steps.
         // So, the difference between successive scales goes 5, 5, 5, 255, 55, 55, ...
-        const extraIncrements = 5;
         const numDistant = count.sub(distantReplicatedGalaxyStart);
         logCost = logCost.add(logDistantScaling.times(numDistant).times(numDistant.add(9)).div(2));
       }

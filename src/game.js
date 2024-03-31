@@ -435,7 +435,7 @@ export function realTimeMechanics(realDiff) {
 // case it uses the gap between now and the last time the function was called (capped at a day). This is on average
 // equal to the update rate, but may be much larger if the game was unfocused or the device went to sleep for some time.
 // eslint-disable-next-line complexity
-export function gameLoop(passDiff, options = {}) {
+export function gameLoop(passedDiff, options = {}) {
   PerformanceStats.start("Frame Time");
   PerformanceStats.start("Game Update");
 
@@ -449,11 +449,12 @@ export function gameLoop(passDiff, options = {}) {
     return;
   }
   const thisUpdate = Date.now();
-  passDiff = passDiff == undefined ? Math.clamp(thisUpdate - player.lastUpdate, 1, 8.64e7) : passDiff // This is really, really bad but we dont want 0 getting passed into every function on the fucking earth
+  passDiff = passedDiff == undefined ? Math.clamp(thisUpdate - player.lastUpdate, 1, 8.64e7) : passedDiff // This is really, really bad but we dont want 0 getting passed into every function on the fucking earth
   let diff = new Decimal(passDiff);
   const trueDiff = passDiff === undefined
   ? Math.clamp(thisUpdate - player.lastUpdate, 1, 8.64e7)
   : passDiff;
+  // eslint-disable-next-line prefer-const
   let realDiff = diff
   if (diff === undefined) {
     diff = Enslaved.nextTickDiff;

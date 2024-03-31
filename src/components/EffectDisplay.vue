@@ -1,6 +1,5 @@
 <script>
 import { isDecimal, isFunction, isNumber } from "@/utility";
-import { DC } from "../core/constants";
 
 /* eslint-disable no-empty-function */
 export default {

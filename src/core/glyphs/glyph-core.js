@@ -1,5 +1,4 @@
 import { GameMechanicState } from "../game-mechanics";
-import { DC } from "../constants";
 
 export const orderedEffectList = ["powerpow", "infinitypow", "replicationpow", "timepow",
   "dilationpow", "timeshardpow", "powermult", "powerdimboost", "powerbuy10",

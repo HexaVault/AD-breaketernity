@@ -1,11 +1,15 @@
 if (!String.prototype.includes) {
-  String.prototype.includes = function(search, start) {
-    if (typeof start !== 'number') {
+  String.prototype.includes = function(search, starting) {
+    let start
+    if (typeof starting !== 'number') {
       start = 0;
+    } else {
+      start = starting
     }
 
     if (start + search.length > this.length) {
       return false;
+      // eslint-disable-next-line no-else-return
     } else {
       return this.indexOf(search, start) !== -1;
     }
@@ -22,10 +26,10 @@ if (!Array.prototype.includes) {
         throw new TypeError('"this" is null or not defined');
       }
 
-      var o = Object(this);
+      let o = Object(this);
 
       // 2. Let len be ? ToLength(? Get(O, "length")).
-      var len = o.length >>> 0;
+      let len = o.length >>> 0;
 
       // 3. If len is 0, return false.
       if (len === 0) {
@@ -34,14 +38,14 @@ if (!Array.prototype.includes) {
 
       // 4. Let n be ? ToInteger(fromIndex).
       //    (If fromIndex is undefined, this step produces the value 0.)
-      var n = fromIndex | 0;
+      let n = fromIndex | 0;
 
       // 5. If n ≥ 0, then
       //  a. Let k be n.
       // 6. Else n < 0,
       //  a. Let k be len + n.
       //  b. If k < 0, let k be 0.
-      var k = Math.max(n >= 0 ? n : len - Math.abs(n), 0);
+      let k = Math.max(n >= 0 ? n : len - Math.abs(n), 0);
 
       function sameValueZero(x, y) {
         return x === y || (typeof x === 'number' && typeof y === 'number' && isNaN(x) && isNaN(y));
@@ -77,9 +81,9 @@ if (!Array.prototype.includes) {
   }
 
   if (window.NodeList && !NodeList.prototype.forEach) {
-      NodeList.prototype.forEach = function (callback, thisArg) {
-          thisArg = thisArg || window;
-          for (var i = 0; i < this.length; i++) {
+      NodeList.prototype.forEach = function (callback, thisArgu) {
+          thisArg = thisArgu || window;
+          for (let i = 0; i < this.length; i++) {
               callback.call(thisArg, this[i], i, this);
           }
       };
@@ -93,10 +97,10 @@ if (!Array.prototype.includes) {
             throw new TypeError('"this" is null or not defined');
           }
 
-          var o = Object(this);
+          let o = Object(this);
 
           // 2. Let len be ? ToLength(? Get(O, "length")).
-          var len = o.length >>> 0;
+          let len = o.length >>> 0;
 
           // 3. If IsCallable(predicate) is false, throw a TypeError exception.
           if (typeof predicate !== 'function') {
@@ -104,10 +108,10 @@ if (!Array.prototype.includes) {
           }
 
           // 4. If thisArg was supplied, let T be thisArg; else let T be undefined.
-          var thisArg = arguments[1];
+          let thisArg = arguments[1];
 
           // 5. Let k be 0.
-          var k = 0;
+          let k = 0;
 
           // 6. Repeat, while k < len
           while (k < len) {
@@ -115,7 +119,7 @@ if (!Array.prototype.includes) {
             // b. Let kValue be ? Get(O, Pk).
             // c. Let testResult be ToBoolean(? Call(predicate, T, « kValue, k, O »)).
             // d. If testResult is true, return kValue.
-            var kValue = o[k];
+            let kValue = o[k];
             if (predicate.call(thisArg, kValue, k, o)) {
               return kValue;
             }
@@ -138,9 +142,9 @@ if (!Array.prototype.includes) {
   };
 
   Object.invert = function(obj) {
-      var result = {};
-      var keys = Object.keys(obj);
-      for (var i = 0, length = keys.length; i < length; i++) {
+    let result = {};
+    let keys = Object.keys(obj);
+      for (let i = 0, length = keys.length; i < length; i++) {
         result[obj[keys[i]]] = keys[i];
       }
       return result;
@@ -155,13 +159,13 @@ if (typeof Object.assign != 'function') {
                 throw new TypeError('Cannot convert undefined or null to object');
             }
 
-            var to = Object(target);
+            let to = Object(target);
 
-            for (var index = 1; index < arguments.length; index++) {
-                var nextSource = arguments[index];
+            for (let index = 1; index < arguments.length; index++) {
+              let nextSource = arguments[index];
 
                 if (nextSource != null) { // Skip over if undefined or null
-                    for (var nextKey in nextSource) {
+                    for (let nextKey in nextSource) {
                         // Avoid bugs when hasOwnProperty is shadowed
                         if (Object.prototype.hasOwnProperty.call(nextSource, nextKey)) {
                             to[nextKey] = nextSource[nextKey];

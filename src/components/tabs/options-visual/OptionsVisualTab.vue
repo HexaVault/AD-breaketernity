@@ -1,6 +1,4 @@
 <script>
-import * as ADNotations from "adnot-beport-small";
-
 import ExpandingControlBox from "@/components/ExpandingControlBox";
 import OpenModalHotkeysButton from "@/components/OpenModalHotkeysButton";
 import OptionsButton from "@/components/OptionsButton";

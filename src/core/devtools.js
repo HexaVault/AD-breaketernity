@@ -577,13 +577,14 @@ dev.beTests.nanFuckIteration = function (value, value2) {
       }
     }
     if (value[item] instanceof Number && value2[item] != undefined) {
-      if (value2[item] != 0) {
-        if (value[item] > 1e300 || value[item] < 0) {
+      if (value2[item] == 0) {
+        if (value[item] > 1e300) {
           value[item] = value2[item]
         }
       } else {
-        if (value[item] > 1e300)
+        if (value[item] > 1e300 || value[item] < 0) {
           value[item] = value2[item]
+        }
       }
     }
     if ((value[item] instanceof Object || value[item] instanceof Array) && !(value[item] instanceof Decimal) && value2[item] != undefined)

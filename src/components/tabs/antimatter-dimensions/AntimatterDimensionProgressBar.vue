@@ -69,8 +69,8 @@ export default {
           setProgress(Currency.eternityPoints.value, DC.E4000, "Percentage to Galaxy Generator");
         } else if (PelleStrikes.ECs.hasStrike) {
           setLinearProgress(
-            (Decimal.min(Currency.timeTheorems.max.div(12900), 1).add
-            (Decimal.min(EternityChallenges.completions / 60, 1))).div(2),
+            (Decimal.min(Currency.timeTheorems.max.div(12900), 1)
+            .add(Decimal.min(EternityChallenges.completions / 60, 1))).div(2),
             1, "Percentage to fifth Strike");
         } else if (PelleStrikes.eternity.hasStrike) {
           setLinearProgress(Currency.timeTheorems.max, new Decimal(115), "Percentage to fourth Strike");

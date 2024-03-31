@@ -110,7 +110,7 @@ window.TimeSpan = class TimeSpan {
    * @returns {Decimal}
    */
   get milliseconds() {
-    return Decimal.floor(this.totalMilliseconds.sub(this.totalMilliseconds.div(1e3).floor().times(1e3)));;
+    return Decimal.floor(this.totalMilliseconds.sub(this.totalMilliseconds.div(1e3).floor().times(1e3)));
   }
 
   /**

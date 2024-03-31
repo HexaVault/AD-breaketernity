@@ -262,12 +262,6 @@ export const ID = {
     isActive: () => Pelle.isDoomed,
     icon: MultiplierTabIcons.PELLE,
   },
-  iap: {
-    name: "Shop Tab Purchases",
-    multValue: dim => 1,
-    isActive: () => false,
-    icon: MultiplierTabIcons.IAP,
-  },
 
   powerConversion: {
     name: "Infinity Power Conversion",

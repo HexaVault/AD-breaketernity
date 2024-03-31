@@ -321,6 +321,7 @@ class EPMultiplierState extends GameMechanicState {
       console.log("gt threshold 3")
       cur = Decimal.log(cur.div(500), 1e3)
       return cur.add(Math.pow(1332, 1.2)).root(1.2).floor()
+      // eslint-disable-next-line no-else-return
     } else {
       if (cur.gt(this.costIncreaseThresholds[0])) {
         console.log("gt threshold 0")

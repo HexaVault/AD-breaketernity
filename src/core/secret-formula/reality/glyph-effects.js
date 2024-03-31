@@ -66,8 +66,8 @@ export const glyphEffects = {
     totalDesc: "Eternity gain ×{value}",
     genericDesc: "Eternity gain multiplier",
     shortDesc: "Eternities ×{value}",
-    effect: (level, strength) => Decimal.pow((strength.add(3)).times(level), 0.9).times
-      (Decimal.pow(3, GlyphAlteration.sacrificeBoost("time"))),
+    effect: (level, strength) => Decimal.pow((strength.add(3)).times(level), 0.9)
+    .times(Decimal.pow(3, GlyphAlteration.sacrificeBoost("time"))),
     formatEffect: x => format(x, 2, 2),
     combine: GlyphCombiner.multiply,
     alteredColor: () => GlyphAlteration.getBoostColor("time"),
@@ -119,8 +119,8 @@ export const glyphEffects = {
     singleDesc: "Tachyon Galaxy threshold multiplier ×{value}",
     genericDesc: "Tachyon Galaxy cost multiplier",
     shortDesc: "TG threshold ×{value}",
-    effect: (level, strength) => Decimal.pow(level, 0.17).times(Decimal.pow(strength, 0.35)).div(100).add
-      (GlyphAlteration.sacrificeBoost("dilation").div(50)).neg().add(1),
+    effect: (level, strength) => Decimal.pow(level, 0.17).times(Decimal.pow(strength, 0.35)).div(100)
+    .add(GlyphAlteration.sacrificeBoost("dilation").div(50)).neg().add(1),
     formatEffect: x => format(x, 3, 3),
     alteredColor: () => GlyphAlteration.getBoostColor("dilation"),
     alterationType: ALTERATION_TYPE.BOOST,
@@ -195,8 +195,8 @@ export const glyphEffects = {
     singleDesc: "Replicanti multiplier power +{value}",
     totalDesc: "Replicanti multiplier ^{value}",
     shortDesc: "Replicanti mult. power +{value}",
-    effect: (level, strength) => Decimal.pow(level, 0.5).times(strength).div(25).add
-      (GlyphAlteration.sacrificeBoost("replication").times(3)).add(1),
+    effect: (level, strength) => Decimal.pow(level, 0.5).times(strength).div(25)
+    .add(GlyphAlteration.sacrificeBoost("replication").times(3)).add(1),
     formatEffect: x => format(x, 2, 2),
     formatSingleEffect: x => format(x.sub(1), 2, 2),
     combine: GlyphCombiner.addExponents,
@@ -265,8 +265,8 @@ export const glyphEffects = {
     singleDesc: "Infinity Dimension power +{value}",
     totalDesc: "Infinity Dimension multipliers ^{value}",
     shortDesc: "ID power +{value}",
-    effect: (level, strength) => Decimal.pow(level, 0.21).times(Decimal.pow(strength, 0.4)).div(75).add
-      (GlyphAlteration.sacrificeBoost("infinity").div(50)).add(1.007),
+    effect: (level, strength) => Decimal.pow(level, 0.21).times(Decimal.pow(strength, 0.4)).div(75)
+    .add(GlyphAlteration.sacrificeBoost("infinity").div(50)).add(1.007),
     formatEffect: x => format(x, 3, 3),
     formatSingleEffect: x => format(x.sub(1), 3, 3),
     combine: GlyphCombiner.addExponents,
@@ -379,8 +379,8 @@ export const glyphEffects = {
     singleDesc: "Dimension Boost multiplier ×{value}",
     genericDesc: "Dimension Boost multiplier",
     shortDesc: "Dimboost mult. ×{value}",
-    effect: (level, strength) => Decimal.pow(level.times(strength), 0.5).times
-      (Decimal.pow(GlyphAlteration.sacrificeBoost("power").add(1), 3)),
+    effect: (level, strength) => Decimal.pow(level.times(strength), 0.5)
+    .times(Decimal.pow(GlyphAlteration.sacrificeBoost("power").add(1), 3)),
     formatEffect: x => format(x, 2, 2),
     combine: GlyphCombiner.multiply,
     alteredColor: () => GlyphAlteration.getBoostColor("power"),
@@ -447,8 +447,8 @@ export const glyphEffects = {
     totalDesc: "Achievement multiplier ^{value}",
     genericDesc: "Achievement multiplier ^x",
     shortDesc: "Achievement mult. power +{value}",
-    effect: (level, strength) => Decimal.pow(level, 0.4).times(Decimal.pow(strength, 0.6)).div(60).add
-      (GlyphAlteration.sacrificeBoost("effarig").div(10)).add(1),
+    effect: (level, strength) => Decimal.pow(level, 0.4).times(Decimal.pow(strength, 0.6)).div(60)
+    .add(GlyphAlteration.sacrificeBoost("effarig").div(10)).add(1),
     formatEffect: x => format(x, 3, 3),
     formatSingleEffect: x => format(x.sub(1), 3, 3),
     combine: GlyphCombiner.addExponents,

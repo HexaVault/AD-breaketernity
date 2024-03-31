@@ -7,7 +7,6 @@ import {
   getAuth,
   GoogleAuthProvider,
   signInWithEmailAndPassword,
-  signInWithPopup,
   signOut
 } from "firebase/auth";
 import { get, getDatabase, ref, set } from "firebase/database";
@@ -47,9 +46,6 @@ export const Cloud = {
     return this.user !== null;
   },
 
-  async login() {
-    return;
-  },
 
   async loginWithSteam(accountId, staticAccountId, screenName) {
     if (!this.isAvailable) {
@@ -76,17 +72,6 @@ export const Cloud = {
     }
 
     Cloud.user.displayName = screenName;
-  },
-
-  // NOTE: This function is largely untested due to not being used at any place within web reality code
-  async loadMobile() {
-    if (!this.user) return;
-    const snapshot = await get(ref(this.db, `users/${this.user.id}/player`));
-    if (snapshot.exists) {
-      const encoded = snapshot.val();
-      const uintArray = decodeBase64Binary(encoded.replace(/-/gu, "+").replace(/_/gu, "/"));
-      const save = pako.ungzip(uintArray, { to: "string" });
-    }
   },
 
   compareSaves(cloud, local, hash) {

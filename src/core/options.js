@@ -32,10 +32,6 @@ export class GameOptions {
     Cloud.loadCheck();
   }
 
-  static login() {
-    Cloud.login();
-  }
-
   static logout() {
     Cloud.logout();
   }

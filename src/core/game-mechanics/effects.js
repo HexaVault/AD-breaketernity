@@ -1,6 +1,5 @@
 import { isDecimal } from "../../utility/type-check";
 import { DC } from "../constants";
-import { Effect } from "./effect";
 
 export const Effects = {
   /**

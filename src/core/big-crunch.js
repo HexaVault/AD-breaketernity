@@ -175,7 +175,7 @@ export function preProductionGenerateIP(diff) {
       genCount = Decimal.div(diff, genPeriod);
     } else {
       // Partial progress (fractions from 0 to 1) are stored in player.partInfinityPoint
-      let idk = diff.toNumber()
+      const idk = diff.toNumber()
       player.partInfinityPoint += idk / genPeriod.min(1e300).toNumber();
       genCount = Math.floor(player.partInfinityPoint);
       player.partInfinityPoint -= genCount;
