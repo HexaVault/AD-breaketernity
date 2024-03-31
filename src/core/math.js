@@ -207,8 +207,6 @@ window.dBBBS = function dBBBS(money, costInfo, alreadyBought) {
   console.log(val)
   canBuy = new Decimal(0) // We want to see mag to 0, and since the code doesnt actually care about the code
   cantBuy = new Decimal(9e15 - 1)
-  // console.log(cantBuy.mag)
-  // console.log((cantBuy.mag + canBuy.mag) / 2)
   val.mag = ((cantBuy.mag + canBuy.mag) / 2) // No need to round till the end
   while (cantBuy.mag !== val.mag) {
 
@@ -231,11 +229,12 @@ window.dBBBS = function dBBBS(money, costInfo, alreadyBought) {
   if (isCumulative) {
     // If the layer > 0 this is far too insignificant to give a fuck about
     if (canBuy.layer == 0) {
-        val = Decimal.max(canBuy.sub(100), 0) // go 100 purchases back or to 0. Anything lower shouldnt be significant
-        while (val.neq(canBuy) && totalCost.add(costInfo.costFunction(val)).gt(money)) {
-            totalCost = totalCost.add(costInfo.costFunction(val))
-            val = val.add(1)
-        }
+      // Go 100 purchases back or to 0. Anything lower shouldnt be significant
+      val = Decimal.max(canBuy.sub(100), 0)
+      while (val.neq(canBuy) && totalCost.add(costInfo.costFunction(val)).gt(money)) {
+          totalCost = totalCost.add(costInfo.costFunction(val))
+          val = val.add(1)
+      }
     }
   }
   val.sub(alreadyBought)
@@ -530,7 +529,7 @@ window.ExponentialCostScaling = class ExponentialCostScaling {
   }
 
   getMaxBought(currentPurchases, currency, purchasesPerIncrease, roundDown = true) {
-   // copypaste
+   // Copypaste
    const base = this.log._baseCost
    const inc = this.log._baseIncrease
    const scale = this.log._costScale
@@ -538,14 +537,14 @@ window.ExponentialCostScaling = class ExponentialCostScaling {
    const ppIlog = purchasesPerIncrease.log10()
    let logMoney = currency.log10().sub(ppIlog)
    // First, is the currency before the cost of Exponential? If so we solve it here and return
-   // console.log(logMoney.lte(base.add(inc.times(purchases.sub(1).floor()))))
    if (logMoney.lte(base.add(inc.times(purchases.floor())))) {
     let purchaseAmount = logMoney.sub(base).div(inc).add(1)
-       // console.log(purchaseAmount)
-       if (roundDown) purchaseAmount = purchaseAmount.floor() // round value DOWN
-       if (purchaseAmount.lte(currentPurchases)) return null // null if its less than the purchases we already have
-       purchaseAmount = purchaseAmount.sub(currentPurchases)
-       return { quantity: purchaseAmount, logPrice: (purchaseAmount.times(inc).add(base)).add(ppIlog)} // We invert the calc after the floor to find the highest cost
+      // round value DOWN
+      if (roundDown) purchaseAmount = purchaseAmount.floor()
+      // Return null if its less than the purchases we already have
+      if (purchaseAmount.lte(currentPurchases)) return null
+      purchaseAmount = purchaseAmount.sub(currentPurchases)
+      return { quantity: purchaseAmount, logPrice: (purchaseAmount.times(inc).add(base)).add(ppIlog)} // We invert the calc after the floor to find the highest cost
    }
 
    // Deduct the cost up to the linear limit
@@ -554,10 +553,9 @@ window.ExponentialCostScaling = class ExponentialCostScaling {
 
    // Where does this equation come from?
    // Well it comes from the fact that if we subtract all preScaling costs, the cost is equal to 0.5s(p^2 + p) + ip (i = log(inc), s = log(scale), p = purchases)
-   // solving for p there gives us a quadratic with -0.5s as a, (-0.5s - i) as b and cost as c
+   // Solving for p there gives us a quadratic with -0.5s as a, (-0.5s - i) as b and cost as c
    // Put that into the quadratic (-b - sqrt(b^2 - 4ac))/2a and you get purchases
 
-   // console.log(currency.lt(1e300))
    logMoney = logMoney.sub(ppIlog)
    const a = new Decimal(0).sub(scale).div(2)
    const b = a.sub(inc)

@@ -11,7 +11,7 @@ function isEND() {
 window.format = function format(value, places = 0, placesUnder1000 = 0) {
   if (isEND()) return "END";
   // eslint-disable-next-line no-param-reassign
-  if(!isDecimal(value)) value = new Decimal(value)
+  if (!isDecimal(value)) value = new Decimal(value);
   if (value.lt("e9e15")) return Notations.current.format(value, places, placesUnder1000, 3);
   return LNotations.current.formatLDecimal(value, places);
 };
@@ -24,9 +24,10 @@ window.formatInt = function formatInt(value) {
     return format(value, 2);
   }
   if (typeof value === "number") {
-    return value > 1e9 ? format(value, 2, 2) : formatWithCommas(value.toFixed(0))
+    return value > 1e9 ? format(value, 2, 2) : formatWithCommas(value.toFixed(0));
   }
-  return (!(value instanceof Decimal) || value.lt(1e9)) ? formatWithCommas(value instanceof Decimal ? value.toNumber().toFixed(0) : 1) : format(value, 2, 2)
+  return (!(value instanceof Decimal) || value.lt(1e9))
+    ? formatWithCommas(value instanceof Decimal ? value.toNumber().toFixed(0) : 1) : format(value, 2, 2);
 };
 
 window.formatFloat = function formatFloat(value, digits) {
@@ -103,43 +104,50 @@ window.formatTet = function formatTet(value, places, placesUnder1000) {
 
 window.formatEffectPos = function formatEffectPos(effect, effectedValue, tet = true) {
   if (effect.lt(1000)) {
-    return formatInt(effect, 2, 4) + "%"
+    // eslint-disable-next-line prefer-template
+    return formatInt(effect, 2, 4) + "%";
   }
   if (effect.lt("1e100000") || effectedValue.lt(2)) {
-    return formatX(effect, 2, 2)
+    return formatX(effect, 2, 2);
   }
   if ((effect.lt("10^^100") && tet || effect.lt("10^^4")) || effectedValue.lt(10)) {
-    return formatPow(effect.log10(), 2, 2)
+    return formatPow(effect.log10(), 2, 2);
   }
   if (tet) {
-    return formatTet(value.slog(10), 2, 2) // Not perfect, but close enough that discrepencies dont matter
+    // Not perfect, but idc
+    return formatTet(value.slog(10), 2, 2);
   }
-  val = new Decimal(effect)
-  val.layer = 1
-  return formatInt(Math.floor(effect.slog() - 1)) + "th Expo " + formatPow(val, 2, 2)
-}
+  val = new Decimal(effect);
+  val.layer = 1;
+  // eslint-disable-next-line prefer-template
+  return formatInt(Math.floor(effect.slog() - 1)) + "th Expo " + formatPow(val, 2, 2);
+};
 
-window.formatEffectNeg = function formatEffectNeg(effect, effectedValue) { // Does not take negative numbers fyi, just ints between 0-1 (excluding)
+// Does not take negative numbers fyi, just ints between 0-1 (excluding)
+window.formatEffectNeg = function formatEffectNeg(effect, effectedValue) {
   if (effect.gt(0.001)) {
-    return formatInt(effect, 2, 4) + "%"
+    // eslint-disable-next-line prefer-template
+    return formatInt(effect, 2, 4) + "%";
   }
   if (effect.lt("1e100000") || effectedValue.lt(2)) {
-    return "/" + format(effect.recip(), 2, 2)
+    // eslint-disable-next-line prefer-template
+    return "/" + format(effect.recip(), 2, 2);
   }
   if (effect.recip().lt("10^^4") || effectedValue.lt(10)) {
-    return formatPow(effect.log10(), 2, 2)
+    return formatPow(effect.log10(), 2, 2);
   }
-  val = new Decimal(effect)
-  val.layer = 1
-  return formatInt(Math.floor(effect.recip().slog().toNumber() - 1)) + "th Expo " + formatPow(val, 2, 2)
-}
+  val = new Decimal(effect);
+  val.layer = 1;
+  // eslint-disable-next-line prefer-template
+  return formatInt(Math.floor(effect.recip().slog().toNumber() - 1)) + "th Expo " + formatPow(val, 2, 2);
+};
 
 window.formatEffectAuto = function formatEffectAuto(value, effectedValue) {
   if (value.gt(1)) {
-    return formatEffectPos(value, effectedValue)
+    return formatEffectPos(value, effectedValue);
   }
-  formatEffectNeg(value, effectedValue, false)
-}
+  return formatEffectNeg(value, effectedValue, false);
+};
 
 
 window.timeDisplay = function timeDisplay(ms) {

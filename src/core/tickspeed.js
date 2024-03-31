@@ -246,7 +246,6 @@ export const FreeTickspeed = {
     let approximation = desiredCost.min(
       desiredCost.div(costFormulaCoefficient).pow(DC.D1.div(FreeTickspeed.GROWTH_EXP))
     );
-    // console.log(approximation)
     let counter = 0;
     // The bought formula is concave upwards. We start with an over-estimate; when using newton's method,
     // this means that successive iterations are also over-etimates. Thus, we can just check for continued
