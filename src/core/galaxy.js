@@ -36,19 +36,19 @@ export class Galaxy {
    */
   static buyableGalaxies(currency) {
     // plz no ask how exponential math work i dont know i just code, see https://discord.com/channels/351476683016241162/439241762603663370/1210707188964659230m
-    let minV = Galaxy.costScalingStart.min(Galaxy.remoteStart) // Take the smallest of the two values
+    const minV = Galaxy.costScalingStart.min(Galaxy.remoteStart) // Take the smallest of the two values
     if (currency.lt(Galaxy.baseCost.add(Galaxy.costMult.times(minV) /* Pre exponential/quadratic? */))) {
       return Decimal.max(currency.sub(Galaxy.baseCost).div(Galaxy.costMult).floor(), player.galaxies)
     }
     if (currency.lt(Galaxy.requirementAt(Galaxy.remoteStart).amount)) {
-      let dis = Galaxy.costScalingStart
-      let scale = Galaxy.costMult
-      let base = Galaxy.baseCost
+      const dis = Galaxy.costScalingStart
+      const scale = Galaxy.costMult
+      const base = Galaxy.baseCost
       // Quadratic equation
-      let a = DC.D1
-      let b = scale.sub(1).sub(dis.times(2))
-      let c = base.add(dis.pow(2)).sub(currency).sub(dis)
-      let quad = decimalQuadraticSolution(a, b, c)
+      const a = DC.D1
+      const b = scale.sub(1).sub(dis.times(2))
+      const c = base.add(dis.pow(2)).sub(currency).sub(dis)
+      const quad = decimalQuadraticSolution(a, b, c)
       console.log(a)
       console.log(b)
       console.log(c)
@@ -56,17 +56,17 @@ export class Galaxy {
       return Decimal.max(quad, player.galaxies)
     }
     // Might not be perfect but at this point who gives a shit - If we can buy more we will loop a bit at the end to go through till we cant
-    let delay = minV
-    let remote = Galaxy.remoteStart
-    let inc = Galaxy.costMult
-    let start = Galaxy.baseCost
-    let A = Decimal.ln(1.008)
-    let B = (inc.sub(delay.times(2)).add(3)).div(2)
-    let C = Decimal.ln(1.008).pow(2).times(Decimal.pow(1.008, inc.add(3).div(2).add(remote).sub(delay).sub(1) ))
-    let D = Decimal.ln(1.008).pow(2).times(inc.pow(2).sub(inc.times(2).times(delay)).add(inc.times(6)).sub(start.times(4).add(1))).div(4)
+    const delay = minV
+    const remote = Galaxy.remoteStart
+    const inc = Galaxy.costMult
+    const start = Galaxy.baseCost
+    const A = Decimal.ln(1.008)
+    const B = (inc.sub(delay.times(2)).add(3)).div(2)
+    const C = Decimal.ln(1.008).pow(2).times(Decimal.pow(1.008, inc.add(3).div(2).add(remote).sub(delay).sub(1) ))
+    const D = Decimal.ln(1.008).pow(2).times(inc.pow(2).sub(inc.times(2).times(delay)).add(inc.times(6)).sub(start.times(4).add(1))).div(4)
     let mzz = C.times(currency)
     
-    let convFunc = (m) => m.sub(((Decimal.ln(m).pow(2).sub(D)).times(m).sub(C).times(C)).div(Decimal.ln(m).pow(2).add(Decimal.ln(m).times(2)).sub(D)))
+    const convFunc = (m) => m.sub(((Decimal.ln(m).pow(2).sub(D)).times(m).sub(C).times(C)).div(Decimal.ln(m).pow(2).add(Decimal.ln(m).times(2)).sub(D)))
     while (mzz.sub(convFunc(mzz)).abs().lte(0.05)) {
       mzz = convFunc(mzz)
     }

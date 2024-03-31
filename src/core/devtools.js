@@ -564,7 +564,7 @@ dev.beTests.completeChalleges.all = function () {
 }
 
 dev.beTests.nanFuckIteration = function (value, value2) {
-  for (let item in value) {
+  for (const item in value) {
     console.log(value[item])
     console.log(value2[item])
     if (value[item] instanceof Decimal && value2[item] != undefined) {

@@ -51,7 +51,7 @@ export function toggleAllTimeDims() {
 function calcHighestPurchaseableTD(tier, currency) {
   let logC = currency.log10()
   let logBase = TimeDimension(tier)._baseCost.log10()
-  let logMult = Decimal.log10(TimeDimension(tier)._costMultiplier)
+  const logMult = Decimal.log10(TimeDimension(tier)._costMultiplier)
   if (tier > 4 && currency.lt(DC.E6000)) {
     return Decimal.max(0, logC.sub(logBase).div(logMult)).floor()
   }
@@ -59,24 +59,24 @@ function calcHighestPurchaseableTD(tier, currency) {
     return Decimal.max(0, logC.sub(logBase).div(logMult)).floor()
   }
   if (currency.lt(DC.E1300)) {
-    let preInc = Decimal.max(0, DC.NUMMAX.log10().sub(logBase).div(logMult)).floor()
+    const preInc = Decimal.max(0, DC.NUMMAX.log10().sub(logBase).div(logMult)).floor()
     logBase = logBase.add(Math.log10(1.5))
-    let postInc = Decimal.max(0, logC.sub(logBase).div(logMult)).floor()
+    const postInc = Decimal.max(0, logC.sub(logBase).div(logMult)).floor()
     return Decimal.max(preInc, postInc)
   }
   if (currency.lt(DC.E6000)) {
     logBase = logBase.add(Math.log10(1.5))
-    let preInc = Decimal.max(0, DC.E1300.log10().sub(logBase).div(logMult)).floor()
+    const preInc = Decimal.max(0, DC.E1300.log10().sub(logBase).div(logMult)).floor()
     logBase = logBase.add(Math.log10(2.2) - Math.log10(1.5))
-    let postInc = Decimal.max(0, logC.sub(logBase).div(logMult)).floor()
+    const postInc = Decimal.max(0, logC.sub(logBase).div(logMult)).floor()
     return Decimal.max(preInc, postInc)
   }
   if (tier <= 4) {
     logBase = logBase.add(Math.log10(2.2))
   }
-  let preInc = Decimal.max(0, DC.E6000.log10().sub(logBase).div(logMult)).floor()
+  const preInc = Decimal.max(0, DC.E6000.log10().sub(logBase).div(logMult)).floor()
   logC = logC.sub(6000)
-  let postInc = Decimal.max(0, logC.sub(logBase).div(logMult).div(4)).floor()
+  const postInc = Decimal.max(0, logC.sub(logBase).div(logMult).div(4)).floor()
   return postInc.add(preInc)
 }
 
@@ -100,7 +100,7 @@ export function buyMaxTimeDimension(tier, portionToSpend = 1, isMaxAll = false) 
   }
   if (Enslaved.isRunning) return buySingleTimeDimension(tier);
   const pur = Decimal.max(dim.bought, calcHighestPurchaseableTD(tier, canSpend))
-  let cost = dim.nextCost(pur.sub(1))
+  const cost = dim.nextCost(pur.sub(1))
   if (pur.lte(dim.bought)) return false;
   Currency.eternityPoints.subtract(cost);
   dim.amount = dim.amount.plus(pur);

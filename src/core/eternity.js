@@ -361,7 +361,7 @@ class EPMultiplierState extends GameMechanicState {
     // Should probably use hardcoded values but im lazy so no
 
     let bulk = this.costInv().floor()
-    let price = this.costAfterCount(bulk)
+    const price = this.costAfterCount(bulk)
     bulk = bulk.sub(this.boughtAmount).max(0)
     console.log(bulk)
 
@@ -372,6 +372,7 @@ class EPMultiplierState extends GameMechanicState {
     while (Currency.eternityPoints.gt(this.costAfterCount(this.boughtAmount.add(1))) && i < 50 && this.boughtAmount.layer < 1) {
       this.boughtAmount = this.boughtAmount.add(1)
       Currency.eternityPoints.subtract(this.costAfterCount(this.boughtAmount.add(1)));
+      i += 1
     }
     return true;
   }

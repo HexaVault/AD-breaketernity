@@ -28,12 +28,12 @@ window.decimalQuadraticSolution = function decimalQuadraticSolution(a, b, c, n =
   a = new Decimal(a)
   b = new Decimal(b)
   c = new Decimal(c)
-  let divsr = a.times(2)
-  let nb = b.neg()
-  let lroot = b.pow(2)
-  let rroot = a.times(c).times(4)
-  let froot = lroot.sub(rroot).sqrt()
-  let top = n ? nb.sub(froot) : nb.add(froot)
+  const divsr = a.times(2)
+  const nb = b.neg()
+  const lroot = b.pow(2)
+  const rroot = a.times(c).times(4)
+  const froot = lroot.sub(rroot).sqrt()
+  const top = n ? nb.sub(froot) : nb.add(froot)
   return top.div(divsr)
 };
 
@@ -50,11 +50,11 @@ window.decimalCubicSolution = function decimalCubicSolution(a, b, c, d, n = fals
   b = new Decimal(b)
   c = new Decimal(c)
   d = new Decimal(d)
-  let delta0 = b.pow(2).sub(a.times(3).times(c))
-  let delta1 = b.pow(2).times(2).sub(a.times(b).times(c).times(9)).add(a.pow(2).times(d).times(27))
+  const delta0 = b.pow(2).sub(a.times(3).times(c))
+  const delta1 = b.pow(2).times(2).sub(a.times(b).times(c).times(9)).add(a.pow(2).times(d).times(27))
   n = n ? Decimal.sqrt(delta1.pow(2).sub(delta0.pow(3).times(4)), 2).neg() : Decimal.root(delta1.pow(2).sub(delta0.pow(3).times(4)))
-  let C = Decimal.cbrt(delta1.add(n).div(2))
-  let x = DC.D1.div(a.times(3)).neg().times(b.add(C).add(delta0.div(C)))
+  const C = Decimal.cbrt(delta1.add(n).div(2))
+  const x = DC.D1.div(a.times(3)).neg().times(b.add(C).add(delta0.div(C)))
   return x
 }
 
@@ -195,9 +195,9 @@ window.dBBBS = function dBBBS(money, costInfo, alreadyBought) {
   val.layer = Math.floor((cantBuy.layer + canBuy.layer) / 2)
   while (val.layer !== cantBuy.layer) {
 
-    let v = (costFunction(val).gt(money))
+    const v = (costFunction(val).gt(money))
     val.layer = Math.ceil((cantBuy.layer + canBuy.layer) / 2) // Stupid hack, i know, but if we dont do this the entire bit of code loops forever
-    let va = (costFunction(val).gt(money))
+    const va = (costFunction(val).gt(money))
     val.layer = Math.floor((cantBuy.layer + canBuy.layer) / 2)
 
     if (v || va) {
@@ -219,7 +219,7 @@ window.dBBBS = function dBBBS(money, costInfo, alreadyBought) {
   val.mag = ((cantBuy.mag + canBuy.mag) / 2) // No need to round till the end
   while (cantBuy.mag !== val.mag) {
 
-    let v = (costInfo.costFunction(val).gt(money))
+    const v = (costInfo.costFunction(val).gt(money))
     
     console.log(val.mag)
 
@@ -516,10 +516,10 @@ window.ExponentialCostScaling = class ExponentialCostScaling {
 
   calculateCost(currentPurchases) {
    // Define these here just cause theyre easier to type
-   let base = this.log._baseCost
-   let inc = this.log._baseIncrease
-   let scale = this.log._costScale
-   let purchases = this._purchasesBeforeScaling
+   const base = this.log._baseCost
+   const inc = this.log._baseIncrease
+   const scale = this.log._costScale
+   const purchases = this._purchasesBeforeScaling
 
    // If it never becomes exponential cost, just return linear and stop
    if (currentPurchases.lte(purchases)) {
@@ -527,27 +527,27 @@ window.ExponentialCostScaling = class ExponentialCostScaling {
    }
 
    // Calculate linear cost
-   let costBeforeExpo = base.add(inc.times(currentPurchases))
+   const costBeforeExpo = base.add(inc.times(currentPurchases))
    // How many exponential purchases?
-   let expoPurchases = currentPurchases.sub(purchases)
+   const expoPurchases = currentPurchases.sub(purchases)
    // Since we times by scale X times per purchase past max, we can find the triangular number of expoPurchases and just mult that by scale
-   let scaleCostFinal = expoPurchases.pow(2).add(expoPurchases).div(2).times(scale)
+   const scaleCostFinal = expoPurchases.pow(2).add(expoPurchases).div(2).times(scale)
    // Add and pow10
    return Decimal.pow10(costBeforeExpo.add(scaleCostFinal))
   }
 
   getMaxBought(currentPurchases, currency, purchasesPerIncrease, roundDown = true) {
    //copypaste
-   let base = this.log._baseCost
-   let inc = this.log._baseIncrease
-   let scale = this.log._costScale
-   let purchases = this._purchasesBeforeScaling
-   let ppIlog = purchasesPerIncrease.log10()
+   const base = this.log._baseCost
+   const inc = this.log._baseIncrease
+   const scale = this.log._costScale
+   const purchases = this._purchasesBeforeScaling
+   const ppIlog = purchasesPerIncrease.log10()
    let logMoney = currency.log10().sub(ppIlog)
    // First, is the currency before the cost of Exponential? If so we solve it here and return
    // console.log(logMoney.lte(base.add(inc.times(purchases.sub(1).floor()))))
    if (logMoney.lte(base.add(inc.times(purchases.floor())))) {
-       let purchaseAmount = logMoney.sub(base).div(inc).add(1)
+    let purchaseAmount = logMoney.sub(base).div(inc).add(1)
        // console.log(purchaseAmount)
        if (roundDown) purchaseAmount = purchaseAmount.floor() // round value DOWN
        if (purchaseAmount.lte(currentPurchases)) return null // null if its less than the purchases we already have
@@ -566,9 +566,9 @@ window.ExponentialCostScaling = class ExponentialCostScaling {
 
    // console.log(currency.lt(1e300))
    logMoney = logMoney.sub(ppIlog)
-   let a = new Decimal(0).sub(scale).div(2)
-   let b = a.sub(inc)
-   let c = logMoney
+   const a = new Decimal(0).sub(scale).div(2)
+   const b = a.sub(inc)
+   const c = logMoney
    
   purchaseAmount = purchaseAmount.add(new Decimal(0).sub(b).sub(Decimal.pow(b.pow(2).sub(a.times(4).times(c)),0.5)).div(a.times(2)))
    
@@ -580,7 +580,7 @@ window.ExponentialCostScaling = class ExponentialCostScaling {
    purchaseAmount = purchaseAmount.sub(currentPurchases)
    if (roundDown) purchaseAmount = purchaseAmount.floor()
 
-   let purchaseCost = this.calculateCost(purchaseAmount)
+   const purchaseCost = this.calculateCost(purchaseAmount)
    purchaseAmount = purchaseAmount.times(purchasesPerIncrease)
    return { quantity: purchaseAmount, logPrice: purchaseCost.log10()}
   }

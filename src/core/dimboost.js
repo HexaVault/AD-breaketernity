@@ -275,7 +275,7 @@ function maxBuyDimBoosts() {
 
   if (calcBoosts.floor().lte(DimBoost.purchasedBoosts)) return;
   calcBoosts = calcBoosts.sub(DimBoost.purchasedBoosts)
-  let minBoosts = Decimal.min(DC.BEMAX, calcBoosts.floor());
+  const minBoosts = Decimal.min(DC.BEMAX, calcBoosts.floor());
 
   softReset(minBoosts);
 }

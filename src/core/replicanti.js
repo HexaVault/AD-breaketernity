@@ -42,8 +42,10 @@ export function replicantiGalaxy(auto) {
   player.replicanti.timer = DC.D0;
   Replicanti.amount = Achievement(126).isUnlocked && !Pelle.isDoomed
     ? Decimal.pow10(Replicanti.amount.log10().sub(galaxyGain.mul(LOG10_MAX_VALUE)))
-    : DC.D1;
+    : new Decimal(1);
+  console.log(Replicanti.amount)
   addReplicantiGalaxies(galaxyGain);
+  console.log(Replicanti.amount)
 }
 
 // Only called on manual RG requests
@@ -329,7 +331,7 @@ export const ReplicantiUpgrade = {
     set value(value) { player.replicanti.chance = value; }
 
     get nextValue() {
-      return this.nearestPercent(this.value + 0.01);
+      return this.nearestPercent(this.value.add(0.01));
     }
 
     get cost() {
@@ -343,11 +345,11 @@ export const ReplicantiUpgrade = {
 
     get cap() {
       // Chance never goes over 100%.
-      return 1;
+      return DC.D1;
     }
 
     get isCapped() {
-      return this.nearestPercent(this.value).lte(this.cap);
+      return this.nearestPercent(this.value).gte(this.cap);
     }
 
     get autobuyerMilestone() {
@@ -476,18 +478,18 @@ export const ReplicantiUpgrade = {
 
       a = logBase.sub(cur).add(logDistantScaling.times(distantReplicatedGalaxyStart.pow(2))).sub(logDistantScaling.times(4.5).times(distantReplicatedGalaxyStart))
       b = logBaseIncrease.sub(logCostScaling)
-      let c1 = logBase.sub(cur).add(distantReplicatedGalaxyStart.pow(2).times(logDistantScaling).div(2))
-      let c2 = distantReplicatedGalaxyStart.times(logDistantScaling).times(4.5)
+      const c1 = logBase.sub(cur).add(distantReplicatedGalaxyStart.pow(2).times(logDistantScaling).div(2))
+      const c2 = distantReplicatedGalaxyStart.times(logDistantScaling).times(4.5)
       c = c1.add(c2)
       if (decimalQuadraticSolution(a, b, c).lte(remoteReplicatedGalaxyStart)) { return decimalQuadraticSolution(a, b, c) }
 
       a = logRemoteScaling.div(3)
       b = logCostScaling.div(2).add(logDistantScaling).div(2).sub(logRemoteScaling(remoteReplicatedGalaxyStart))
       c = distantReplicatedGalaxyStart.times(logDistantScaling).neg().add(logRemoteScaling.times(remoteReplicatedGalaxyStart.pow(2))).sub(logRemoteScaling.times(remoteReplicatedGalaxyStart)).add(logRemoteScaling.div(6)).add((logCostScaling.add(logDistantScaling.times(9))).div(2)).add(logBaseIncrease)
-      let d1 = logBase.add(Decimal.pow(distantReplicatedGalaxyStart, 2).times(logDistantScaling.div(2))).sub((logDistantScaling.times(distantReplicatedGalaxyStart)).times(4.5))
-      let d2 = logRemoteScaling.times(Decimal.pow(remoteReplicatedGalaxyStart, 3)).div(3).neg().add(logRemoteScaling.times(Decimal.pow(remoteReplicatedGalaxyStart, 2)).div(2))
-      let d3 = logRemoteScaling.times(remoteReplicatedGalaxyStart).div(6).sub(cur)
-      let d = d1.add(d2).add(d3)
+      const d1 = logBase.add(Decimal.pow(distantReplicatedGalaxyStart, 2).times(logDistantScaling.div(2))).sub((logDistantScaling.times(distantReplicatedGalaxyStart)).times(4.5))
+      const d2 = logRemoteScaling.times(Decimal.pow(remoteReplicatedGalaxyStart, 3)).div(3).neg().add(logRemoteScaling.times(Decimal.pow(remoteReplicatedGalaxyStart, 2)).div(2))
+      const d3 = logRemoteScaling.times(remoteReplicatedGalaxyStart).div(6).sub(cur)
+      const d = d1.add(d2).add(d3)
 
       return decimalCubicSolution(a, b, c, d, false)
     }
@@ -534,7 +536,7 @@ export const Replicanti = {
     const unlocked = force ? false : EternityMilestone.unlockReplicanti.isReached;
     player.replicanti = {
       unl: unlocked,
-      amount: unlocked ? DC.D1 : DC.D0,
+      amount: unlocked ? new Decimal(1) : DC.D0,
       timer: DC.D0,
       chance: new Decimal(0.01),
       chanceCost: DC.E150,

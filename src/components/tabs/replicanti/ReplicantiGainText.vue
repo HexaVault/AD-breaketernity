@@ -45,7 +45,7 @@ export default {
       }
 
       const totalTime = DLOG10_MAXNUM.div(log10GainFactorPerTick.times(ticksPerSecond));
-      let remainingTime = (DLOG10_MAXNUM.sub(replicantiAmount.log10())).div(log10GainFactorPerTick.times(ticksPerSecond));
+      const remainingTime = (DLOG10_MAXNUM.sub(replicantiAmount.log10())).div(log10GainFactorPerTick.times(ticksPerSecond));
       if (remainingTime.lt(0)) {
         // If the cap is raised via Effarig Infinity but the player doesn't have TS192, this will be a negative number
         remainingTime.eq(0);
@@ -99,7 +99,7 @@ export default {
           // Take the total time from zero replicanti to max RG + e308 replicanti and then subtract away the time which
           // has already elapsed. The time elapsed is calculated from your current RG total (including the current one)
           // and then subtracts away the time spent in the current RG so far.
-          const allGalaxyTime = Decimal.divide(effectiveMaxRG.sub(effectiveCurrentRG), baseGalaxiesPerSecond).toNumber();
+          const allGalaxyTime = Decimal.divide(effectiveMaxRG.sub(effectiveCurrentRG), baseGalaxiesPerSecond);
 
           // Pending galaxy gain is here because the growth slows down significantly after
           // 1e308 normally. However, the seconds per galaxy code is calculated as if
@@ -114,11 +114,11 @@ export default {
           // If popular music is unlocked add the divide amount
           if (Achievement(126).isUnlocked && !Pelle.isDoomed) {
             const leftPercentAfterGalaxy = replicantiAmount.log10().div(LOG10_MAX_VALUE).sub(pending).toNumber();
-            pendingTime = pendingTime.add(leftPercentAfterGalaxy * secondsPerGalaxy.toNumber());
+            pendingTime = pendingTime.add(secondsPerGalaxy.times(leftPercentAfterGalaxy));
           }
-          const thisGalaxyTime = pending > 0 ? pendingTime : secondsPerGalaxy.toNumber() - remainingTime.toNumber();
+          const thisGalaxyTime = pending.gt(0) ? pendingTime : secondsPerGalaxy.sub(remainingTime);
           this.galaxyText += ` (all Replicanti Galaxies within
-            ${TimeSpan.fromSeconds(Decimal.max(allGalaxyTime - thisGalaxyTime, 0))})`;
+            ${TimeSpan.fromSeconds(Decimal.max(allGalaxyTime.sub(thisGalaxyTime), 0))})`;
         }
       } else {
         this.galaxyText = ``;

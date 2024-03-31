@@ -76,7 +76,7 @@ Decimal.prototype.copyFrom = function(decimal) {
 };
 
 window.copyToClipboard = (function() {
-  let el = document.createElement('textarea');
+  const el = document.createElement('textarea');
   document.body.appendChild(el);
   el.style.position = "absolute";
   el.style.left = '-9999999px';
@@ -161,7 +161,7 @@ Array.prototype.last = function(predicate) {
 Array.prototype.mapToObject = function(keyFun, valueFun) {
   if (typeof keyFun !== "function" || typeof valueFun !== "function")
     throw "keyFun and valueFun must be functions";
-  let out = {}
+  const out = {}
   for (let idx = 0; idx < this.length; ++idx) {
     out[keyFun(this[idx], idx)] = valueFun(this[idx], idx);
   }
