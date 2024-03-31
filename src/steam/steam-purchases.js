@@ -1,5 +1,5 @@
-import { MAC } from "@/env";
 import * as PlayFab from "./bindings/playfab";
+import { MAC } from "@/env";
 
 export async function loginPlayFabWithSteam(ticket, screenName) {
   await PlayFab.LoginWithSteam(ticket);
