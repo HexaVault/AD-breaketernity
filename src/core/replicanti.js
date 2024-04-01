@@ -469,10 +469,9 @@ export const ReplicantiUpgrade = {
       const logDistantScaling = new Decimal(50);
       const logRemoteScaling = DC.D5;
 
-      let cur = Currency.infinityPoints.value.log10();
+      const cur = Currency.infinityPoints.value.times(TimeStudy(233).effectOrDefault(1)).log10();
 
-      if (logBase.div(TimeStudy(233).effectOrDefault(1)).gt(cur)) return;
-      cur = cur.times(TimeStudy(233).effectOrDefault(1));
+      if (logBase.gt(cur)) return;
       let a = logCostScaling.div(2);
       let b = logBaseIncrease.sub(logCostScaling.div(2));
       let c = logBase.sub(cur);
