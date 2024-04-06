@@ -68,7 +68,7 @@ export default {
       return this.item.name.includes("BlackHole");
     },
     formatBlackHoleActivations() {
-      const activations = this.after - this.before;
+      const activations = this.after.sub(this.before);
       return quantifyInt("time", activations);
     },
     isVeryLarge() {

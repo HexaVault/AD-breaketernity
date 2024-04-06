@@ -236,10 +236,10 @@ export const BlackHoleAnimation = (function() {
       // Time taken for one orbit (in seconds)
       this.period = BlackHole(1).cycleLength;
       // Fixed-point iteration for eccentricity (I'm really hoping this always converges)
-      const y = (1 - Math.pow(ACTIVE_THRESHOLD, -2)) / (1 - Math.pow(BlackHole(1).power, -2));
+      const y = (1 - Math.pow(ACTIVE_THRESHOLD, -2)) / (1 - Math.pow(BlackHole(1).power.toNumber(), -2));
       let eccentricity = 0.5;
       const maxIter = 1000;
-      const meanAnomaly = 2 * Math.PI * Math.min(0.9, BlackHole(1).duration / this.period);
+      const meanAnomaly = 2 * Math.PI * BlackHole(1).duration.div(this.period).clampMax(0.9).toNumber();
       for (let k = 0; k < maxIter; k++) {
         const E0 = eccentricAnomaly(eccentricity, meanAnomaly);
         eccentricity = (y - 1) / (y * Math.cos(E0) - 1);
@@ -247,7 +247,7 @@ export const BlackHoleAnimation = (function() {
       this.eccentricity = eccentricity;
 
       // Black Hole size, calculated from orbit shape in order to give the right max boost
-      holeSize = SEMIMAJOR_AXIS * (1 - eccentricity) * (1 - Math.pow(BlackHole(1).power, -2));
+      holeSize = SEMIMAJOR_AXIS * (1 - eccentricity) * (1 - Math.pow(BlackHole(1).power.toNumber(), -2));
       // Prevent planet + hole overlapping
       this.hole = new Hole((holeSize - PLANET_SIZE) / 2);
 
@@ -265,7 +265,7 @@ export const BlackHoleAnimation = (function() {
       const delta = time - this.lastFrame;
       this.lastFrame = time;
 
-      this.planet.update(this.totalPhase(), this.eccentricity, this.period);
+      this.planet.update(this.totalPhase().toNumber(), this.eccentricity, this.period.toNumber());
 
       this.context.clearRect(0, 0, 400, 400);
       this.hole.draw(this.context);
@@ -290,10 +290,10 @@ export const BlackHoleAnimation = (function() {
     totalPhase() {
       const blackHole = BlackHole(1);
       if (blackHole.isActive) {
-        return (blackHole.phase - blackHole.duration / 2 + this.period) % this.period;
+        return blackHole.phase.sub(blackHole.duration.div(2)).add(this.period).mod(this.period);
       }
 
-      return blackHole.phase + blackHole.duration / 2;
+      return blackHole.phase.add(blackHole.duration.div(2));
     }
 
     unmount() {

@@ -45,7 +45,7 @@ export const dilationUpgrades = {
       return formatX(value, 2, nonInteger ? 2 : 0);
     },
     formatCost: value => format(value, 2),
-    purchaseCap: Number.MAX_VALUE
+    purchaseCap: DC.BEMAX
   }),
   galaxyThreshold: rebuyable({
     id: 2,
@@ -64,7 +64,7 @@ export const dilationUpgrades = {
         Next: ${formatX(getTachyonGalaxyMult(nextEffect), 4, 4)}`;
     },
     formatCost: value => format(value, 2),
-    purchaseCap: 38
+    purchaseCap: new Decimal(38)
   }),
   tachyonGain: rebuyable({
     id: 3,
@@ -82,7 +82,7 @@ export const dilationUpgrades = {
     },
     formatEffect: value => formatX(value, 2),
     formatCost: value => format(value, 2),
-    purchaseCap: Number.MAX_VALUE
+    purchaseCap: DC.BEMAX
   }),
   doubleGalaxies: {
     id: 4,

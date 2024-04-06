@@ -36,7 +36,7 @@ window.decimalQuadraticSolution = function decimalQuadraticSolution(a, b, c, n =
 
 /**
  * @param {Decimal|Number} a Variable before x^3 in ax^3 + bx^2 + cx + d = 0
- * @param {Decimal|Number} a Variable before x^2 in ax^3 + bx^2 + cx + d = 0
+ * @param {Decimal|Number} b Variable before x^2 in ax^3 + bx^2 + cx + d = 0
  * @param {Decimal|Number} c Variable before x in ax^3 +  bx^2 + cx + d = 0
  * @param {Decimal|Number} d Variable after x in ax^3 +  bx^2 + cx + d = 0
  * @param {Boolean} n Should the square root subtract?
@@ -45,7 +45,7 @@ window.decimalQuadraticSolution = function decimalQuadraticSolution(a, b, c, n =
 window.decimalCubicSolution = function decimalCubicSolution(a, b, c, d, n = false) {
   const delta0 = b.pow(2).sub(a.times(3).times(c));
   const delta1 = b.pow(2).times(2).sub(a.times(b).times(c).times(9)).add(a.pow(2).times(d).times(27));
-  ne = n ? Decimal.sqrt(delta1.pow(2).sub(delta0.pow(3).times(4)), 2).neg()
+  const ne = n ? Decimal.sqrt(delta1.pow(2).sub(delta0.pow(3).times(4)), 2).neg()
     : Decimal.root(delta1.pow(2).sub(delta0.pow(3).times(4)));
   const C = Decimal.cbrt(delta1.add(ne).div(2));
   const x = DC.D1.div(a.times(3)).neg().times(b.add(C).add(delta0.div(C)));

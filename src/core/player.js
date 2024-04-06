@@ -540,17 +540,17 @@ window.player = {
   },
   blackHole: Array.range(0, 2).map(id => ({
     id,
-    intervalUpgrades: 0,
-    powerUpgrades: 0,
-    durationUpgrades: 0,
-    phase: 0,
+    intervalUpgrades: DC.D0,
+    powerUpgrades: DC.D0,
+    durationUpgrades: DC.D0,
+    phase: DC.D0,
     active: false,
     unlocked: false,
-    activations: 0,
+    activations: DC.D0,
   })),
   blackHolePause: false,
   blackHoleAutoPauseMode: 0,
-  blackHolePauseTime: 0,
+  blackHolePauseTime: DC.D0,
   blackHoleNegative: 1,
   celestials: {
     teresa: {
@@ -659,7 +659,7 @@ window.player = {
       run: false,
       charged: new Set(),
       disCharge: false,
-      peakGamespeed: 1,
+      peakGamespeed: DC.D1,
       petWithRemembrance: ""
     },
     laitela: {

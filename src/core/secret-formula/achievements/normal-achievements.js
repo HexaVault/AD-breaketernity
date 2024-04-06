@@ -1068,7 +1068,7 @@ export const normalAchievements = [
     id: 145,
     name: "Are you sure these are the right way around?",
     description: "Have either Black Hole interval smaller than its duration.",
-    checkRequirement: () => BlackHoles.list.some(bh => bh.interval < bh.duration),
+    checkRequirement: () => BlackHoles.list.some(bh => bh.interval.lt(bh.duration)),
     checkEvent: GAME_EVENT.BLACK_HOLE_UPGRADE_BOUGHT,
     get reward() { return `Black Hole intervals are ${formatPercents(new Decimal(0.1))} shorter.`; },
     effect: 0.9

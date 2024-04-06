@@ -312,14 +312,14 @@ export function getGameSpeedupFactor(effectsToConsider, blackHolesActiveOverride
 
   if (effects.includes(GAME_SPEED_EFFECT.FIXED_SPEED)) {
     if (EternityChallenge(12).isRunning) {
-      return 1 / 1000 * dev.speedUp;
+      return Decimal.mul(1 / 1000, dev.speedUp);
     }
   }
 
-  let factor = 1;
+  let factor = DC.D1;
   if (effects.includes(GAME_SPEED_EFFECT.BLACK_HOLE)) {
     if (BlackHoles.areNegative) {
-      factor *= player.blackHoleNegative;
+      factor = factor.mul(player.blackHoleNegative);
     } else if (!BlackHoles.arePaused) {
       for (const blackHole of BlackHoles.list) {
         if (!blackHole.isUnlocked) break;
@@ -327,44 +327,40 @@ export function getGameSpeedupFactor(effectsToConsider, blackHolesActiveOverride
           ? blackHole.isActive
           : blackHole.id <= blackHolesActiveOverride;
         if (!isActive) break;
-        factor *= Math.pow(blackHole.power, BlackHoles.unpauseAccelerationFactor);
-        factor *= VUnlocks.achievementBH.effectOrDefault(1);
+        factor = factor.mul(blackHole.power.pow(BlackHoles.unpauseAccelerationFactor));
+        factor = factor.mul(VUnlocks.achievementBH.effectOrDefault(1));
       }
     }
   }
 
   if (effects.includes(GAME_SPEED_EFFECT.SINGULARITY_MILESTONE)) {
-    factor *= SingularityMilestone.gamespeedFromSingularities.effectOrDefault(1);
+    factor = factor.mul(SingularityMilestone.gamespeedFromSingularities.effectOrDefault(1));
   }
 
   if (effects.includes(GAME_SPEED_EFFECT.TIME_GLYPH)) {
-    factor *= getAdjustedGlyphEffect("timespeed");
-    factor = Math.pow(factor, getAdjustedGlyphEffect("effarigblackhole"));
+    factor = factor.mul(getAdjustedGlyphEffect("timespeed"));
+    factor = factor.pow(getAdjustedGlyphEffect("effarigblackhole"));
   }
 
   if (Enslaved.isStoringGameTime && effects.includes(GAME_SPEED_EFFECT.TIME_STORAGE)) {
     const storedTimeWeight = Ra.unlocks.autoPulseTime.canBeApplied ? 0.99 : 1;
-    factor = factor * (1 - storedTimeWeight) + storedTimeWeight;
+    factor = factor.mul(1 - storedTimeWeight).add(storedTimeWeight);
   }
 
   // These effects should always be active, but need to be disabled during offline black hole simulations because
   // otherwise it gets applied twice
   if (effects.includes(GAME_SPEED_EFFECT.NERFS)) {
     if (Effarig.isRunning) {
-      factor = Effarig.multiplier(factor).toNumber();
+      factor = Effarig.multiplier(factor);
     } else if (Laitela.isRunning) {
-      const nerfModifier = Math.clampMax(Time.thisRealityRealTime.totalMinutes.div(10), 1);
-      factor = Math.pow(factor, nerfModifier);
+      const nerfModifier = Time.thisRealityRealTime.totalMinutes.div(10).clampMax(1);
+      factor = factor.pow(nerfModifier);
     }
   }
 
+  factor = factor.mul(PelleUpgrade.timeSpeedMult.effectValue);
 
-  factor *= PelleUpgrade.timeSpeedMult.effectValue.toNumber();
-
-  factor *= dev.speedUp;
-  // 1e-300 is now possible with max inverted BH, going below it would be possible with
-  // an effarig glyph.
-  factor = Math.clamp(factor, 1e-300, 1e300);
+  factor = factor.mul(dev.speedUp);
 
   return factor;
 }
@@ -521,7 +517,7 @@ export function gameLoop(passedDiff, options = {}) {
     diff = diff.times(getGameSpeedupFactor());
     Enslaved.currentBlackHoleStoreAmountPerMs = 0;
   }
-  player.celestials.ra.peakGamespeed = Math.max(player.celestials.ra.peakGamespeed, getGameSpeedupFactor());
+  player.celestials.ra.peakGamespeed = player.celestials.ra.peakGamespeed.clampMin(getGameSpeedupFactor());
   Enslaved.isReleaseTick = false;
 
   // These need to all be done consecutively in order to minimize the chance of a reset occurring between real time
@@ -935,11 +931,11 @@ export function simulateTime(seconds, real, fast) {
   if (BlackHoles.areUnlocked && !BlackHoles.arePaused) {
     totalGameTime = BlackHoles.calculateGameTimeFromRealTime(seconds, BlackHoles.calculateSpeedups());
   } else {
-    totalGameTime = getGameSpeedupFactor() * seconds;
+    totalGameTime = getGameSpeedupFactor().mul(seconds);
   }
 
-  const infinitiedMilestone = getInfinitiedMilestoneReward(totalGameTime * 1000);
-  const eternitiedMilestone = getEternitiedMilestoneReward(totalGameTime * 1000);
+  const infinitiedMilestone = getInfinitiedMilestoneReward(totalGameTime.mul(1000));
+  const eternitiedMilestone = getEternitiedMilestoneReward(totalGameTime.mul(1000));
 
   if (eternitiedMilestone.gt(0)) {
     Currency.eternities.add(eternitiedMilestone);

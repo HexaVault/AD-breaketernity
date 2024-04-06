@@ -108,7 +108,7 @@ export default {
       this.totalGalaxies.copyFrom(player.dilation.totalTachyonGalaxies);
       this.hasPelleDilationUpgrades = PelleRifts.paradox.milestones[0].canBeApplied;
       if (this.baseGalaxies.lt(500) && DilationUpgrade.doubleGalaxies.isBought) {
-        this.tachyonGalaxyGain = DilationUpgrade.doubleGalaxies.effectValue;
+        this.tachyonGalaxyGain = new Decimal(DilationUpgrade.doubleGalaxies.effectValue);
       } else {
         this.tachyonGalaxyGain = new Decimal(1);
       }

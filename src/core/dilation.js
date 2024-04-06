@@ -83,8 +83,8 @@ export function buyDilationUpgrade(id, bulk = 1) {
     if (id === 2) {
       if (!Perk.bypassTGReset.isBought || Pelle.isDoomed) Currency.dilatedTime.reset();
       player.dilation.nextThreshold = DC.E3;
-      player.dilation.baseTachyonGalaxies = 0;
-      player.dilation.totalTachyonGalaxies = 0;
+      player.dilation.baseTachyonGalaxies = DC.D0;
+      player.dilation.totalTachyonGalaxies = DC.D0;
     }
 
     if (id === 3 && !Pelle.isDisabled("tpMults")) {

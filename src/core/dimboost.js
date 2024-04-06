@@ -153,11 +153,13 @@ export class DimBoost {
   }
 
   static get purchasedBoosts() {
-    return Decimal.floor(player.dimensionBoosts);
+    return Decimal.fromDecimal(player.dimensionBoosts.floor());
   }
 
   static get imaginaryBoosts() {
-    return Ra.isRunning ? 0 : ImaginaryUpgrade(12).effectOrDefault(0) * ImaginaryUpgrade(23).effectOrDefault(1);
+    return Ra.isRunning
+      ? DC.D0
+      : ImaginaryUpgrade(12).effectOrDefault(DC.D0).mul(ImaginaryUpgrade(23).effectOrDefault(DC.D1));
   }
 
   static get totalBoosts() {

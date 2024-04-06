@@ -129,7 +129,7 @@ export default {
           name="o-dilation-upgrade__description"
         />
         <EffectDisplay
-          :key="boughtAmount"
+          :key="boughtAmount.toNumber()"
           br
           :config="upgrade.config"
         />

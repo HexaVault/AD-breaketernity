@@ -218,7 +218,7 @@ export const FreeTickspeed = {
   },
 
   fromShards(shards) {
-    const tickmult = DC.D1.add(Effects.min(new Decimal(1.33), TimeStudy(171)).sub(1)).mul(
+    const tickmult = DC.D1.add(Effects.min(1.33, TimeStudy(171)).sub(1)).mul(
       Decimal.max(getAdjustedGlyphEffect("cursedtickspeed"), 1));
     const logTickmult = tickmult.ln();
     const logShards = shards.clampMin(1).ln();

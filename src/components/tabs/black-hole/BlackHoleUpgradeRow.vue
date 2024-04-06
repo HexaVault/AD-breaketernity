@@ -71,13 +71,13 @@ export default {
   >
     <BlackHoleUpgradeButton
       v-if="!isPermanent"
-      :key="intervalVal"
+      :key="intervalVal.toNumber()"
       :config="intervalConfig"
     />
     <BlackHoleUpgradeButton :config="powerConfig" />
     <BlackHoleUpgradeButton
       v-if="!isPermanent"
-      :key="durationVal"
+      :key="durationVal.toNumber()"
       :config="durationConfig"
     />
   </div>

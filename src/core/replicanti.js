@@ -43,11 +43,7 @@ export function replicantiGalaxy(auto) {
   Replicanti.amount = Achievement(126).isUnlocked && !Pelle.isDoomed
     ? Decimal.pow10(Replicanti.amount.log10().sub(galaxyGain.mul(LOG10_MAX_VALUE)))
     : new Decimal(1);
-  // eslint-disable-next-line no-console
-  console.log(Replicanti.amount);
   addReplicantiGalaxies(galaxyGain);
-  // eslint-disable-next-line no-console
-  console.log(Replicanti.amount);
 }
 
 // Only called on manual RG requests
@@ -479,7 +475,6 @@ export const ReplicantiUpgrade = {
         // eslint-disable-next-line consistent-return
         return decimalQuadraticSolution(a, b, c).floor();
       }
-
       a = logBase.sub(cur).add(logDistantScaling.times(distantReplicatedGalaxyStart.pow(2)))
         .sub(logDistantScaling.times(4.5).times(distantReplicatedGalaxyStart));
       b = logBaseIncrease.sub(logCostScaling);
@@ -490,9 +485,8 @@ export const ReplicantiUpgrade = {
         // eslint-disable-next-line consistent-return
         return decimalQuadraticSolution(a, b, c);
       }
-
       a = logRemoteScaling.div(3);
-      b = logCostScaling.div(2).add(logDistantScaling).div(2).sub(logRemoteScaling(remoteReplicatedGalaxyStart));
+      b = logCostScaling.div(2).add(logDistantScaling).div(2).sub(logRemoteScaling.mul(remoteReplicatedGalaxyStart));
       c = distantReplicatedGalaxyStart.times(logDistantScaling).neg()
         .add(logRemoteScaling.times(remoteReplicatedGalaxyStart.pow(2)))
         .sub(logRemoteScaling.times(remoteReplicatedGalaxyStart))
@@ -512,7 +506,7 @@ export const ReplicantiUpgrade = {
       // This isn't a hot enough autobuyer to worry about doing an actual inverse.
       const bulk = this.bulkPurchaseCalc();
       if (!bulk || bulk.floor().sub(this.value).lte(0)) return;
-      Currency.infinityPoints.subtract(baseCostAfterCount.sub(1));
+      Currency.infinityPoints.subtract(this.baseCostAfterCount(this.value).sub(1));
       this.value = this.value.add(bulk);
       this.baseCost = this.baseCostAfterCount(this.value);
     }
@@ -521,18 +515,18 @@ export const ReplicantiUpgrade = {
       const logBase = new Decimal(170);
       const logBaseIncrease = EternityChallenge(6).isRunning ? 2 : 25;
       const logCostScaling = EternityChallenge(6).isRunning ? 2 : 5;
-      const distantReplicatedGalaxyStart = 100 + Effects.sum(GlyphSacrifice.replication);
-      const remoteReplicatedGalaxyStart = 1000 + Effects.sum(GlyphSacrifice.replication);
+      const distantReplicatedGalaxyStart = Effects.sum(GlyphSacrifice.replication).add(100);
+      const remoteReplicatedGalaxyStart = Effects.sum(GlyphSacrifice.replication).add(1000);
       let logCost = logBase.add(count.times(logBaseIncrease))
         .add((count.times(count.sub(1)).div(2)).times(logCostScaling));
-      if (count > distantReplicatedGalaxyStart) {
+      if (count.gt(distantReplicatedGalaxyStart)) {
         const logDistantScaling = new Decimal(50);
         // When distant scaling kicks in, the price increase jumps by a few extra steps.
         // So, the difference between successive scales goes 5, 5, 5, 255, 55, 55, ...
         const numDistant = count.sub(distantReplicatedGalaxyStart);
         logCost = logCost.add(logDistantScaling.times(numDistant).times(numDistant.add(9)).div(2));
       }
-      if (count > remoteReplicatedGalaxyStart) {
+      if (count.gt(remoteReplicatedGalaxyStart)) {
         const logRemoteScaling = DC.D5;
         const numRemote = count.sub(remoteReplicatedGalaxyStart);
         // The formula x * (x + 1) * (2 * x + 1) / 6 is the sum of the first n squares.
@@ -552,7 +546,7 @@ export const Replicanti = {
     const unlocked = force ? false : EternityMilestone.unlockReplicanti.isReached;
     player.replicanti = {
       unl: unlocked,
-      amount: unlocked ? new Decimal(1) : DC.D0,
+      amount: unlocked ? DC.D1 : DC.D0,
       timer: DC.D0,
       chance: new Decimal(0.01),
       chanceCost: DC.E150,
@@ -574,7 +568,7 @@ export const Replicanti = {
     }
   },
   get amount() {
-    return player.replicanti.amount;
+    return Decimal.fromDecimal(player.replicanti.amount);
   },
   set amount(value) {
     player.replicanti.amount = value;

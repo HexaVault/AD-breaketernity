@@ -5,11 +5,11 @@ export default {
     return {
       requirement: {
         tier: 1,
-        amount: 0
+        amount: new Decimal()
       },
       isBuyable: false,
-      purchasedBoosts: 0,
-      imaginaryBoosts: 0,
+      purchasedBoosts: new Decimal(),
+      imaginaryBoosts: new Decimal(),
       lockText: null,
       unlockedByBoost: null,
       creditsClosed: false,
@@ -47,10 +47,10 @@ export default {
     update() {
       const requirement = DimBoost.requirement;
       this.requirement.tier = requirement.tier;
-      this.requirement.amount = requirement.amount;
+      this.requirement.amount.copyFrom(requirement.amount);
       this.isBuyable = requirement.isSatisfied && DimBoost.canBeBought;
-      this.purchasedBoosts = DimBoost.purchasedBoosts;
-      this.imaginaryBoosts = DimBoost.imaginaryBoosts;
+      this.purchasedBoosts.copyFrom(DimBoost.purchasedBoosts);
+      this.imaginaryBoosts.copyFrom(DimBoost.imaginaryBoosts);
       this.lockText = DimBoost.lockText;
       this.unlockedByBoost = DimBoost.unlockedByBoost;
       this.creditsClosed = GameEnd.creditsEverClosed;

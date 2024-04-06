@@ -17,8 +17,8 @@ const rebuyable = props => {
     player.reality.rebuyables[props.id].mul(getAdjustedGlyphEffect("realityrow1pow")));
   props.description = () => props.textTemplate.replace("{value}",
     ImaginaryUpgrade(props.id).effectValue.eq(0)
-      ? formatInt(effect)
-      : format(effect + ImaginaryUpgrade(props.id).effectValue, 2, 2));
+      ? format(effect)
+      : format(ImaginaryUpgrade(props.id).effectValue.add(effect), 2, 2));
   props.formatEffect = value => formatX(value, 2, 0);
   props.formatCost = value => format(value, 2, 0);
   return props;
