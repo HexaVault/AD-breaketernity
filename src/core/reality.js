@@ -12,7 +12,7 @@ export const GlyphSelection = {
   },
 
   get choiceCount() {
-    return Effects.max(1, Perk.firstPerk) *
+    return Effects.nMax(1, Perk.firstPerk) *
       Ra.unlocks.extraGlyphChoicesAndRelicShardRarityAlwaysMax.effectOrDefault(1);
   },
 
@@ -42,7 +42,10 @@ export const GlyphSelection = {
     // To attempt to reduce RNG swing, we follow slightly different logic early on in order
     // to spread out types and effects more equally for the first few realities. Types and
     // effects are spread out over the choices of each consecutive group of 5 realities
-    if (GlyphGenerator.isUniformityActive) {
+
+    // Code needs rewriting at a later date as it is all bitmask stuff rn, so we use a constant false fn
+    // eslint-disable-next-line no-constant-condition
+    if (false && GlyphGenerator.isUniformityActive) {
       glyphList = GlyphGenerator.uniformGlyphs(level, rng, player.realities);
     } else {
       for (let out = 0; out < count; ++out) {

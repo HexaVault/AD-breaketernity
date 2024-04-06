@@ -239,11 +239,11 @@ function getGlyphLevelSources() {
   eternityPoints = Decimal.max(player.records.thisReality.maxEP, eternityPoints);
   const epCoeff = 0.016;
   const epBase = Decimal.pow(Decimal.max(1, eternityPoints.add(1).log10()), 0.5).mul(epCoeff);
-  const replPow = 0.4 + getAdjustedGlyphEffect("replicationglyphlevel");
+  const replPow = getAdjustedGlyphEffect("replicationglyphlevel").add(0.4);
   const replCoeff = 0.025;
   const replBase = Decimal.pow(Decimal.max(1, player.records.thisReality.maxReplicanti.log10()), replPow)
     .mul(replCoeff);
-  const dtPow = 1.3 + getAdjustedGlyphEffect("realityDTglyph");
+  const dtPow = Decimal.add(getAdjustedGlyphEffect("realityDTglyph"), 1.3);
   const dtCoeff = 0.025;
   const dtBase = Decimal.pow(Decimal.max(1, player.records.thisReality.maxDT.add(1).log10()), dtPow).mul(dtCoeff);
   const eterBase = Effects.max(new Decimal(1), RealityUpgrade(18));
@@ -334,10 +334,10 @@ export function getGlyphLevelInputs() {
   const instabilitySoftcap = (level, begin, rate) => {
     if (level.lt(begin)) return level;
     const excess = (level.sub(begin)).div(rate);
-    return begin.plus(0.5.times(rate).times(Decimal.sqrt(new Decimal(1).add(excess.times(4))).sub(1)));
+    return begin.plus(rate.div(2).times(Decimal.sqrt(new Decimal(1).add(excess.times(4))).sub(1)));
   };
-  scaledLevel = instabilitySoftcap(scaledLevel, staticFactors.instability, 500);
-  scaledLevel = instabilitySoftcap(scaledLevel, staticFactors.hyperInstability, 400);
+  scaledLevel = instabilitySoftcap(scaledLevel, staticFactors.instability, new Decimal(500));
+  scaledLevel = instabilitySoftcap(scaledLevel, staticFactors.hyperInstability, new Decimal(400));
 
   const scalePenalty = scaledLevel.gt(0) ? baseLevel.div(scaledLevel) : 1;
   const incAfterInstability = staticFactors.achievements.add(staticFactors.realityUpgrades);

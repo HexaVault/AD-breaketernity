@@ -17,11 +17,11 @@ export default {
       hasChoice: false,
       hasFilter: false,
       glyphs: [],
-      bestLevel: 0,
+      bestLevel: new Decimal(),
       levelDifference: 0,
       selectedGlyph: undefined,
       canRefresh: false,
-      level: 0,
+      level: new Decimal(),
       simRealities: new Decimal(),
       realityMachines: new Decimal(),
       shardsGained: 0,
@@ -69,9 +69,9 @@ export default {
     levelStats() {
       // Bit annoying to read due to needing >, <, and =, with = needing a different format.
       return `You will get a level ${formatInt(this.level)} Glyph on Reality, which is
-        ${this.level === this.bestLevel ? "equal to" : `
+        ${this.level.eq(this.bestLevel) ? "equal to" : `
         ${quantifyInt("level", this.levelDifference)}
-        ${this.level > this.bestLevel ? "higher" : "lower"} than`} your best.`;
+        ${this.level.gt(this.bestLevel) ? "higher" : "lower"} than`} your best.`;
     },
     confirmationToDisable() {
       return ConfirmationTypes.glyphSelection.isUnlocked() ? "glyphSelection" : undefined;
@@ -90,7 +90,7 @@ export default {
       this.hasChoice = Perk.firstPerk.isEffectActive;
       this.effarigUnlocked = TeresaUnlocks.effarig.canBeApplied;
       this.hasFilter = EffarigUnlock.glyphFilter.isUnlocked;
-      this.level = gainedGlyphLevel().actualLevel;
+      this.level.copyFrom(gainedGlyphLevel().actualLevel);
       this.simRealities = simulatedRealityCount(false).add(1);
       this.hasSpace = Decimal.fromNumber(GameCache.glyphInventorySpace.value).gte(this.simRealities);
       const simRMGained = MachineHandler.gainedRealityMachines.times(this.simRealities);
@@ -107,8 +107,8 @@ export default {
         currentGlyph.level = newGlyph.level;
         currentGlyph.effects = newGlyph.effects;
       }
-      this.bestLevel = player.records.bestReality.glyphLevel;
-      this.levelDifference = Math.abs(this.bestLevel - this.level);
+      this.bestLevel.copyFrom(player.records.bestReality.glyphLevel);
+      this.levelDifference = Decimal.abs(this.bestLevel.sub(this.level));
     },
     glyphClass(index) {
       return {

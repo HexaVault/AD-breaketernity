@@ -241,7 +241,7 @@ export const GlyphGenerator = {
     let num = Decimal.min(
       maxEffects,
       Decimal.floor(Decimal.pow(random1, DC.D1.sub(Decimal.pow(level.times(strength), 0.5)).div(100)).times(1.5).add(1))
-    ).toNumber().min(1e10);
+    ).min(1e10).toNumber();
     // Incase someone somehow forgets to put a limit, this .min(1e10) is a final protection
     // If we do decide to add anything else that boosts chance of an extra effect, keeping the code like this
     // makes it easier to do (add it to the Effects.max).
@@ -279,6 +279,10 @@ export const GlyphGenerator = {
     }
     // Sort from highest to lowest value.
     const effects = Object.keys(effectValues).sort((a, b) => effectValues[b] - effectValues[a]).slice(0, count);
+    // Revert intIds to the regular ids, which are strings
+    for (let i = 0; i !== effects.length; i++) {
+      effects[i] = GlyphEffects.all[effects[i]].id;
+    }
     return effects;
   },
 

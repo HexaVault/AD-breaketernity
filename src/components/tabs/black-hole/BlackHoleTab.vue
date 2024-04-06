@@ -96,15 +96,15 @@ export default {
 
       // BH1 inactive, BH2 ready to go when BH1 activates
       if (BlackHole(2).isCharged) {
-        const bh2Duration = Math.min(BlackHole(1).duration, bh2Remaining);
+        const bh2Duration = Decimal.min(BlackHole(1).duration, bh2Remaining);
         return `Black Hole 2 will activate with Black Hole 1,
-          for ${TimeSpan.fromSeconds(new Decimal(bh2Duration)).toStringShort()}.`;
+          for ${TimeSpan.fromSeconds(bh2Duration).toStringShort()}.`;
       }
 
       // BH1 inactive, BH2 starts at some point after BH1 activates
-      const bh2Duration = Math.min(BlackHole(1).duration - bh2Remaining, BlackHole(2).duration);
-      return `Black Hole 2 will activate ${TimeSpan.fromSeconds(new Decimal(bh2Remaining)).toStringShort()} after
-        Black Hole 1, for ${TimeSpan.fromSeconds(new Decimal(bh2Duration)).toStringShort()}.`;
+      const bh2Duration = Decimal.min(BlackHole(1).duration.sub(bh2Remaining, BlackHole(2).duration));
+      return `Black Hole 2 will activate ${TimeSpan.fromSeconds(bh2Remaining).toStringShort()} after
+        Black Hole 1, for ${TimeSpan.fromSeconds(bh2Duration).toStringShort()}.`;
     },
     togglePause() {
       BlackHoles.togglePause();

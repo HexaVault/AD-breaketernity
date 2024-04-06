@@ -1,5 +1,7 @@
 import { GameMechanicState } from "../game-mechanics";
 
+import { DC } from "../constants";
+
 export const orderedEffectList = ["powerpow", "infinitypow", "replicationpow", "timepow",
   "dilationpow", "timeshardpow", "powermult", "powerdimboost", "powerbuy10",
   "dilationTTgen", "infinityinfmult", "infinityIP", "timeEP",
@@ -648,13 +650,13 @@ export const Glyphs = {
     }
   },
   get levelCap() {
-    return 1e250;
+    return DC.BEMAX;
   },
   get instabilityThreshold() {
-    return 1000 + getAdjustedGlyphEffect("effarigglyph") + ImaginaryUpgrade(7).effectOrDefault(0);
+    return DC.E3.add(getAdjustedGlyphEffect("effarigglyph")).add(ImaginaryUpgrade(7).effectOrDefault(0));
   },
   get hyperInstabilityThreshold() {
-    return 3000 + this.instabilityThreshold;
+    return this.instabilityThreshold.add(3000);
   },
   clearUndo() {
     player.reality.glyphs.undo = [];

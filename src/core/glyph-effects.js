@@ -37,7 +37,7 @@ class GlyphEffectConfig {
     /** @type {string} unique key for the effect -- powerpow, etc */
     this.id = setup.id;
     /** @type {number} bit position for the effect in the effect bitmask */
-    this.bitmaskIndex = setup.bitmaskIndex;
+    this.intID = setup.intID;
     /** @type {boolean} flag to separate "basic"/effarig glyphs from cursed/reality glyphs */
     this.isGenerated = setup.isGenerated;
     /** @type {string[]} the types of glyphs this effect can occur on */
