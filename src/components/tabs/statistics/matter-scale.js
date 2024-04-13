@@ -5,6 +5,11 @@ export const MatterScale = {
 
   estimate(matter) {
     if (!matter) return ["There is no antimatter yet."];
+    if (matter.gt(DC.BIMAX)) {
+      return [
+        `You have alot of antimatter`
+      ];
+    }
     if (matter.gt(DC.E1_5E12)) {
       return [
         `It would take `, TimeSpan.fromSeconds(matter.log10().div(4.320432e17 * 3)).toString(), `%`,

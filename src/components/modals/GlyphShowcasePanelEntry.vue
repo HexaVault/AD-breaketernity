@@ -98,8 +98,7 @@ export default {
     glyphEffectList() {
       const db = GlyphEffects;
       const effects =
-      getGlyphEffectValuesFromBitmask(this.glyph.effects, this.effectiveLevel, this.glyph.strength, this.type)
-        .filter(e => db[e.id].isGenerated === generatedTypes.includes(this.type));
+      getGlyphEffectValuesFromArray(this.glyph.effects, this.effectiveLevel, this.glyph.strength, this.type);
       const effectStrings = effects
         .map(e => this.formatEffectString(db[e.id], e.value));
       // Filter out undefined results since shortDesc only exists for generated effects

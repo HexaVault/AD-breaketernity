@@ -269,7 +269,7 @@ export default {
       sacrificeReward: 0,
       uncappedRefineReward: 0,
       refineReward: 0,
-      displayLevel: 0,
+      displayLevel: new Decimal(),
       // We use this to not create a ton of tooltip components as soon as the glyph tab loads.
       tooltipLoaded: false,
       logTotalSacrifice: 0,
@@ -411,39 +411,9 @@ export default {
     // This finds all the effects of a glyph and shifts all their IDs so that type's lowest-ID effect is 0 and all
     // other effects count up to 3 (or 6 for effarig). Used to add dots in unique positions on glyphs to show effects.
     glyphEffects() {
-      let minEffectID = 0;
-      switch (this.glyph.type) {
-        case "time":
-        case "cursed":
-        case "companion":
-          minEffectID = 0;
-          break;
-        case "dilation":
-        case "reality":
-          minEffectID = 4;
-          break;
-        case "replication":
-          minEffectID = 8;
-          break;
-        case "infinity":
-          minEffectID = 12;
-          break;
-        case "power":
-          minEffectID = 16;
-          break;
-        case "effarig":
-          minEffectID = 20;
-          break;
-        default:
-          throw new Error(`Unrecognized glyph type "${this.glyph.type}" in glyph effect icons`);
-      }
-      const effectIDs = [];
-      let remainingEffects = this.glyph.effects >> minEffectID;
-      for (let id = 0; remainingEffects > 0; id++) {
-        if ((remainingEffects & 1) === 1) effectIDs.push(id);
-        remainingEffects >>= 1;
-      }
-      return effectIDs;
+      // Get intIDs, then subtract smallest in next code
+      const subVal = Object.values(GlyphTypes[this.glyph.type].effects.mapToObject(x => x.intID, x => x.intID)).nMin();
+      return GlyphTypes[this.glyph.type].effects.mapToObject(x => x.intID - subVal, x => x.id);
     },
     isRealityGlyph() {
       return this.glyph.type === "reality";
@@ -471,7 +441,7 @@ export default {
       switch (options.glyphInfoType) {
         case typeEnum.LEVEL:
           this.updateDisplayLevel();
-          return formatInt(this.displayLevel === 0 ? this.glyph.level : this.displayLevel);
+          return formatInt(this.displayLevel.eq(0) ? this.glyph.level : this.displayLevel);
         case typeEnum.RARITY:
           return formatRarity(strengthToRarity(Pelle.isDoomed ? Pelle.glyphStrength : this.glyph.strength));
         case typeEnum.SAC_VALUE:
@@ -531,15 +501,15 @@ export default {
       this.sacrificeReward = GlyphSacrificeHandler.glyphSacrificeGain(this.glyph);
       this.uncappedRefineReward = ALCHEMY_BASIC_GLYPH_TYPES.includes(this.glyph.type)
         ? GlyphSacrificeHandler.glyphRawRefinementGain(this.glyph)
-        : 0;
+        : new Decimal();
       this.refineReward = ALCHEMY_BASIC_GLYPH_TYPES.includes(this.glyph.type)
         ? GlyphSacrificeHandler.glyphRefinementGain(this.glyph)
-        : 0;
+        : new Decimal();
       if (this.tooltipLoaded) this.updateDisplayLevel();
     },
     updateDisplayLevel() {
       if (this.ignoreModifiedLevel) {
-        this.displayLevel = 0;
+        this.displayLevel = new Decimal();
         return;
       }
       // We have to consider some odd interactions in order to properly show level. The getAdjustedGlyphLevel() function
@@ -556,8 +526,8 @@ export default {
       if (this.isActiveGlyph) this.displayLevel = getAdjustedGlyphLevel(this.glyph);
       else if (this.isInventoryGlyph) this.displayLevel = getAdjustedGlyphLevel(this.glyph, 0);
       else {
-        this.displayLevel = this.glyph.level +
-          (BASIC_GLYPH_TYPES.includes(this.glyph.type) ? this.realityGlyphBoost : 0);
+        this.displayLevel = this.glyph.level
+          .add(BASIC_GLYPH_TYPES.includes(this.glyph.type) ? this.realityGlyphBoost : 0);
       }
     },
     hideTooltip() {
@@ -691,9 +661,9 @@ export default {
     // Translates 0...3 into equally-spaced coordinates around a circle 90deg apart (0...6 and 45deg for effarig)
     effectIconPos(id) {
       // Place dots clockwise starting from the bottom left
-      const angle = this.glyph.type === "effarig"
-        ? (Math.PI / 4) * (id + 1)
-        : (Math.PI / 2) * (id + 0.5);
+      // eslint-disable-next-line max-len
+      const numOfEffects = Object.keys(GlyphTypes[this.glyph.type].effects.mapToObject(x => x.intID, x => x.intID)).length;
+      const angle = (Math.PI / (16 / numOfEffects)) * (id + (4 / numOfEffects));
       const scale = 0.28 * this.size.replace("rem", "");
       const dx = -scale * Math.sin(angle);
       const dy = scale * (Math.cos(angle) + 0.15);

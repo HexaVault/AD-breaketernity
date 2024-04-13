@@ -210,6 +210,12 @@ export function getGlyphEffectsFromBitmask(bitmask) {
     .filter(effect => (bitmask & (1 << effect.bitmaskIndex)) !== 0);
 }
 
+export function getGlyphEffectsFromArray(array) {
+  return orderedEffectList
+    .map(effectName => GlyphEffects[effectName])
+    .filter(effect => array.includes(effect.id));
+}
+
 export function getGlyphIDsFromBitmask(bitmask) {
   return getGlyphEffectsFromBitmask(bitmask).map(x => x.id);
 }

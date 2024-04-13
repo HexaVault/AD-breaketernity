@@ -108,6 +108,16 @@ export function getGlyphEffectValuesFromBitmask(bitmask, level, baseStrength, ty
     }));
 }
 
+// eslint-disable-next-line max-params
+export function getGlyphEffectValuesFromArray(array, level, baseStrength, type) {
+  const strength = (Pelle.isDoomed && type !== "companion") ? Pelle.glyphStrength : baseStrength;
+  return getGlyphEffectsFromArray(array)
+    .map(effect => ({
+      id: effect.id,
+      value: effect.effect(level, strength)
+    }));
+}
+
 // Pulls out a single effect value from a glyph's bitmask, returning just the value (nothing for missing effects)
 export function getSingleGlyphEffectFromBitmask(effectName, glyph) {
   const glyphEffect = GlyphEffects[effectName];

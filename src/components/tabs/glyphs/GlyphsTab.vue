@@ -58,7 +58,7 @@ export default {
   methods: {
     update() {
       this.resetRealityDisplayed = PlayerProgress.realityUnlocked();
-      this.showInstability = player.records.bestReality.glyphLevel > 800;
+      this.showInstability = player.records.bestReality.glyphLevel.gt(800);
       this.instabilityThreshold = Glyphs.instabilityThreshold;
       this.hyperInstabilityThreshold = Glyphs.hyperInstabilityThreshold;
       this.isInCelestialReality = isInCelestialReality();
