@@ -266,13 +266,13 @@ export default {
       suppressTooltip: false,
       isTouched: false,
       tooltipEnabled: false,
-      sacrificeReward: 0,
-      uncappedRefineReward: 0,
-      refineReward: 0,
+      sacrificeReward: new Decimal(),
+      uncappedRefineReward: new Decimal(),
+      refineReward: new Decimal(),
       displayLevel: new Decimal(),
       // We use this to not create a ton of tooltip components as soon as the glyph tab loads.
       tooltipLoaded: false,
-      logTotalSacrifice: 0,
+      logTotalSacrifice: new Decimal(),
       realityColor: "",
     };
   },
@@ -405,7 +405,7 @@ export default {
         case 2:
           return "l-glyph-tooltip--up-right";
         default:
-          return "";
+          return "l-glyph-tooltip--down-left";
       }
     },
     // This finds all the effects of a glyph and shifts all their IDs so that type's lowest-ID effect is 0 and all
@@ -716,6 +716,7 @@ export default {
     :draggable="draggable"
     v-on="draggable ? { dragstart: dragStart, dragend: dragEnd, drag: drag } : {}"
   >
+    text
     <div
       ref="glyph"
       :style="innerStyle"

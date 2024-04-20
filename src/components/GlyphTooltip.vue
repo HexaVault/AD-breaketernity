@@ -12,15 +12,15 @@ export default {
       required: true
     },
     strength: {
-      type: Number,
+      type: Decimal,
       required: true
     },
     level: {
-      type: Number,
+      type: Decimal,
       required: true
     },
     effects: {
-      type: Number,
+      type: Array,
       required: true
     },
     id: {
@@ -57,7 +57,7 @@ export default {
       default: true,
     },
     displayLevel: {
-      type: Number,
+      type: Decimal,
       required: false,
       default: 0,
     },
@@ -80,9 +80,7 @@ export default {
       return this.displayLevel ? this.displayLevel : this.level;
     },
     sortedEffects() {
-      return getGlyphEffectValuesFromBitmask(this.effects, this.effectiveLevel, this.strength, this.type)
-        .filter(effect =>
-          GlyphEffects[effect.id].isGenerated === generatedTypes.includes(this.type));
+      return getGlyphEffectValuesFromArray(this.effects, this.effectiveLevel, this.strength, this.type);
     },
     rarityInfo() {
       return getRarity(this.strength);
