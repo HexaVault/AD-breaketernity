@@ -10,7 +10,9 @@ export const GlyphSacrificeHandler = {
     // should check for -Infinity, but the clampMin works in practice because the minimum possible sacrifice
     // value is greater than 1 for even the weakest possible glyph
     return BASIC_GLYPH_TYPES.reduce(
-      (tot, type) => tot + Math.log10(Math.clampMin(player.reality.glyphs.sac[type], 1)), 0);
+      (tot, type) => ((tot instanceof Decimal)
+        ? tot.add(Decimal.log10(Decimal.max(player.reality.glyphs.sac[type], 1), 0))
+        : (Decimal.log10(Decimal.max(player.reality.glyphs.sac[type], 1)), 0)));
   },
   get canSacrifice() {
     return RealityUpgrade(19).isBought;
