@@ -607,7 +607,7 @@ dev.beTests.prepare = function (completeAllChallenges = false) {
 
   dev.beTests.consecutiveInfinities(new Decimal("1e350"))
   dev.beTests.speed()
-  Themes.find("S11").set()
+  GameStorage.import("blob")
   Notation.scientific.setAsCurrent()
   Achievement(61).unlock()
 }

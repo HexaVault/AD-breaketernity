@@ -209,6 +209,7 @@ Array.prototype.sum = function() {
  */
 Array.prototype.max = function() {
   if (this.length === 0) return DC.D0;
+  if (this.length === 1) return new Decimal(this[0]);
   return this.reduce((a, b) => Decimal.max(a, b));
 };
 
@@ -217,6 +218,7 @@ Array.prototype.max = function() {
  */
 Array.prototype.min = function() {
   if (this.length === 0) return DC.D0;
+  if (this.length === 1) return new Decimal(this[0]);
   return this.reduce((a, b) => Decimal.min(a, b));
 };
 

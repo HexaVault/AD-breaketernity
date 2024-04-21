@@ -285,25 +285,25 @@ export function autoReality() {
 }
 
 function updateRealityRecords(realityProps) {
-  const thisRunRMmin = realityProps.gainedRM.dividedBy(Math.clampMin(0.0005, Time.thisRealityRealTime.totalMinutes));
+  const thisRunRMmin = realityProps.gainedRM.div(Time.thisRealityRealTime.totalMinutes.clampMin(0.0005));
   if (player.records.bestReality.RMmin.lt(thisRunRMmin)) {
     player.records.bestReality.RMmin = thisRunRMmin;
     player.records.bestReality.RMminSet = Glyphs.copyForRecords(Glyphs.active.filter(g => g !== null));
   }
-  if (player.records.bestReality.glyphLevel < realityProps.gainedGlyphLevel.actualLevel) {
+  if (player.records.bestReality.glyphLevel.lt(realityProps.gainedGlyphLevel.actualLevel)) {
     player.records.bestReality.glyphLevel = realityProps.gainedGlyphLevel.actualLevel;
     player.records.bestReality.glyphLevelSet = Glyphs.copyForRecords(Glyphs.active.filter(g => g !== null));
   }
-  player.records.bestReality.time = Math.min(player.records.thisReality.time, player.records.bestReality.time);
-  if (player.records.thisReality.realTime < player.records.bestReality.realTime) {
+  player.records.bestReality.time = player.records.thisReality.time.clampMax(player.records.bestReality.time);
+  if (player.records.thisReality.realTime.lt(player.records.bestReality.realTime)) {
     player.records.bestReality.realTime = player.records.thisReality.realTime;
     player.records.bestReality.speedSet = Glyphs.copyForRecords(Glyphs.active.filter(g => g !== null));
   }
 }
 
 function giveRealityRewards(realityProps) {
-  const multiplier = realityProps.simulatedRealities + 1;
-  const realityAndPPMultiplier = multiplier + binomialDistribution(multiplier, Achievement(154).effectOrDefault(0));
+  const multiplier = realityProps.simulatedRealities.add(1);
+  const realityAndPPMultiplier = multiplier.add(binomialDistribution(multiplier, Achievement(154).effectOrDefault(0)));
   const gainedRM = Currency.realityMachines.gte(MachineHandler.hardcapRM) ? DC.D0 : realityProps.gainedRM;
   Currency.realityMachines.add(gainedRM.times(multiplier));
   updateRealityRecords(realityProps);
@@ -316,13 +316,14 @@ function giveRealityRewards(realityProps) {
   if (TeresaUnlocks.effarig.canBeApplied) {
     Currency.relicShards.add(realityProps.gainedShards * multiplier);
   }
-  if (multiplier > 1 && Enslaved.boostReality) {
+  if (multiplier.gt(1) && Enslaved.boostReality) {
     // Real time amplification is capped at 1 second of reality time; if it's faster then using all time at once would
     // be wasteful. Being faster than 1 second will only use as much time as needed to get the 1-second factor instead.
-    if (Time.thisRealityRealTime.totalSeconds < 1) {
-      player.celestials.enslaved.storedReal *= 1 - Time.thisRealityRealTime.totalSeconds;
+    if (Time.thisRealityRealTime.totalSeconds.lt(1)) {
+      player.celestials.enslaved.storedReal = player.celestials.enslaved.storedReal
+        .mul(Decimal.sub(1, Time.thisRealityRealTime.totalSeconds));
     } else {
-      player.celestials.enslaved.storedReal = 0;
+      player.celestials.enslaved.storedReal = DC.D0;
     }
     Enslaved.boostReality = false;
   }
@@ -370,7 +371,7 @@ export function beginProcessReality(realityProps) {
   // Save a few important props before resetting all resources. We need to do this before processing glyphs so
   // that we don't try to reality again while async is running, but we need to retain RNG and level or else
   // glyphs will be generated with values based on post-reset values
-  const glyphsToProcess = realityProps.simulatedRealities + (realityProps.alreadyGotGlyph ? 0 : 1);
+  const glyphsToProcess = realityProps.simulatedRealities.add(realityProps.alreadyGotGlyph ? 0 : 1);
   const rng = GlyphGenerator.getRNG(false);
   const glyphLevel = gainedGlyphLevel();
   finishProcessReality(realityProps);
@@ -379,7 +380,7 @@ export function beginProcessReality(realityProps) {
   // sampling code in order to just directly give all the glyphs. The later code is a fixed amount of overhead
   // which is large enough that quick realities can cause it to softlock the game due to lag on slower devices
   // Note: This is mostly a copy-paste of a code block in processManualReality() with slight modifications
-  if (glyphsToProcess < 100) {
+  if (glyphsToProcess.lt(100)) {
     for (let glyphNum = 0; glyphNum < glyphsToProcess; glyphNum++) {
       GlyphSelection.generate(GlyphSelection.choiceCount, glyphLevel);
       if (EffarigUnlock.glyphFilter.isUnlocked) {
@@ -642,8 +643,8 @@ export function finishProcessReality(realityProps) {
   // This has to be reset before Currency.eternities to make the bumpLimit logic work correctly
   EternityUpgrade.epMult.reset();
   if (!PelleUpgrade.eternitiesNoReset.canBeApplied) Currency.eternities.reset();
-  player.records.thisEternity.time = 0;
-  player.records.thisEternity.realTime = 0;
+  player.records.thisEternity.time = DC.D0;
+  player.records.thisEternity.realTime = DC.D0;
   player.records.bestEternity.time = DC.BEMAX;
   player.records.bestEternity.realTime = DC.BEMAX;
   if (!PelleUpgrade.keepEternityUpgrades.canBeApplied) player.eternityUpgrades.clear();
@@ -663,8 +664,8 @@ export function finishProcessReality(realityProps) {
   } else {
     Player.resetRequirements("reality");
   }
-  player.records.thisReality.time = 0;
-  player.records.thisReality.realTime = 0;
+  player.records.thisReality.time = DC.D0;
+  player.records.thisReality.realTime = DC.D0;
   player.records.thisReality.maxReplicanti = DC.D0;
   if (!PelleUpgrade.timeStudiesNoReset.canBeApplied) Currency.timeTheorems.reset();
   player.celestials.v.STSpent = 0;
@@ -675,12 +676,12 @@ export function finishProcessReality(realityProps) {
   if (!PelleUpgrade.dilationUpgradesNoReset.canBeApplied) {
     player.dilation.upgrades.clear();
     player.dilation.rebuyables = {
-      1: 0,
-      2: 0,
-      3: 0,
-      11: 0,
-      12: 0,
-      13: 0
+      1: DC.D0,
+      2: DC.D0,
+      3: DC.D0,
+      11: DC.D0,
+      12: DC.D0,
+      13: DC.D0
     };
   }
   if (!PelleUpgrade.tachyonParticlesNoReset.canBeApplied) {
@@ -839,5 +840,5 @@ function lockAchievementsOnReality() {
   for (const achievement of Achievements.preReality) {
     achievement.lock();
   }
-  player.reality.achTimer = 0;
+  player.reality.achTimer = DC.D0;
 }

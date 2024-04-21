@@ -14,7 +14,7 @@ export class TimeTheoremPurchaseType {
   */
   set amount(value) { throw new NotImplementedError(); }
 
-  add(amount) { this.amount += amount; }
+  add(amount) { this.amount = this.amount.add(amount); }
 
   /**
   * @abstract
@@ -35,15 +35,15 @@ export class TimeTheoremPurchaseType {
 
   get bulkPossible() {
     if (Perk.ttFree.canBeApplied) {
-      return Math.floor(this.currency.value.divide(this.cost).log10() / this.costIncrement.log10() + 1);
+      return this.currency.value.divide(this.cost).log10().div(this.costIncrement.log10()).add(1).floor();
     }
-    return Decimal.affordGeometricSeries(this.currency.value, this.cost, this.costIncrement, 0).toNumber();
+    return Decimal.affordGeometricSeries(this.currency.value, this.cost, this.costIncrement, 0);
   }
 
   // Note: This is actually just the cost of the largest term of the geometric series. If buying EP without the
   // perk that makes them free, this will be incorrect, but the EP object already overrides this anyway
   bulkCost(amount) {
-    return this.cost.times(this.costIncrement.pow(amount - 1));
+    return this.cost.times(this.costIncrement.pow(amount.sub(1)));
   }
 
   purchase(bulk) {
@@ -63,7 +63,7 @@ export class TimeTheoremPurchaseType {
       purchased = true;
     }
     if (purchased) player.requirementChecks.reality.noPurchasedTT = false;
-    if (TimeTheorems.totalPurchased() > 114) PelleStrikes.ECs.trigger();
+    if (TimeTheorems.totalPurchased().lt(114)) PelleStrikes.ECs.trigger();
     return purchased;
   }
 
@@ -104,7 +104,7 @@ TimeTheoremPurchaseType.ep = new class extends TimeTheoremPurchaseType {
 
   bulkCost(amount) {
     if (Perk.ttFree.canBeApplied) return this.cost.times(this.costIncrement.pow(amount - 1));
-    return this.costIncrement.pow(amount + this.amount).subtract(this.cost);
+    return this.costIncrement.pow(amount.add(this.amount)).subtract(this.cost);
   }
 }();
 
@@ -140,9 +140,9 @@ export const TimeTheorems = {
   },
 
   totalPurchased() {
-    return TimeTheoremPurchaseType.am.amount +
-          TimeTheoremPurchaseType.ip.amount +
-          TimeTheoremPurchaseType.ep.amount;
+    return TimeTheoremPurchaseType.am.amount
+      .add(TimeTheoremPurchaseType.ip.amount)
+      .add(TimeTheoremPurchaseType.ep.amount);
   },
 
   calculateTimeStudiesCost() {

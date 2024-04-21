@@ -59,7 +59,7 @@ export default {
     displayLevel: {
       type: Decimal,
       required: false,
-      default: 0,
+      default: new Decimal(),
     },
     changeWatcher: {
       type: Number,
@@ -77,7 +77,7 @@ export default {
       return GameUI.touchDevice;
     },
     effectiveLevel() {
-      return this.displayLevel ? this.displayLevel : this.level;
+      return this.displayLevel.neq(0) ? this.displayLevel : this.level;
     },
     sortedEffects() {
       return getGlyphEffectValuesFromArray(this.effects, this.effectiveLevel, this.strength, this.type);
@@ -117,16 +117,19 @@ export default {
       }
     },
     isLevelCapped() {
-      return this.displayLevel && this.displayLevel < this.level;
+      return this.displayLevel.neq(0) && this.displayLevel.lt(this.level);
     },
     isLevelBoosted() {
-      return this.displayLevel && this.displayLevel > this.level;
+      return this.displayLevel.neq(0) && this.displayLevel.gt(this.level);
     },
     rarityText() {
       if (!GlyphTypes[this.type].hasRarity) return "";
       const strength = Pelle.isDoomed ? Pelle.glyphStrength : this.strength;
+      const color = Theme.current().isDark()
+        ? this.rarityInfo.darkColor
+        : this.rarityInfo.lightColor;
       return `| Rarity:
-        <span style="color: ${this.rarityInfo.color}">${formatRarity(strengthToRarity(strength))}</span>`;
+        <span style="color: ${color}">${formatRarity(strengthToRarity(strength))}</span>`;
     },
     levelText() {
       if (this.type === "companion") return "";

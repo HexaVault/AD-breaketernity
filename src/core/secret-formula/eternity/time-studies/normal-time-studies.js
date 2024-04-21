@@ -60,7 +60,7 @@ export const normalTimeStudies = [
     // to display a multiplicative increase just like every other study. We need to do the calculation in here in order
     // to properly show only the effect of this study and nothing else
     formatEffect: value => {
-      const oldVal = Decimal.pow(Decimal.log2(Replicanti.amount.clampMin(1)), 2);
+      const oldVal = Decimal.pow(Decimal.log2(Replicanti.amount.clampMin(1)), 2).clampMin(1);
       const newVal = oldVal.plus(value);
       return formatX(newVal.div(oldVal).clampMin(1), 2, 2);
     }
@@ -562,7 +562,7 @@ export const normalTimeStudies = [
     reqType: TS_REQUIREMENT_TYPE.AT_LEAST_ONE,
     requiresST: [226],
     description: "You gain extra Replicanti Galaxies based on Replicanti amount",
-    effect: () => Decimal.floor(Replicanti.amount.log10().div(1000)),
+    effect: () => Decimal.floor(Replicanti.amount.clampMin(1).log10().div(1000)),
     formatEffect: value => `+${formatInt(value)} RG`
   },
   {

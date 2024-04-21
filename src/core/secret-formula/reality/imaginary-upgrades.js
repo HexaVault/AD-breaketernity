@@ -218,7 +218,7 @@ export const imaginaryUpgrades = [
       ${formatInt(8)} Time Studies in this Reality`,
     hasFailed: () => player.requirementChecks.reality.maxStudies > 8,
     checkRequirement: () => player.requirementChecks.reality.maxStudies <= 8 &&
-      Tickspeed.continuumValue >= 3.85e6,
+      Tickspeed.continuumValue.gte(3.85e6),
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     canLock: true,
     lockEvent: () => `purchase more than ${formatInt(8)} Time Studies`,

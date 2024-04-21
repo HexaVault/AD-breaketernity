@@ -247,7 +247,7 @@ export const glyphEffects = {
       ➜ ^(${format(0.4, 1, 1)} + {value})`,
     genericDesc: "Replicanti factor for Glyph level",
     shortDesc: "Replicanti pow. for level +{value}",
-    effect: (level, strength) => Decimal.pow(Decimal.pow(level, 0.25) * Decimal.pow(strength, 0.4), 0.5).div(50),
+    effect: (level, strength) => Decimal.pow(Decimal.pow(level, 0.25).mul(Decimal.pow(strength, 0.4)), 0.5).div(50),
     formatEffect: x => format(x, 3, 3),
     combine: effects => {
       let sum = effects.reduce(Decimal.sumReducer, DC.D0);

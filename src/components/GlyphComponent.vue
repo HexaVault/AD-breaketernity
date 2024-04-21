@@ -561,18 +561,17 @@ export default {
       // If we are just creating the tooltip now, we can't move it yet.
       if (!this.$refs.tooltip) return;
       const tooltipEl = this.$refs.tooltip.$el;
-      if (tooltipEl) {
-        const rect = document.body.getBoundingClientRect();
-        tooltipEl.style.left = `${x - rect.left}px`;
-        tooltipEl.style.top = `${y - rect.top}px`;
-        if (this.$viewModel.tabs.reality.glyphTooltipDirection === 1) {
-          // In case of a really short screen, don't flicker back and forth
-          if (y - tooltipEl.offsetHeight <= 0 && y + tooltipEl.offsetHeight < rect.height) {
-            this.$viewModel.tabs.reality.glyphTooltipDirection = -1;
-          }
-        } else if (y + tooltipEl.offsetHeight >= rect.height) {
-          this.$viewModel.tabs.reality.glyphTooltipDirection = 1;
+      if (!tooltipEl) return;
+      const rect = document.body.getBoundingClientRect();
+      tooltipEl.style.left = `${x - rect.left}px`;
+      tooltipEl.style.top = `${y - rect.top}px`;
+      if (this.$viewModel.tabs.reality.glyphTooltipDirection === 1) {
+        // In case of a really short screen, don't flicker back and forth
+        if (y - tooltipEl.offsetHeight <= 0 && y + tooltipEl.offsetHeight < rect.height) {
+          this.$viewModel.tabs.reality.glyphTooltipDirection = -1;
         }
+      } else if (y + tooltipEl.offsetHeight >= rect.height) {
+        this.$viewModel.tabs.reality.glyphTooltipDirection = 1;
       }
     },
     mouseEnter(ev) {
@@ -716,7 +715,6 @@ export default {
     :draggable="draggable"
     v-on="draggable ? { dragstart: dragStart, dragend: dragEnd, drag: drag } : {}"
   >
-    text
     <div
       ref="glyph"
       :style="innerStyle"
@@ -725,7 +723,7 @@ export default {
       {{ symbol }}
       <template v-if="$viewModel.shiftDown || showGlyphEffectDots">
         <div
-          v-for="x in glyphEffects"
+          v-for="x in Object.keys(glyphEffects)"
           :key="x"
           :style="glyphEffectDots(x)"
         />

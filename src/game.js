@@ -157,10 +157,8 @@ export function requiredIPForEP(epAmount) {
 
 export function gainedGlyphLevel() {
   const glyphState = getGlyphLevelInputs();
-  let rawLevel = Decimal.floor(glyphState.rawLevel);
-  if (rawLevel.gte(DC.NUMMAX)) rawLevel = new Decimal();
-  let actualLevel = Decimal.floor(glyphState.actualLevel);
-  if (actualLevel.gte(DC.NUMMAX)) actualLevel = new Decimal();
+  const rawLevel = glyphState.rawLevel.floor();
+  const actualLevel = glyphState.actualLevel.floor();
   return {
     rawLevel,
     actualLevel
@@ -260,13 +258,11 @@ export function addRealityTime(time, realTime, rm, level, realities, ampFactor, 
   const shards = Effarig.shardsGained;
   player.records.recentRealities.pop();
   player.records.recentRealities.unshift([time, realTime, rm.times(ampFactor),
-    realities, reality, level, shards * ampFactor, projIM]);
+    realities, reality, level, shards.mul(ampFactor), projIM]);
 }
 
 export function gainedInfinities() {
-  if (EternityChallenge(4).isRunning || Pelle.isDisabled("InfinitiedMults")) {
-    return DC.D1;
-  }
+  if (EternityChallenge(4).isRunning || Pelle.isDisabled("InfinitiedMults")) return DC.D1;
   let infGain = Decimal.max(1, Achievement(87));
 
   infGain = infGain.timesEffectsOf(

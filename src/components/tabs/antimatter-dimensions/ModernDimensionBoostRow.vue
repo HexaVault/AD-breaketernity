@@ -25,7 +25,7 @@ export default {
     boostCountText() {
       if (this.requirementText) return this.requirementText;
       const parts = [this.purchasedBoosts];
-      if (this.imaginaryBoosts !== 0) {
+      if (this.imaginaryBoosts.neq(0)) {
         parts.push(this.imaginaryBoosts);
       }
       const sum = parts.map(formatInt).join(" + ");

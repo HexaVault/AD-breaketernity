@@ -144,7 +144,7 @@ export default {
         eternity.thisReal.setFrom(records.thisEternity.realTime);
         reality.thisReal.setFrom(records.thisReality.realTime);
         reality.bestRate.copyFrom(bestReality.RMmin);
-        reality.bestRarity = Math.max(strengthToRarity(bestReality.glyphStrength), 0);
+        reality.bestRarity = strengthToRarity(bestReality.glyphStrength).clampMin(0);
       }
       this.updateMatterScale();
 

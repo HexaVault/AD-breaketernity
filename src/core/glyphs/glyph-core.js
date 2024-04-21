@@ -20,11 +20,11 @@ export const generatedTypes = ["power", "infinity", "replication", "time", "dila
 export const GlyphEffectOrder = orderedEffectList.mapToObject(e => e, (e, idx) => idx);
 
 export function rarityToStrength(x) {
-  return x * 2.5 / 100 + 1;
+  return new Decimal(x).div(40).add(1);
 }
 
 export function strengthToRarity(x) {
-  return x.sub(1).div(40);
+  return new Decimal(x).sub(1).mul(40);
 }
 
 export const Glyphs = {
@@ -351,7 +351,7 @@ export const Glyphs = {
     // has already been reset, so we just use the most recent real time record (this leads to some inconsistent behavior
     // when restarting, but that's not easily avoidable)
     const stillEquipped = player.reality.glyphs.active.length;
-    const fastReality = player.records.recentRealities[0][1] < 3000;
+    const fastReality = player.records.recentRealities[0][1].lt(3e3);
     if (stillEquipped && !fastReality) {
       const target = player.options.respecIntoProtected ? "Protected slots" : "Main Inventory";
       const hasOther = this.findFreeIndex(!player.options.respecIntoProtected) !== -1;
@@ -438,7 +438,7 @@ export const Glyphs = {
     // This should only apply to glyphs you actually choose, so can't be done in glyph generation.
     // Sometimes a glyph you already have is added to the inventory (for example, unequipping),
     // but that's not an issue because then this line just won't do anything, which is fine.
-    player.records.bestReality.glyphStrength = Math.clampMin(player.records.bestReality.glyphStrength, glyph.strength);
+    player.records.bestReality.glyphStrength = player.records.bestReality.glyphStrength.clampMin(glyph.strength);
 
     player.reality.glyphs.inventory.push(glyph);
     if (requestedInventoryIndex === undefined && !isExistingGlyph) this.addVisualFlag("unseen", glyph);
@@ -452,7 +452,7 @@ export const Glyphs = {
   },
   removeVisualFlag(target, glyph) {
     const index = Glyphs[target].indexOf(glyph.id);
-    if (index.gt(-1)) Glyphs[target].splice(index, 1);
+    if (Decimal.gt(index, -1)) Glyphs[target].splice(index, 1);
   },
   isMusicGlyph(glyph) {
     return glyph?.cosmetic === "music";
@@ -821,7 +821,7 @@ export function recalculateAllGlyphs() {
 // Makes sure level is a positive whole number and rarity is >0% (retroactive fixes) and recalculates effects
 export function calculateGlyph(glyph) {
   if (glyph.color === undefined && glyph.symbol === undefined) {
-    glyph.level = Math.max(1, Math.round(glyph.level));
+    glyph.level = Decimal.round(glyph.level).clampMin(1);
     if (glyph.rawLevel === undefined) {
       // Only correct below the second round of instability, but it only matters for glyphs produced before
       // this was merged, so it's not a big deal.
@@ -829,13 +829,14 @@ export function calculateGlyph(glyph) {
         : (Decimal.pow(glyph.level.times(0.004).min(3), 2) - 1).times(125).add(1000);
     }
     // Used to randomly generate strength in this case; I don't think we actually care.
-    if (glyph.strength === 1) glyph.strength = 1.5;
-    glyph.strength = Math.min(rarityToStrength(100), glyph.strength);
+    // TODO: make glyph.strength and glyph.level decimals by default and not strings/numbers
+    if (Decimal.eq(glyph.strength, 1)) glyph.strength = new Decimal(1.5);
+    glyph.strength = rarityToStrength(100).clampMax(glyph.strength);
   }
 }
 
 export function getRarity(x) {
-  return GlyphRarities.find(e => x >= e.minStrength);
+  return GlyphRarities.find(e => Decimal.gte(x, e.minStrength));
 }
 
 export function getAdjustedGlyphLevel(glyph, realityGlyphBoost = Glyphs.levelBoost, ignoreCelestialEffects = false) {
@@ -845,7 +846,7 @@ export function getAdjustedGlyphLevel(glyph, realityGlyphBoost = Glyphs.levelBoo
     if (Enslaved.isRunning) return Decimal.max(level, Enslaved.glyphLevelMin);
     if (Effarig.isRunning) return Decimal.min(level, Effarig.glyphLevelCap);
   }
-  if (BASIC_GLYPH_TYPES.includes(glyph.type)) return level.plus(realityGlyphBoost);
+  if (BASIC_GLYPH_TYPES.includes(glyph.type)) return Decimal.add(level, realityGlyphBoost);
   return level;
 }
 

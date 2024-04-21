@@ -29,7 +29,7 @@ export default {
     },
     baseText() {
       if (!this.hasSeenAlteredSpeed) return null;
-      return this.baseSpeed === 1
+      return this.baseSpeed.eq(1)
         ? "The game is running at normal speed."
         : `Game speed is altered: ${this.baseSpeedText}`;
     }

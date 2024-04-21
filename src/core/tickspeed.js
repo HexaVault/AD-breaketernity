@@ -166,7 +166,7 @@ export const Tickspeed = {
   },
 
   get continuumValue() {
-    if (!this.isUnlocked) return 0;
+    if (!this.isUnlocked) return DC.D0;
     return this.costScale.getContinuumValue(Currency.antimatter.value, DC.D1).times(Laitela.matterExtraPurchaseFactor);
   },
 

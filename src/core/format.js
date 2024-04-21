@@ -41,6 +41,7 @@ window.formatFloat = function formatFloat(value, digits) {
 window.formatPostBreak = function formatPostBreak(value, places, placesUnder1000) {
   if (isEND()) return "END";
   const notation = Notations.current;
+  const lNotation = LNotations.current;
   // This is basically just a copy of the format method from notations library,
   // with the pre-break case removed.
   if (typeof value === "number" && !Number.isFinite(value)) {
@@ -60,6 +61,10 @@ window.formatPostBreak = function formatPostBreak(value, places, placesUnder1000
     return number < 0
       ? notation.formatNegativeUnder1000(Math.abs(number), placesUnder1000)
       : notation.formatUnder1000(number, placesUnder1000);
+  }
+
+  if (decimal.layer >= 2) {
+    return lNotation.formatLDecimal(decimal, places);
   }
 
   return decimal.sign < 0

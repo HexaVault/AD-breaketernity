@@ -38,7 +38,7 @@ export default {
       return `grid-row: 1 / ${rows + 1}; -ms-grid-row: 1; -ms-grid-row-span: ${rows};`;
     },
     formatPerkShop() {
-      return formatPercents(this.factors.perkShop - 1, 1);
+      return formatPercents(this.factors.perkShop.sub(1), 1);
     },
     sliderProps() {
       return {
@@ -120,7 +120,7 @@ export default {
       const glyphFactors = getGlyphLevelInputs();
       this.perkShopVisible = glyphFactors.perkShop !== 1;
       this.rowVisible = glyphFactors.rowFactor > 0;
-      this.achievementVisible = glyphFactors.achievementFactor > 0;
+      this.achievementVisible = glyphFactors.achievementFactor.gt(0);
       if (glyphFactors.scalePenalty !== 1) {
         this.penaltyVisible = true;
         this.lastInstability = Date.now();
@@ -162,7 +162,7 @@ export default {
     },
     formatLevel(x) {
       return x.gt(1000)
-        ? formatInt(Math.floor(x))
+        ? formatInt(x.floor())
         : format(x, 2, 4);
     },
     makeRowStyle(r) {
