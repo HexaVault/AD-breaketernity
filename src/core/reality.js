@@ -381,7 +381,7 @@ export function beginProcessReality(realityProps) {
   // which is large enough that quick realities can cause it to softlock the game due to lag on slower devices
   // Note: This is mostly a copy-paste of a code block in processManualReality() with slight modifications
   if (glyphsToProcess.lt(100)) {
-    for (let glyphNum = 0; glyphNum < glyphsToProcess; glyphNum++) {
+    for (let glyphNum = 0; glyphNum < glyphsToProcess.toNumber(); glyphNum++) {
       GlyphSelection.generate(GlyphSelection.choiceCount, glyphLevel);
       if (EffarigUnlock.glyphFilter.isUnlocked) {
         const glyphChoices = GlyphSelection.glyphList(GlyphSelection.choiceCount,
@@ -688,8 +688,8 @@ export function finishProcessReality(realityProps) {
     Currency.tachyonParticles.reset();
   }
   player.dilation.nextThreshold = DC.E3;
-  player.dilation.baseTachyonGalaxies = 0;
-  player.dilation.totalTachyonGalaxies = 0;
+  player.dilation.baseTachyonGalaxies = DC.D0;
+  player.dilation.totalTachyonGalaxies = DC.D0;
   Currency.dilatedTime.reset();
   player.records.thisInfinity.maxAM = DC.D0;
   player.records.thisEternity.maxAM = DC.D0;
@@ -708,7 +708,7 @@ export function finishProcessReality(realityProps) {
   resetChallengeStuff();
   AntimatterDimensions.reset();
   secondSoftReset(false);
-  player.celestials.ra.peakGamespeed = 1;
+  player.celestials.ra.peakGamespeed = DC.D1;
 
   InfinityDimensions.resetAmount();
   player.records.thisInfinity.bestIPmin = DC.D0;
@@ -718,8 +718,8 @@ export function finishProcessReality(realityProps) {
   player.records.thisEternity.bestIPMsWithoutMaxAll = DC.D0;
   player.records.bestEternity.bestEPminReality = DC.D0;
   player.records.thisReality.bestEternitiesPerMs = DC.D0;
-  player.records.thisReality.bestRSmin = 0;
-  player.records.thisReality.bestRSminVal = 0;
+  player.records.thisReality.bestRSmin = DC.D0;
+  player.records.thisReality.bestRSminVal = DC.D0;
   resetTimeDimensions();
   resetTickspeed();
   AchievementTimers.marathon2.reset();

@@ -583,7 +583,8 @@ window.ExponentialCostScaling = class ExponentialCostScaling {
   }
 
   getContinuumValue(money, perSet) {
-    return this.getMaxBought(0, money, perSet, false).quantity;
+    const continuumBase = this.getMaxBought(0, money, perSet, false);
+    return continuumBase ? continuumBase.quantity : continuumBase;
   }
 };
 

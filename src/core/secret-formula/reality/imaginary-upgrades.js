@@ -105,7 +105,7 @@ export const imaginaryUpgrades = [
     requirement: () => `${format(1e90)} total Relic Shards
       (You have ${format(player.celestials.effarig.relicShards, 2)})`,
     hasFailed: () => false,
-    checkRequirement: () => player.celestials.effarig.relicShards >= 1e90,
+    checkRequirement: () => player.celestials.effarig.relicShards.gte(1e90),
     checkEvent: GAME_EVENT.REALITY_RESET_AFTER,
     description: "Time Dimension power based on total antimatter",
     effect: () => player.records.totalAntimatter.log10().log10().div(100).add(1),
@@ -120,7 +120,7 @@ export const imaginaryUpgrades = [
     ${formatInt(100)}`,
     hasFailed: () => false,
     checkRequirement: () => Object.values(player.celestials.effarig.glyphWeights).some(w => w === 100) &&
-      gainedGlyphLevel().actualLevel >= 9000,
+      gainedGlyphLevel().actualLevel.gte(9000),
     checkEvent: GAME_EVENT.REALITY_RESET_BEFORE,
     description: "Gain free Dimboosts based on Imaginary rebuyable count",
     effect: () => ImaginaryUpgrades.totalRebuyables.mul(2e4),

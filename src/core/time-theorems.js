@@ -72,7 +72,7 @@ export class TimeTheoremPurchaseType {
   }
 
   reset() {
-    this.amount = 0;
+    this.amount = DC.D0;
   }
 }
 

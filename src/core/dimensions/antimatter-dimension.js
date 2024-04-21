@@ -471,14 +471,16 @@ class AntimatterDimensionState extends DimensionState {
    * @returns {number}
    */
   get continuumValue() {
-    if (!this.isAvailableForPurchase) return 0;
+    if (!this.isAvailableForPurchase) return DC.D0;
     // Nameless limits dim 8 purchases to 1 only
     // Continuum should be no different
-    if (this.tier === 8 && Enslaved.isRunning) return 1;
+    if (this.tier === 8 && Enslaved.isRunning) return DC.D1;
     // It's safe to use dimension.currencyAmount because this is
     // a dimension-only method (so don't just copy it over to tickspeed).
     // We need to use dimension.currencyAmount here because of different costs in NC6.
-    return this.costScale.getContinuumValue(this.currencyAmount, DC.E1).times(Laitela.matterExtraPurchaseFactor);
+    const contVal = this.costScale.getContinuumValue(this.currencyAmount, DC.E1)
+      .times(Laitela.matterExtraPurchaseFactor);
+    return contVal ? contVal.times(Laitela.matterExtraPurchaseFactor) : DC.D0;
   }
 
   /**
