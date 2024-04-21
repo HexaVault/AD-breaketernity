@@ -413,7 +413,8 @@ export default {
     glyphEffects() {
       // Get intIDs, then subtract smallest in next code
       const subVal = Object.values(GlyphTypes[this.glyph.type].effects.mapToObject(x => x.intID, x => x.intID)).nMin();
-      return GlyphTypes[this.glyph.type].effects.mapToObject(x => x.intID - subVal, x => x.id);
+      const glyphEffects = GlyphTypes[this.glyph.type].effects.filter(e => this.glyph.effects.includes(e.id));
+      return glyphEffects.mapToObject(x => x.intID - subVal, x => x.id);
     },
     isRealityGlyph() {
       return this.glyph.type === "reality";

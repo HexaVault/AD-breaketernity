@@ -38,19 +38,18 @@ export const AutoGlyphProcessor = {
   // on only the glyph itself and not external factors.
   filterValue(glyph) {
     const typeCfg = this.types[glyph.type];
-    if (["companion", "reality"].includes(glyph.type)) return Infinity;
-    if (glyph.type === "cursed") return -Infinity;
+    if (["companion", "reality"].includes(glyph.type)) return new Decimal(Infinity);
+    if (glyph.type === "cursed") return new Decimal(-Infinity);
     switch (this.scoreMode) {
       case AUTO_GLYPH_SCORE.LOWEST_SACRIFICE:
         // Picked glyphs are never kept in this mode. Sacrifice cap needs to be checked since effarig caps
         // at a lower value than the others and we don't want to uselessly pick that to sacrifice all the time
-        return player.reality.glyphs.sac[glyph.type] >= GlyphSacrifice[glyph.type].cap
-          ? -Infinity
-          : -player.reality.glyphs.sac[glyph.type];
+        return player.reality.glyphs.sac[glyph.type].gte(GlyphSacrifice[glyph.type].cap)
+          ? new Decimal(-Infinity)
+          : player.reality.glyphs.sac[glyph.type].mul(-1);
       case AUTO_GLYPH_SCORE.EFFECT_COUNT:
         // Effect count, plus a very small rarity term to break ties in favor of rarer glyphs
-        return strengthToRarity(glyph.strength) / 1000 + getGlyphEffectsFromBitmask(glyph.effects, 0, 0)
-          .filter(effect => effect.isGenerated).length;
+        return strengthToRarity(glyph.strength).div(1e3).add(getGlyphEffectsFromBitmask(glyph.effects, 0, 0).length);
       case AUTO_GLYPH_SCORE.RARITY_THRESHOLD:
         return strengthToRarity(glyph.strength);
       case AUTO_GLYPH_SCORE.SPECIFIED_EFFECT: {
@@ -87,12 +86,12 @@ export const AutoGlyphProcessor = {
         const refinementGain = GlyphSacrificeHandler.glyphRefinementGain(glyph);
         return resource.isUnlocked && refinementGain > 0
           ? -resource.amount
-          : Number.NEGATIVE_INFINITY;
+          : new Decimal(-Infinity);
       }
       case AUTO_GLYPH_SCORE.ALCHEMY_VALUE:
         return AlchemyResource[glyph.type].isUnlocked
           ? GlyphSacrificeHandler.glyphRefinementGain(glyph)
-          : Number.NEGATIVE_INFINITY;
+          : new Decimal(-Infinity);
       default:
         throw new Error("Unknown glyph score mode in score assignment");
     }
@@ -120,7 +119,7 @@ export const AutoGlyphProcessor = {
     }
   },
   wouldKeep(glyph) {
-    return this.filterValue(glyph) >= this.thresholdValue(glyph);
+    return this.filterValue(glyph).gte(this.thresholdValue(glyph));
   },
   // Given a list of glyphs, pick the one with the highest score
   pick(glyphs) {
