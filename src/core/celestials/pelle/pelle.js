@@ -317,7 +317,7 @@ export const Pelle = {
   },
 
   get glyphStrength() {
-    return 1;
+    return DC.D1;
   },
 
   antimatterDimensionMult(x) {

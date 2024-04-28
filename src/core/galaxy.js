@@ -54,8 +54,10 @@ export class Galaxy {
       const quad = decimalQuadraticSolution(a, b, c);
       return Decimal.max(quad, player.galaxies);
     }
-    // eslint-disable-next-line max-len
-    // Might not be perfect but at this point who gives a shit - If we can buy more we will loop a bit at the end to go through till we cant
+    // eslint-disable-next-line multiline-comment-style
+    /*
+    // Might not be perfect but at this point who gives a shit
+      - If we can buy more we will loop a bit at the end to go through till we cant
     const delay = minV;
     const remote = Galaxy.remoteStart;
     const inc = Galaxy.costMult;
@@ -89,9 +91,20 @@ export class Galaxy {
     }
     if (rep === 25) {
       // eslint-disable-next-line max-len, no-console
-      console.log("Repetitions in remote calculations (line 55-80 of galaxy.js) repeated far more than expected, logging.");
+      console.log("Repetitions in remote calculations (line 55-80 of galaxy.js)
+        repeated far more than expected, logging.");
     }
     return Decimal.max(pur, player.galaxies);
+    */
+
+    if (Galaxy.remoteStart.gt(1e6) || Galaxy.requirementAt(DC.E6).lt(currency)) {
+      return Decimal.log(currency.div(Galaxy.requirementAt(Galaxy.remoteStart.max(1e6))), 1.008).add(1e6);
+    }
+    // Ignore BBBS' warning, even though its theoretically quite dangerous
+    return new Decimal(bulkBuyBinarySearch(new Decimal(currency), {
+      costFunction: x => this.requirementAt(x).amount,
+      cumulative: false,
+    }, 0, true));
   }
 
   static requirementAt(galaxies) {
