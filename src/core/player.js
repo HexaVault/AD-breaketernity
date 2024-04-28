@@ -670,11 +670,11 @@ window.player = {
       dimensions: Array.range(0, 4).map(() =>
         ({
           amount: DC.D0,
-          intervalUpgrades: 0,
-          powerDMUpgrades: 0,
-          powerDEUpgrades: 0,
-          timeSinceLastUpdate: 0,
-          ascensionCount: 0
+          intervalUpgrades: DC.D0,
+          powerDMUpgrades: DC.D0,
+          powerDEUpgrades: DC.D0,
+          realDiff: DC.D0,
+          ascensionCount: DC.D0
         })),
       entropy: 0,
       thisCompletion: 3600,
