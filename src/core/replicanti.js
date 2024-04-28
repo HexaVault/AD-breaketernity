@@ -95,10 +95,9 @@ function fastReplicantiBelow308(log10GainFactor, isAutobuyerActive) {
 // (in which case interval should be as if not over cap). This is why we have
 // the overCapOverride parameter, to tell us which case we are in.
 export function getReplicantiInterval(overCapOverride, intervalIn) {
-  let interval = intervalIn || player.replicanti.interval;
+  let interval = new Decimal(intervalIn || player.replicanti.interval);
   const amount = Replicanti.amount;
   const overCap = overCapOverride === undefined ? amount.gt(replicantiCap()) : overCapOverride;
-  interval = new Decimal(interval);
   if ((TimeStudy(133).isBought && !Achievement(138).isUnlocked) || overCap) {
     interval = interval.times(10);
   }
@@ -153,12 +152,12 @@ export function totalReplicantiSpeedMult(overCap) {
   }
   totalMult = totalMult.times(getAdjustedGlyphEffect("replicationspeed"));
   if (GlyphAlteration.isAdded("replication")) {
-    totalMult = totalMult.times(
-      Math.clampMin(Decimal.log10(Replicanti.amount) * getSecondaryGlyphEffect("replicationdtgain"), 1));
+    totalMult = totalMult
+      .times(Replicanti.amount.log10().mul(getSecondaryGlyphEffect("replicationdtgain")).clampMin(1));
   }
   totalMult = totalMult.timesEffectsOf(AlchemyResource.replication, Ra.unlocks.continuousTTBoost.effects.replicanti);
 
-  return totalMult;
+  return totalMult.clampMin(1);
 }
 
 export function replicantiCap() {

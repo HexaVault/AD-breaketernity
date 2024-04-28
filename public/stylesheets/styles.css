@@ -2402,9 +2402,9 @@ br {
   background: black;
   border: 0.1rem solid var(--color-text);
   border-radius: var(--var-border-width, 0.5rem);
-  visibility: hidden;
-  padding: 0.5rem;
   transform: translate(calc(-100% - 1.5rem), -50%);
+  padding: 0.5rem;
+  visibility: hidden;
 }
 
 .c-dim-tooltip-container:hover .c-dim-purchase-count-tooltip {
@@ -2414,11 +2414,11 @@ br {
 .c-dim-tooltip-container .c-dim-purchase-count-tooltip::after {
   content: "";
   position: absolute;
-  top: 50%;
   left: 100%;
+  top: 50%;
   border-top: 0.5rem solid transparent;
-  border-bottom: 0.5rem solid transparent;
   border-left: 0.5rem solid var(--color-text);
+  border-bottom: 0.5rem solid transparent;
   transform: translateY(-50%);
 }
 
@@ -2813,9 +2813,8 @@ br {
   background-color: var(--color-base);
   border: 0.1rem var(--color-good);
   border-style: solid;
+  border-top-color: transparent;
   border-radius: var(--var-border-radius, 0.4rem);
-  /* May be removed if it makes things to blurry */
-  transform: translateY(-0.1rem);
 }
 
 /* We need scrollbar-color in this rule as well as identical color specifications in the following two; some

@@ -1,3 +1,5 @@
+import { isDecimal } from "../../../utility/type-check";
+
 export const END_STATE_MARKERS = {
   // Tab zalgoification starts as soon as endState > 0
   GAME_END: 1,
@@ -7,8 +9,10 @@ export const END_STATE_MARKERS = {
   SAVE_DISABLED: 4,
   END_NUMBERS: 4.2,
   CREDITS_START: 4.5,
-  SHOW_NEW_GAME: 13,
-  SPECTATE_GAME: 13.5,
+  SHOW_NEW_GAME: 13.5,
+  SPECTATE_GAME: 13.9,
+  // The song is 3:04 and the credits increment by 1 every 20 seconds. Needs changing if the song is changed.
+  SONG_END: 13.7,
   CREDITS_END: 14.5,
 };
 
@@ -16,7 +20,7 @@ export const GameEnd = {
   get endState() {
     if (this.removeAdditionalEnd) return this.additionalEnd;
     let x = 0;
-    if (player.celestials.pelle.records.totalAntimatter.mag >= 2 && player.bypassEnd !== true) {
+    if (player.celestials.pelle.records.totalAntimatter.layer >= 2 && player.bypassEnd !== true) {
       x = player.celestials.pelle.records.totalAntimatter.max(1).log10().sub(9e15).min(5000).toNumber();
     }
     return Math.max(x, 0);
@@ -36,12 +40,7 @@ export const GameEnd = {
   creditsEverClosed: false,
 
   gameLoop(diffr) {
-    let diff;
-    if (diffr instanceof Decimal) {
-      diff = diffr.toNumber();
-    } else {
-      diff = diffr;
-    }
+    const diff = isDecimal(diffr) ? diffr.toNumber() : diffr;
     if (this.removeAdditionalEnd) {
       this.additionalEnd -= Math.min(diff / 200, 0.5);
       if (this.additionalEnd < 4) {
@@ -49,7 +48,7 @@ export const GameEnd = {
         this.removeAdditionalEnd = false;
       }
     }
-    if (!(this.removeAdditionalEnd) && this.endState > END_STATE_MARKERS.GAME_END &&
+    if (!this.removeAdditionalEnd && this.endState >= END_STATE_MARKERS.GAME_END &&
         ui.$viewModel.modal.progressBar === undefined) {
       player.isGameEnd = true;
       this.additionalEnd += Math.min(diff / 1000 / 20, 0.1);

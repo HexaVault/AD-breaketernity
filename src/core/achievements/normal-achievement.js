@@ -167,9 +167,9 @@ export const Achievements = {
   _power: new Lazy(() => {
     const unlockedRows = Achievements.allRows
       .countWhere(row => row.every(ach => ach.isUnlocked));
-    const basePower = Math.pow(1.25, unlockedRows) * Math.pow(1.03, Achievements.effectiveCount);
-    const exponent = getAdjustedGlyphEffect("effarigachievement") * Ra.unlocks.achievementPower.effectOrDefault(1);
-    return Math.pow(basePower, exponent);
+    const basePower = Decimal.pow(1.25, unlockedRows).mul(Decimal.pow(1.03, Achievements.effectiveCount));
+    const exponent = getAdjustedGlyphEffect("effarigachievement").mul(Ra.unlocks.achievementPower.effectOrDefault(1));
+    return basePower.pow(exponent);
   }),
 
   get power() {

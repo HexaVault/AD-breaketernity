@@ -33,12 +33,15 @@ export default {
     fullScreenIconClass() {
       return this.fullScreen ? "fa-compress-arrows-alt" : "fa-expand-arrows-alt";
     },
+    automatorSpeed() {
+      return quantify("command", Decimal.div(1000, this.interval), 2, 2);
+    },
     intervalText() {
       const speedupText = `Each Reality makes it run ${formatPercents(0.006, 1)} faster, up to a maximum of
         ${formatInt(1000)} per second.`;
       return this.interval === 1
         ? `The Automator is running at max speed (${formatInt(1000)} commands per real-time second).`
-        : `The Automator is running ${quantify("command", 1000 / this.interval, 2, 2)} per real-time second.
+        : `The Automator is running ${this.automatorSpeed} per real-time second.
           ${speedupText}`;
     },
     maxScriptChars() {

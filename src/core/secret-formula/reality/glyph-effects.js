@@ -609,7 +609,7 @@ export const glyphEffects = {
     genericDesc: "Dilated Time factor for Glyph level",
     shortDesc: "DT pow. for level +{value}",
     // You can only get this effect on level 25000 reality glyphs anyway, might as well make it look nice
-    effect: () => Decimal.sqrt(level.div(10)).div(500),
+    effect: level => Decimal.sqrt(level.div(10)).div(500),
     formatEffect: x => format(x, 2, 2),
     combine: GlyphCombiner.add,
   },

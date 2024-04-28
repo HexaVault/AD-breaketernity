@@ -45,7 +45,8 @@ export function getAdjustedGlyphEffectUncached(effectKey) {
  * @return {number | Decimal}
  */
 export function getAdjustedGlyphEffect(effectKey) {
-  return GameCache.glyphEffects.value[effectKey];
+  // TODO: make it always be decimal by default
+  return new Decimal(GameCache.glyphEffects.value[effectKey]);
 }
 
 /**
@@ -67,10 +68,10 @@ export function getGlyphEffectValues(effectKey) {
   if (!orderedEffectList.includes(effectKey)) {
     throw new Error(`Unknown Glyph effect requested "${effectKey}"'`);
   }
-  return player.reality.glyphs.active
-    .filter(glyph => ((1 << GlyphEffects[effectKey].bitmaskIndex) & glyph.effects) !== 0)
-    .filter(glyph => generatedTypes.includes(glyph.type) === GlyphEffects[effectKey].isGenerated)
+  const r = player.reality.glyphs.active
+    .filter(glyph => glyph.effects.includes(effectKey))
     .map(glyph => getSingleGlyphEffectFromBitmask(effectKey, glyph));
+  return r;
 }
 
 // Combines all specified glyph effects, reduces some boilerplate
@@ -121,9 +122,7 @@ export function getGlyphEffectValuesFromArray(array, level, baseStrength, type) 
 // Pulls out a single effect value from a glyph's bitmask, returning just the value (nothing for missing effects)
 export function getSingleGlyphEffectFromBitmask(effectName, glyph) {
   const glyphEffect = GlyphEffects[effectName];
-  if ((glyph.effects & (1 << glyphEffect.bitmaskIndex)) === 0) {
-    return undefined;
-  }
+  if (!glyph.effects.includes(effectName)) return undefined;
   return glyphEffect.effect(getAdjustedGlyphLevel(glyph), Pelle.isDoomed ? Pelle.glyphStrength : glyph.strength);
 }
 

@@ -12,22 +12,22 @@ export default {
   },
   data() {
     return {
-      theoremAmount: new Decimal(0),
-      theoremGeneration: new Decimal(0),
-      totalTimeTheorems: new Decimal(0),
+      theoremAmount: new Decimal(),
+      theoremGeneration: new Decimal(),
+      totalTimeTheorems: new Decimal(),
       shopMinimized: false,
       minimizeAvailable: false,
       hasTTAutobuyer: false,
       isAutobuyerOn: false,
       budget: {
-        am: new Decimal(0),
-        ip: new Decimal(0),
-        ep: new Decimal(0)
+        am: new Decimal(),
+        ip: new Decimal(),
+        ep: new Decimal()
       },
       costs: {
-        am: new Decimal(0),
-        ip: new Decimal(0),
-        ep: new Decimal(0)
+        am: new Decimal(),
+        ip: new Decimal(),
+        ep: new Decimal()
       },
       showST: false,
       STamount: 0,
@@ -45,7 +45,7 @@ export default {
         return format;
       }
       if (!(Teresa.isRunning || Enslaved.isRunning) &&
-        getAdjustedGlyphEffect("dilationTTgen") > 0 && !DilationUpgrade.ttGenerator.isBought) {
+        getAdjustedGlyphEffect("dilationTTgen").gt(0) && !DilationUpgrade.ttGenerator.isBought) {
         return formatFloat;
       }
       return formatInt;

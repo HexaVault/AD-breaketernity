@@ -125,11 +125,8 @@ export default {
     rarityText() {
       if (!GlyphTypes[this.type].hasRarity) return "";
       const strength = Pelle.isDoomed ? Pelle.glyphStrength : this.strength;
-      const color = Theme.current().isDark()
-        ? this.rarityInfo.darkColor
-        : this.rarityInfo.lightColor;
       return `| Rarity:
-        <span style="color: ${color}">${formatRarity(strengthToRarity(strength))}</span>`;
+        <span style="color: ${this.descriptionStyle.color}">${formatRarity(strengthToRarity(strength))}</span>`;
     },
     levelText() {
       if (this.type === "companion") return "";

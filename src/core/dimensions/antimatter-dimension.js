@@ -478,8 +478,7 @@ class AntimatterDimensionState extends DimensionState {
     // It's safe to use dimension.currencyAmount because this is
     // a dimension-only method (so don't just copy it over to tickspeed).
     // We need to use dimension.currencyAmount here because of different costs in NC6.
-    const contVal = this.costScale.getContinuumValue(this.currencyAmount, DC.E1)
-      .times(Laitela.matterExtraPurchaseFactor);
+    const contVal = this.costScale.getContinuumValue(this.currencyAmount, DC.E1);
     return contVal ? contVal.times(Laitela.matterExtraPurchaseFactor) : DC.D0;
   }
 

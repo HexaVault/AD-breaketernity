@@ -1256,7 +1256,7 @@ export const news = [
       fortunately, we've developed a reverse-containment cell, meaning it's everywhere except here. Our brain has
       a protection system, that specifically filters out any information regarding this number, that's how we've
       been able to survive for this long, and why others like us went extinct in the past, but the number has been
-      getting stronger, slowly getting closer to breaking our protection. We've temporary stopped the number from
+      getting stronger, slowly getting closer to breaking our protection. We've temporarily stopped the number from
       slipping into our memory by using the world-wide memory manipulator located in this room to keep making
       everyone think that 9 comes after 8 with a side effect that makes everyone think that 9 is evil, but this
       won't last forever, as the number will keep getting stronger, and will eventually overpower the memory
@@ -2574,7 +2574,7 @@ export const news = [
     id: "a388",
     text:
       `In light of recent events, we'd like to issue an official statement. Antimatter Dimensions™ is in no way
-      affiliated with Jimmy's Causality Violating Brainworms™. We do not endorse, no were we involved in their creation
+      affiliated with Jimmy's Causality Violating Brainworms™. We do not endorse, nor were we involved in their creation
       of the product which was involved in several catastrophic dimension-destabilising and reality-toppling incidents.
       We almost certainly did not sign a contract at 5:30:26 UTC on 08/12/1994 after discussing how we could benefit
       from destabilising and warping dimensions. There was no industrial zone constructed in the 5th Orion Arm of the
@@ -2621,7 +2621,7 @@ export const news = [
   {
     id: "l6",
     text:
-      `Antimatter people seem to be even more afraid of 13 then we are. They destroyed
+      `Antimatter people seem to be even more afraid of 13 than we are. They destroyed
       entire galaxies just to remove 13 from their percents.`,
     get unlocked() { return player.galaxies.gt(0) || Currency.infinities.gt(0); }
   },
