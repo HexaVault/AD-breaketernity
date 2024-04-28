@@ -15,7 +15,7 @@ export const Teresa = {
   pourRM(diff) {
     if (this.pouredAmount >= Teresa.pouredAmountCap) return;
     this.timePoured += diff;
-    const rm = Currency.realityMachines.value;
+    const rm = Currency.realityMachines.value.max(1e100);
     const rmPoured = Math.min((this.pouredAmount + 1e6) * 0.01 * Math.pow(this.timePoured, 2), rm.toNumber());
     this.pouredAmount += Math.min(rmPoured, Teresa.pouredAmountCap - this.pouredAmount);
     Currency.realityMachines.subtract(rmPoured);

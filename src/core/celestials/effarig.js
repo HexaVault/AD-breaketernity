@@ -53,12 +53,12 @@ export const Effarig = {
   get glyphLevelCap() {
     switch (this.currentStage) {
       case EFFARIG_STAGES.INFINITY:
-        return 100;
+        return new Decimal(DC.E2);
       case EFFARIG_STAGES.ETERNITY:
-        return 1500;
+        return new Decimal(1500);
       case EFFARIG_STAGES.REALITY:
       default:
-        return 2000;
+        return new Decimal(2000);
     }
   },
   get glyphEffectAmount() {

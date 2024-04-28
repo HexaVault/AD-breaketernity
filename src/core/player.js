@@ -613,45 +613,45 @@ window.player = {
       pets: {
         teresa: {
           level: 1,
-          memories: 0,
-          memoryChunks: 0,
+          memories: DC.D0,
+          memoryChunks: DC.D0,
           memoryUpgrades: 0,
           chunkUpgrades: 0
         },
         effarig: {
           level: 1,
-          memories: 0,
-          memoryChunks: 0,
+          memories: DC.D0,
+          memoryChunks: DC.D0,
           memoryUpgrades: 0,
           chunkUpgrades: 0
         },
         enslaved: {
           level: 1,
-          memories: 0,
-          memoryChunks: 0,
+          memories: DC.D0,
+          memoryChunks: DC.D0,
           memoryUpgrades: 0,
           chunkUpgrades: 0
         },
         v: {
           level: 1,
-          memories: 0,
-          memoryChunks: 0,
+          memories: DC.D0,
+          memoryChunks: DC.D0,
           memoryUpgrades: 0,
           chunkUpgrades: 0
         }
       },
       alchemy: Array.repeat(0, 21)
         .map(() => ({
-          amount: 0,
+          amount: DC.D0,
           reaction: false
         })),
       highestRefinementValue: {
-        power: 0,
-        infinity: 0,
-        time: 0,
-        replication: 0,
-        dilation: 0,
-        effarig: 0
+        power: DC.D0,
+        infinity: DC.D0,
+        time: DC.D0,
+        replication: DC.D0,
+        dilation: DC.D0,
+        effarig: DC.D0
       },
       quoteBits: 0,
       momentumTime: DC.D0,

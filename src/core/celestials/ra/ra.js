@@ -1,4 +1,5 @@
 import { BitUpgradeState, GameMechanicState } from "../../game-mechanics";
+import { DC } from "../../constants";
 import { Quotes } from "../quotes";
 
 class RaUnlockState extends BitUpgradeState {
@@ -139,55 +140,55 @@ class RaPetState extends GameMechanicState {
   }
 
   get memoryUpgradeCurrentMult() {
-    return Math.pow(1.3, this.data.memoryUpgrades);
+    return Decimal.pow(1.3, this.data.memoryUpgrades);
   }
 
   get chunkUpgradeCurrentMult() {
-    return Math.pow(1.5, this.data.chunkUpgrades);
+    return Decimal.pow(1.5, this.data.chunkUpgrades);
   }
 
   get memoryUpgradeCost() {
-    return 1000 * Math.pow(5, this.data.memoryUpgrades);
+    return Decimal.pow(5, this.data.memoryUpgrades).mul(DC.E3);
   }
 
   get chunkUpgradeCost() {
-    return 5000 * Math.pow(25, this.data.chunkUpgrades);
+    return Math.pow(25, this.data.chunkUpgrades).mul(5000);
   }
 
   get canBuyMemoryUpgrade() {
-    return this.memoryUpgradeCost <= this.memories;
+    return this.memoryUpgradeCost.lte(this.memories);
   }
 
   get canBuyChunkUpgrade() {
-    return this.chunkUpgradeCost <= this.memories;
+    return this.chunkUpgradeCost.lte(this.memories);
   }
 
   get memoryUpgradeCapped() {
-    return this.memoryUpgradeCost >= 0.5 * Ra.requiredMemoriesForLevel(Ra.levelCap - 1);
+    return this.memoryUpgradeCost.gte(Ra.requiredMemoriesForLevel(Ra.levelCap - 1).div(2));
   }
 
   get chunkUpgradeCapped() {
-    return this.chunkUpgradeCost >= 0.5 * Ra.requiredMemoriesForLevel(Ra.levelCap - 1);
+    return this.chunkUpgradeCost.gte(Ra.requiredMemoriesForLevel(Ra.levelCap - 1).div(2));
   }
 
   purchaseMemoryUpgrade() {
     if (!this.canBuyMemoryUpgrade || this.memoryUpgradeCapped) return;
 
-    this.memories -= this.memoryUpgradeCost;
+    this.memories = this.memories.sub(this.memoryUpgradeCost);
     this.data.memoryUpgrades++;
   }
 
   purchaseChunkUpgrade() {
     if (!this.canBuyChunkUpgrade || this.chunkUpgradeCapped) return;
 
-    this.memories -= this.chunkUpgradeCost;
+    this.memories = this.memories.sub(this.chunkUpgradeCost);
     this.data.chunkUpgrades++;
   }
 
   levelUp() {
     if (this.memories < this.requiredMemories) return;
 
-    this.memories -= this.requiredMemories;
+    this.memories = this.memories.sub(this.requiredMemories);
     this.level++;
     Ra.checkForUnlocks();
   }
@@ -199,22 +200,22 @@ class RaPetState extends GameMechanicState {
   }
 
   tick(realDiff, generateChunks) {
-    const seconds = realDiff / 1000;
+    const seconds = realDiff.div(1000);
     const newMemoryChunks = generateChunks
-      ? seconds * this.memoryChunksPerSecond
+      ? seconds.mul(this.memoryChunksPerSecond)
       : 0;
     // Adding memories from half of the gained chunks this tick results in the best mathematical behavior
     // for very long simulated ticks
-    const newMemories = seconds * (this.memoryChunks + newMemoryChunks / 2) * Ra.productionPerMemoryChunk *
-      this.memoryUpgradeCurrentMult;
-    this.memoryChunks += newMemoryChunks;
-    this.memories += newMemories;
+    const newMemories = seconds.mul(this.memoryChunks.add(newMemoryChunks.div(2)))
+      .mul(Ra.productionPerMemoryChunk).mul(this.memoryUpgradeCurrentMult);
+    this.memoryChunks = this.memoryChunks.add(newMemoryChunks);
+    this.memories = this.memories.add(newMemories);
   }
 
   reset() {
     this.data.level = 1;
-    this.data.memories = 0;
-    this.data.memoryChunks = 0;
+    this.data.memories = DC.D0;
+    this.data.memoryChunks = DC.D0;
     this.data.memoryUpgrades = 0;
     this.data.chunkUpgrades = 0;
   }
@@ -255,14 +256,14 @@ export const Ra = {
   get productionPerMemoryChunk() {
     let res = Effects.product(Ra.unlocks.continuousTTBoost.effects.memories, Achievement(168));
     for (const pet of Ra.pets.all) {
-      if (pet.isUnlocked) res *= pet.memoryProductionMultiplier;
+      if (pet.isUnlocked) res = res.mul(pet.memoryProductionMultiplier);
     }
     return res;
   },
   get memoryBoostResources() {
     const boostList = [];
     for (const pet of Ra.pets.all) {
-      if (pet.memoryProductionMultiplier !== 1) boostList.push(pet.memoryGain);
+      if (pet.memoryProductionMultiplier.neq(1)) boostList.push(pet.memoryGain);
     }
     if (Achievement(168).isUnlocked) boostList.push("Achievement 168");
     if (Ra.unlocks.continuousTTBoost.canBeApplied) boostList.push("current TT");
@@ -273,22 +274,22 @@ export const Ra = {
   },
   // This is the exp required ON "level" in order to reach "level + 1"
   requiredMemoriesForLevel(level) {
-    if (level >= Ra.levelCap) return Infinity;
-    const adjustedLevel = level + Math.pow(level, 2) / 10;
-    const post15Scaling = Math.pow(1.5, Math.max(0, level - 15));
-    return Math.floor(Math.pow(adjustedLevel, 5.52) * post15Scaling * 1e6);
+    if (level >= Ra.levelCap) return DC.BEMAX;
+    const adjustedLevel = Decimal.pow(level, 2).div(10).add(level);
+    const post15Scaling = Decimal.pow(1.5, Decimal.max(0, level - 15));
+    return Decimal.floor(Decimal.pow(adjustedLevel, 5.52).mul(post15Scaling).mul(DC.E6));
   },
   // Returns a string containing a time estimate for gaining a specific amount of exp (UI only)
   timeToGoalString(pet, expToGain) {
     // Quadratic formula for growth (uses constant growth for a = 0)
     const a = Enslaved.isStoringRealTime
       ? 0
-      : Ra.productionPerMemoryChunk * pet.memoryUpgradeCurrentMult * pet.memoryChunksPerSecond / 2;
-    const b = Ra.productionPerMemoryChunk * pet.memoryUpgradeCurrentMult * pet.memoryChunks;
-    const c = -expToGain;
+      : Ra.productionPerMemoryChunk.mul(pet.memoryUpgradeCurrentMult).mul(pet.memoryChunksPerSecond).div(2);
+    const b = Ra.productionPerMemoryChunk.mul(pet.memoryUpgradeCurrentMult).mul(pet.memoryChunks);
+    const c = expToGain.neg();
     const estimate = a === 0
-      ? -c / b
-      : (Math.sqrt(Math.pow(b, 2) - 4 * a * c) - b) / (2 * a);
+      ? -c.div(b)
+      : decimalQuadraticSolution(a, b, c);
     if (Number.isFinite(estimate)) {
       return `in ${TimeSpan.fromSeconds(new Decimal(estimate)).toStringShort()}`;
     }
@@ -356,9 +357,9 @@ export const Ra = {
     player.celestials.ra.petWithRemembrance = name;
   },
   updateAlchemyFlow(realityRealTime) {
-    const perSecond = 1000 / realityRealTime;
+    const perSecond = DC.E3.div(realityRealTime);
     for (const resource of AlchemyResources.all) {
-      resource.ema.addValue((resource.amount - resource.before) * perSecond);
+      resource.ema.addValue((resource.amount.sub(resource.before)).mul(perSecond));
       resource.before = resource.amount;
     }
   },

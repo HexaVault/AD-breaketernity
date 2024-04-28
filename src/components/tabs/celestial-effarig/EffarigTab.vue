@@ -12,7 +12,7 @@ export default {
   },
   data() {
     return {
-      relicShards: 0,
+      relicShards: new Decimal(),
       shardRarityBoost: 0,
       shardPower: 0,
       shardsGained: 0,
@@ -69,13 +69,13 @@ export default {
   },
   methods: {
     update() {
-      this.relicShards = Currency.relicShards.value;
-      this.shardRarityBoost = Effarig.maxRarityBoost / 100;
+      this.relicShards.copyFrom(Currency.relicShards.value);
+      this.shardRarityBoost.copyFrom(Effarig.maxRarityBoost.div(100));
       this.shardPower = Ra.unlocks.maxGlyphRarityAndShardSacrificeBoost.effectOrDefault(1);
       this.shardsGained = Effarig.shardsGained;
-      this.currentShardsRate = (this.shardsGained / Time.thisRealityRealTime.totalMinutes);
-      this.amplification = simulatedRealityCount(false);
-      this.amplifiedShards = this.shardsGained * (1 + this.amplification);
+      this.currentShardsRate = (this.shardsGained.div(Time.thisRealityRealTime.totalMinutes));
+      this.amplification.copyFrom(simulatedRealityCount(false));
+      this.amplifiedShards = this.shardsGained.mult(this.amplification.add(1));
       this.amplifiedShardsRate = (this.amplifiedShards / Time.thisRealityRealTime.totalMinutes);
       this.quote = Effarig.quote;
       this.runUnlocked = EffarigUnlock.run.isUnlocked;

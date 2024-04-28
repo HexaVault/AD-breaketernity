@@ -413,7 +413,7 @@ Currency.perkPoints = new class extends DecimalCurrency {
   set value(value) { player.reality.perkPoints = value; }
 }();
 
-Currency.relicShards = new class extends NumberCurrency {
+Currency.relicShards = new class extends DecimalCurrency {
   get value() { return player.celestials.effarig.relicShards; }
   set value(value) { player.celestials.effarig.relicShards = value; }
 }();
