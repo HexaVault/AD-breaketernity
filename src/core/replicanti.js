@@ -471,35 +471,35 @@ export const ReplicantiUpgrade = {
       let a = logCostScaling.div(2);
       let b = logBaseIncrease.sub(logCostScaling.div(2));
       let c = logBase.sub(cur);
-      if (decimalQuadraticSolution(a, b, c).lte(distantReplicatedGalaxyStart)) {
+      if (decimalQuadraticSolution(a, b, c).floor().lte(distantReplicatedGalaxyStart)) {
         // eslint-disable-next-line consistent-return
         return decimalQuadraticSolution(a, b, c).floor();
       }
-      a = logBase.sub(cur).add(logDistantScaling.times(distantReplicatedGalaxyStart.pow(2)))
-        .sub(logDistantScaling.times(4.5).times(distantReplicatedGalaxyStart));
-      b = logBaseIncrease.sub(logCostScaling);
-      const c1 = logBase.sub(cur).add(distantReplicatedGalaxyStart.pow(2).times(logDistantScaling).div(2));
-      const c2 = distantReplicatedGalaxyStart.times(logDistantScaling).times(4.5);
-      c = c1.add(c2);
-      if (decimalQuadraticSolution(a, b, c).lte(remoteReplicatedGalaxyStart)) {
+      a = logCostScaling.add(logDistantScaling).div(2);
+      // eslint-disable-next-line max-len
+      b = logBaseIncrease.sub(logCostScaling.div(2)).sub(logDistantScaling.times(distantReplicatedGalaxyStart)).add(logDistantScaling.times(4.5));
+      // eslint-disable-next-line max-len
+      c = cur.neg().add(170).add(distantReplicatedGalaxyStart.pow(2).times(logDistantScaling).div(2)).sub(distantReplicatedGalaxyStart.times(4.5).times(logDistantScaling));
+      if (decimalQuadraticSolution(a, b, c).floor().lte(remoteReplicatedGalaxyStart)) {
         // eslint-disable-next-line consistent-return
-        return decimalQuadraticSolution(a, b, c);
+        return decimalQuadraticSolution(a, b, c).floor();
       }
       a = logRemoteScaling.div(3);
-      b = logCostScaling.div(2).add(logDistantScaling).div(2).sub(logRemoteScaling.mul(remoteReplicatedGalaxyStart));
-      c = distantReplicatedGalaxyStart.times(logDistantScaling).neg()
-        .add(logRemoteScaling.times(remoteReplicatedGalaxyStart.pow(2)))
-        .sub(logRemoteScaling.times(remoteReplicatedGalaxyStart))
-        .add(logRemoteScaling.div(6)).add((logCostScaling.add(logDistantScaling.times(9))).div(2)).add(logBaseIncrease);
-      const d1 = logBase.add(distantReplicatedGalaxyStart.pow(2).times(logDistantScaling.div(2)))
-        .sub((logDistantScaling.times(distantReplicatedGalaxyStart)).times(4.5));
-      const d2 = logRemoteScaling.times(remoteReplicatedGalaxyStart.pow(3)).div(3).neg()
-        .add(logRemoteScaling.times(remoteReplicatedGalaxyStart.pow(2)).div(2));
-      const d3 = logRemoteScaling.times(remoteReplicatedGalaxyStart).div(6).sub(cur);
-      const d = d1.add(d2).add(d3);
+
+      b = logCostScaling.div(2).add(logDistantScaling.div(2)).sub(logRemoteScaling.mul(remoteReplicatedGalaxyStart))
+        .add(logRemoteScaling.div(2));
+
+      c = logBaseIncrease.sub(logCostScaling.div(2)).sub(distantReplicatedGalaxyStart.times(logDistantScaling))
+        .add(logDistantScaling.times(4.5)).add(remoteReplicatedGalaxyStart.mul(logRemoteScaling));
+
+      d = cur.neg().add(170).add(distantReplicatedGalaxyStart.pow(2).mul(logDistantScaling).div(2))
+        .sub(distantReplicatedGalaxyStart.mul(4.5).mul(logDistantScaling))
+        .sub(logRemoteScaling.pow(3).mul(remoteReplicatedGalaxyStart).div(3))
+        .add(logRemoteScaling.pow(2).mul(remoteReplicatedGalaxyStart).div(2))
+        .sub(logRemoteScaling.mul(remoteReplicatedGalaxyStart).div(6));
 
       // eslint-disable-next-line consistent-return
-      return decimalCubicSolution(a, b, c, d, false);
+      return decimalCubicSolution(a, b, c, d, false).floor();
     }
 
     autobuyerTick() {
