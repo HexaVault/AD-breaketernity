@@ -27,7 +27,7 @@ export * from "./celestials/V";
 export * from "./celestials/ra/ra";
 export * from "./celestials/ra/alchemy";
 export * from "./celestials/laitela/laitela";
-export * from "./celestials/laitela/dark-matter-dimension";
+export * from "./celestials/laitela/dmd";
 export * from "./celestials/laitela/singularity";
 export * from "./celestials/pelle/pelle";
 export * from "./celestials/pelle/strikes";

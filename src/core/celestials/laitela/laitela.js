@@ -1,7 +1,7 @@
 import { DC } from "../../constants";
 import { Quotes } from "../quotes";
 
-import { DarkMatterDimensions } from "./dark-matter-dimension";
+import { DarkMatterDimensions } from "./dmd";
 
 export const Laitela = {
   displayName: "Lai'tela",

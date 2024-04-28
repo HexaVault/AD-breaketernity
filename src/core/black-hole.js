@@ -158,7 +158,7 @@ class BlackHoleState {
 
     // 2nd hole activation logic (not bothering generalizing since we're not adding that 3rd hole again)
     if (this.isCharged) {
-      if (BlackHole(1).isCharged) return Math.min(remainingTime, BlackHole(1).timeToNextStateChange);
+      if (BlackHole(1).isCharged) return Decimal.min(remainingTime, BlackHole(1).timeToNextStateChange);
       return BlackHole(1).timeToNextStateChange;
     }
     return BlackHole(1).timeUntilTimeActive(remainingTime);
