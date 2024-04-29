@@ -9,6 +9,7 @@ export default {
   data() {
     return {
       infinityChallengesUnlocked: false,
+      bullshitBypassVariable: new Decimal(),
       normalChallenges: [],
       infinityChallenges: []
     };
@@ -17,8 +18,16 @@ export default {
     update() {
       this.infinityChallengesUnlocked = PlayerProgress.infinityChallengeCompleted() ||
         PlayerProgress.eternityUnlocked();
-      this.normalChallenges = player.challenge.normal.bestTimes.slice(0);
-      this.infinityChallenges = player.challenge.infinity.bestTimes.slice(0);
+      this.normalChallenges = [];
+      this.infinityChallenges = [];
+      for (let i = 0; i < 11; i++) {
+        this.bullshitBypassVariable.copyFrom(player.challenge.normal.bestTimes[i]);
+        this.normalChallenges.push(this.bullshitBypassVariable);
+      }
+      for (let i = 0; i < 8; i++) {
+        this.bullshitBypassVariable.copyFrom(player.challenge.infinity.bestTimes[i]);
+        this.infinityChallenges.push(this.bullshitBypassVariable);
+      }
     }
   }
 };

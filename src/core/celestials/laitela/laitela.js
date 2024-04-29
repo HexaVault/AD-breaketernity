@@ -49,22 +49,22 @@ export const Laitela = {
       .times((SingularityMilestone.continuumMult.effectOrDefault(DC.D0)).add(1)).div(2).add(1);
   },
   get realityReward() {
-    return Math.clampMin(Math.pow(100, this.difficultyTier) *
-      Math.pow(360 / player.celestials.laitela.fastestCompletion, 2), 1);
+    return Decimal.clampMin(Decimal.pow(100, this.difficultyTier)
+      .mul(Decimal.pow(player.celestials.laitela.fastestCompletion.recip().mul(360)), 2), 1);
   },
   // Note that entropy goes from 0 to 1, with 1 being completion
   get entropyGainPerSecond() {
-    return Math.clamp(Math.pow(Currency.antimatter.value.add(1).log10() / 1e11, 2), 0, 100) / 200;
+    return Decimal.clamp(Decimal.pow(Currency.antimatter.value.add(1).log10().div(1e11), 2), 0, 100).div(200);
   },
   get darkMatterMultGain() {
     return Decimal.pow(Currency.darkMatter.value.dividedBy(this.annihilationDMRequirement)
-      .plus(1).log10(), 1.5).toNumber() * ImaginaryUpgrade(21).effectOrDefault(1);
+      .plus(1).log10(), 1.5).mul(ImaginaryUpgrade(21).effectOrDefault(1));
   },
   get darkMatterMult() {
     return this.celestial.darkMatterMult;
   },
   get darkMatterMultRatio() {
-    return (this.celestial.darkMatterMult + this.darkMatterMultGain) / this.celestial.darkMatterMult;
+    return (this.celestial.darkMatterMult.add(this.darkMatterMultGain)).div(this.celestial.darkMatterMult);
   },
   get annihilationUnlocked() {
     return ImaginaryUpgrade(19).isBought;
@@ -77,7 +77,7 @@ export const Laitela = {
   },
   annihilate(force) {
     if (!force && !this.canAnnihilate) return false;
-    this.celestial.darkMatterMult += this.darkMatterMultGain;
+    this.celestial.darkMatterMult = this.celestial.darkMatterMult.add(this.darkMatterMultGain);
     DarkMatterDimensions.reset();
     Laitela.quotes.annihilation.show();
     Achievement(176).unlock();
@@ -100,13 +100,13 @@ export const Laitela = {
   },
   reset() {
     this.annihilate(true);
-    this.celestial.darkMatterMult = 1;
+    this.celestial.darkMatterMult = DC.D1;
     Currency.darkMatter.max = DC.D1;
     Currency.darkMatter.reset();
     Currency.singularities.reset();
-    this.celestial.fastestCompletion = 3600;
+    this.celestial.fastestCompletion = new Decimal(3600);
     this.celestial.difficultyTier = 0;
-    this.celestial.singularityCapIncreases = 0;
+    this.celestial.singularityCapIncreases = DC.D0;
   },
   quotes: Quotes.laitela,
   symbol: "ᛝ"

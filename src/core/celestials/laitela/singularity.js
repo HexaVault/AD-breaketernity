@@ -219,7 +219,7 @@ const SingularityMilestoneThresholds = (function() {
 
 export const Singularity = {
   get cap() {
-    return Decimal.times(200 * Decimal.pow(10, player.celestials.laitela.singularityCapIncreases));
+    return Decimal.times(Decimal.pow(10, player.celestials.laitela.singularityCapIncreases).mul(200));
   },
 
   get gainPerCapIncrease() {
@@ -227,9 +227,9 @@ export const Singularity = {
   },
 
   get singularitiesGained() {
-    return Math.floor(Math.pow(this.gainPerCapIncrease, player.celestials.laitela.singularityCapIncreases) *
-      SingularityMilestone.singularityMult.effectOrDefault(DC.D1) *
-      (1 + ImaginaryUpgrade(10).effectOrDefault(0)));
+    return Decimal.floor(Decimal.pow(this.gainPerCapIncrease, player.celestials.laitela.singularityCapIncreases)
+      .mul(SingularityMilestone.singularityMult.effectOrDefault(DC.D1))
+      .mul(ImaginaryUpgrade(10).effectOrDefault(0).add(1)));
   },
 
   // Time (in seconds) to go from 0 DE to the condensing requirement
@@ -252,13 +252,20 @@ export const Singularity = {
   },
 
   increaseCap() {
-    if (player.celestials.laitela.singularityCapIncreases >= 5e10) return;
-    player.celestials.laitela.singularityCapIncreases++;
+    if (player.celestials.laitela.singularityCapIncreases.gt(5e11)) {
+      player.celestial.laitela.singularityCapIncreases
+        .add(Decimal.pow10(player.celestial.laitela.singularityCapIncreases.log(10).sub(10).floor()));
+    }
+    player.celestials.laitela.singularityCapIncreases = player.celestials.laitela.singularityCapIncreases.add(1);
   },
 
   decreaseCap() {
-    if (player.celestials.laitela.singularityCapIncreases === 0) return;
-    player.celestials.laitela.singularityCapIncreases--;
+    if (player.celestials.laitela.singularityCapIncreases.eq(0)) return;
+    if (player.celestials.laitela.singularityCapIncreases.gt(5e11)) {
+      player.celestial.laitela.singularityCapIncreases
+        .sub(Decimal.pow10(player.celestial.laitela.singularityCapIncreases.log(10).sub(10).floor()));
+    }
+    player.celestials.laitela.singularityCapIncreases = player.celestials.laitela.singularityCapIncreases.sub(1);
   },
 
   perform() {
@@ -285,6 +292,7 @@ EventHub.logic.on(GAME_EVENT.SINGULARITY_RESET_AFTER, () => {
   const newMilestones = SingularityMilestones.unnotifiedMilestones.length;
   if (newMilestones === 0) return;
   if (newMilestones === 1) GameUI.notify.blackHole(`You reached a Singularity milestone!`);
+  if (newMilestones > 100) GameUI.notify.blackHole(`You reached over 100 Singularity milestones!`);
   else GameUI.notify.blackHole(`You reached ${formatInt(newMilestones)} Singularity milestones!`);
   SingularityMilestones.lastNotified = Currency.singularities.value;
 });
