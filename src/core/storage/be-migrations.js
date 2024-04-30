@@ -3,9 +3,22 @@ function D(x) {
   return new Decimal(x);
 }
 
-function convertGlyphBitmaskToEffectArray(glyph) {
+function updateGlyphs(glyph) {
   if (glyph.effects instanceof Array) return;
-  const intIDbase = (glyph.isGenerated === true ? 32 : 0);
+  let intIDindex = (glyph.isGenerated === true ? 32 : 0);
+  const effectList = [];
+  for (let i = 0; i < 32; i++) {
+    if (glyph.effects >> i % 2 === 1) {
+      // eslint-disable-next-line no-loop-func
+      effectList.push(GlyphEffects.all.filter(e => e.intID = intIDindex)[0].id);
+    }
+    intIDindex += 1;
+  }
+  glyph.effects = effectList;
+  delete glyph.isGenerated;
+  glyph.level = D(glyph.level);
+  glyph.rawLevel = D(glyph.rawLevel);
+  glyph.strength = D(glyph.strength);
 }
 
 export function beMigration(player) {
@@ -64,6 +77,8 @@ export function beMigration(player) {
   player.celestials.ra.pets.teresa.memoryChunks = D(player.celestials.ra.pets.teresa.memoryChunks);
   player.celestials.ra.pets.v.memories = D(player.celestials.ra.pets.v.memories);
   player.celestials.ra.pets.effarig.v = D(player.celestials.ra.pets.v.memoryChunks);
-  // eslint-disable-next-line eqeqeq
-  if (player.celestials.teresa.bestAMSet != []) { }
+  // eslint-disable-next-line eqeqeq, max-statements-per-line
+  if (player.celestials.teresa.bestAMSet != []) { updateGlyphs(player.celestials.teresa.bestAMSet); }
+  player.celestials.lastRepeatedMachines = new Decimal();
+  // Temp if player.lastRe
 }
