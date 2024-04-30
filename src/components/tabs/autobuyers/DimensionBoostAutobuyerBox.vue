@@ -93,7 +93,7 @@ export default {
       </label>
       <AutobuyerInput
         :autobuyer="autobuyer"
-        type="int"
+        type="decimal"
         property="maxDimBoosts"
       />
     </template>
@@ -117,7 +117,7 @@ export default {
       </label>
       <AutobuyerInput
         :autobuyer="autobuyer"
-        type="int"
+        type="decimal"
         property="galaxies"
       />
     </template>

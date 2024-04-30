@@ -99,7 +99,7 @@ export class DimBoostAutobuyerState extends UpgradeableAutobuyerState {
 
   tick() {
     if (this.isBuyMaxUnlocked) {
-      const galaxyCondition = !this.limitUntilGalaxies || player.galaxies >= this.galaxies;
+      const galaxyCondition = !this.limitUntilGalaxies || player.galaxies.gte(this.galaxies);
       if (!DimBoost.canUnlockNewDimension && !galaxyCondition) return;
       requestDimensionBoost(true);
       super.tick();
@@ -107,7 +107,7 @@ export class DimBoostAutobuyerState extends UpgradeableAutobuyerState {
     }
 
     const limitCondition = !this.limitDimBoosts || DimBoost.purchasedBoosts.lt(this.maxDimBoosts);
-    const galaxyCondition = this.limitUntilGalaxies && player.galaxies >= this.galaxies;
+    const galaxyCondition = this.limitUntilGalaxies && player.galaxies.gte(this.galaxies);
     if (limitCondition || galaxyCondition) {
       requestDimensionBoost(false);
       super.tick();
