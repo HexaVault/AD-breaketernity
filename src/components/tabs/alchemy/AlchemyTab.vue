@@ -104,10 +104,10 @@ export default {
       const outRes = reactionArrow.product.resource;
       // We render the reaction as capped if it won't trigger; this can happen under two conditions - either the
       // output is higher than this particular input amount, or it's at its cap due to a different input
-      return (outRes.amount > 0 && outRes.amount >= inRes.amount) || outRes.amount >= outRes.cap;
+      return (outRes.amount.gt(0) && outRes.amount.lte(inRes.amount)) || outRes.amount.gte(outRes.cap);
     },
     isLessThanRequired(reactionArrow) {
-      return reactionArrow.product.resource.amount > 0 &&
+      return reactionArrow.product.resource.amount.gt(0) &&
         reactionArrow.reagent.cost < reactionArrow.reagent.resource.cap;
     },
     isActiveReaction(reactionArrow) {

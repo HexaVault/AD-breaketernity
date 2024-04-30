@@ -23,8 +23,9 @@ export default {
       const isAbove308 = Replicanti.isUncapped && replicantiAmount.log10().gt(DLOG10_MAXNUM);
 
       if (isAbove308) {
-        const postScale = Math.log10(ReplicantiGrowth.scaleFactor) / ReplicantiGrowth.scaleLog10;
-        const gainFactorPerSecond = logGainFactorPerTick.times(postScale).plus(1).pow(ticksPerSecond / postScale);
+        const postScale = Decimal.log10(ReplicantiGrowth.scaleFactor).div(ReplicantiGrowth.scaleLog10);
+        const gainFactorPerSecond = logGainFactorPerTick.times(postScale).plus(1)
+          .pow((postScale).recip().mul(ticksPerSecond));
         // The calculations to estimate time to next milestone of OoM based on game state, assumes that uncapped
         // replicanti growth scales as time^1/postScale, which turns out to be a reasonable approximation.
         const milestoneStep = Pelle.isDoomed ? 100 : 1000;

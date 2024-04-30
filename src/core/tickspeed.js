@@ -116,6 +116,8 @@ export function buyMaxTickSpeed() {
     player.records.thisInfinity.lastBuyTime = player.records.thisInfinity.time;
     if (NormalChallenge(2).isRunning) player.chall2Pow = DC.D0;
   }
+  // eslint-disable-next-line max-statements-per-line
+  if (player.dimensions.antimatter[0].amount.eq(0)) { Currency.antimatter.bumpto(10); }
 }
 
 export function resetTickspeed() {

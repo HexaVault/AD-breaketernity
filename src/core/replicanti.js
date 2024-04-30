@@ -195,9 +195,9 @@ export function replicantiLoop(diff) {
     // every replicanti tick is a good approximation and less intensive than distribution samples. This path will
     // always happen above 1000 replicanti due to how singleTickAvg is calculated, so the over-cap math is only
     // present on this path
-    let postScale = Math.log10(ReplicantiGrowth.scaleFactor) / ReplicantiGrowth.scaleLog10;
+    let postScale = Decimal.log10(ReplicantiGrowth.scaleFactor).div(ReplicantiGrowth.scaleLog10);
     if (V.isRunning) {
-      postScale *= 2;
+      postScale = postscale.mul(2);
     }
 
     // Note that remainingGain is in log10 terms.

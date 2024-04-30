@@ -149,7 +149,7 @@ export default {
         Decimal.log10(Replicanti.amount).times(getAdjustedGlyphEffect("replicationdtgain")),
         1
       );
-      this.hasIPMult = AlchemyResource.exponential.amount > 0 && !this.isDoomed;
+      this.hasIPMult = AlchemyResource.exponential.amount.gt(0) && !this.isDoomed;
       this.multIP = Replicanti.amount.powEffectOf(AlchemyResource.exponential);
       this.isUncapped = PelleRifts.vacuum.milestones[1].canBeApplied;
       this.hasRaisedCap = EffarigUnlock.infinity.isUnlocked && !this.isUncapped;
@@ -179,7 +179,7 @@ export default {
       const updateRateMs = player.options.updateRate;
       const logGainFactorPerTick = player.replicanti.chance.add(1).ln().mul(updateRateMs)
         .mul(getGameSpeedupForDisplay()).div(getReplicantiInterval());
-      const postScale = Math.log10(ReplicantiGrowth.scaleFactor) / ReplicantiGrowth.scaleLog10;
+      const postScale = Decimal.log10(ReplicantiGrowth.scaleFactor).div(ReplicantiGrowth.scaleLog10);
       const nextMilestone = this.maxReplicanti;
       const coeff = Decimal.divide(updateRateMs / 1000, logGainFactorPerTick.times(postScale));
       return coeff.times(nextMilestone.divide(this.amount).pow(postScale).minus(1));
