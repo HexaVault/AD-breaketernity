@@ -40,7 +40,7 @@ export default {
       return `Notation: ${this.notation}`;
     },
     postNotationLabel() {
-      return `Notation: ${this.lnotation}`;
+      return `Large Notation: ${this.lnotation}`;
     },
     sidebarLabel() {
       return `Sidebar (Modern UI): ${this.sidebarResource}`;
