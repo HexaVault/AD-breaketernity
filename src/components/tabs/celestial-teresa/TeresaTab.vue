@@ -249,10 +249,6 @@ export default {
         </div>
       </div>
       <div
-        v-if="pouredAmount < pouredAmountCap"
-        class="l-rm-container-labels l-teresa-mechanic-container"
-      />
-      <div
         v-if="hasPerkShop"
         class="c-teresa-shop"
       >
@@ -266,6 +262,10 @@ export default {
         />
         You can now modify the appearance of your Glyphs to look like Music Glyphs.
       </div>
+      <div
+        v-else
+        class="l-rm-container-labels l-teresa-mechanic-container"
+      />
     </div>
   </div>
 </template>
