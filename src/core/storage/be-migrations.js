@@ -23,14 +23,6 @@ function updateGlyphs(glyph) {
   glyph.strength = D(glyph.strength);
 }
 
-function repForArray(array, func) {
-  newArray = [];
-  for (i = 0; i < array.length; i++) {
-    newArray.push(func(array[i]));
-  }
-  return newArray;
-}
-
 export function beMigration(player) {
   player.blackHole[0].activations = D(player.blackHole[0].activations);
   player.blackHole[0].durationUpgrades = D(player.blackHole[0].durationUpgrades);
@@ -88,7 +80,7 @@ export function beMigration(player) {
   player.celestials.ra.pets.v.memories = D(player.celestials.ra.pets.v.memories);
   player.celestials.ra.pets.effarig.v = D(player.celestials.ra.pets.v.memoryChunks);
   // eslint-disable-next-line eqeqeq, max-statements-per-line
-  if (player.celestials.teresa.bestAMSet != []) { repForArray(player.celestials.teresa.bestAMSet, updateGlyphs); }
+  player.celestials.teresa.bestAMSet = player.celestials.teresa.bestAMSet.map(updateGlyphs);
   player.celestials.teresa.lastRepeatedMachines = new Decimal();
   player.celestials.teresa.lastRepeatediM = new Decimal();
   if (player.lastRepeatedMachines.gte("1e5000")) {
@@ -99,8 +91,8 @@ export function beMigration(player) {
   player.chall3pow = D(chall3pow);
   player.chall8TotalSacrifice = D(player.chall8TotalSacrifice);
   player.chall9TickspeedCostBumps = D(player.chall9TickspeedCostBumps);
-  player.challenge.infinity.bestTimes = repForArray(player.challenge.infinity.bestTimes, n => (n > 1.6e308 ? BEMAX : D(n)));
-  player.challenge.normal.bestTimes = repForArray(player.challenge.normal.bestTimes, n => (n > 1.6e308 ? BEMAX : D(n)));
+  player.challenge.infinity.bestTimes = player.challenge.infinity.bestTimes.map(n => (n > 1.6e308 ? BEMAX : D(n)));
+  player.challenge.normal.bestTimes = player.challenge.normal.bestTimes.map(n => (n > 1.6e308 ? BEMAX : D(n)));
   player.dilation.baseTachyonGalaxies = D(player.dilation.baseTachyonGalaxies);
   player.dilation.nextThreshold = D(player.dilation.nextThreshold);
   player.dilation.totalTachyonGalaxies = D(player.dilation.totalTachyonGalaxies);
@@ -125,8 +117,8 @@ export function beMigration(player) {
   player.partSimulatedReality = D(player.partSimulatedReality);
   player.realities = D(player.realities);
   player.reality.achTimer = D(player.reality.achTimer);
-  player.reality.glyphs.active = repForArray(player.reality.glyphs.active, updateGlyphs);
-  player.reality.glyphs.inventory = repForArray(player.reality.glyphs.inventory, updateGlyphs);
+  player.reality.glyphs.active = player.reality.glyphs.active.map(updateGlyphs);
+  player.reality.glyphs.inventory = player.reality.glyphs.inventory.map(updateGlyphs);
   player.reality.sac.dilation = D(player.reality.sac.dilation);
   player.reality.sac.effarig = D(player.reality.sac.effarig);
   player.reality.sac.infinity = D(player.reality.sac.infinity);
@@ -149,17 +141,17 @@ export function beMigration(player) {
   if (player.records.bestInfinity.realTime.gt("e308")) player.records.bestInfinity.realTime = BEMAX;
   player.records.bestInfinity.time = D(player.records.bestInfinity.time);
   if (player.records.bestInfinity.time.gt("e308")) player.records.bestInfinity.time = BEMAX;
-  player.records.bestReality.RMSet = repForArray(player.records.bestReality.RMSet, updateGlyphs);
-  player.records.bestReality.RMminSet = repForArray(player.records.bestReality.RMminSet, updateGlyphs);
-  player.records.bestReality.bestEP = repForArray(player.records.bestReality.bestEP, updateGlyphs);
+  player.records.bestReality.RMSet = player.records.bestReality.RMSet.map(updateGlyphs);
+  player.records.bestReality.RMminSet = player.records.bestReality.RMminSet.map(updateGlyphs);
+  player.records.bestReality.bestEP = player.records.bestReality.bestEP.map(updateGlyphs);
   player.records.bestReality.glyphLevel = D(player.records.bestReality.glyphLevel);
-  player.records.bestReality.glyphLevelSet = repForArray(player.records.bestReality.glyphLevelSet, updateGlyphs);
+  player.records.bestReality.glyphLevelSet = player.records.bestReality.glyphLevelSet.map(updateGlyphs);
   player.records.bestReality.glyphStrength = D(player.records.bestReality.glyphStrength);
-  player.records.bestReality.imCapSet = repForArray(player.records.bestReality.imCapSet, updateGlyphs);
-  player.records.bestReality.laitelaSet = repForArray(player.records.bestReality.laitelaSet, updateGlyphs);
+  player.records.bestReality.imCapSet = player.records.bestReality.imCapSet.map(updateGlyphs);
+  player.records.bestReality.laitelaSet = player.records.bestReality.laitelaSet.map(updateGlyphs);
   player.records.bestReality.realTime = D(player.records.bestReality.realTime);
   if (player.records.bestReality.realTime.gt("e308")) player.records.bestReality.realTime = BEMAX;
-  player.records.bestReality.speedSet = repForArray(player.records.bestReality.speedSet, updateGlyphs);
+  player.records.bestReality.speedSet = player.records.bestReality.speedSet.map(updateGlyphs);
   player.records.bestReality.time = D(player.records.bestReality.time);
   if (player.records.bestReality.time.gt("e308")) player.records.bestReality.time = BEMAX;
   player.records.previousRunRealTime = D(player.records.previousRunRealTime);
