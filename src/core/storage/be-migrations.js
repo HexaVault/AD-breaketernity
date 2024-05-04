@@ -24,6 +24,12 @@ function updateGlyphs(glyph) {
 }
 
 export function beMigration(player) {
+  player.auto.annihilation.multiplier = D(player.auto.annihilation.multiplier);
+  player.auto.dimBoost.galaxies = D(player.auto.dimBoost.galaxies);
+  player.auto.dimBoost.maxDimboosts = D(player.auto.dimBoost.maxDimboosts);
+  player.auto.galaxy.maxGalaxies = D(player.auto.galaxy.maxGalaxies);
+  player.auto.reality.glyph = D(player.auto.reality.glyph);
+  player.auto.reality.shard = D(player.auto.reality.shard);
   player.blackHole[0].activations = D(player.blackHole[0].activations);
   player.blackHole[0].durationUpgrades = D(player.blackHole[0].durationUpgrades);
   player.blackHole[0].phase = D(player.blackHole[0].phase);
@@ -156,5 +162,49 @@ export function beMigration(player) {
   if (player.records.bestReality.time.gt("e308")) player.records.bestReality.time = BEMAX;
   player.records.previousRunRealTime = D(player.records.previousRunRealTime);
   player.records.realTimeDoomed = D(player.records.realTimeDoomed);
+  player.records.trueTimePlayed = player.records.realTimePlayed;
   player.records.realTimePlayed = D(player.records.realTimePlayed);
+  for (let i = 0; i < 10; i++) {
+    player.records.recentEternities[i][6] = D(player.records.recentEternities[i][5]);
+    player.records.recentEternities[i][5] = player.records.recentEternities[i][4];
+    player.records.recentEternities[i][4] = D(player.records.recentEternities[i][3]);
+    player.records.recentEternities[i][3] = D(player.records.recentEternities[i][2]);
+    player.records.recentEternities[i][2] = D(player.records.recentEternities[i][1]);
+    player.records.recentEternities[i][1] = D(player.records.recentEternities[i][0]);
+    player.records.recentInfinities[i][5] = player.records.recentInfinities[i][4];
+    player.records.recentInfinities[i][4] = D(player.records.recentInfinities[i][3]);
+    player.records.recentInfinities[i][3] = D(player.records.recentInfinities[i][2]);
+    player.records.recentInfinities[i][2] = D(player.records.recentInfinities[i][1]);
+    player.records.recentInfinities[i][1] = D(player.records.recentInfinities[i][0]);
+    player.records.recentRealities[i][8] = D(player.records.recentRealities[i][7]);
+    player.records.recentRealities[i][7] = D(player.records.recentRealities[i][6]);
+    player.records.recentRealities[i][6] = D(player.records.recentRealities[i][5]);
+    player.records.recentRealities[i][5] = player.records.recentRealities[i][4];
+    player.records.recentRealities[i][4] = D(player.records.recentRealities[i][3]);
+    player.records.recentRealities[i][3] = D(player.records.recentRealities[i][2]);
+    player.records.recentRealities[i][2] = D(player.records.recentRealities[i][1]);
+    player.records.recentRealities[i][1] = D(player.records.recentRealities[i][0]);
+  }
+  player.records.thisEternity.trueTime = player.records.thisEternity.realTime;
+  player.records.thisEternity.realTime = D(player.records.thisEternity.realTime);
+  player.records.thisEternity.time = D(player.records.thisEternity.time);
+  player.records.thisInfinity.trueTime = player.records.thisInfinity.realTime;
+  player.records.thisInfinity.realTime = D(player.records.thisInfinity.realTime);
+  player.records.thisInfinity.time = D(player.records.thisInfinity.time);
+  player.records.thisReality.trueTime = player.records.thisReality.realTime;
+  player.records.thisReality.realTime = D(player.records.thisReality.realTime);
+  player.records.thisReality.time = D(player.records.thisReality.time);
+  player.records.thisReality.bestRSmin = D(player.records.thisReality.bestRSmin);
+  player.records.thisReality.bestRSminVal = D(player.records.thisReality.bestRSminVal);
+  player.records.timePlayedAtBHUnlock = D(player.records.timePlayedAtBHUnlock);
+  player.records.totalTimePlayed = D(player.records.totalTimePlayed);
+  player.replicanti.boughtGalaxyCap = D(player.replicanti.boughtGalaxyCap);
+  player.replicanti.chance = D(player.replicanti.chance);
+  player.replicanti.galaxies = D(player.replicanti.galaxies);
+  player.replicanti.interval = D(player.replicanti.interval);
+  player.replicanti.timer = D(player.replicanti.timer);
+  player.requirementChecks.reality.slowestBH = D(player.requirementChecks.reality.slowestBH);
+  player.requirementChecks.reality.maxID1 = D(player.requirementChecks.reality.maxID1);
+  player.totalTickGained = D(player.totalTickGained);
+  player.totalTickBought = D(player.totalTickBought);
 }

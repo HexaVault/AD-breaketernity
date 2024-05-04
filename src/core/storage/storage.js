@@ -495,7 +495,7 @@ export const GameStorage = {
     const simulateOffline = this.offlineEnabled ?? player.options.offlineProgress;
     if (simulateOffline && !Speedrun.isPausedAtStart()) {
       let diff = rawDiff;
-      player.speedrun.offlineTimeUsed = player.speedrun.offlineTimeUsed.add(diff);
+      player.speedrun.offlineTimeUsed += diff;
       if (diff > 5 * 60 * 1000 && player.celestials.enslaved.autoStoreReal) {
         diff = Enslaved.autoStoreRealTime(diff);
       }

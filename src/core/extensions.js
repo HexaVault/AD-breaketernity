@@ -236,7 +236,7 @@ Array.prototype.countWhere = function(predicate) {
  * @returns {Decimal}
  */
 Decimal.prototype.clampMaxExponent = function(maxExp) {
-  return this.exponent >= maxExp
+  return this.max(1).log10().gte(maxExp)
     ? Decimal.fromMantissaExponent_noNormalize(1, maxExp) : this;
 };
 

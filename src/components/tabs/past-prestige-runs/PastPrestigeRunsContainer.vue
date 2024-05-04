@@ -159,27 +159,30 @@ export default {
       return cells;
     },
     gameTime(run) {
-      return timeDisplayShort(run[0]);
-    },
-    realTime(run) {
       return timeDisplayShort(run[1]);
     },
+    realTime(run) {
+      return timeDisplayShort(run[2]);
+    },
+    trueTime(run) {
+      return timeDisplayShort(new Decimal(run[0]));
+    },
     prestigeCurrencyGain(run) {
-      if (this.hasIM && this.layer.name === "Reality") return `${format(run[7], 2)} iM`;
-      return `${format(run[2], 2)} ${this.points}`;
+      if (this.hasIM && this.layer.name === "Reality") return `${format(run[8], 2)} iM`;
+      return `${format(run[3], 2)} ${this.points}`;
     },
     prestigeCountGain(run) {
-      return quantify(this.singular, run[3]);
+      return quantify(this.singular, run[4]);
     },
     prestigeCurrencyRate(run) {
       if (this.hasIM && this.layer.name === "Reality") return "N/A";
-      return this.rateText(run, run[2]);
-    },
-    prestigeCountRate(run) {
       return this.rateText(run, run[3]);
     },
+    prestigeCountRate(run) {
+      return this.rateText(run, run[4]);
+    },
     rateText(run, amount) {
-      const time = run[1];
+      const time = run[2];
       const rpm = ratePerMinute(amount, time);
       return Decimal.lt(rpm, 1)
         ? `${format(Decimal.mul(rpm, 60), 2, 2)} per hour`
@@ -187,7 +190,7 @@ export default {
     },
     challengeText(run) {
       // Special-case Nameless reality in order to keep this column small and not force a linebreak
-      const rawText = run[4];
+      const rawText = run[5];
       return rawText === "The Nameless Ones" ? "Nameless" : rawText;
     },
     toggleShown() {
@@ -200,12 +203,12 @@ export default {
           // "X ago" is really short
           width = "7rem";
           break;
-        case 3:
         case 4:
+        case 5:
           // Prestige currency is long, but the reality table can be shorter due to smaller numbers
           width = this.layer.name === "Reality" ? "15rem" : "20rem";
           break;
-        case 5:
+        case 6:
           // Challenges can potentially be very long, but this is glyph level in the reality table
           width = this.layer.name === "Reality" ? "10rem" : "20rem";
           break;

@@ -50,13 +50,13 @@ window.formatPostBreak = function formatPostBreak(value, places, placesUnder1000
 
   const decimal = Decimal.fromValue_noAlloc(value);
 
-  if (decimal.exponent < -300) {
+  if (decimal.abs().log10().lt(-300)) {
     return decimal.sign < 0
       ? notation.formatVerySmallNegativeDecimal(decimal.abs(), placesUnder1000)
       : notation.formatVerySmallDecimal(decimal, placesUnder1000);
   }
 
-  if (decimal.exponent < 3) {
+  if (decimal.abs().log10().lt(3)) {
     const number = decimal.toNumber();
     return number < 0
       ? notation.formatNegativeUnder1000(Math.abs(number), placesUnder1000)

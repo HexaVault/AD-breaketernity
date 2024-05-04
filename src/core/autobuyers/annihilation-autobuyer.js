@@ -30,7 +30,7 @@ export class AnnihilationAutobuyerState extends AutobuyerState {
   }
 
   get inputType() {
-    return "float";
+    return "decimal";
   }
 
   get inputEntry() {

@@ -70,7 +70,7 @@ export default {
       return this.buttonContents.length > 15;
     },
     showCostTitle() {
-      return this.cost.exponent < 1e6;
+      return this.cost.log10().lte(1e6);
     },
     timeEstimate() {
       if (!this.showTTCost || this.ttGen.eq(0)) return "";

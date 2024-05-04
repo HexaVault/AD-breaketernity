@@ -48,7 +48,8 @@ export class ScriptTemplate {
   format(num) {
     if (typeof num === "number") return Math.round(num);
     if (num.lte(1000)) return num.toNumber().toFixed(2);
-    return `${num.mantissa.toFixed(2)}e${num.exponent}`;
+    if (num.lte("e9e15")) return `${num.mantissa.toFixed(2)}e${num.exponent}`;
+    return `F${num.layer}E${num.mag.toFixed(5)}`;
   }
 
   /**

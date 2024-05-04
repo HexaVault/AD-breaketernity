@@ -125,7 +125,7 @@ export default {
       buyManyDimension(this.tier);
     },
     showCostTitle(value) {
-      return value.exponent < 1000000;
+      return value.log10().lte(1e6);
     },
     isLongText(str) {
       return str.length > 20;

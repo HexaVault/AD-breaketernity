@@ -194,7 +194,8 @@ export function galaxyReset() {
     player.dimensionBoosts = DC.D0;
   }
   softReset(0);
-  if (Notations.current === Notation.emoji) player.requirementChecks.permanent.emojiGalaxies++;
+  if (Notations.current === Notation.emoji) player.requirementChecks.permanent.emojiGalaxies =
+  player.requirementChecks.permanent.emojiGalaxies.add(1);
   // This is specifically reset here because the check is actually per-galaxy and not per-infinity
   player.requirementChecks.infinity.noSacrifice = true;
   EventHub.dispatch(GAME_EVENT.GALAXY_RESET_AFTER);
@@ -234,7 +235,8 @@ function maxBuyGalaxies(limit = DC.BEMAX) {
   const newGalaxies = Decimal.min(
     Galaxy.buyableGalaxies(Decimal.round(dim.totalAmount)), limit);
   if (Notations.current === Notation.emoji) {
-    player.requirementChecks.permanent.emojiGalaxies += newGalaxies - player.galaxies;
+    player.requirementChecks.permanent.emojiGalaxies = player.requirementChecks.permanent.emojiGalaxies
+      .add(newGalaxies.sub(player.galaxies));
   }
   // Galaxy count is incremented by galaxyReset(), so add one less than we should:
   player.galaxies = newGalaxies.sub(1);

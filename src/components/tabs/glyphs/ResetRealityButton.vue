@@ -19,7 +19,7 @@ export default {
   },
   methods: {
     update() {
-      this.canReality = TimeStudy.reality.isBought && player.records.thisReality.maxEP.exponent >= 4000;
+      this.canReality = TimeStudy.reality.isBought && player.records.thisReality.maxEP.max(1).log10().gte(4000);
       this.resetCelestial = player.options.retryCelestial;
       this.isInCelestialReality = isInCelestialReality();
       this.isDoomed = Pelle.isDoomed;

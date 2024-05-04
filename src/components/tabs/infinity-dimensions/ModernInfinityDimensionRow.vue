@@ -70,7 +70,7 @@ export default {
         this.hasPrevTier;
     },
     showCostTitle() {
-      return this.cost.exponent < 1e6;
+      return this.cost.log10().lte(1e6);
     }
   },
   watch: {

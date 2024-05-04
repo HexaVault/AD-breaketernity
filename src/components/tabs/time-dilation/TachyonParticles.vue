@@ -28,7 +28,7 @@ export default {
   methods: {
     update() {
       this.count = Currency.tachyonParticles.value.gte(1)
-        ? Math.clampMin(Math.floor(20 * Math.log10(Currency.tachyonParticles.value.exponent)), 1)
+        ? Decimal.clampMin(Decimal.floor(Decimal.log10(Currency.tachyonParticles.value.max(10).log10()).mul(20)), 1)
         : 0;
       this.isBlob = Theme.currentName() === "S11";
     },

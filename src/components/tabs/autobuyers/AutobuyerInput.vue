@@ -99,15 +99,15 @@ export const AutobuyerInputFunctions = {
         if (/^e\d*[.]?\d+$/u.test(input.replaceAll(",", ""))) {
           // Logarithm Notation
           decimal = Decimal.pow10(parseFloat(input.replaceAll(",", "").slice(1)));
-        } else if (/^\d*[.]?\d+(e\d*[.]?\d+)?$/u.test(input.replaceAll(",", ""))) {
-          // Scientific notation; internals of break-infinity will gladly strip extraneous letters before parsing, but
+        } else {
+          // Scientific notation; internals of break-eternity will gladly strip extraneous letters before parsing, but
           // since this is largely uncommunicated to the user, we instead explicitly check for formatting and reject
           // anything that doesn't fit as invalid
+
+          // I am lazy so we are going down the "abuse this fact and not write code" path
           decimal = Decimal.fromString(input.replaceAll(",", ""));
-        } else {
-          return undefined;
         }
-        return isNaN(decimal.mantissa) || isNaN(decimal.exponent) ? undefined : decimal;
+        return isNaN(decimal.mag) || isNaN(decimal.layer) || isNaN(decimal.sign) ? undefined : decimal;
       } catch (e) {
         return undefined;
       }

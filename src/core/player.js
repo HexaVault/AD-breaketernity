@@ -61,7 +61,7 @@ window.player = {
     reality: {
       mode: 0,
       rm: DC.D1,
-      glyph: 0,
+      glyph: DC.D0,
       time: 0,
       shard: DC.D0,
       isActive: false
@@ -89,7 +89,7 @@ window.player = {
       cost: 1,
       interval: 20000,
       limitGalaxies: false,
-      maxGalaxies: 1,
+      maxGalaxies: new Decimal(1),
       buyMax: false,
       buyMaxInterval: 0,
       isActive: true,
@@ -99,9 +99,9 @@ window.player = {
       cost: 1,
       interval: 4000,
       limitDimBoosts: false,
-      maxDimBoosts: 1,
+      maxDimBoosts: new Decimal(1),
       limitUntilGalaxies: false,
-      galaxies: 10,
+      galaxies: new Decimal(10),
       buyMaxInterval: 0,
       isActive: true,
       lastTick: 0
@@ -194,7 +194,7 @@ window.player = {
     },
     annihilation: {
       isActive: false,
-      multiplier: 1.05,
+      multiplier: new Decimal(1.05),
     },
     singularity: { isActive: false },
     ipMultBuyer: { isActive: false, },
@@ -259,10 +259,10 @@ window.player = {
       maxID1: DC.D0,
       maxStudies: 0,
       maxGlyphs: 0,
-      slowestBH: 1,
+      slowestBH: DC.D1,
     },
     permanent: {
-      emojiGalaxies: 0,
+      emojiGalaxies: DC.D0,
       singleTickspeed: 0,
       perkTreeDragging: 0
     }
@@ -278,14 +278,15 @@ window.player = {
     previousRunRealTime: DC.D0,
     totalAntimatter: DC.E1,
     recentInfinities: Array.range(0, 10).map(() =>
-      [DC.BEMAX, DC.BEMAX, DC.D1, DC.D1, ""]),
+      [Number.MAX_VALUE, DC.BEMAX, DC.BEMAX, DC.D1, DC.D1, ""]),
     recentEternities: Array.range(0, 10).map(() =>
-      [DC.BEMAX, DC.BEMAX, DC.D1, DC.D1, "", DC.D0]),
+      [Number.MAX_VALUE, DC.BEMAX, DC.BEMAX, DC.D1, DC.D1, "", DC.D0]),
     recentRealities: Array.range(0, 10).map(() =>
-      [DC.BEMAX, DC.BEMAX, DC.D1, 1, "", 0, 0]),
+      [Number.MAX_VALUE, DC.BEMAX, DC.BEMAX, DC.D1, 1, "", 0, 0]),
     thisInfinity: {
       time: DC.D0,
       realTime: DC.D0,
+      trueTime: 0,
       lastBuyTime: DC.D0,
       maxAM: DC.D0,
       bestIPmin: DC.D0,
@@ -294,12 +295,14 @@ window.player = {
     bestInfinity: {
       time: DC.BEMAX,
       realTime: DC.BEMAX,
+      trueTime: 0,
       bestIPminEternity: DC.D0,
       bestIPminReality: DC.D0,
     },
     thisEternity: {
       time: DC.D0,
       realTime: DC.D0,
+      trueTime: 0,
       maxAM: DC.D0,
       maxIP: DC.D0,
       bestIPMsWithoutMaxAll: DC.D0,
@@ -310,11 +313,13 @@ window.player = {
     bestEternity: {
       time: DC.BEMAX,
       realTime: DC.BEMAX,
+      trueTime: 0,
       bestEPminReality: DC.D0,
     },
     thisReality: {
       time: DC.D0,
       realTime: DC.D0,
+      trueTime: 0,
       maxAM: DC.D0,
       maxIP: DC.D0,
       maxEP: DC.D0,
@@ -327,6 +332,7 @@ window.player = {
     bestReality: {
       time: DC.BEMAX,
       realTime: DC.BEMAX,
+      trueTime: 0,
       glyphStrength: DC.D0,
       RM: DC.D0,
       RMSet: [],
@@ -351,7 +357,7 @@ window.player = {
     displayAllMilestones: false,
     startDate: 0,
     name: "",
-    offlineTimeUsed: new Decimal(),
+    offlineTimeUsed: 0,
     // One spot for every entry in GameDatabase.speedrunMilestones (note: 1-indexed)
     records: Array.repeat(0, 26),
     achievementTimes: {},
@@ -1008,7 +1014,7 @@ export const Player = {
           // This only gets set to the correct value when Glyphs.updateMaxGlyphCount is called, which always happens
           // before this part of the code is reached in the Reality reset. Nevertheless, we want to keep its old value.
           maxGlyphs: glyphCount,
-          slowestBH: BlackHoles.areNegative ? player.blackHoleNegative : 1,
+          slowestBH: BlackHoles.areNegative ? player.blackHoleNegative : DC.D1,
         };
       // eslint-disable-next-line no-fallthrough
       case "eternity":
