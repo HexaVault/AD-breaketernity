@@ -11,8 +11,8 @@ export default {
   data() {
     return {
       totalUpgrades: new Decimal(0),
-      multPerTickspeed: 0,
-      tickspeedSoftcap: 0,
+      multPerTickspeed: new Decimal(0),
+      tickspeedSoftcap: new Decimal(0),
       timeShards: new Decimal(0),
       upgradeThreshold: new Decimal(0),
       shardsPerSecond: new Decimal(0),
@@ -28,8 +28,8 @@ export default {
     update() {
       this.showLockedDimCostNote = !TimeDimension(8).isUnlocked && player.realities.gte(1);
       this.totalUpgrades.copyFrom(player.totalTickGained);
-      this.multPerTickspeed = FreeTickspeed.multToNext;
-      this.tickspeedSoftcap = FreeTickspeed.softcap;
+      this.multPerTickspeed.copyFrom(FreeTickspeed.multToNext);
+      this.tickspeedSoftcap.copyFrom(FreeTickspeed.softcap);
       this.timeShards.copyFrom(Currency.timeShards);
       this.upgradeThreshold.copyFrom(FreeTickspeed.fromShards(Currency.timeShards.value).nextShards);
       this.shardsPerSecond.copyFrom(TimeDimension(1).productionPerSecond);

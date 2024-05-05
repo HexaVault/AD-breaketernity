@@ -21,8 +21,8 @@ export default {
       isCapped: false,
       multiplier: new Decimal(0),
       amount: new Decimal(0),
-      bought: 0,
-      boughtBefore10: 0,
+      bought: new Decimal(0),
+      boughtBefore10: new Decimal(0),
       rateOfChange: new Decimal(0),
       singleCost: new Decimal(0),
       until10Cost: new Decimal(0),
@@ -96,7 +96,7 @@ export default {
       if (tier > DimBoost.maxDimensionsUnlockable) return;
       const dimension = AntimatterDimension(tier);
       this.isUnlocked = dimension.isAvailableForPurchase;
-      this.isCapped = tier === 8 && Enslaved.isRunning && dimension.bought >= 1;
+      this.isCapped = tier === 8 && Enslaved.isRunning && dimension.bought.gte(1);
       this.multiplier.copyFrom(dimension.multiplier);
       this.amount.copyFrom(dimension.totalAmount);
       this.bought.copyFrom(dimension.bought);

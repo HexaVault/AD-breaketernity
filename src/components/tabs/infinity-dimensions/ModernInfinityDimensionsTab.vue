@@ -19,7 +19,7 @@ export default {
       isEC9Running: false,
       isEnslavedRunning: false,
       isAnyAutobuyerUnlocked: false,
-      conversionRate: 0,
+      conversionRate: new Decimal(0),
       nextDimCapIncrease: new Decimal(0),
       tesseractCost: new Decimal(0),
       totalDimCap: new Decimal(0),
@@ -32,14 +32,8 @@ export default {
     };
   },
   computed: {
-    sacrificeBoostDisplay() {
-      return formatX(this.sacrificeBoost, 2, 2);
-    },
-    sacrificeTooltip() {
-      return `Boosts 8th Antimatter Dimension by ${this.sacrificeBoostDisplay}`;
-    },
     tesseractCountString() {
-      const extra = this.extraTesseracts > 0 ? ` + ${format(this.extraTesseracts, 2, 2)}` : "";
+      const extra = this.extraTesseracts.gt(0) ? ` + ${format(this.extraTesseracts, 2, 2)}` : "";
       return `${formatInt(this.boughtTesseracts)}${extra}`;
     },
   },
@@ -48,7 +42,7 @@ export default {
       this.showLockedDimCostNote = !InfinityDimension(8).isUnlocked;
       this.isEC9Running = EternityChallenge(9).isRunning;
       this.infinityPower.copyFrom(Currency.infinityPower);
-      this.conversionRate = InfinityDimensions.powerConversionRate;
+      this.conversionRate.copyFrom(InfinityDimensions.powerConversionRate);
       if (this.isEC9Running) {
         this.dimMultiplier.copyFrom(Decimal.pow(Math.max(this.infinityPower.log2(), 1), 4).max(1));
       } else {

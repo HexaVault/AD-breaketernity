@@ -203,10 +203,10 @@ export const Tickspeed = {
 
 
 export const FreeTickspeed = {
-  BASE_SOFTCAP: 300000,
+  BASE_SOFTCAP: new Decimal(3e5),
   GROWTH_RATE: new Decimal(6e-6),
   GROWTH_EXP: DC.D2,
-  multToNext: 1.33,
+  multToNext: new Decimal(1.33),
 
   get amount() {
     return player.totalTickGained;
@@ -215,7 +215,7 @@ export const FreeTickspeed = {
   get softcap() {
     let softcap = FreeTickspeed.BASE_SOFTCAP;
     if (Enslaved.has(ENSLAVED_UNLOCKS.FREE_TICKSPEED_SOFTCAP)) {
-      softcap += 100000;
+      softcap = softcap.add(1e5);
     }
     return softcap;
   },
@@ -263,8 +263,8 @@ export const FreeTickspeed = {
       approximation = newtonsMethod(approximation);
     } while (approximation.lt(oldApproximation) && ++counter < 100);
     const purchases = approximation.floor();
-    // This undoes the function we're implicitly applying to costs (the "+ 1") is because we want
-    // the cost of the next upgrade.
+    // This undoes the function we're implicitly applying to costs (the ".add(1)" is because we want
+    // the cost of the next upgrade.)
     const next = Decimal.exp(priceToCap.add(boughtToCost(purchases.add(1)).mul(logTickmult)));
     this.multToNext = Decimal.exp((boughtToCost(purchases.add(1)).sub(boughtToCost(purchases))).mul(logTickmult));
     return {

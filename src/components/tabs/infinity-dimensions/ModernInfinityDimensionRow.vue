@@ -96,7 +96,7 @@ export default {
       this.isCapped = dimension.isCapped;
       if (this.isCapped) {
         this.capIP.copyFrom(dimension.hardcapIPAmount);
-        this.hardcap = dimension.purchaseCap;
+        this.hardcap.copyFrom(dimension.purchaseCap);
       }
       this.isEC8Running = EternityChallenge(8).isRunning;
       this.isAutobuyerOn = Autobuyer.infinityDimension(tier).isActive;

@@ -106,7 +106,7 @@ export default {
       return this.eternityChallengeRunning ? "o-time-study-eternity-challenge--running" : "";
     },
     config() {
-      return { ...this.study.config, formatCost: value => (value >= 1e6 ? format(value) : formatInt(value)) };
+      return { ...this.study.config, formatCost: value => (value.gte(1e6) ? format(value) : formatInt(value)) };
     },
     showDefaultCostDisplay() {
       const costCond = (this.showCost && !this.showStCost) || this.STCost === 0;
@@ -116,9 +116,16 @@ export default {
       return this.study.id === 192 && Enslaved.isRunning;
     },
     customCostStr() {
-      const ttStr = this.setup.isSmall
-        ? `${formatInt(this.config.cost)} TT`
-        : quantifyInt("Time Theorem", this.config.cost);
+      let ttStr;
+      if (this.config.cost.lte(1e6)) {
+        ttStr = this.setup.isSmall
+          ? `${formatInt(this.config.cost)} TT`
+          : quantifyInt("Time Theorem", this.config.cost);
+      } else {
+        ttStr = this.setup.isSmall
+          ? `${format(this.config.cost)} TT`
+          : quantify("Time Theorem", this.config.cost);
+      }
       const stStr = this.setup.isSmall
         ? `${formatInt(this.STCost)} ST`
         : quantifyInt("Space Theorem", this.STCost);

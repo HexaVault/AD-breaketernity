@@ -24,7 +24,7 @@ export default {
       multiplier: new Decimal(0),
       baseAmount: new Decimal(0),
       amount: new Decimal(0),
-      purchases: new Decimal(),
+      purchases: new Decimal(0),
       rateOfChange: new Decimal(0),
       isAutobuyerUnlocked: false,
       cost: new Decimal(0),
@@ -100,7 +100,7 @@ export default {
       this.isCapped = dimension.isCapped;
       if (this.isCapped) {
         this.capIP.copyFrom(dimension.hardcapIPAmount);
-        this.hardcap = dimension.purchaseCap;
+        this.hardcap.copyFrom(dimension.purchaseCap);
       }
       this.isEC8Running = EternityChallenge(8).isRunning;
       this.isAutobuyerOn = autobuyer.isActive;

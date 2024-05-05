@@ -16,11 +16,11 @@ export default {
       },
       requirement: {
         tier: 1,
-        amount: 0
+        amount: new Decimal()
       },
       canBeBought: false,
-      distantStart: 0,
-      remoteStart: 0,
+      distantStart: new Decimal(),
+      remoteStart: new Decimal(),
       lockText: null,
       canBulkBuy: false,
       creditsClosed: false,
@@ -75,7 +75,7 @@ export default {
             { type: "distant", function: "quadratic", amount: this.distantStart },
             { type: "remote", function: "exponential", amount: this.remoteStart }
           ];
-          return `Increased Galaxy cost scaling: ${scalings.sort((a, b) => a.amount - b.amount)
+          return `Increased Galaxy cost scaling: ${scalings.sort((a, b) => a.amount.sub(b.amount))
             .map(scaling => `${scaling.function} scaling past ${this.formatGalaxies(scaling.amount)} (${scaling.type})`)
             .join(", ").capitalize()}`;
         }
@@ -97,11 +97,11 @@ export default {
       this.galaxies.replicanti.copyFrom(Replicanti.galaxies.total);
       this.galaxies.dilation.copyFrom(player.dilation.totalTachyonGalaxies);
       const requirement = Galaxy.requirement;
-      this.requirement.amount = requirement.amount;
+      this.requirement.amount.copyFrom(requirement.amount);
       this.requirement.tier = requirement.tier;
       this.canBeBought = requirement.isSatisfied && Galaxy.canBeBought;
-      this.distantStart = EternityChallenge(5).isRunning ? 0 : Galaxy.costScalingStart;
-      this.remoteStart = Galaxy.remoteStart;
+      this.distantStart.copyFrom(EternityChallenge(5).isRunning ? new Decimal() : Galaxy.costScalingStart);
+      this.remoteStart.copyFrom(Galaxy.remoteStart);
       this.lockText = Galaxy.lockText;
       this.canBulkBuy = EternityMilestone.autobuyMaxGalaxies.isReached;
       this.creditsClosed = GameEnd.creditsEverClosed;
