@@ -147,6 +147,20 @@ export const Time = {
     this.toMilliseconds(timespan, value => player.records.thisInfinity.realTime = value);
   },
 
+    /**
+   * @returns {TimeSpan}
+   */
+    get thisInfinityTrueTime() {
+      return this.fromMilliseconds(() => new Decimal(player.records.thisInfinity.trueTime));
+    },
+    /**
+     * @param {TimeSpan} timespan
+     */
+    set thisInfinityTrueTime(timespan) {
+      this.toMilliseconds(timespan, value => player.records.thisInfinity.trueTime = value.toNumber());
+    },
+  
+
   /**
    * @returns {TimeSpan}
    */
@@ -198,6 +212,20 @@ export const Time = {
   set thisEternityRealTime(timespan) {
     this.toMilliseconds(timespan, value => player.records.thisEternity.realTime = value);
   },
+
+  /**
+   * @returns {TimeSpan}
+   */
+  get thisEternityTrueTime() {
+    return this.fromMilliseconds(() => new Decimal(player.records.thisEternity.trueTime));
+  },
+  /**
+   * @param {TimeSpan} timespan
+   */
+  set thisEternityTrueTime(timespan) {
+    this.toMilliseconds(timespan, value => player.records.thisEternity.trueTime = value.toNumber());
+  },
+
 
   /**
    * @returns {TimeSpan}
