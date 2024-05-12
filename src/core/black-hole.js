@@ -354,7 +354,7 @@ export const BlackHoles = {
 
   togglePause: (automatic = false) => {
     if (!BlackHoles.areUnlocked) return;
-    const maxInversion = player.requirementChecks.reality.slowestBH <= 1e-300;
+    const maxInversion = player.requirementChecks.reality.slowestBH.lte(1e-300);
     if (ImaginaryUpgrade(24).isLockingMechanics && Ra.isRunning && maxInversion) {
       if (!automatic) ImaginaryUpgrade(24).tryShowWarningModal("uninvert your Black Hole");
       return;

@@ -38,8 +38,8 @@ export const MachineHandler = {
   },
 
   get baseIMCap() {
-    return (Decimal.pow(Decimal.clampMin(this.uncappedRM.log10().min(1000), 0), 2))
-      .times((Decimal.pow(Decimal.clampMin(this.uncappedRM.log10().min(100000), 1), 0.2)));
+    return (Decimal.pow(Decimal.clampMin(this.uncappedRM.log10().sub(1000), 0), 2))
+      .times((Decimal.pow(Decimal.clampMin(this.uncappedRM.log10().sub(100000), 1), 0.2)));
   },
 
   get currentIMCap() {
@@ -73,7 +73,7 @@ export const MachineHandler = {
 
   estimateIMTimer(cost) {
     const imCap = this.currentIMCap;
-    if (imCap.lte(cost)) return new Decimal(Infinity);
+    if (imCap.lte(cost)) return DC.BEMAX;
     const currentIM = Currency.imaginaryMachines.value;
     // This is doing log(a, 1/2) - log(b, 1/2) where a is % left to imCap of cost and b is % left to imCap of current
     // iM. log(1 - x, 1/2) should be able to estimate the time taken for iM to increase from 0 to imCap * x since every

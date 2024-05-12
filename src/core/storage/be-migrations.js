@@ -88,17 +88,18 @@ export function beMigration(player) {
   // eslint-disable-next-line eqeqeq, max-statements-per-line
   player.celestials.teresa.bestAMSet = player.celestials.teresa.bestAMSet.map(updateGlyphs);
   player.celestials.teresa.lastRepeatedMachines = new Decimal();
+  player.celestials.teresa.lastRepeatedMachines = new Decimal();
   player.celestials.teresa.lastRepeatediM = new Decimal();
-  if (player.lastRepeatedMachines.gte("1e5000")) {
+  if (player.celestials.teresa.lastRepeatedMachines.gte("1e5000")) {
     player.celestials.teresa.lastRepeatedMachines = new Decimal("1e1000");
     player.celestials.teresa.lastRepeatediM = player.celestials.teresa.lastRepeatedMachines.div("1e10000");
   }
-  player.chall2pow = D(chall2pow);
-  player.chall3pow = D(chall3pow);
+  player.chall2Pow = D(player.chall2Pow);
+  player.chall3Pow = D(player.chall3Pow);
   player.chall8TotalSacrifice = D(player.chall8TotalSacrifice);
   player.chall9TickspeedCostBumps = D(player.chall9TickspeedCostBumps);
-  player.challenge.infinity.bestTimes = player.challenge.infinity.bestTimes.map(n => (n > 1.6e308 ? BEMAX : D(n)));
-  player.challenge.normal.bestTimes = player.challenge.normal.bestTimes.map(n => (n > 1.6e308 ? BEMAX : D(n)));
+  player.challenge.infinity.bestTimes = player.challenge.infinity.bestTimes.map(n => ((!(n instanceof Decimal) && n > 1.6e308) ? BEMAX : D(n)));
+  player.challenge.normal.bestTimes = player.challenge.normal.bestTimes.map(n => ((!(n instanceof Decimal) && n > 1.6e308) ? BEMAX : D(n)));
   player.dilation.baseTachyonGalaxies = D(player.dilation.baseTachyonGalaxies);
   player.dilation.nextThreshold = D(player.dilation.nextThreshold);
   player.dilation.totalTachyonGalaxies = D(player.dilation.totalTachyonGalaxies);

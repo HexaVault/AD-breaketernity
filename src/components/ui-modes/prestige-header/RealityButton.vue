@@ -8,8 +8,8 @@ export default {
       hasRealityStudy: false,
       machinesGained: new Decimal(),
       projectedRM: new Decimal(),
-      newIMCap: 0,
-      realityTime: 0,
+      newIMCap: new Decimal(),
+      realityTime: new Decimal(),
       glyphLevel: new Decimal(),
       nextGlyphPercent: 0,
       nextMachineEP: new Decimal(),
@@ -33,10 +33,10 @@ export default {
       if (this.machinesGained.gt(0) && this.machinesGained.lt(100)) {
         return `(Next at ${format(this.nextMachineEP, 2)} EP)`;
       }
-      if (this.machinesGained.eq(0) && this.newIMCap === 0) {
+      if (this.machinesGained.eq(0) && this.newIMCap.eq(0)) {
         return `(Projected: ${format(this.projectedRM, 2)} RM)`;
       }
-      if (this.newIMCap !== 0) {
+      if (this.newIMCap.neq(0)) {
         return `(iM Cap: ${formatMachines(0, this.newIMCap)})`;
       }
       if (this.machinesGained.lt(Number.MAX_VALUE)) {

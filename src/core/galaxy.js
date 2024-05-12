@@ -97,14 +97,15 @@ export class Galaxy {
     return Decimal.max(pur, player.galaxies);
     */
 
-    if (Galaxy.remoteStart.gt(1e6) || Galaxy.requirementAt(DC.E6).lt(currency)) {
+    if (Galaxy.remoteStart.gt(1e6) || Galaxy.requirementAt(DC.E6).amount.lt(currency)) {
+      console.log("fuck");
       return Decimal.log(currency.div(Galaxy.requirementAt(Galaxy.remoteStart.max(1e6))), 1.008).add(1e6);
     }
     // Ignore BBBS' warning, even though its theoretically quite dangerous
     return new Decimal(bulkBuyBinarySearch(new Decimal(currency), {
-      costFunction: x => this.requirementAt(x).amount,
+      costFunction: x => this.requirementAt(new Decimal(x)).amount,
       cumulative: false,
-    }, 0, true));
+    }, 0, true).quantity);
   }
 
   static requirementAt(galaxies) {

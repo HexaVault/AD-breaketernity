@@ -427,10 +427,6 @@ export const migrations = {
     83: player => {
       beMigration(player);
     },
-    // This is here just to fix my own saves, ignore
-    90.00002: player => {
-      beMigration(player);
-    },
   },
 
   normalizeTimespans(player) {

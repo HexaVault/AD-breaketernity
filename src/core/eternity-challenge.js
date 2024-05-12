@@ -192,7 +192,7 @@ export class EternityChallengeState extends GameMechanicState {
   start(auto) {
     if (EternityChallenge.isRunning) return false;
     if (!this.isUnlocked) return false;
-    const maxInversion = player.requirementChecks.reality.slowestBH <= 1e-300;
+    const maxInversion = player.requirementChecks.reality.slowestBH.lte(1e-300);
     if (this.id === 12 && ImaginaryUpgrade(24).isLockingMechanics && Ra.isRunning && maxInversion) {
       if (!auto) ImaginaryUpgrade(24).tryShowWarningModal("enter Eternity Challenge 12");
       return false;

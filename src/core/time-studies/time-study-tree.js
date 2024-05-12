@@ -27,7 +27,7 @@
 export class TimeStudyTree {
   // The first parameter will either be an import string or an array of studies (possibly with an EC at the end)
   constructor(studies) {
-    this.spentTheorems = [0, 0];
+    this.spentTheorems = [new Decimal(0), 0];
     this.invalidStudies = [];
     this.purchasedStudies = [];
     this.selectedStudies = [];
@@ -259,15 +259,14 @@ export class TimeStudyTree {
     const maxST = Pelle.isDoomed ? 0 : V.spaceTheorems;
     const hasST = this.spentTheorems[1] + stNeeded <= maxST;
     if (checkCosts) {
-      const maxTT = Currency.timeTheorems.value.add(GameCache.currentStudyTree.value.spentTheorems[0])
-        .clampMax(Number.MAX_VALUE).toNumber();
-      const hasTT = this.spentTheorems[0] + config.cost <= maxTT;
+      const maxTT = Currency.timeTheorems.value.add(GameCache.currentStudyTree.value.spentTheorems[0]);
+      const hasTT = this.spentTheorems[0] + config.cost.gte(maxTT);
       if (!hasTT || !hasST) return;
     }
 
     // Don't add the costs nor add the study if it is one using ST and there are none
     if (maxST === 0 && stNeeded > 0) return;
-    this.spentTheorems[0] += config.cost;
+    this.spentTheorems[0] = this.spentTheorems[0].add(config.cost);
     this.spentTheorems[1] += stNeeded;
 
     this.purchasedStudies.push(study);

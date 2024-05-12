@@ -128,7 +128,7 @@ export function isRealityAvailable() {
 export function simulatedRealityCount(advancePartSimCounters) {
   const amplifiedSim = Enslaved.boostReality ? Enslaved.realityBoostRatio.sub(1) : new Decimal();
   const multiversalSim = AlchemyResource.multiversal.effectValue;
-  const simCount = amplifiedSim.add(1).mul(multiversalSim + 1).add(player.partSimulatedReality.sub(1));
+  const simCount = amplifiedSim.add(1).mul(multiversalSim.add(1)).add(player.partSimulatedReality.sub(1));
   if (advancePartSimCounters) {
     player.partSimulatedReality = simCount.sub(simCount.floor());
   }
