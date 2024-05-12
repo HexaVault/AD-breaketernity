@@ -278,6 +278,8 @@ class BlackHoleState {
    * BlackHole(2) is active during that time.
    */
   realTimeWhileActive(time) {
+    // eslint-disable-next-line no-param-reassign
+    time = new Decimal(time);
     const nextDeactivation = this.timeUntilNextDeactivation;
     const cooldown = this.interval;
     const duration = this.duration;
@@ -537,7 +539,7 @@ export const BlackHoles = {
     const activePeriods = this.realTimePeriodsWithBlackHoleActive(realTime);
     const effectivePeriods = [];
     for (let i = 0; i < activePeriods.length - 1; i++) {
-      effectivePeriods.push(activePeriods[i].sub(activePeriods[i + 1]));
+      effectivePeriods.push(new Decimal(activePeriods[i]).sub(activePeriods[i + 1]));
     }
     effectivePeriods.push(activePeriods.last());
     return effectivePeriods;

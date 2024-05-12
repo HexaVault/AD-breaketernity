@@ -99,13 +99,17 @@ export function buyMaxTickSpeed() {
     }
   } else {
     const purchases = Tickspeed.costScale.getMaxBought(player.totalTickBought, Currency.antimatter.value, DC.D1, true);
-    if (purchases === null) {
-      return;
+    if (purchases !== null) {
+      if (purchases.logPrice.eq(player.antimatter.log10()) && player.dimensions.antimatter[0].amount.eq(0)) {
+        purchases.logPrice = Tickspeed.costScale.calculateCost(purchases.quantity.sub(1));
+        purchases.quantity = purchases.quantity.sub(1);
+      }
+      Currency.antimatter.subtract(Decimal.pow10(purchases.logPrice));
+      player.totalTickBought = player.totalTickBought.add(purchases.quantity);
     }
-    Currency.antimatter.subtract(Decimal.pow10(purchases.logPrice));
-    player.totalTickBought = player.totalTickBought.add(purchases.quantity);
 
-    for (let i = 0; i < 5; i++) {
+    // eslint-disable-next-line max-len
+    for (let i = 0; i < 5 && (player.antimatter.neq(Tickspeed.cost) && player.dimensions.antimatter[0].amount.neq(0)); i++) {
       buyTickSpeed();
     }
 
@@ -117,12 +121,12 @@ export function buyMaxTickSpeed() {
     if (NormalChallenge(2).isRunning) player.chall2Pow = DC.D0;
   }
   // eslint-disable-next-line max-statements-per-line
-  if (player.dimensions.antimatter[0].amount.eq(0)) { Currency.antimatter.bumpTo(10); }
+  if (player.dimensions.antimatter[0].amount.eq(0)) { Currency.antimatter.bumpTo(100); }
 }
 
 export function resetTickspeed() {
   player.totalTickBought = DC.D0;
-  player.chall9TickspeedCostBumps = 0;
+  player.chall9TickspeedCostBumps = DC.D0;
 }
 
 export const Tickspeed = {

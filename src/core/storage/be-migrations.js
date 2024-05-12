@@ -6,8 +6,8 @@ function D(x) {
 const BEMAX = new Decimal("10^^9000000000000000");
 
 function updateGlyphs(glyph) {
-  if (glyph.effects instanceof Array) return;
-  let intIDindex = (glyph.isGenerated === true ? 32 : 0);
+  if (glyph.effects instanceof Array) return glyph;
+  let intIDindex = (glyph.isGenerated === true ? 28 : 1);
   const effectList = [];
   for (let i = 0; i < 32; i++) {
     if (glyph.effects >> i % 2 === 1) {
@@ -21,7 +21,10 @@ function updateGlyphs(glyph) {
   glyph.level = D(glyph.level);
   glyph.rawLevel = D(glyph.rawLevel);
   glyph.strength = D(glyph.strength);
+  // eslint-disable-next-line consistent-return
+  return glyph;
 }
+
 
 export function beMigration(player) {
   player.auto.annihilation.multiplier = D(player.auto.annihilation.multiplier);
@@ -86,7 +89,7 @@ export function beMigration(player) {
   player.celestials.ra.pets.v.memories = D(player.celestials.ra.pets.v.memories);
   player.celestials.ra.pets.effarig.v = D(player.celestials.ra.pets.v.memoryChunks);
   // eslint-disable-next-line eqeqeq, max-statements-per-line
-  player.celestials.teresa.bestAMSet = player.celestials.teresa.bestAMSet.map(updateGlyphs);
+  player.celestials.teresa.bestAMSet = player.celestials.teresa.bestAMSet.map(n => updateGlyphs(n));
   player.celestials.teresa.lastRepeatedMachines = new Decimal();
   player.celestials.teresa.lastRepeatedMachines = new Decimal();
   player.celestials.teresa.lastRepeatediM = new Decimal();
@@ -103,7 +106,8 @@ export function beMigration(player) {
   player.dilation.baseTachyonGalaxies = D(player.dilation.baseTachyonGalaxies);
   player.dilation.nextThreshold = D(player.dilation.nextThreshold);
   player.dilation.totalTachyonGalaxies = D(player.dilation.totalTachyonGalaxies);
-  for (let i = 1; i < 14; i < 3 ? i++ : i = 11) {
+  // eslint-disable-next-line no-negated-condition
+  for (let i = 1; i < 14; i !== 3 ? i++ : i = 11) {
     player.dilation.rebuyables[i] = D(player.dilation.rebuyables[i]);
   }
   player.dimensionBoosts = D(player.dimensionBoosts);
@@ -124,15 +128,17 @@ export function beMigration(player) {
   player.partSimulatedReality = D(player.partSimulatedReality);
   player.realities = D(player.realities);
   player.reality.achTimer = D(player.reality.achTimer);
-  player.reality.glyphs.active = player.reality.glyphs.active.map(updateGlyphs);
-  player.reality.glyphs.inventory = player.reality.glyphs.inventory.map(updateGlyphs);
-  player.reality.sac.dilation = D(player.reality.sac.dilation);
-  player.reality.sac.effarig = D(player.reality.sac.effarig);
-  player.reality.sac.infinity = D(player.reality.sac.infinity);
-  player.reality.sac.power = D(player.reality.sac.power);
-  player.reality.sac.reality = D(player.reality.sac.reality);
-  player.reality.sac.replication = D(player.reality.sac.replication);
-  player.reality.sac.time = D(player.reality.sac.time);
+  player.reality.glyphs.active = player.reality.glyphs.active.map(n => updateGlyphs(n));
+  player.reality.glyphs.inventory = player.reality.glyphs.inventory.map(n => updateGlyphs(n));
+  if (player.reality.sac !== undefined) {
+    player.reality.sac.dilation = D(player.reality.sac.dilation);
+    player.reality.sac.effarig = D(player.reality.sac.effarig);
+    player.reality.sac.infinity = D(player.reality.sac.infinity);
+    player.reality.sac.power = D(player.reality.sac.power);
+    player.reality.sac.reality = D(player.reality.sac.reality);
+    player.reality.sac.replication = D(player.reality.sac.replication);
+    player.reality.sac.time = D(player.reality.sac.time);
+  }
   player.reality.iMcap = D(player.reality.iMcap);
   player.reality.imaginaryMachines = D(player.reality.imaginaryMachines);
   player.reality.lastAutoEC = D(player.reality.lastAutoEC);
@@ -148,23 +154,22 @@ export function beMigration(player) {
   if (player.records.bestInfinity.realTime.gt("e308")) player.records.bestInfinity.realTime = BEMAX;
   player.records.bestInfinity.time = D(player.records.bestInfinity.time);
   if (player.records.bestInfinity.time.gt("e308")) player.records.bestInfinity.time = BEMAX;
-  player.records.bestReality.RMSet = player.records.bestReality.RMSet.map(updateGlyphs);
-  player.records.bestReality.RMminSet = player.records.bestReality.RMminSet.map(updateGlyphs);
-  player.records.bestReality.bestEP = player.records.bestReality.bestEP.map(updateGlyphs);
+  player.records.bestReality.RMSet = player.records.bestReality.RMSet?.map(n => updateGlyphs(n));
+  player.records.bestReality.RMminSet = player.records.bestReality.RMminSet?.map(n => updateGlyphs(n));
   player.records.bestReality.glyphLevel = D(player.records.bestReality.glyphLevel);
-  player.records.bestReality.glyphLevelSet = player.records.bestReality.glyphLevelSet.map(updateGlyphs);
+  player.records.bestReality.glyphLevelSet = player.records.bestReality.glyphLevelSet?.map(n => updateGlyphs(n));
   player.records.bestReality.glyphStrength = D(player.records.bestReality.glyphStrength);
-  player.records.bestReality.imCapSet = player.records.bestReality.imCapSet.map(updateGlyphs);
-  player.records.bestReality.laitelaSet = player.records.bestReality.laitelaSet.map(updateGlyphs);
+  player.records.bestReality.imCapSet = player.records.bestReality.imCapSet?.map(n => updateGlyphs(n));
+  player.records.bestReality.laitelaSet = player.records.bestReality.laitelaSet?.map(n => updateGlyphs(n));
   player.records.bestReality.realTime = D(player.records.bestReality.realTime);
   if (player.records.bestReality.realTime.gt("e308")) player.records.bestReality.realTime = BEMAX;
-  player.records.bestReality.speedSet = player.records.bestReality.speedSet.map(updateGlyphs);
+  player.records.bestReality.speedSet = player.records.bestReality.speedSet?.map(n => updateGlyphs(n));
   player.records.bestReality.time = D(player.records.bestReality.time);
   if (player.records.bestReality.time.gt("e308")) player.records.bestReality.time = BEMAX;
   player.records.previousRunRealTime = D(player.records.previousRunRealTime);
   player.records.realTimeDoomed = D(player.records.realTimeDoomed);
-  player.records.trueTimePlayed = player.records.realTimePlayed;
   player.records.realTimePlayed = D(player.records.realTimePlayed);
+  player.records.trueTimePlayed = player.records.realTimePlayed.toNumber();
   for (let i = 0; i < 10; i++) {
     player.records.recentEternities[i][6] = D(player.records.recentEternities[i][5]);
     player.records.recentEternities[i][5] = player.records.recentEternities[i][4];
@@ -186,15 +191,15 @@ export function beMigration(player) {
     player.records.recentRealities[i][2] = D(player.records.recentRealities[i][1]);
     player.records.recentRealities[i][1] = D(player.records.recentRealities[i][0]);
   }
-  player.records.thisEternity.trueTime = player.records.thisEternity.realTime;
   player.records.thisEternity.realTime = D(player.records.thisEternity.realTime);
   player.records.thisEternity.time = D(player.records.thisEternity.time);
-  player.records.thisInfinity.trueTime = player.records.thisInfinity.realTime;
+  player.records.thisEternity.trueTime = player.records.thisEternity.realTime.toNumber();
   player.records.thisInfinity.realTime = D(player.records.thisInfinity.realTime);
   player.records.thisInfinity.time = D(player.records.thisInfinity.time);
-  player.records.thisReality.trueTime = player.records.thisReality.realTime;
+  player.records.thisInfinity.trueTime = player.records.thisInfinity.realTime.toNumber();
   player.records.thisReality.realTime = D(player.records.thisReality.realTime);
   player.records.thisReality.time = D(player.records.thisReality.time);
+  player.records.thisReality.trueTime = player.records.thisReality.realTime.toNumber();
   player.records.thisReality.bestRSmin = D(player.records.thisReality.bestRSmin);
   player.records.thisReality.bestRSminVal = D(player.records.thisReality.bestRSminVal);
   player.records.timePlayedAtBHUnlock = D(player.records.timePlayedAtBHUnlock);

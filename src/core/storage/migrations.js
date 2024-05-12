@@ -331,7 +331,8 @@ export const migrations = {
       // will have some slightly weird saves. We don't need to modify the glyph filter settings here because these are
       // migrated above by their effect keys; this properly places them into the correct bit positions automatically
       const updateBitmask = bitmask => {
-        const modifiedBits = [20, 21, 22].map(b => 1 << b).sum();
+        if (bitmask instanceof Array) return bitmask;
+        const modifiedBits = [20, 21, 22].map(b => 1 << b).nSum();
         const foundBits = [20, 21, 22].map(b => (bitmask & (1 << b)) !== 0);
         foundBits.push(foundBits.shift());
         let newSubmask = 0;
