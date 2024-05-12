@@ -53,6 +53,7 @@ const secretImports = [
   "857876556a230da15fe1bb6f410ca8dbc9274de47c1a847c2281a7103dd2c274",
   "be88e62eb68758cd7381104977c0d3d5d81e19c72a848f0d79d1963c1e39221f",
   "c784c9c0a82b5f3c13884842fa6e6a8f5aed994ef401e6476c30b1adfe439b22",
+  "4c948c46d4c551932ed6f056c7b22aa8023af115975123fe6ef2949775632802",
 ];
 
 function secretImportIndex(data) {
@@ -81,6 +82,9 @@ export function tryImportSecret(data) {
     case 3:
       if (player.records.fullGameCompletions > 0 || DEV) Speedrun.unlock();
       else GameUI.notify.error("Complete the game at least once first!", 15000);
+      return true;
+    case 4:
+      SecretAchievement(33).unlock();
       return true;
     default:
       return false;

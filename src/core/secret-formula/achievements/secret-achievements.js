@@ -120,7 +120,7 @@ export const secretAchievements = [
   {
     id: 33,
     name: "A sound financial decision",
-    description: "Click on the button to purchase STD coins."
+    description: "Import \"Shop\" (temporary req)"
   },
   {
     id: 34,
