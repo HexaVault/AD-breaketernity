@@ -209,8 +209,8 @@ export class EternityChallengeState extends GameMechanicState {
     if (Player.canEternity) eternity(false, auto, { enteringEC: true });
     player.challenge.eternity.current = this.id;
     if (this.id === 12) {
-      if (enteringGamespeed < 0.001) SecretAchievement(42).unlock();
-      player.requirementChecks.reality.slowestBH = 1;
+      if (enteringGamespeed.lt(1e-3)) SecretAchievement(42).unlock();
+      player.requirementChecks.reality.slowestBH = DC.D1;
     }
     if (Enslaved.isRunning) {
       if (this.id === 6 && this.completions === 5) EnslavedProgress.ec6.giveProgress();
