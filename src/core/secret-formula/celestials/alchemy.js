@@ -136,7 +136,7 @@ export const alchemyResources = {
     name: "Inflation",
     symbol: "λ",
     isBaseResource: false,
-    effect: amount => Decimal.pow10(Decimal.div(6e9 - amount.mul(3e5))),
+    effect: amount => Decimal.pow10(new Decimal(6e9).sub(amount.mul(3e5)).clampMin(0)),
     tier: 2,
     uiOrder: 5,
     unlockedAt: 11,

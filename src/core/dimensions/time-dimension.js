@@ -153,7 +153,8 @@ export function timeDimensionCommonMultiplier() {
   if (EternityChallenge(9).isRunning) {
     mult = mult.times(
       Decimal.pow(
-        Math.clampMin(Currency.infinityPower.value.pow(InfinityDimensions.powerConversionRate / 7).log2(), 1),
+        // eslint-disable-next-line max-len
+        Decimal.clampMin(Currency.infinityPower.value.max(1).pow(InfinityDimensions.powerConversionRate.div(7)).log2(), 1),
         4)
         .clampMin(1));
   }

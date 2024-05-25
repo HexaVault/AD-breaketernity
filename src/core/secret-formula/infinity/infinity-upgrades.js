@@ -4,7 +4,8 @@ function dimInfinityMult() {
   return Currency.infinitiesTotal.value.times(0.2).plus(1);
 }
 function chargedDimInfinityMult() {
-  return 1 + Math.log10(Math.max(1, Currency.infinitiesTotal.value.pLog10())) * Math.sqrt(Ra.pets.teresa.level) / 150;
+  return Decimal.log10(Decimal.max(1, Currency.infinitiesTotal.value.pLog10()))
+    .mul(Math.sqrt(Ra.pets.teresa.level) / 150).add(1);
 }
 
 export const infinityUpgrades = {
@@ -122,7 +123,7 @@ export const infinityUpgrades = {
       description:
         "Antimatter Dimensions gain a power effect based on time spent in current Infinity and Teresa level",
       effect: () =>
-        Decimal.log10(Decimal.log10(Time.thisInfinity.totalMilliseconds + 100))
+        Decimal.log10(Decimal.log10(Time.thisInfinity.totalMilliseconds.add(100)))
           .times(Math.sqrt(Ra.pets.teresa.level)).div(150).add(1),
       formatEffect: value => formatPow(value, 4, 4)
     }

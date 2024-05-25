@@ -11,7 +11,7 @@ function updateGlyphs(glyph) {
   const effectList = [];
   for (let i = 0; i < 32; i++) {
     if ((glyph.effects >> i) % 2 === 1) {
-      // eslint-disable-next-line no-loop-func
+      // eslint-disable-next-line no-loop-func, eqeqeq
       effectList.push(GlyphEffects.all.filter(e => e.intID == intIDindex)[0].id);
     }
     intIDindex += 1;

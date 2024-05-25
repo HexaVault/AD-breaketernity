@@ -738,9 +738,9 @@ export const AutomatorBackend = {
 
     player.reality.automator.execTimer += diff;
     const commandsThisUpdate = Math.min(
-      Math.floor(player.reality.automator.execTimer / this.currentInterval), this.MAX_COMMANDS_PER_UPDATE
+      Math.floor(player.reality.automator.execTimer / this.currentInterval.toNumber()), this.MAX_COMMANDS_PER_UPDATE
     );
-    player.reality.automator.execTimer -= commandsThisUpdate * this.currentInterval;
+    player.reality.automator.execTimer -= commandsThisUpdate * this.currentInterval.toNumber();
 
     for (let count = 0; count < commandsThisUpdate && this.isRunning; ++count) {
       if (!this.step()) break;

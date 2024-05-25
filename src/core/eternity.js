@@ -317,7 +317,7 @@ class EPMultiplierState extends GameMechanicState {
   costInv() {
     let tempVal = new Decimal(0);
     let bulk = new Decimal(0);
-    let cur = Currency.eternityPoints.value;
+    let cur = Currency.eternityPoints.value.max(1);
     if (cur.gt(this.costIncreaseThresholds[3])) {
       cur = Decimal.log(cur.div(500), 1e3);
       return cur.add(Math.pow(1332, 1.2)).root(1.2).floor();
@@ -357,7 +357,8 @@ class EPMultiplierState extends GameMechanicState {
     // Technically inaccurate, but it works fine (is it inaccurate tho???)
     // Should probably use hardcoded values but im lazy so no
 
-    let bulk = this.costInv().floor();
+    let bulk = Decimal.floor(this.costInv());
+    if (bulk.lt(1)) return false;
     const price = this.costAfterCount(bulk);
     bulk = bulk.sub(this.boughtAmount).max(0);
 

@@ -203,9 +203,9 @@ export const AutoGlyphProcessor = {
 
 export function autoAdjustGlyphWeights() {
   const sources = getGlyphLevelSources();
-  const f = x => Decimal.pow(Decimal.clampMin(1, Decimal.log10(5 * x)), 3 / 2);
+  const f = x => Decimal.pow(Decimal.clampMin(1, Decimal.log10(x.mul(5))), 3 / 2);
   const totalWeight = Object.values(sources).map(s => f(s.value)).sum();
-  const scaledWeight = key => 100 * f(sources[key].value) / totalWeight;
+  const scaledWeight = key => f(sources[key].value).div(totalWeight).mul(100).clampMax(100).toNumber();
 
   // Adjust all weights to be integer, while maintaining that they must sum to 100. We ensure it's within 1 on the
   // weights by flooring and then taking guesses on which ones would give the largest boost when adding the lost

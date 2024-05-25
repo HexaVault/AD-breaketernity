@@ -46,25 +46,27 @@ export class TimeTheoremPurchaseType {
     return this.cost.times(this.costIncrement.pow(amount.sub(1)));
   }
 
-  purchase(bulk) {
+  purchase(bulk = false) {
     if (!this.canAfford) return false;
-    let purchased = false;
-    const amount = this.bulkPossible;
-    const buyFn = cost => (Perk.ttFree.canBeApplied ? this.currency.gte(cost) : this.currency.purchase(cost));
-    // This will sometimes buy one too few for EP, so we just have to buy 1 after.
-    if (bulk && buyFn(this.bulkCost(amount))) {
-      Currency.timeTheorems.add(amount);
-      this.add(amount);
-      purchased = true;
-    }
-    if (buyFn(this.cost)) {
+    const cost = this.cost;
+    if (!bulk) {
+      if (this.currency.lt(cost)) return false;
       Currency.timeTheorems.add(1);
+      if (!Perk.ttFree.canBeApplied) this.currency.subtract(cost);
       this.add(1);
-      purchased = true;
+      return true;
     }
-    if (purchased) player.requirementChecks.reality.noPurchasedTT = false;
-    if (TimeTheorems.totalPurchased().lt(114)) PelleStrikes.ECs.trigger();
-    return purchased;
+
+    if (this.currency.lt(cost)) return false;
+    let amntPur = Decimal.log(this.currency.value.sub(this.costBase).max(1), this.costIncrement)
+      .sub(Decimal.log(cost.sub(this.costBase).max(1), this.costIncrement)).floor();
+    // We can definitely afford x - 1
+    amntPur = amntPur.sub(1);
+    Currency.timeTheorems.add(amntPur);
+    this.add(amntPur);
+    this.currency.subtract(cost.div(this.costIncrement));
+    this.purchase(false);
+    return true;
   }
 
   get canAfford() {
@@ -103,7 +105,7 @@ TimeTheoremPurchaseType.ep = new class extends TimeTheoremPurchaseType {
   get costIncrement() { return DC.D2; }
 
   bulkCost(amount) {
-    if (Perk.ttFree.canBeApplied) return this.cost.times(this.costIncrement.pow(amount - 1));
+    if (Perk.ttFree.canBeApplied) return this.cost.times(this.costIncrement.pow(amount.sub(1)));
     return this.costIncrement.pow(amount.add(this.amount)).subtract(this.cost);
   }
 }();
@@ -117,9 +119,9 @@ export const TimeTheorems = {
   },
 
   buyOne(auto = false, type) {
-    if (!this.checkForBuying(auto)) return 0;
-    if (!TimeTheoremPurchaseType[type].purchase(false)) return 0;
-    return 1;
+    if (!this.checkForBuying(auto)) return DC.D0;
+    if (!TimeTheoremPurchaseType[type].purchase(false)) return DC.D0;
+    return DC.D1;
   },
 
   // This is only called via automation and there's no manual use-case, so we assume auto is true and simplify a bit
@@ -148,12 +150,12 @@ export const TimeTheorems = {
   calculateTimeStudiesCost() {
     let totalCost = TimeStudy.boughtNormalTS()
       .map(ts => ts.cost)
-      .reduce(Decimal.sumReducer, 0);
+      .reduce(Decimal.sumReducer, new Decimal());
     const ecStudy = TimeStudy.eternityChallenge.current();
     if (ecStudy !== undefined) {
-      totalCost += ecStudy.cost;
+      totalCost = totalCost.add(ecStudy.cost);
     }
-    if (Enslaved.isRunning && player.celestials.enslaved.hasSecretStudy) totalCost -= 100;
+    if (Enslaved.isRunning && player.celestials.enslaved.hasSecretStudy) totalCost = totalCost.sub(100);
     return totalCost;
   }
 };

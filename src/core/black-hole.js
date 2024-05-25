@@ -8,13 +8,13 @@ class BlackHoleUpgradeState {
     this.incrementAmount = () => setAmount(getAmount().add(1));
     this._lazyValue = new Lazy(() => calculateValue(getAmount()));
     this._lazyCost = new Lazy(() => getHybridCostScaling(getAmount(),
-      1e30,
+      DC.E30,
       initialCost,
       costMult,
       new Decimal(0.2),
       DC.E310,
-      1e5,
-      10));
+      DC.E5,
+      DC.E1));
     this.id = config.id;
     this.hasAutobuyer = config.hasAutobuyer;
     this.onPurchase = config.onPurchase;
@@ -361,7 +361,7 @@ export const BlackHoles = {
       if (!automatic) ImaginaryUpgrade(24).tryShowWarningModal("uninvert your Black Hole");
       return;
     }
-    if (player.blackHolePause) player.requirementChecks.reality.slowestBH = 1;
+    if (player.blackHolePause) player.requirementChecks.reality.slowestBH = DC.D1;
     player.blackHolePause = !player.blackHolePause;
     player.blackHolePauseTime = player.records.realTimePlayed;
     const blackHoleString = RealityUpgrade(20).isBought ? "Black Holes" : "Black Hole";

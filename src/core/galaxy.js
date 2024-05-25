@@ -128,7 +128,7 @@ export class Galaxy {
     amount = amount.sub(Effects.sum(InfinityUpgrade.resetBoost));
     if (InfinityChallenge(5).isCompleted) amount = amount.sub(1);
 
-    if (GlyphAlteration.isAdded("power")) amount *= getSecondaryGlyphEffect("powerpow");
+    if (GlyphAlteration.isAdded("power")) amount = amount.mul(getSecondaryGlyphEffect("powerpow"));
 
     amount = Decimal.floor(amount);
     const tier = Galaxy.requiredTier;

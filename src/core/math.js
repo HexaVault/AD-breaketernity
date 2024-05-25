@@ -58,8 +58,8 @@ window.decimalCubicSolution = function decimalCubicSolution(a, b, c, d, n = fals
  * @returns {Decimal}
 */
 window.decimalDepressedCubicSolution = function decimalDepressedCubicSolution(b, c) {
-  u1 = Decimal.cbrt(c.neg().div(2).add(Decimal.sqrt(c.pow(2).div(4).add(b.pow(3).div(27)))));
-  u2 = Decimal.cbrt(c.neg().div(2).sub(Decimal.sqrt(c.pow(2).div(4).add(b.pow(3).div(27)))));
+  const u1 = Decimal.cbrt(c.neg().div(2).add(Decimal.sqrt(c.pow(2).div(4).add(b.pow(3).div(27)))));
+  const u2 = Decimal.cbrt(c.neg().div(2).sub(Decimal.sqrt(c.pow(2).div(4).add(b.pow(3).div(27)))));
   return u1.add(u2);
 };
 
@@ -624,6 +624,7 @@ window.permutationIndex = function permutationIndex(len, lexIndex) {
   return perm;
 };
 
+// This entire function is bullshit, there is 0 reason to notjust use exponentialCostScaling?
 // Calculate cost scaling for something that follows getCostWithLinearCostScaling() under Infinity and immediately
 // starts accelerated ExponentialCostScaling above Infinity.  Yes this is a fuckton of arguments, sorry.  It sort of
 // needs to inherit all arguments from both cost scaling functions.
@@ -631,18 +632,20 @@ window.getHybridCostScaling = function getHybridCostScaling(
   amountOfPurchases, linCostScalingStart, linInitialCost, linCostMult, linCostMultGrowth,
   expInitialCost, expCostMult, expCostMultGrowth
 ) {
-  const normalCost = getCostWithLinearCostScaling(amountOfPurchases.toNumber(), linCostScalingStart,
+  const normalCost = getCostWithLinearCostScaling(amountOfPurchases.toNumber(), linCostScalingStart.toNumber(),
     linInitialCost.toNumber(), linCostMult.toNumber(), linCostMultGrowth.toNumber());
   if (Number.isFinite(normalCost)) {
     return new Decimal(normalCost);
   }
-  const postInfinityAmount = amountOfPurchases - findFirstInfiniteCostPurchase(linCostScalingStart, linInitialCost,
-    linCostMult, linCostMultGrowth);
+  // This code look like shite? Thats cause it is
+  // eslint-disable-next-line max-len
+  const postInfinityAmount = amountOfPurchases.sub(findFirstInfiniteCostPurchase(linCostScalingStart.toNumber(),
+    linInitialCost.toNumber(), linCostMult.toNumber(), linCostMultGrowth.toNumber()));
   const costScale = new ExponentialCostScaling({
     baseCost: expInitialCost,
     baseIncrease: expCostMult,
     costScale: expCostMultGrowth,
-    scalingCostThreshold: Number.MAX_VALUE
+    scalingCostThreshold: DC.NUMMAX
   });
   return costScale.calculateCost(postInfinityAmount);
 };

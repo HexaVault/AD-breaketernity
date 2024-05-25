@@ -560,7 +560,7 @@ export function gameLoop(passedDiff, options = {}) {
   Currency.realities.add(uncountabilityGain);
   Currency.perkPoints.add(uncountabilityGain);
 
-  if (Perk.autocompleteEC1.canBeApplied) player.reality.lastAutoEC += realDiff;
+  if (Perk.autocompleteEC1.canBeApplied) player.reality.lastAutoEC = player.reality.lastAutoEC.add(realDiff);
 
   EternityChallenge(12).tryFail();
   Achievements._power.invalidate();
@@ -865,7 +865,7 @@ export function getTTPerSecond() {
     Achievement(137),
     Achievement(156),
   );
-  if (GlyphAlteration.isAdded("dilation")) ttMult *= getSecondaryGlyphEffect("dilationTTgen");
+  if (GlyphAlteration.isAdded("dilation")) ttMult = ttMult.mul(getSecondaryGlyphEffect("dilationTTgen"));
 
   // Glyph TT generation
   const glyphTT = Teresa.isRunning || Enslaved.isRunning || Pelle.isDoomed

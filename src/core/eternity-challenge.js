@@ -162,8 +162,8 @@ export class EternityChallengeState extends GameMechanicState {
 
   completionsAtIP(ip) {
     if (ip.lt(this.initialGoal)) return 0;
-    const completions = 1 + (ip.dividedBy(this.initialGoal)).log10() / this.goalIncrease.log10();
-    return Math.min(Math.floor(completions), this.maxCompletions);
+    const completions = (ip.dividedBy(this.initialGoal)).log10().div(this.goalIncrease.log10()).add(1);
+    return Decimal.min(Decimal.floor(completions), this.maxCompletions).toNumber();
   }
 
   addCompletion(auto = false) {
