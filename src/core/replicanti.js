@@ -197,7 +197,7 @@ export function replicantiLoop(diff) {
     // present on this path
     let postScale = Decimal.log10(ReplicantiGrowth.scaleFactor).div(ReplicantiGrowth.scaleLog10);
     if (V.isRunning) {
-      postScale = postscale.mul(2);
+      postScale = postScale.mul(2);
     }
 
     // Note that remainingGain is in log10 terms.

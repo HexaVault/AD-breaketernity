@@ -361,7 +361,7 @@ export const celestialNavigation = {
     // even if the player has enough relic shards to buy it.
     complete: () => (EffarigUnlock.run.isUnlocked
       ? 1 : Decimal.pLog10(Currency.relicShards.value)
-        .div(Decimal.log10(EffarigUnlock.run.cost))).clampMax(1).toNumber(),
+        .div(Decimal.log10(EffarigUnlock.run.cost)).clampMax(1).toNumber()),
     node: {
       clickAction: () => Tab.celestials.effarig.show(true),
       completeClass: "c-celestial-nav__effarig",

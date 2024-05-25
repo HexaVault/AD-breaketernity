@@ -18,7 +18,7 @@ export default {
       mainUnlock: false,
       canUnlockCelestial: false,
       totalUnlocks: 0,
-      pp: 0,
+      pp: new Decimal(),
       showReduction: false,
       runRecords: [],
       runGlyphs: [],
@@ -26,6 +26,7 @@ export default {
       wantsFlipped: true,
       isRunning: false,
       hasAlchemy: false,
+      tempVal: undefined,
     };
   },
   computed: {
@@ -97,10 +98,10 @@ export default {
       this.mainUnlock = VUnlocks.vAchievementUnlock.isUnlocked;
       this.canUnlockCelestial = V.canUnlockCelestial;
       this.totalUnlocks = V.spaceTheorems;
-      this.pp = Currency.perkPoints.value;
+      this.pp.copyFrom(Currency.perkPoints.value);
       this.showReduction = VUnlocks.shardReduction.isUnlocked;
       this.runRecords = Array.from(player.celestials.v.runRecords);
-      this.runGlyphs = player.celestials.v.runGlyphs.map(gList => Glyphs.copyForRecords(gList));
+      this.runGlyphs = structuredClone(player.celestials.v.runGlyphs.map(gList => Glyphs.copyForRecords(gList)));
       this.isFlipped = V.isFlipped;
       this.wantsFlipped = player.celestials.v.wantsFlipped;
       this.isRunning = V.isRunning;
@@ -135,6 +136,9 @@ export default {
         unlock.tryComplete();
       }
       V.checkForUnlocks();
+    },
+    glyphRecord(hex) {
+      return [...hex.runGlyphs];
     },
     reductionTooltip(hex) {
       return `Spend ${quantify("Perk Point", hex.reductionCost, 2, 0)}

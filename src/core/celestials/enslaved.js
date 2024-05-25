@@ -80,19 +80,19 @@ export const Enslaved = {
   },
   get storedRealTimeCap() {
     const addedCap = Ra.unlocks.improvedStoredTime.effects.realTimeCap.effectOrDefault(0);
-    return 1000 * 3600 * 8 + addedCap;
+    return new Decimal(3600 * 1000 * 8).add(addedCap);
   },
   get isAutoReleasing() {
     return player.celestials.enslaved.isAutoReleasing && !BlackHoles.areNegative && !Pelle.isDisabled("blackhole");
   },
-  storeRealTime() {
+  storeRealTime(diffVal) {
     if (Pelle.isDoomed) return;
     const thisUpdate = Date.now();
-    const diff = Math.max(thisUpdate - player.lastUpdate, 0);
+    const diff = diffVal === undefined ? Decimal.max(thisUpdate - player.lastUpdate, 0) : diffVal;
     const efficiency = this.storedRealTimeEfficiency;
     const maxTime = this.storedRealTimeCap;
-    player.celestials.enslaved.storedReal += diff * efficiency;
-    if (player.celestials.enslaved.storedReal > maxTime) {
+    player.celestials.enslaved.storedReal = player.celestials.enslaved.storedReal.add(diff.mul(efficiency));
+    if (player.celestials.enslaved.storedReal.gt(maxTime)) {
       player.celestials.enslaved.isStoringReal = false;
       player.celestials.enslaved.storedReal = maxTime;
     }
