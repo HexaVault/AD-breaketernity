@@ -90,7 +90,7 @@ class AlchemyResourceState extends GameMechanicState {
   get cap() { throw new NotImplementedError(); }
 
   get capped() {
-    return this.amount >= this.cap;
+    return this.amount.gte(this.cap);
   }
 }
 
@@ -111,14 +111,14 @@ class BasicAlchemyResourceState extends AlchemyResourceState {
   }
 
   get cap() {
-    return Math.clampMax(Ra.alchemyResourceCap, this.highestRefinementValue);
+    return Decimal.clampMax(Ra.alchemyResourceCap, this.highestRefinementValue);
   }
 }
 
 class AdvancedAlchemyResourceState extends AlchemyResourceState {
   get cap() {
     const reagentCaps = this.reaction.reagents.map(x => x.resource.cap);
-    return Math.min(...reagentCaps);
+    return Decimal.min(...reagentCaps);
   }
 }
 

@@ -43,7 +43,7 @@ export const Teresa = {
     return Math.min(Math.log10(this.pouredAmount) / 24, 1);
   },
   get possibleFill() {
-    return Math.min(Currency.realityMachines.value.plus(this.pouredAmount).log10() / 24, 1);
+    return Decimal.min(Currency.realityMachines.value.plus(this.pouredAmount).log10().div(24), 1).toNumber();
   },
   get rmMultiplier() {
     return Decimal.max(250 * Math.pow(this.pouredAmount / 1e24, 0.1), 1);

@@ -245,7 +245,7 @@ export const GlyphGenerator = {
     // Incase someone somehow forgets to put a limit, this .min(1e10) is a final protection
     // If we do decide to add anything else that boosts chance of an extra effect, keeping the code like this
     // makes it easier to do (add it to the Effects.max).
-    if (RealityUpgrade(17).isBought && random2 < Effects.max(0, RealityUpgrade(17))) {
+    if (RealityUpgrade(17).isBought && random2 < Effects.max(0, RealityUpgrade(17)).toNumber()) {
       num = Math.min(num + 1, maxEffects);
     }
     return Ra.unlocks.glyphEffectCount.canBeApplied ? Math.max(num, 4) : num;

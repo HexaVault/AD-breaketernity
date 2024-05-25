@@ -45,9 +45,9 @@ export const GlyphSacrificeHandler = {
   },
   glyphSacrificeGain(glyph) {
     if (!this.canSacrifice || Pelle.isDoomed) return DC.D0;
-    if (glyph.type === "reality") return 0.01 * glyph.level * Achievement(171).effectOrDefault(1);
+    if (glyph.type === "reality") return glyph.level.mul(Achievement(171).effectOrDefault(1)).div(100);
     const pre10kFactor = Decimal.pow(Decimal.clampMax(glyph.level, 10000).add(10), 2.5);
-    const post10kFactor = Decimal.clampMin(glyph.level - 10000, 0).div(100).add(1);
+    const post10kFactor = Decimal.clampMin(glyph.level.sub(1e4), 0).div(100).add(1);
     const power = Ra.unlocks.maxGlyphRarityAndShardSacrificeBoost.effectOrDefault(1);
     return Decimal.pow(pre10kFactor.mul(post10kFactor).mul(glyph.strength)
       .mul(Teresa.runRewardMultiplier).mul(Achievement(171).effectOrDefault(1)), power);
@@ -98,11 +98,11 @@ export const GlyphSacrificeHandler = {
     const resource = this.glyphAlchemyResource(glyph);
     const currentCap = resource.cap;
     const capAfterRefinement = this.highestRefinementValue(glyph);
-    const higherCap = Math.clampMin(currentCap, capAfterRefinement);
-    return Math.clampMax(higherCap, Ra.alchemyResourceCap);
+    const higherCap = Decimal.clampMin(currentCap, capAfterRefinement);
+    return Decimal.clampMax(higherCap, Ra.alchemyResourceCap);
   },
   highestRefinementValue(glyph) {
-    return this.glyphRawRefinementGain(glyph) / this.glyphRefinementEfficiency;
+    return this.glyphRawRefinementGain(glyph).div(this.glyphRefinementEfficiency);
   },
   attemptRefineGlyph(glyph, force) {
     if (glyph.type === "reality") return;
@@ -113,7 +113,7 @@ export const GlyphSacrificeHandler = {
     const decoherence = AlchemyResource.decoherence.isUnlocked;
     if (!Ra.unlocks.unlockGlyphAlchemy.canBeApplied ||
         (this.glyphRefinementGain(glyph).eq(DC.D0) && !decoherence) ||
-        (decoherence && AlchemyResources.base.every(x => x.data.amount >= Ra.alchemyResourceCap))) {
+        (decoherence && AlchemyResources.base.every(x => x.data.amount.gte(Ra.alchemyResourceCap)))) {
       this.sacrificeGlyph(glyph, force);
       return;
     }

@@ -1,15 +1,15 @@
 import { CELESTIAL_NAV_DRAW_ORDER } from "../navigation";
 
 function sigilProgress() {
-  const riftProgress = PelleRifts.all.map(r => Math.clamp(r.realPercentage, 0, 1)).min();
-  const generatorProgress = Math.log10(1 + GalaxyGenerator.generatedGalaxies) / 11;
+  const riftProgress = PelleRifts.all.map(r => Math.clamp(r.realPercentage, 0, 1)).min().clampMax(1e100).toNumber();
+  const generatorProgress = Math.log10(1 + GalaxyGenerator.generatedGalaxies.clampMax(1e100).toNumber()) / 11;
   return Math.clampMax(0.2 * riftProgress + 0.8 * generatorProgress, 1);
 }
 
 // Determines styling, overall visibility, and placement/scaling of the sigil. Center and size are defined such that
 // keeping the sigil within internal coordinates of ±1 will keep the sigil within a ±size box of the center coordinates
 const SigilAttributes = {
-  visible: () => PelleRifts.all.map(r => Math.clamp(r.realPercentage, 0, 1)).min() > 0,
+  visible: () => PelleRifts.all.map(r => Math.clamp(r.realPercentage, 0, 1)).min().gt(0),
   center: new Vector(400, 300),
   size: 400,
   color: "#00ffff",

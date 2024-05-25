@@ -111,7 +111,7 @@ export default {
       this.bestAMSet = Glyphs.copyForRecords(player.celestials.teresa.bestAMSet);
       this.lastMachines.copyFrom(player.celestials.teresa.lastRepeatedMachines);
       this.runReward = Teresa.runRewardMultiplier;
-      this.perkPoints = Currency.perkPoints.value;
+      this.perkPoints.copyFrom(Currency.perkPoints.value);
       this.rm.copyFrom(Currency.realityMachines);
       this.isRunning = Teresa.isRunning;
       this.canUnlockNextPour = TeresaUnlocks.all
