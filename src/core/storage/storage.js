@@ -420,6 +420,7 @@ export const GameStorage = {
     Cloud.resetTempState();
   },
 
+  // eslint-disable-next-line complexity
   loadPlayerObject(playerObject) {
     this.saved = 0;
 
@@ -458,6 +459,28 @@ export const GameStorage = {
 
       // Post-reality migrations are separated from pre-reality because they need to happen after any dev migrations,
       // which themselves must happen after the deepmerge
+
+      // We do this because the codeis dumb and doesnt redecimalize if we dont for some reason
+      // Also, if we do it later i think it fucks up the code down the line somehow
+      if (player.version >= 83) {
+        const fixGlyph = glyph => {
+          glyph.level = new Decimal(glyph.level);
+          glyph.rawLevel = new Decimal(glyph.rawLevel);
+          glyph.strength = new Decimal(glyph.strength);
+          // eslint-disable-next-line consistent-return
+          return glyph;
+        };
+        player.celestials.teresa.bestAMSet = player.celestials.teresa.bestAMSet.map(n => fixGlyph(n));
+        player.reality.glyphs.active = player.reality.glyphs.active.map(n => fixGlyph(n));
+        player.reality.glyphs.inventory = player.reality.glyphs.inventory.map(n => fixGlyph(n));
+        player.records.bestReality.RMSet = player.records.bestReality.RMSet?.map(n => fixGlyph(n));
+        player.records.bestReality.RMminSet = player.records.bestReality.RMminSet?.map(n => fixGlyph(n));
+        player.records.bestReality.glyphLevelSet = player.records.bestReality.glyphLevelSet?.map(n => fixGlyph(n));
+        player.records.bestReality.imCapSet = player.records.bestReality.imCapSet?.map(n => fixGlyph(n));
+        player.records.bestReality.laitelaSet = player.records.bestReality.laitelaSet?.map(n => fixGlyph(n));
+        player.records.bestReality.speedSet = player.records.bestReality.speedSet?.map(n => fixGlyph(n));
+      }
+
       player = migrations.patchPostReality(player);
     }
 

@@ -698,7 +698,7 @@ export function finishProcessReality(realityProps) {
   Currency.antimatter.reset();
   Enslaved.autoReleaseTick = 0;
   player.celestials.enslaved.hasSecretStudy = false;
-  player.celestials.laitela.entropy = 0;
+  player.celestials.laitela.entropy = DC.D0;
 
   playerInfinityUpgradesOnReset();
   resetInfinityRuns();

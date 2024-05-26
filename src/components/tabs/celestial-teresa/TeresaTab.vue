@@ -25,7 +25,8 @@ export default {
       bestAM: new Decimal(0),
       bestAMSet: [],
       lastMachines: new Decimal(0),
-      runReward: 0,
+      lastiM: new Decimal(),
+      runReward: new Decimal(),
       perkPoints: new Decimal(),
       hasReality: false,
       hasEPGen: false,
@@ -77,7 +78,7 @@ export default {
       return GameDatabase.celestials.descriptions[0].effects();
     },
     lastMachinesString() {
-      return this.lastMachines.lt(DC.E10000)
+      return this.lastiM.eq(0)
         ? `${quantify("Reality Machine", this.lastMachines, 2)}`
         : `${quantify("Imaginary Machine", this.lastMachines.dividedBy(DC.E10000), 2)}`;
     },
@@ -108,9 +109,10 @@ export default {
       this.hasPerkShop = TeresaUnlocks.shop.isUnlocked;
       this.raisedPerkShop = Ra.unlocks.perkShopIncrease.canBeApplied;
       this.bestAM.copyFrom(player.celestials.teresa.bestRunAM);
-      this.bestAMSet = Glyphs.copyForRecords(player.celestials.teresa.bestAMSet);
+      this.bestAMSet = structuredClone(Glyphs.copyForRecords(player.celestials.teresa.bestAMSet));
       this.lastMachines.copyFrom(player.celestials.teresa.lastRepeatedMachines);
-      this.runReward = Teresa.runRewardMultiplier;
+      this.lastiM.copyFrom(player.celestials.teresa.lastRepeatediM);
+      this.runReward.copyFrom(Teresa.runRewardMultiplier);
       this.perkPoints.copyFrom(Currency.perkPoints.value);
       this.rm.copyFrom(Currency.realityMachines);
       this.isRunning = Teresa.isRunning;

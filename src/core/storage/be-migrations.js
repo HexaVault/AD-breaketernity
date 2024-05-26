@@ -90,8 +90,6 @@ export function beMigration(player) {
   player.celestials.ra.pets.effarig.v = D(player.celestials.ra.pets.v.memoryChunks);
   // eslint-disable-next-line eqeqeq, max-statements-per-line
   player.celestials.teresa.bestAMSet = player.celestials.teresa.bestAMSet.map(n => updateGlyphs(n));
-  player.celestials.teresa.lastRepeatedMachines = new Decimal();
-  player.celestials.teresa.lastRepeatedMachines = new Decimal();
   player.celestials.teresa.lastRepeatediM = new Decimal();
   if (player.celestials.teresa.lastRepeatedMachines.gte("1e5000")) {
     player.celestials.teresa.lastRepeatedMachines = new Decimal("1e1000");

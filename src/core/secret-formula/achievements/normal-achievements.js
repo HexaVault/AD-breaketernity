@@ -1162,9 +1162,7 @@ export const normalAchievements = [
     name: "It's super effective!",
     get description() { return `Get a Glyph with ${formatInt(4)} effects.`; },
     checkRequirement: () => Glyphs.activeList.concat(Glyphs.inventoryList).map(
-      glyph => getGlyphEffectsFromArray(glyph.effects)
-        .filter(effect => effect.isGenerated).length
-    ).max().gte(4),
+      glyph => glyph.effects.length).max().gte(4),
     checkEvent: GAME_EVENT.GLYPHS_CHANGED
   },
   {
