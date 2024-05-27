@@ -2596,7 +2596,7 @@ export const news = [
   {
     id: "l1",
     text: "You just made your 1,000,000,000,000,000th antimatter. This one tastes like chicken.",
-    get unlocked() { return Currency.antimatter.add(1).log10().floor().eq(15); }
+    get unlocked() { return Currency.antimatter.value.max(1).log10().eq(15); }
   },
   {
     id: "l2",
