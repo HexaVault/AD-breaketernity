@@ -94,7 +94,7 @@ export const progressStages = [
     // For the first few realities, we give a bit of extra suggestion just in case the player ended up taking a break
     // and returned in the middle of a reality while they're still relatively slow
     suggestedResource: () => {
-      if (player.realities > 5) return "Reality Machines";
+      if (player.realities.gt(5)) return "Reality Machines";
       const suffix = "in your current Reality, and your Reality Machines in the long term";
       if (player.eternities.eq(0)) return `Infinity Points ${suffix}`;
       if (player.dilation.dilatedTime.eq(0)) return `Eternity Points ${suffix}`;

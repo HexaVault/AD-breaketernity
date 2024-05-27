@@ -315,3 +315,9 @@ Array.fromBitmask = function(mask) {
 String.isWhiteSpace = function(value) {
   return value && !value.trim();
 };
+
+Decimal.sorter = function(a, b) {
+  if (Decimal.lt(a, b)) return -1;
+  if (Decimal.eq(a, b)) return 0;
+  return 1;
+};
