@@ -85,7 +85,7 @@ class PerkShopUpgradeState extends RebuyableMechanicState {
 
   get isAvailableForPurchase() {
     const otherReq = this.config.otherReq ? this.config.otherReq() : true;
-    return this.cost <= this.currency.value && otherReq;
+    return this.currency.value.gte(this.cost) && otherReq;
   }
 
   onPurchased() {
