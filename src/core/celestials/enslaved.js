@@ -16,15 +16,15 @@ export const ENSLAVED_UNLOCKS = {
     id: 1,
     price: TimeSpan.fromYears(new Decimal(1e40)).totalMilliseconds,
     secondaryRequirement() {
-      const hasLevelRequirement = player.records.bestReality.glyphLevel >= 5000;
-      const hasRarityRequirement = strengthToRarity(player.records.bestReality.glyphStrength) >= 100;
+      const hasLevelRequirement = player.records.bestReality.glyphLevel.gte(5000);
+      const hasRarityRequirement = strengthToRarity(player.records.bestReality.glyphStrength).gte(100);
       return hasLevelRequirement && hasRarityRequirement;
     },
     description() {
-      const hasLevelRequirement = player.records.bestReality.glyphLevel >= 5000;
-      const hasRarityRequirement = strengthToRarity(player.records.bestReality.glyphStrength) >= 100;
+      const hasLevelRequirement = player.records.bestReality.glyphLevel.gte(5000);
+      const hasRarityRequirement = strengthToRarity(player.records.bestReality.glyphStrength).gte(100);
       return `Unlock The Nameless Ones' Reality (requires ${hasLevelRequirement ? "[✓]" : "[✗]"} a level
-      ${formatInt(5000)} Glyph and ${hasRarityRequirement ? "[✓]" : "[✗]"} a ${formatRarity(100)} rarity Glyph)`;
+      ${formatInt(5000)} Glyph and ${hasRarityRequirement ? "[✓]" : "[✗]"} a ${formatRarity(new Decimal(100))} rarity Glyph)`;
     }
   }
 };
@@ -40,7 +40,7 @@ export const Enslaved = {
   autoReleaseSpeed: 0,
   timeCap: DC.BEMAX,
   glyphLevelMin: 5000,
-  currentBlackHoleStoreAmountPerMs: 0,
+  currentBlackHoleStoreAmountPerMs: DC.D0,
   tachyonNerf: 0.3,
   toggleStoreBlackHole() {
     if (!this.canModifyGameTimeStorage) return;
@@ -127,20 +127,20 @@ export const Enslaved = {
         EnslavedProgress.storedTime.giveProgress();
       }
     }
-    if (autoRelease) release *= 0.01;
-    this.nextTickDiff = Math.clampMax(release, this.timeCap);
+    if (autoRelease) release = release.mul(0.01);
+    this.nextTickDiff = Decimal.clampMax(release, this.timeCap);
     this.isReleaseTick = true;
     // Effective gamespeed from stored time assumes a "default" 50 ms update rate for consistency
-    const effectiveGamespeed = release / 50;
-    player.celestials.ra.peakGamespeed = Math.max(player.celestials.ra.peakGamespeed, effectiveGamespeed);
-    this.autoReleaseSpeed = release / player.options.updateRate / 5;
-    player.celestials.enslaved.stored *= autoRelease ? 0.99 : 0;
+    const effectiveGamespeed = release.div(50);
+    player.celestials.ra.peakGamespeed = Decimal.max(player.celestials.ra.peakGamespeed, effectiveGamespeed);
+    this.autoReleaseSpeed = release.div(player.options.updateRate).div(5);
+    player.celestials.enslaved.stored = player.celestials.enslaved.stored.mul(autoRelease ? 0.99 : 0);
   },
   has(info) {
     return player.celestials.enslaved.unlocks.includes(info.id);
   },
   canBuy(info) {
-    return player.celestials.enslaved.stored >= info.price && info.secondaryRequirement() && !this.has(info);
+    return player.celestials.enslaved.stored.gte(info.price) && info.secondaryRequirement() && !this.has(info);
   },
   buyUnlock(info) {
     if (!this.canBuy(info)) return false;
@@ -190,7 +190,7 @@ export const Enslaved = {
     return this.realityBoostRatio.gt(1) && !Pelle.isDoomed && !isInCelestialReality();
   },
   storedTimeInsideEnslaved(stored) {
-    if (stored <= 1e3) return stored;
+    if (stored.lte(1e3)) return stored;
     return Decimal.pow(10, Decimal.pow(Decimal.log10(stored.div(1e3)), 0.55)).times(1e3);
   },
   feelEternity() {

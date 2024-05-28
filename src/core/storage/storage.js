@@ -471,6 +471,7 @@ export const GameStorage = {
           return glyph;
         };
         player.celestials.teresa.bestAMSet = player.celestials.teresa.bestAMSet.map(n => fixGlyph(n));
+        player.celestials.v.runGlyphs = player.celestials.v.runGlyphs.map(n => n.map(g => fixGlyph(g)));
         player.reality.glyphs.active = player.reality.glyphs.active.map(n => fixGlyph(n));
         player.reality.glyphs.inventory = player.reality.glyphs.inventory.map(n => fixGlyph(n));
         player.records.bestReality.RMSet = player.records.bestReality.RMSet?.map(n => fixGlyph(n));

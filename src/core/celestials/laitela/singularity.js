@@ -72,7 +72,7 @@ class SingularityMilestoneState extends GameMechanicState {
   }
 
   get remainingSingularities() {
-    return this.nextGoal - Currency.singularities.value;
+    return this.nextGoal.sub(Currency.singularities.value);
   }
 
   get progressToNext() {
@@ -112,7 +112,7 @@ export const SingularityMilestones = {
   lastNotified: player.celestials.laitela.lastCheckedMilestones,
 
   get sorted() {
-    return this.all.sort((a, b) => a.remainingSingularities - b.remainingSingularities);
+    return this.all.sort((a, b) => Decimal.sorter(a.remainingSingularities, b.remainingSingularities));
   },
 
   sortedForCompletions(moveNewToTop) {

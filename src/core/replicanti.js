@@ -491,7 +491,7 @@ export const ReplicantiUpgrade = {
       c = logBaseIncrease.sub(logCostScaling.div(2)).sub(distantReplicatedGalaxyStart.times(logDistantScaling))
         .add(logDistantScaling.times(4.5)).add(remoteReplicatedGalaxyStart.mul(logRemoteScaling));
 
-      d = cur.neg().add(170).add(distantReplicatedGalaxyStart.pow(2).mul(logDistantScaling).div(2))
+      const d = cur.neg().add(170).add(distantReplicatedGalaxyStart.pow(2).mul(logDistantScaling).div(2))
         .sub(distantReplicatedGalaxyStart.mul(4.5).mul(logDistantScaling))
         .sub(logRemoteScaling.pow(3).mul(remoteReplicatedGalaxyStart).div(3))
         .add(logRemoteScaling.pow(2).mul(remoteReplicatedGalaxyStart).div(2))

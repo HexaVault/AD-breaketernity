@@ -241,7 +241,7 @@ export const ra = {
     vXP: {
       id: 23,
       reward: "All Memory Chunks produce more Memories based on total Celestial levels.",
-      effect: () => 1 + Ra.totalPetLevel / 50,
+      effect: () => new Decimal(1 + Ra.totalPetLevel / 50),
       pet: "v",
       level: 5,
       displayIcon: `<span class="fas fa-book"></span>`

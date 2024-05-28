@@ -95,6 +95,14 @@ export function beMigration(player) {
     player.celestials.teresa.lastRepeatedMachines = new Decimal("1e1000");
     player.celestials.teresa.lastRepeatediM = player.celestials.teresa.lastRepeatedMachines.div("1e10000");
   }
+  player.celestials.v.runGlyphs = player.celestials.v.runGlyphs.map(n => n.map(g => updateGlyphs(g)));
+  player.celestials.v.runRecords[1] = D(player.celestials.v.runRecords[1]);
+  player.celestials.v.runRecords[2] = D(player.celestials.v.runRecords[2]);
+  player.celestials.v.runRecords[3] = D(player.celestials.v.runRecords[3]);
+  player.celestials.v.runRecords[4] = D(player.celestials.v.runRecords[4]);
+  player.celestials.v.runRecords[5] = D(player.celestials.v.runRecords[5]);
+  player.celestials.v.runRecords[7] = D(player.celestials.v.runRecords[7]);
+  player.celestials.v.runRecords[8] = D(player.celestials.v.runRecords[8]);
   player.chall2Pow = D(player.chall2Pow);
   player.chall3Pow = D(player.chall3Pow);
   player.chall8TotalSacrifice = D(player.chall8TotalSacrifice);

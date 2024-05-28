@@ -39,7 +39,7 @@ export const Glyphs = {
     return player.reality.glyphs.inventory;
   },
   get sortedInventoryList() {
-    return this.inventoryList.sort((a, b) => -a.level * a.strength + b.level * b.strength);
+    return this.inventoryList.sort((a, b) => Decimal.sorter(a.level.mul(a.strength), b.level.mul(b.strength)));
   },
   get activeList() {
     return player.reality.glyphs.active;
@@ -204,11 +204,11 @@ export const Glyphs = {
     const compFn = (op, comp1, comp2) => {
       switch (op) {
         case -1:
-          return comp2 - comp1;
+          return comp2.sub(comp1);
         case 0:
-          return comp1 === comp2 ? 0 : -1;
+          return comp1.eq(comp2) ? 0 : -1;
         case 1:
-          return comp1 - comp2;
+          return comp1.sub(comp2);
       }
       return false;
     };
@@ -238,21 +238,21 @@ export const Glyphs = {
           eff = matchedEffects(targetGlyph.effects, glyph.effects);
           break;
       }
-      const str = compFn(fuzzyMatch.strength, glyph.strength, targetGlyph.strength) / 2.5;
-      const lvl = compFn(fuzzyMatch.level, glyph.level, targetGlyph.level) / 5000;
+      const str = compFn(fuzzyMatch.strength, glyph.strength, targetGlyph.strength).div(2.5);
+      const lvl = compFn(fuzzyMatch.level, glyph.level, targetGlyph.level).div(5000);
       const sym = glyph.symbol === targetGlyph.symbol;
-      if (type && eff >= 0 && str >= 0 && lvl >= 0 && sym) {
+      if (type && eff >= 0 && str.gte(0) && lvl.gte(0) && sym) {
         allMatches.push({
           glyph,
           // Flatten glyph qualities, with 10% rarity, 500 levels, and an extra effect all being equal value. This
           // is used to sort the options by some rough measure of distance from the target glyph
-          gap: str + lvl + eff / 10
+          gap: str.add(lvl).add(eff / 10)
         });
       }
     }
 
     // Sort by increasing gap, then discard the value as it's not directly used anywhere else
-    allMatches.sort((a, b) => a.gap - b.gap);
+    allMatches.sort((a, b) => Decimal.sorter(a.gap, b.gap));
     return allMatches.map(m => m.glyph);
   },
   findById(id) {
@@ -516,17 +516,18 @@ export const Glyphs = {
     if (player.reality.autoCollapse) this.collapseEmptySlots();
   },
   sortByLevel() {
-    this.sort((a, b) => b.level.sub(a.level));
+    this.sort((a, b) => Decimal.sorter(a.level, b.level));
   },
   sortByPower() {
-    this.sort((a, b) => b.level.times(b.strength).sub(a.level.times(a.strength)));
+    this.sort((a, b) => Decimal.sorter(a.level.mul(a.strength), b.level.mul(b.strength)));
   },
   sortByScore() {
-    this.sort((a, b) => AutoGlyphProcessor.filterValue(b) - AutoGlyphProcessor.filterValue(a));
+    this.sort((a, b) => Decimal.sorter(AutoGlyphProcessor.filterValue(b), AutoGlyphProcessor.filterValue(a)));
   },
   sortByEffect() {
+  // Yes the naming of this function makes 0 sense but imma leave it, since it works (hopefully)
     function reverseBitstring(eff) {
-      return parseInt(((1 << 30) + (eff >>> 0)).toString(2).split("").reverse().join(""), 2);
+      return eff.toSorted((a, b) => b.intID - a.intID)[0];
     }
     // The bitwise reversal is so that the effects with the LOWER id are valued higher in the sorting.
     // This primarily meant for effarig glyph effect sorting, which makes it prioritize timespeed pow highest.
@@ -731,7 +732,8 @@ export const Glyphs = {
       effects: g.effects,
       color: g.color,
       symbol: g.symbol, }))
-      .sort((a, b) => b.effects - a.effects);
+      // eslint-disable-next-line max-len
+      .sort((a, b) => b.effects.toSorted((c, d) => c.intID - d.intID)[0] - a.effects.toSorted((c, d) => d.intID - c.intID)[0]);
   },
   // Normal glyph count minus 3 for each cursed glyph, uses 4 instead of 3 in the calculation because cursed glyphs
   // still contribute to the length of the active list. Note that it only ever decreases if startingReality is true.

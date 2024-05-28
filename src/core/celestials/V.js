@@ -33,7 +33,7 @@ class VRunUnlockState extends GameMechanicState {
 
   get isReduced() {
     if (player.celestials.v.goalReductionSteps[this.id] === 0) return false;
-    return (VUnlocks.shardReduction.canBeApplied && this.reduction > 0);
+    return (VUnlocks.shardReduction.canBeApplied && this.reduction.gt(0));
   }
 
   get reductionCost() {
@@ -52,13 +52,17 @@ class VRunUnlockState extends GameMechanicState {
 
   get reduction() {
     const value = this.conditionBaseValue;
-    return Math.clamp(this.config.shardReduction(this.tiersReduced), 0, this.config.maxShardReduction(value));
+    return Decimal.clamp(this.config.shardReduction(this.tiersReduced), 0, this.config.maxShardReduction(value));
   }
 
   get conditionValue() {
     let value = this.conditionBaseValue;
     if (!this.isReduced) return value;
-    value -= this.reduction;
+    if (value instanceof Decimal) {
+      value.sub(this.reduction);
+    } else {
+      value = Decimal.sub(value, this.reduction).toNumber();
+    }
     return value;
   }
 

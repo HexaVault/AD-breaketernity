@@ -100,7 +100,7 @@ export default {
       this.totalUnlocks = V.spaceTheorems;
       this.pp.copyFrom(Currency.perkPoints.value);
       this.showReduction = VUnlocks.shardReduction.isUnlocked;
-      this.runRecords = Array.from(player.celestials.v.runRecords);
+      this.runRecords = structuredClone(Array.from(player.celestials.v.runRecords));
       this.runGlyphs = structuredClone(player.celestials.v.runGlyphs.map(gList => Glyphs.copyForRecords(gList)));
       this.isFlipped = V.isFlipped;
       this.wantsFlipped = player.celestials.v.wantsFlipped;
@@ -264,7 +264,7 @@ export default {
                 <div class="l-v-goal-reduction-spacer" />
                 <button
                   class="o-primary-btn l-v-reduction"
-                  :class="{ 'o-primary-btn--disabled': !hex.canBeReduced || pp < hex.reductionCost }"
+                  :class="{ 'o-primary-btn--disabled': !hex.canBeReduced || pp.lt(hex.reductionCost) }"
                   :ach-tooltip="reductionTooltip(hex)"
                   @click="reduceGoals(hex)"
                 >

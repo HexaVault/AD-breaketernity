@@ -256,7 +256,7 @@ export const GlyphGenerator = {
     const numberOfEffects = realityGlyphEffectLevelThresholds.filter(lv => lv <= level).length;
     const sortedRealityEffects = GlyphEffects.all
       .filter(eff => eff.glyphTypes.includes("reality"))
-      .sort((a, b) => a.bitmaskIndex - b.bitmaskIndex)
+      .sort((a, b) => a.intID - b.intID)
       .map(eff => eff.id);
     return sortedRealityEffects.slice(0, numberOfEffects);
   },

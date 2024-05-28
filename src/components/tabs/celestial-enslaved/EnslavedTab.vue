@@ -21,15 +21,15 @@ export default {
     isRunning: false,
     completed: false,
     storedBlackHole: new Decimal(0),
-    storedReal: 0,
+    storedReal: new Decimal(),
     storedRealEffiency: 0,
-    storedRealCap: 0,
+    storedRealCap: new Decimal(),
     autoRelease: false,
-    autoReleaseSpeed: 0,
+    autoReleaseSpeed: new Decimal(),
     unlocks: [],
     buyableUnlocks: [],
     quote: "",
-    currentSpeedUp: 0,
+    currentSpeedUp: new Decimal(),
     hintsUnlocked: false,
     canModifyGameTimeStorage: false,
     canChangeStoreTime: false,
@@ -119,22 +119,22 @@ export default {
   methods: {
     update() {
       this.isStoringBlackHole = Enslaved.isStoringGameTime;
-      this.storedBlackHole.copyFrom(celestials.enslaved.stored);
+      this.storedBlackHole.copyFrom(player.celestials.enslaved.stored);
       this.isStoringReal = Enslaved.isStoringRealTime;
       this.autoStoreReal = player.celestials.enslaved.autoStoreReal;
       this.offlineEnabled = player.options.offlineProgress;
       this.hasAutoRelease = Ra.unlocks.autoPulseTime.canBeApplied;
       this.isRunning = Enslaved.isRunning;
       this.completed = Enslaved.isCompleted && !this.isDoomed;
-      this.storedReal = player.celestials.enslaved.storedReal;
+      this.storedReal.copyFrom(player.celestials.enslaved.storedReal);
       this.storedRealEffiency = Enslaved.storedRealTimeEfficiency;
-      this.storedRealCap = Enslaved.storedRealTimeCap;
+      this.storedRealCap.copyFrom(Enslaved.storedRealTimeCap);
       this.unlocks = Array.from(player.celestials.enslaved.unlocks);
       this.buyableUnlocks = Object.values(ENSLAVED_UNLOCKS).map(x => Enslaved.canBuy(x));
       this.quote = Enslaved.quote;
       this.autoRelease = player.celestials.enslaved.isAutoReleasing;
-      this.autoReleaseSpeed = Enslaved.isAutoReleasing ? Enslaved.autoReleaseSpeed : 0;
-      this.currentSpeedUp = Enslaved.currentBlackHoleStoreAmountPerMs;
+      this.autoReleaseSpeed.copyFrom(Enslaved.isAutoReleasing ? Enslaved.autoReleaseSpeed : new Decimal(0));
+      this.currentSpeedUp.copyFrom(Enslaved.currentBlackHoleStoreAmountPerMs);
       this.hintsUnlocked = EnslavedProgress.hintsUnlocked.hasProgress;
       this.canModifyGameTimeStorage = Enslaved.canModifyGameTimeStorage;
       this.canChangeStoreTime = Enslaved.canModifyGameTimeStorage;
@@ -142,7 +142,7 @@ export default {
       this.canDischarge = Enslaved.canRelease(false);
       this.canAutoRelease = Enslaved.canRelease(true);
       this.hasNoCharge = this.storedBlackHole.eq(0);
-      this.hasReachedCurrentCap = this.storedReal === this.storedRealCap;
+      this.hasReachedCurrentCap = this.storedReal.eq(this.storedRealCap);
     },
     toggleStoreBlackHole() {
       Enslaved.toggleStoreBlackHole();
@@ -161,7 +161,7 @@ export default {
       return timeDisplayShort(ms);
     },
     timeUntilBuy(price) {
-      return Math.max((price - this.storedBlackHole) / this.currentSpeedUp, 0);
+      return Decimal.max((new Decimal(price).sub(this.storedBlackHole)).div(this.currentSpeedUp), 0);
     },
     buyUnlock(info) {
       Enslaved.buyUnlock(info);
@@ -336,7 +336,7 @@ export default {
             <div v-if="!hasUnlock(unlock)">
               Costs: {{ timeDisplayShort(unlock.price) }}
             </div>
-            <span v-if="isStoringBlackHole && !hasUnlock(unlock) && timeUntilBuy(unlock.price) > 0">
+            <span v-if="isStoringBlackHole && !hasUnlock(unlock) && timeUntilBuy(unlock.price).gt(0)">
               Time to obtain: {{ timeDisplayShort(timeUntilBuy(unlock.price)) }}
             </span>
           </button>
