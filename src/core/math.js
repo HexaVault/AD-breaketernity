@@ -783,7 +783,7 @@ window.binomialDistribution = function binomialDistribution(numSamples, p) {
 window.poissonDistribution = function poissonDistribution(expected) {
   if (expected === 0) return 0;
   if (expected instanceof Decimal) {
-    if (expected.e > 32) return expected;
+    if (expected.log10().gt(32)) return expected;
     return new Decimal(poissonDistribution(expected.toNumber()));
   }
   if (expected > 1e32) return expected;
@@ -1582,26 +1582,26 @@ window.ExponentialMovingAverage = class ExponentialMovingAverage {
     this.highOutlierThreshold = highOutlierThreshold;
     this.lowOutlierThreshold = lowOutlierThreshold;
     this.outliers = 0;
-    this._average = undefined;
+    this._average = new Decimal(0);
   }
 
   get average() {
-    if (this._average === undefined) {
+    if (this._average.eq(0)) {
       return 0;
     }
     return this._average;
   }
 
   addValue(value) {
-    if (this._average === undefined) {
+    if (this._average.eq(0)) {
       this._average = value;
     } else {
-      this._average += this.alpha * (value - this._average);
+      this._average = this._average.add((value.sub(this._average)).mul(this.average));
 
-      const absValue = Math.abs(value);
-      const absAverage = Math.abs(this._average);
-      const highOutlier = absValue > absAverage * this.highOutlierThreshold;
-      const lowOutlier = absValue < absAverage * this.lowOutlierThreshold;
+      const absValue = Decimal.abs(value);
+      const absAverage = Decimal.abs(this._average);
+      const highOutlier = absValue.gt(absAverage.mul(this.highOutlierThreshold));
+      const lowOutlier = absValue.lt(absAverage.mul(this.lowOutlierThreshold));
       const outlier = highOutlier || lowOutlier;
 
       if (outlier) {

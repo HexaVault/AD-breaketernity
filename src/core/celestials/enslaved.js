@@ -292,6 +292,8 @@ export const Tesseracts = {
   // This used to be an array, but tess costs are just a super easy thing to calculate in BE so i dont care
 
   costs(index) {
+    // eslint-disable-next-line no-param-reassign
+    index = index.add(1);
     if (index.lte(3)) return Decimal.pow10(index.times(2e7));
     return Decimal.pow10((index.sub(3)).factorial().times(Decimal.pow(2, index.sub(3))).times(6e7));
   },

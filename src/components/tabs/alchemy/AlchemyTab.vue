@@ -62,18 +62,20 @@ export default {
   },
   methods: {
     update() {
-      this.reactionsAvailable = AlchemyResources.all.filter(res => !res.isBaseResource && res.isUnlocked).length !== 0;
+      this.reactionsAvailable = structuredClone(AlchemyResources.all.filter(res => !res.isBaseResource && res.isUnlocked).length !== 0);
       this.realityCreationVisible = Ra.pets.effarig.level === 25;
       this.animationTimer += 35;
       this.alchemyCap = Ra.alchemyResourceCap;
       this.capFactor = 1 / GlyphSacrificeHandler.glyphRefinementEfficiency;
       this.createdRealityGlyph = player.reality.glyphs.createdRealityGlyph;
       this.allReactionsDisabled = this.reactions.every(reaction => !reaction.isActive);
-      this.realityAmount = AlchemyResource.reality.amount;
+      this.realityAmount = structuredClone(AlchemyResource.reality.amount.max(1e200).toNumber());
     },
     orbitSize(orbit) {
-      const maxRadius = this.layout.orbits.map(o => o.radius).max();
-      return `${(orbit.radius / maxRadius * 50)}%`;
+      const maxRadius = this.layout.orbits.map(o => o.radius).nMax();
+      let radius = Decimal.clampMax(orbit.radius, 1e100);
+      radius = radius.toNumber();
+      return `${(radius / maxRadius * 50)}%`;
     },
     handleMouseEnter(node) {
       this.infoResourceId = node.resource.id;
@@ -108,7 +110,7 @@ export default {
     },
     isLessThanRequired(reactionArrow) {
       return reactionArrow.product.resource.amount.gt(0) &&
-        reactionArrow.reagent.cost < reactionArrow.reagent.resource.cap;
+        Decimal.lt(reactionArrow.reagent.cost, reactionArrow.reagent.resource.cap);
     },
     isActiveReaction(reactionArrow) {
       return reactionArrow.reaction.isActive && !this.isDoomed;

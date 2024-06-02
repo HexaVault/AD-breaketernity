@@ -183,6 +183,9 @@ export function beMigration(player) {
     player.records.recentEternities[i][3] = D(player.records.recentEternities[i][2]);
     player.records.recentEternities[i][2] = D(player.records.recentEternities[i][1]);
     player.records.recentEternities[i][1] = D(player.records.recentEternities[i][0]);
+    if (player.records.recentEternities[i][5] instanceof Decimal) {
+      player.records.recentEternities[i][5] = "";
+    }
     player.records.recentInfinities[i][5] = player.records.recentInfinities[i][4];
     player.records.recentInfinities[i][4] = D(player.records.recentInfinities[i][3]);
     player.records.recentInfinities[i][3] = D(player.records.recentInfinities[i][2]);

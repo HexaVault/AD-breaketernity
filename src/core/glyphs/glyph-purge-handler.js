@@ -145,14 +145,14 @@ export const GlyphSacrificeHandler = {
     }
     const rawRefinementGain = this.glyphRawRefinementGain(glyph);
     const refinementGain = this.glyphRefinementGain(glyph);
-    resource.amount += refinementGain;
-    const decoherenceGain = rawRefinementGain * AlchemyResource.decoherence.effectValue;
+    resource.amount = resource.amount.add(refinementGain);
+    const decoherenceGain = rawRefinementGain.mul(AlchemyResource.decoherence.effectValue);
     for (const glyphTypeName of ALCHEMY_BASIC_GLYPH_TYPES) {
       if (glyphTypeName !== glyph.type) {
         const glyphType = GlyphTypes[glyphTypeName];
         const otherResource = AlchemyResources.all[glyphType.alchemyResource];
-        const maxResource = Math.max(otherResource.cap, otherResource.amount);
-        otherResource.amount = Math.clampMax(otherResource.amount + decoherenceGain, maxResource);
+        const maxResource = Decimal.max(otherResource.cap, otherResource.amount);
+        otherResource.amount = Decimal.clampMax(otherResource.amount.add(decoherenceGain), maxResource);
       }
     }
     if (resource.isBaseResource) {

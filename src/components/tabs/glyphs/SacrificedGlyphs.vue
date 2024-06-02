@@ -160,7 +160,7 @@ export default {
       Glyph Sacrifice Boosts:
     </div>
     <div v-if="anySacrifices && !isDoomed">
-      <div v-if="teresaMult > 1">
+      <div v-if="teresaMult.gt(1)">
         Glyph sacrifice values are multiplied by {{ formatX(teresaMult, 2, 2) }};
         Teresa was last done at {{ lastMachines }}.
         <span v-if="hasSeenRealityGlyph">

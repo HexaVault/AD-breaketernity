@@ -66,15 +66,12 @@ export const AutoGlyphProcessor = {
         return strengthToRarity(glyph.strength) - 200 * missingEffects;
       }
       case AUTO_GLYPH_SCORE.EFFECT_SCORE: {
-        const effectList = getGlyphEffectsFromBitmask(glyph.effects, 0, 0)
-          .filter(effect => effect.isGenerated)
-          .map(effect => effect.bitmaskIndex);
-        const offset = this.bitmaskIndexOffset(glyph.type);
+        const effectList = getGlyphEffectsFromArray(glyph.effects, 0, 0);
         // This ternary check is required to filter out any effects which may appear on the glyph which aren't normally
         // there in typical glyph generation. Ra-Nameless 25 is the only case where this happens, but this also has the
         // side-effect of making altered glyph generation in mods less likely to crash the game as well
         const effectScore = effectList
-          .map(e => (typeCfg.effectScores[e - offset] ? typeCfg.effectScores[e - offset] : 0))
+          .map(e => (typeCfg.effectScores[e] ? typeCfg.effectScores[e] : 0))
           .sum();
         return strengthToRarity(glyph.strength) + effectScore;
       }
@@ -84,7 +81,7 @@ export const AutoGlyphProcessor = {
       case AUTO_GLYPH_SCORE.LOWEST_ALCHEMY: {
         const resource = AlchemyResource[glyph.type];
         const refinementGain = GlyphSacrificeHandler.glyphRefinementGain(glyph);
-        return resource.isUnlocked && refinementGain > 0
+        return resource.isUnlocked && refinementGain.gt(0)
           ? -resource.amount
           : new Decimal(-Infinity);
       }

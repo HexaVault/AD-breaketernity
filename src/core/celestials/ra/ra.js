@@ -123,11 +123,11 @@ class RaPetState extends GameMechanicState {
   }
 
   get memoryChunksPerSecond() {
-    if (!this.canGetMemoryChunks) return 0;
-    let res = this.rawMemoryChunksPerSecond * this.chunkUpgradeCurrentMult *
-      Effects.product(Ra.unlocks.continuousTTBoost.effects.memoryChunks, GlyphSacrifice.reality);
-    if (this.hasRemembrance) res *= Ra.remembrance.multiplier;
-    else if (Ra.petWithRemembrance) res *= Ra.remembrance.nerf;
+    if (!this.canGetMemoryChunks) return DC.D0;
+    let res = this.rawMemoryChunksPerSecond.mul(this.chunkUpgradeCurrentMult)
+      .mul(Effects.product(Ra.unlocks.continuousTTBoost.effects.memoryChunks, GlyphSacrifice.reality));
+    if (this.hasRemembrance) res = res.mul(Ra.remembrance.multiplier);
+    else if (Ra.petWithRemembrance) res = res.mul(Ra.remembrance.nerf);
     return res;
   }
 
@@ -152,7 +152,7 @@ class RaPetState extends GameMechanicState {
   }
 
   get chunkUpgradeCost() {
-    return Math.pow(25, this.data.chunkUpgrades).mul(5000);
+    return Decimal.pow(25, this.data.chunkUpgrades).mul(5000);
   }
 
   get canBuyMemoryUpgrade() {
@@ -283,12 +283,12 @@ export const Ra = {
   timeToGoalString(pet, expToGain) {
     // Quadratic formula for growth (uses constant growth for a = 0)
     const a = Enslaved.isStoringRealTime
-      ? 0
+      ? DC.D0
       : Ra.productionPerMemoryChunk.mul(pet.memoryUpgradeCurrentMult).mul(pet.memoryChunksPerSecond).div(2);
     const b = Ra.productionPerMemoryChunk.mul(pet.memoryUpgradeCurrentMult).mul(pet.memoryChunks);
     const c = expToGain.neg();
     const estimate = a === 0
-      ? -c.div(b)
+      ? c.neg().div(b)
       : decimalQuadraticSolution(a, b, c);
     if (Number.isFinite(estimate)) {
       return `in ${TimeSpan.fromSeconds(new Decimal(estimate)).toStringShort()}`;
@@ -367,7 +367,7 @@ export const Ra = {
     if (!Ra.unlocks.effarigUnlock.canBeApplied) return;
     const sortedReactions = AlchemyReactions.all
       .compact()
-      .sort((r1, r2) => r2.priority - r1.priority);
+      .sort((r1, r2) => Decimal.sorter(r2.priority, r1.priority));
     for (const reaction of sortedReactions) {
       reaction.combineReagents();
     }

@@ -11,9 +11,9 @@ export default {
     return {
       isUnlocked: false,
       level: 0,
-      memories: 0,
-      requiredMemories: 0,
-      nextLevelEstimate: 0,
+      memories: new Decimal(),
+      requiredMemories: new Decimal(),
+      nextLevelEstimate: "",
     };
   },
   computed: {
@@ -31,7 +31,7 @@ export default {
     },
     barStyle() {
       return {
-        width: `${100 * Math.min(1, this.memories / this.requiredMemories)}%`,
+        width: `${100 * Decimal.min(1, this.memories.div(this.requiredMemories)).toNumber()}%`,
         background: this.pet.color
       };
     },
@@ -52,7 +52,7 @@ export default {
       return this.level + 1;
     },
     classObject() {
-      const available = this.memories >= this.requiredMemories;
+      const available = this.memories.gte(this.requiredMemories);
       const pet = this.pet;
       return {
         "c-ra-level-up-btn": true,
@@ -103,10 +103,10 @@ export default {
       const pet = this.pet;
       this.isUnlocked = pet.isUnlocked;
       if (!this.isUnlocked) return;
-      this.memories = pet.memories;
+      this.memories.copyFrom(pet.memories);
       this.level = pet.level;
-      this.requiredMemories = pet.requiredMemories;
-      this.nextLevelEstimate = Ra.timeToGoalString(this.pet, this.requiredMemories - this.memories);
+      this.requiredMemories.copyFrom(pet.requiredMemories);
+      this.nextLevelEstimate = Ra.timeToGoalString(this.pet, this.requiredMemories.sub(this.memories));
     },
     isImportant(level) {
       return this.importantLevels.includes(level);
@@ -143,7 +143,7 @@ export default {
         </div>
         <div class="c-ra-pet-upgrade__tooltip__footer">
           Cost: {{ quantify("Memory", requiredMemories, 2, 2) }}
-          <span v-if="memories <= requiredMemories">{{ nextLevelEstimate }}</span>
+          <span v-if="memories.lte(requiredMemories)">{{ nextLevelEstimate }}</span>
         </div>
       </div>
     </div>

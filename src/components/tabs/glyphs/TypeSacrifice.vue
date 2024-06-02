@@ -13,7 +13,7 @@ export default {
   },
   data() {
     return {
-      amount: 0,
+      amount: new Decimal(),
       effectValue: 0,
       isColored: true,
       willSacrifice: false,
@@ -76,7 +76,7 @@ export default {
   },
   methods: {
     update() {
-      this.amount = player.reality.glyphs.sac[this.type];
+      this.amount.copyFrom(player.reality.glyphs.sac[this.type]);
       this.effectValue = GlyphSacrifice[this.type].effectValue;
       this.isColored = player.options.glyphTextColors;
       this.willSacrifice = AutoGlyphProcessor.sacMode === AUTO_GLYPH_REJECT.SACRIFICE ||
@@ -89,7 +89,7 @@ export default {
 
 <template>
   <div
-    v-if="amount > 0"
+    v-if="amount.gt(0)"
     :style="style"
   >
     <div>

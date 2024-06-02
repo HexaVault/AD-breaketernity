@@ -79,11 +79,11 @@ export const alchemyResources = {
     reagents: [
       {
         resource: ALCHEMY_RESOURCE.TIME,
-        amount: 8
+        amount: DC.D8
       },
       {
         resource: ALCHEMY_RESOURCE.REPLICATION,
-        amount: 7
+        amount: DC.D7
       }
     ]
   },
@@ -101,11 +101,11 @@ export const alchemyResources = {
     reagents: [
       {
         resource: ALCHEMY_RESOURCE.TIME,
-        amount: 11
+        amount: DC.D11
       },
       {
         resource: ALCHEMY_RESOURCE.INFINITY,
-        amount: 4
+        amount: DC.D4
       }
     ]
   },
@@ -123,11 +123,11 @@ export const alchemyResources = {
     reagents: [
       {
         resource: ALCHEMY_RESOURCE.POWER,
-        amount: 10
+        amount: DC.D10
       },
       {
         resource: ALCHEMY_RESOURCE.INFINITY,
-        amount: 5
+        amount: DC.D5
       }
     ]
   },
@@ -146,11 +146,11 @@ export const alchemyResources = {
     reagents: [
       {
         resource: ALCHEMY_RESOURCE.POWER,
-        amount: 9
+        amount: DC.D9
       },
       {
         resource: ALCHEMY_RESOURCE.DILATION,
-        amount: 6
+        amount: DC.D6
       }
     ]
   },
@@ -169,11 +169,11 @@ export const alchemyResources = {
     reagents: [
       {
         resource: ALCHEMY_RESOURCE.REPLICATION,
-        amount: 5
+        amount: DC.D5
       },
       {
         resource: ALCHEMY_RESOURCE.DILATION,
-        amount: 10
+        amount: DC.D10
       }
     ]
   },
@@ -211,15 +211,15 @@ export const alchemyResources = {
     reagents: [
       {
         resource: ALCHEMY_RESOURCE.EFFARIG,
-        amount: 3
+        amount: DC.D3
       },
       {
         resource: ALCHEMY_RESOURCE.REPLICATION,
-        amount: 16
+        amount: DC.D16
       },
       {
         resource: ALCHEMY_RESOURCE.INFINITY,
-        amount: 14
+        amount: DC.D14
       }
     ]
   },
@@ -239,15 +239,15 @@ export const alchemyResources = {
     reagents: [
       {
         resource: ALCHEMY_RESOURCE.EFFARIG,
-        amount: 11
+        amount: DC.D11
       },
       {
         resource: ALCHEMY_RESOURCE.POWER,
-        amount: 4
+        amount: DC.D4
       },
       {
         resource: ALCHEMY_RESOURCE.TIME,
-        amount: 20
+        amount: DC.D20
       }
     ]
   },
@@ -266,11 +266,11 @@ export const alchemyResources = {
     reagents: [
       {
         resource: ALCHEMY_RESOURCE.EFFARIG,
-        amount: 13
+        amount: DC.D13
       },
       {
         resource: ALCHEMY_RESOURCE.ALTERNATION,
-        amount: 8
+        amount: DC.D8
       }
     ]
   },
@@ -290,11 +290,11 @@ export const alchemyResources = {
     reagents: [
       {
         resource: ALCHEMY_RESOURCE.INFLATION,
-        amount: 18
+        amount: DC.D18
       },
       {
         resource: ALCHEMY_RESOURCE.SYNERGISM,
-        amount: 3
+        amount: DC.D3
       }
     ]
   },
@@ -312,11 +312,11 @@ export const alchemyResources = {
     reagents: [
       {
         resource: ALCHEMY_RESOURCE.DIMENSIONALITY,
-        amount: 7
+        amount: DC.D7
       },
       {
         resource: ALCHEMY_RESOURCE.MOMENTUM,
-        amount: 8
+        amount: DC.D8
       }
     ]
   },
@@ -334,15 +334,15 @@ export const alchemyResources = {
     reagents: [
       {
         resource: ALCHEMY_RESOURCE.INFINITY,
-        amount: 20
+        amount: DC.D20
       },
       {
         resource: ALCHEMY_RESOURCE.EFFARIG,
-        amount: 6
+        amount: DC.D6
       },
       {
         resource: ALCHEMY_RESOURCE.CARDINALITY,
-        amount: 16
+        amount: DC.D16
       }
     ]
   },
@@ -360,11 +360,11 @@ export const alchemyResources = {
     reagents: [
       {
         resource: ALCHEMY_RESOURCE.ETERNITY,
-        amount: 13
+        amount: DC.D13
       },
       {
         resource: ALCHEMY_RESOURCE.INFLATION,
-        amount: 18
+        amount: DC.D18
       }
     ]
   },
@@ -383,11 +383,11 @@ export const alchemyResources = {
     reagents: [
       {
         resource: ALCHEMY_RESOURCE.ALTERNATION,
-        amount: 16
+        amount: DC.D16
       },
       {
         resource: ALCHEMY_RESOURCE.DECOHERENCE,
-        amount: 3
+        amount: DC.D3
       }
     ]
   },
@@ -407,15 +407,15 @@ export const alchemyResources = {
     reagents: [
       {
         resource: ALCHEMY_RESOURCE.EFFARIG,
-        amount: 15
+        amount: DC.D15
       },
       {
         resource: ALCHEMY_RESOURCE.DECOHERENCE,
-        amount: 3
+        amount: DC.D3
       },
       {
         resource: ALCHEMY_RESOURCE.SYNERGISM,
-        amount: 10
+        amount: DC.D10
       }
     ]
   },
@@ -434,27 +434,27 @@ export const alchemyResources = {
     reagents: [
       {
         resource: ALCHEMY_RESOURCE.EXPONENTIAL,
-        amount: 1
+        amount: DC.D1
       },
       {
         resource: ALCHEMY_RESOURCE.FORCE,
-        amount: 1
+        amount: DC.D1
       },
       {
         resource: ALCHEMY_RESOURCE.UNCOUNTABILITY,
-        amount: 1
+        amount: DC.D1
       },
       {
         resource: ALCHEMY_RESOURCE.BOUNDLESS,
-        amount: 1
+        amount: DC.D1
       },
       {
         resource: ALCHEMY_RESOURCE.MULTIVERSAL,
-        amount: 1
+        amount: DC.D1
       },
       {
         resource: ALCHEMY_RESOURCE.UNPREDICTABILITY,
-        amount: 1
+        amount: DC.D1
       }
     ]
   },

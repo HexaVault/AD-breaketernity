@@ -14,12 +14,12 @@ export default {
   },
   data() {
     return {
-      amount: 0,
-      cap: 0,
+      amount: new Decimal(),
+      cap: new Decimal(),
       capped: false,
-      flow: 0,
+      flow: new Decimal(),
       isReactionActive: false,
-      reactionProduction: 0,
+      reactionProduction: new Decimal(),
       isUnlocked: false,
       unlockRequirement: ""
     };
@@ -64,10 +64,10 @@ export default {
       return formatFloat(this.cap, 1);
     },
     formattedFlow() {
-      const sign = this.flow >= 0 ? "+" : "-";
-      if (Math.abs(this.flow) < 0.01) return "None";
-      const resourceText = `${sign}${format(Math.abs(this.flow), 2, 2)}/sec`;
-      const color = this.flow > 0 ? "9CCC65" : "CC6666";
+      const sign = this.flow.gte(0) ? "+" : "-";
+      if (Decimal.abs(this.flow).lt(0.01)) return "None";
+      const resourceText = `${sign}${format(Decimal.abs(this.flow), 2, 2)}/sec`;
+      const color = this.flow.gt(0) ? "9CCC65" : "CC6666";
       return `<span style="color:#${color}">${resourceText}</span>`;
     },
     isDoomed: () => Pelle.isDoomed,
@@ -75,15 +75,15 @@ export default {
   methods: {
     update() {
       const resource = this.resource;
-      this.amount = resource.amount;
-      this.cap = resource.cap;
+      this.amount.copyFrom(resource.amount);
+      this.cap.copyFrom(resource.cap);
       this.capped = resource.capped;
-      this.flow = resource.flow;
+      this.flow.copyFrom(new Decimal(resource.flow));
       this.isUnlocked = resource.isUnlocked;
       this.unlockRequirement = resource.lockText;
       if (!this.isBaseResource) {
         this.isReactionActive = !this.isDoomed && this.reaction.isActive;
-        this.reactionProduction = this.reaction.reactionProduction;
+        this.reactionProduction.copyFrom(this.reaction.reactionProduction);
       }
     }
   }

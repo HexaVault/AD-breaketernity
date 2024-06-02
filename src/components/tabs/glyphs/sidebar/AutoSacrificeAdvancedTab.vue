@@ -69,7 +69,8 @@ export default {
     },
     setEffectScore(index, event) {
       const inputValue = event.target.value;
-      if (!isNaN(inputValue)) {
+      // eslint-disable-next-line no-constant-condition
+      if (true || !isNaN(inputValue)) {
         this.autoSacrificeSettings.effectScores[index] = this.limitedInput(inputValue);
       }
     },
@@ -116,8 +117,8 @@ export default {
         :min="-weightInputLimit"
         :max="weightInputLimit"
         class="c-auto-sac-type-tab__input"
-        :value="effectScores[effect.bitmaskIndex - indexOffset]"
-        @blur="setEffectScore(effect.bitmaskIndex - indexOffset, $event)"
+        :value="effectScores[effect.id]"
+        @blur="setEffectScore(effect.id, $event)"
       >
     </div>
   </div>

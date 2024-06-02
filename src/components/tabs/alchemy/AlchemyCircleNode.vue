@@ -22,8 +22,8 @@ export default {
   data() {
     return {
       isReactionActive: false,
-      amount: 0,
-      flow: 0,
+      amount: new Decimal(),
+      flow: new Decimal(),
       isUnlocked: false
     };
   },
@@ -35,12 +35,12 @@ export default {
       return this.resource.isBaseResource;
     },
     layoutStyle() {
-      const scaledFlow = Math.clamp(0.7 * Math.sqrt(Math.abs(this.flow)), 0, 1);
+      const scaledFlow = Decimal.clamp(Decimal.sqrt(Decimal.abs(this.flow)).mul(0.7), 0, 1).toNumber();
       return {
         left: `${this.node.x}%`,
         top: `${this.node.y}%`,
         "box-shadow": `0 0 0.3rem 0.3rem
-          rgba(${this.flow > 0 ? "156, 204, 101" : "204, 102, 102"}, ${scaledFlow})`
+          rgba(${this.flow.gt(0) ? "156, 204, 101" : "204, 102, 102"}, ${scaledFlow})`
       };
     },
     classObject() {
@@ -58,8 +58,8 @@ export default {
   methods: {
     update() {
       this.isReactionActive = !Pelle.isDoomed && !this.isBaseResource && this.node.resource.reaction.isActive;
-      this.amount = this.resource.amount;
-      this.flow = this.resource.flow;
+      this.amount.copyFrom(this.resource.amount);
+      this.flow.copyFrom(new Decimal(this.resource.flow));
       this.isUnlocked = this.resource.isUnlocked;
     }
   }

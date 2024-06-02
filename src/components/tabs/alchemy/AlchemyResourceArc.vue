@@ -13,7 +13,6 @@ export default {
   },
   data() {
     return {
-      amount: 0,
       fillFraction: 0,
     };
   },
@@ -38,7 +37,6 @@ export default {
   },
   methods: {
     update() {
-      this.amount = this.resource.amount;
       this.fillFraction = this.resource.fillFraction;
     }
   }

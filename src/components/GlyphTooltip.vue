@@ -29,19 +29,19 @@ export default {
       default: 0,
     },
     sacrificeReward: {
-      type: Number,
+      type: Decimal,
       required: false,
-      default: 0,
+      default: new Decimal(),
     },
     refineReward: {
-      type: Number,
+      type: Decimal,
       required: false,
-      default: 0,
+      default: new Decimal(),
     },
     uncappedRefineReward: {
-      type: Number,
+      type: Decimal,
       required: false,
-      default: 0,
+      default: new Decimal(),
     },
     currentAction: {
       type: String,
@@ -236,7 +236,7 @@ export default {
       if (this.type === "companion" || this.type === "cursed" || this.type === "reality") return "";
       if (!AlchemyResource[this.type].isUnlocked) return "";
       let refinementText = `${format(this.uncappedRefineReward, 2, 2)} ${GLYPH_SYMBOLS[this.type]}`;
-      if (this.uncappedRefineReward !== this.refineReward) {
+      if (this.uncappedRefineReward.neq(this.refineReward)) {
         refinementText += ` (Actual value due to cap: ${format(this.refineReward, 2, 2)} ${GLYPH_SYMBOLS[this.type]})`;
       }
       const isCurrentAction = this.currentAction === "refine";

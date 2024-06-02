@@ -370,7 +370,7 @@ export function getGameSpeedupForDisplay() {
     !BlackHoles.areNegative &&
     !Pelle.isDisabled("blackhole")
   ) {
-    return Math.max(Enslaved.autoReleaseSpeed, speedFactor);
+    return Decimal.max(Enslaved.autoReleaseSpeed, speedFactor);
   }
   return speedFactor;
 }

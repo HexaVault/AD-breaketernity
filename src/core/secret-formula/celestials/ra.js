@@ -8,7 +8,7 @@ export const ra = {
       memoryGain: "current RM",
       requiredUnlock: () => undefined,
       rawMemoryChunksPerSecond: () => Decimal.pow(Currency.eternityPoints.value.add(1).log10().div(1e4), 3).mul(4),
-      memoryProductionMultiplier: () => Ra.unlocks.teresaXP.effectOrDefault(1)
+      memoryProductionMultiplier: () => Ra.unlocks.teresaXP.effectOrDefault(new Decimal(1))
     },
     effarig: {
       id: "effarig",
@@ -18,7 +18,7 @@ export const ra = {
       memoryGain: "best Glyph level",
       requiredUnlock: () => Ra.unlocks.effarigUnlock,
       rawMemoryChunksPerSecond: () => Decimal.pow(Effarig.shardsGained, 0.1).mul(4),
-      memoryProductionMultiplier: () => Ra.unlocks.effarigXP.effectOrDefault(1)
+      memoryProductionMultiplier: () => Ra.unlocks.effarigXP.effectOrDefault(new Decimal(1))
     },
     enslaved: {
       id: "enslaved",
@@ -28,7 +28,7 @@ export const ra = {
       memoryGain: "total time played",
       requiredUnlock: () => Ra.unlocks.enslavedUnlock,
       rawMemoryChunksPerSecond: () => Decimal.pow(Currency.timeShards.value.add(1).log10().div(3e5), 2).mul(4),
-      memoryProductionMultiplier: () => Ra.unlocks.enslavedXP.effectOrDefault(1)
+      memoryProductionMultiplier: () => Ra.unlocks.enslavedXP.effectOrDefault(new Decimal(1))
     },
     v: {
       id: "v",
@@ -38,7 +38,7 @@ export const ra = {
       memoryGain: "total Memory levels",
       requiredUnlock: () => Ra.unlocks.vUnlock,
       rawMemoryChunksPerSecond: () => Decimal.pow(Currency.infinityPower.value.add(1).log10().div(1e7), 1.5).mul(4),
-      memoryProductionMultiplier: () => Ra.unlocks.vXP.effectOrDefault(1)
+      memoryProductionMultiplier: () => Ra.unlocks.vXP.effectOrDefault(new Decimal(1))
     }
   },
   unlocks: {
