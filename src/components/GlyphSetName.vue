@@ -214,8 +214,8 @@ export default {
       this.slotCount = Math.max(Glyphs.activeSlotCount, this.glyphSet.length);
     },
     getEffarigProp() {
-      const effarigRM = this.glyphSet.some(i => getSingleGlyphEffectFromBitmask("effarigrm", i));
-      const effarigGlyph = this.glyphSet.some(i => getSingleGlyphEffectFromBitmask("effarigglyph", i));
+      const effarigRM = this.glyphSet.some(i => i.effects.includes("effarigrm"));
+      const effarigGlyph = this.glyphSet.some(i => i.effects.includes("effariglevel"));
       if (effarigRM && effarigGlyph) return "both";
       if (effarigRM) return "rm";
       if (effarigGlyph) return "glyph";

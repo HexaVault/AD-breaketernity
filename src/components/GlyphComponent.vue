@@ -1,4 +1,5 @@
 <script>
+import { getRarity } from "../core/globals";
 import { GlyphInfo } from "../../src/components/modals/options/SelectGlyphInfoDropdown";
 
 import GlyphTooltip from "@/components/GlyphTooltip";

@@ -474,6 +474,9 @@ export const GameStorage = {
         player.celestials.v.runGlyphs = player.celestials.v.runGlyphs.map(n => n.map(g => fixGlyph(g)));
         player.reality.glyphs.active = player.reality.glyphs.active.map(n => fixGlyph(n));
         player.reality.glyphs.inventory = player.reality.glyphs.inventory.map(n => fixGlyph(n));
+        for (let i = 0; i < 7; i++) {
+          player.reality.glyphs.sets[i].glyphs = player.reality.glyphs.sets[i].glyphs.map(n => fixGlyph(n));
+        }
         player.records.bestReality.RMSet = player.records.bestReality.RMSet?.map(n => fixGlyph(n));
         player.records.bestReality.RMminSet = player.records.bestReality.RMminSet?.map(n => fixGlyph(n));
         player.records.bestReality.glyphLevelSet = player.records.bestReality.glyphLevelSet?.map(n => fixGlyph(n));

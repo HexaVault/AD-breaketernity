@@ -80,7 +80,7 @@ export default {
     lastMachinesString() {
       return this.lastiM.eq(0)
         ? `${quantify("Reality Machine", this.lastMachines, 2)}`
-        : `${quantify("Imaginary Machine", this.lastMachines.dividedBy(DC.E10000), 2)}`;
+        : `${quantify("Imaginary Machine", this.lastiM, 2)}`;
     },
     unlockInfoTooltipArrowStyle() {
       return {

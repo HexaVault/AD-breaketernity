@@ -572,7 +572,7 @@ export const glyphEffects = {
     singleDesc: "Increase the effective level of equipped basic Glyphs by {value}",
     totalDesc: "Equipped basic Glyph level +{value}",
     shortDesc: "Basic Glyph Level +{value}",
-    effect: level => Decimal.floor(Decimal.sqrt(level.times(90))),
+    effect: level => Decimal.floor(Decimal.sqrt(Decimal.mul(level, 90))),
     formatEffect: x => formatInt(x),
     combine: GlyphCombiner.add,
   },

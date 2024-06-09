@@ -1,3 +1,5 @@
+<!-- eslint-disable line-comment-position -->
+<!-- eslint-disable no-inline-comments -->
 <script>
 export default {
   name: "SelectedEffectToggle",
@@ -62,10 +64,10 @@ export default {
   },
   methods: {
     update() {
-      this.isActive = AutoGlyphProcessor.types[this.glyphType].specifiedMask.includes(this.effect.id);
+      this.isActive = false; // AutoGlyphProcessor.types[this.glyphType].specifiedMask.includes(this.effect.id);
       this.effarigSettings = {
-        RM: AutoGlyphProcessor.types[this.glyphType].specifiedMask.includes(this.effect.id),
-        glyph: AutoGlyphProcessor.types[this.glyphType].specifiedMask.includes(this.effect.id)
+        RM: false, // AutoGlyphProcessor.types[this.glyphType].specifiedMask.includes(this.effect.id),
+        glyph: false// AutoGlyphProcessor.types[this.glyphType].specifiedMask.includes(this.effect.id)
       };
       this.noExclude = Ra.unlocks.glyphEffectCount.canBeApplied;
     },

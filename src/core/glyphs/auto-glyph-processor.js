@@ -128,7 +128,7 @@ export const AutoGlyphProcessor = {
     const glyphScore = glyph => {
       const filter = this.filterValue(glyph);
       const threshold = this.thresholdValue(glyph);
-      return threshold === Number.MAX_VALUE ? filter : filter - threshold;
+      return threshold.gte(Number.MAX_VALUE) ? filter : filter.sub(threshold);
     };
 
     return glyphs

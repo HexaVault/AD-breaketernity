@@ -171,8 +171,8 @@ export const infinityUpgrades = {
       description: () =>
         `Gain Reality Machines each real-time second proportional to amount gained on Reality,
         increasing with Teresa level`,
-      effect: () => Math.pow(Ra.pets.teresa.level, 2) *
-        Ra.unlocks.continuousTTBoost.effects.autoPrestige.effectOrDefault(1),
+      effect: () => Decimal.mul(Math.pow(Ra.pets.teresa.level, 2),
+        Ra.unlocks.continuousTTBoost.effects.autoPrestige.effectOrDefault(1)),
       formatEffect: value => formatX(value, 2, 1)
     }
   },

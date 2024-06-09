@@ -661,7 +661,7 @@ window.player = {
       },
       quoteBits: 0,
       momentumTime: DC.D0,
-      unlockBits: 0,
+      unlocks: [],
       run: false,
       charged: new Set(),
       disCharge: false,

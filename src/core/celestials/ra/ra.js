@@ -1,10 +1,14 @@
-import { BitUpgradeState, GameMechanicState } from "../../game-mechanics";
 import { DC } from "../../constants";
+import { GameMechanicState } from "../../game-mechanics";
 import { Quotes } from "../quotes";
 
-class RaUnlockState extends BitUpgradeState {
+class RaUnlockState extends GameMechanicState {
   get bits() { return player.celestials.ra.unlockBits; }
   set bits(value) { player.celestials.ra.unlockBits = value; }
+
+  get isUnlocked() {
+    return player.celestials.ra.unlocks.includes(this.id);
+  }
 
   get disabledByPelle() {
     return Pelle.isDoomed && this.config.disabledByPelle;
@@ -44,6 +48,7 @@ class RaUnlockState extends BitUpgradeState {
   }
 
   onUnlock() {
+    player.celestials.ra.unlocks.push(this.id);
     this.config.onUnlock?.();
   }
 }

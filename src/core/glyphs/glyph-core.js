@@ -725,15 +725,23 @@ export const Glyphs = {
   },
   copyForRecords(glyphList) {
     // Sorting by effect ensures consistent ordering by type, based on how the effect bitmasks are structured
-    return glyphList.map(g => ({
+    // eslint-disable-next-line max-len
+    function sort(val) {
+      // AQc console.log(val);
+      // eslint-disable-next-line no-negated-condition
+      return !(val.effects instanceof Array) ? val.effects
+        : val.effects.toSorted((c, d) => getIntIDFromEffect(c) - getIntIDFromEffect(d))[0];
+    }
+    const getIntIDFromEffect = value => GlyphEffects.all.filter(e => e.id === value)[0].intID;
+    const newList = glyphList.map(g => ({
       type: g.type,
       level: g.level,
       strength: g.strength,
       effects: g.effects,
       color: g.color,
-      symbol: g.symbol, }))
-      // eslint-disable-next-line max-len
-      .sort((a, b) => b.effects.toSorted((c, d) => c.intID - d.intID)[0] - a.effects.toSorted((c, d) => d.intID - c.intID)[0]);
+      symbol: g.symbol, }));
+    // eslint-disable-next-line max-len
+    return newList.sort((a, b) => sort(b) - sort(a));
   },
   // Normal glyph count minus 3 for each cursed glyph, uses 4 instead of 3 in the calculation because cursed glyphs
   // still contribute to the length of the active list. Note that it only ever decreases if startingReality is true.
@@ -747,9 +755,9 @@ export const Glyphs = {
   applyGamespeed(glyph) {
     if (!Ra.unlocks.allGamespeedGlyphs.canBeApplied) return;
     if (BASIC_GLYPH_TYPES.includes(glyph.type)) {
-      glyph.effects |= (1 << GlyphEffects.timespeed.bitmaskIndex);
+      glyph.effects.push("timespeed");
       if (glyph.type === "time") {
-        glyph.effects |= (1 << GlyphEffects.timeshardpow.bitmaskIndex);
+        glyph.effects.push("timeshardpow");
       }
     }
   },

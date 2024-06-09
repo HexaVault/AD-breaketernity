@@ -25,6 +25,16 @@ function updateGlyphs(glyph) {
   return glyph;
 }
 
+function raFix(player) {
+  const array = [];
+  for (let i = 0; i < 32; i++) {
+    if ((player.celestials.ra.unlockBits >> i) % 2 === 1) {
+      // eslint-disable-next-line no-loop-func, eqeqeq
+      array.push(i);
+    }
+  }
+  return array;
+}
 
 export function beMigration(player) {
   player.auto.annihilation.multiplier = D(player.auto.annihilation.multiplier);
@@ -88,6 +98,8 @@ export function beMigration(player) {
   player.celestials.ra.pets.teresa.memoryChunks = D(player.celestials.ra.pets.teresa.memoryChunks);
   player.celestials.ra.pets.v.memories = D(player.celestials.ra.pets.v.memories);
   player.celestials.ra.pets.effarig.v = D(player.celestials.ra.pets.v.memoryChunks);
+  player.celestials.ra.unlocks = raFix(player);
+  delete player.celestials.ra.unlockBits;
   // eslint-disable-next-line eqeqeq, max-statements-per-line
   player.celestials.teresa.bestAMSet = player.celestials.teresa.bestAMSet.map(n => updateGlyphs(n));
   player.celestials.teresa.lastRepeatediM = new Decimal();
@@ -136,14 +148,17 @@ export function beMigration(player) {
   player.reality.achTimer = D(player.reality.achTimer);
   player.reality.glyphs.active = player.reality.glyphs.active.map(n => updateGlyphs(n));
   player.reality.glyphs.inventory = player.reality.glyphs.inventory.map(n => updateGlyphs(n));
-  if (player.reality.sac !== undefined) {
-    player.reality.sac.dilation = D(player.reality.sac.dilation);
-    player.reality.sac.effarig = D(player.reality.sac.effarig);
-    player.reality.sac.infinity = D(player.reality.sac.infinity);
-    player.reality.sac.power = D(player.reality.sac.power);
-    player.reality.sac.reality = D(player.reality.sac.reality);
-    player.reality.sac.replication = D(player.reality.sac.replication);
-    player.reality.sac.time = D(player.reality.sac.time);
+  if (player.reality.glyphs.sac !== undefined) {
+    player.reality.glyphs.sac.dilation = D(player.reality.glyphs.sac.dilation);
+    player.reality.glyphs.sac.effarig = D(player.reality.glyphs.sac.effarig);
+    player.reality.glyphs.sac.infinity = D(player.reality.glyphs.sac.infinity);
+    player.reality.glyphs.sac.power = D(player.reality.glyphs.sac.power);
+    player.reality.glyphs.sac.reality = D(player.reality.glyphs.sac.reality);
+    player.reality.glyphs.sac.replication = D(player.reality.glyphs.sac.replication);
+    player.reality.glyphs.sac.time = D(player.reality.glyphs.sac.time);
+  }
+  for (let i = 0; i < 7; i++) {
+    player.reality.glyphs.sets[i].glyphs = player.reality.glyphs.sets[i].glyphs.map(n => updateGlyphs(n));
   }
   player.reality.iMcap = D(player.reality.iMcap);
   player.reality.imaginaryMachines = D(player.reality.imaginaryMachines);

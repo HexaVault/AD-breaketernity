@@ -110,7 +110,7 @@ export default {
             <br>
             by a random value between +{{ formatPercents(0) }} and +{{ formatPercents(shardRarityBoost, 2) }}.
           </span>
-          <span v-if="shardPower > 1">
+          <span v-if="shardPower.gt(1)">
             <br>
             Glyph Sacrifice gain is also being raised to {{ formatPow(shardPower, 0, 2) }}.
           </span>
