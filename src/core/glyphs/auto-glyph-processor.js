@@ -1,3 +1,5 @@
+import { DC } from "../constants";
+
 export const AutoGlyphProcessor = {
   get scoreMode() {
     return player.reality.glyphs.filter.select;
@@ -56,14 +58,14 @@ export const AutoGlyphProcessor = {
         // Value is equal to rarity but minus 200 for each missing effect. This makes all glyphs which don't
         // satisfy the requirements have a negative score and generally the worse a glyph misses the requirements,
         // the more negative of a score it will have
-        const glyphEffectCount = countValuesFromBitmask(glyph.effects);
+        const glyphEffectCount = glyph.effects.length;
         if (glyphEffectCount < typeCfg.effectCount) {
-          return strengthToRarity(glyph.strength) - 200 * (typeCfg.effectCount - glyphEffectCount);
+          return strengthToRarity(glyph.strength).sub(200 * (typeCfg.effectCount - glyphEffectCount));
         }
         // The missing effect count can be gotten by taking the full filter bitmask, removing only the bits which are
         // present on both the filter and the glyph, and then counting the bits up
         const missingEffects = countValuesFromBitmask(typeCfg.specifiedMask - (typeCfg.specifiedMask & glyph.effects));
-        return strengthToRarity(glyph.strength) - 200 * missingEffects;
+        return strengthToRarity(glyph.strength).sub(200 * missingEffects);
       }
       case AUTO_GLYPH_SCORE.EFFECT_SCORE: {
         const effectList = getGlyphEffectsFromArray(glyph.effects, 0, 0);
@@ -73,7 +75,7 @@ export const AutoGlyphProcessor = {
         const effectScore = effectList
           .map(e => (typeCfg.effectScores[e] ? typeCfg.effectScores[e] : 0))
           .sum();
-        return strengthToRarity(glyph.strength) + effectScore;
+        return strengthToRarity(glyph.strength).add(effectScore);
       }
       // Picked glyphs are never kept in Alchemy modes.
       // Glyphs for non-unlocked or capped Alchemy Resources are assigned NEGATIVE_INFINITY
@@ -97,7 +99,7 @@ export const AutoGlyphProcessor = {
   thresholdValue(glyph) {
     // Glyph filter settings are undefined for companion/cursed/reality glyphs, so we return the lowest possible
     // value on the basis that we never want to automatically get rid of them
-    if (this.types[glyph.type] === undefined) return -Number.MAX_VALUE;
+    if (this.types[glyph.type] === undefined) return DC.BEMAX.neg();
     switch (this.scoreMode) {
       case AUTO_GLYPH_SCORE.EFFECT_COUNT:
         return player.reality.glyphs.filter.simple;
@@ -110,7 +112,7 @@ export const AutoGlyphProcessor = {
       case AUTO_GLYPH_SCORE.LOWEST_ALCHEMY:
       case AUTO_GLYPH_SCORE.ALCHEMY_VALUE:
         // These modes never keep glyphs and always refine/sacrfice
-        return Number.MAX_VALUE;
+        return DC.BEMAX;
       default:
         throw new Error("Unknown glyph score mode in threshold check");
     }
@@ -337,7 +339,7 @@ export function getGlyphLevelInputs() {
 
   const scalePenalty = scaledLevel.gt(0) ? baseLevel.div(scaledLevel) : 1;
   const incAfterInstability = staticFactors.achievements.add(staticFactors.realityUpgrades);
-  baseLevel = scaledLevel.add(incAfterInstability);
+  baseLevel = baseLevel.add(incAfterInstability);
   scaledLevel = scaledLevel.add(incAfterInstability);
   return {
     ep: sources.ep,

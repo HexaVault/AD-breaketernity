@@ -459,7 +459,7 @@ window.player = {
             rarity: 0,
             score: 0,
             effectCount: 0,
-            specifiedMask: 0,
+            specifiedMask: [],
             effectScores: Array.repeat(0, t.effects.length),
           })),
       },

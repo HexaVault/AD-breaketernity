@@ -14,8 +14,8 @@ export function effectiveBaseGalaxies() {
   replicantiGalaxies = replicantiGalaxies.add(nonActivePathReplicantiGalaxies
     .times(Effects.sum(EternityChallenge(8).reward)));
   let freeGalaxies = player.dilation.totalTachyonGalaxies;
-  freeGalaxies = DC.D1.add(Decimal.max(0, Replicanti.amount.log10().div(1e6))
-    .times(AlchemyResource.alternation.effectValue));
+  freeGalaxies = freeGalaxies.mul(DC.D1.add(Decimal.max(0, Replicanti.amount.log10().div(1e6))
+    .times(AlchemyResource.alternation.effectValue)));
   return Decimal.max(player.galaxies.add(GalaxyGenerator.galaxies).add(replicantiGalaxies).add(freeGalaxies), 0);
 }
 

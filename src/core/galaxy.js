@@ -205,7 +205,7 @@ export function galaxyReset() {
 export function manualRequestGalaxyReset(bulk) {
   if (!Galaxy.canBeBought || !Galaxy.requirement.isSatisfied) return;
   if (GameEnd.creditsEverClosed) return;
-  if (RealityUpgrade(7).isLockingMechanics && player.galaxies > 0) {
+  if (RealityUpgrade(7).isLockingMechanics && player.galaxies.gt(0)) {
     RealityUpgrade(7).tryShowWarningModal();
     return;
   }
@@ -228,7 +228,7 @@ export function requestGalaxyReset(bulk, limit = Number.MAX_VALUE) {
 }
 
 function maxBuyGalaxies(limit = DC.BEMAX) {
-  if (player.galaxies.gte(limit) || !Galaxy.canBeBought) return false;
+  if (player.galaxies.gte(limit) || !Galaxy.canBeBought || !Galaxy.requirement.isSatisfied) return false;
   // Check for ability to buy one galaxy (which is pretty efficient)
   const req = Galaxy.requirement;
   if (!req.isSatisfied) return false;

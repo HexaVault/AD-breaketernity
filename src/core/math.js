@@ -541,16 +541,20 @@ window.ExponentialCostScaling = class ExponentialCostScaling {
     const purchases = this._purchasesBeforeScaling;
     const ppIlog = purchasesPerIncrease.log10();
     let logMoney = currency.log10().sub(ppIlog);
+    // A console.log(logMoney);
     // First, is the currency before the cost of Exponential? If so we solve it here and return
     if (logMoney.lte(base.add(inc.times(purchases.floor())))) {
-      let purchaseAmount = logMoney.sub(base).div(inc).add(1);
+      let purchaseAmount = logMoney.sub(base).div(inc);
+      // A console.log(purchaseAmount);
       // Round value DOWN
       if (roundDown) purchaseAmount = purchaseAmount.floor();
       // Return null if its less than the purchases we already have
       if (purchaseAmount.lte(currentPurchases)) return null;
-      purchaseAmount = purchaseAmount.sub(currentPurchases);
+      const cost = this.calculateCost(purchaseAmount).log10().add(ppIlog);
+      purchaseAmount = purchaseAmount.sub(currentPurchases).add(1);
+      purchaseAmount = purchaseAmount.times(purchasesPerIncrease);
       return { quantity: purchaseAmount,
-        logPrice: (purchaseAmount.times(inc).add(base)).add(ppIlog) };
+        logPrice: cost };
       // We invert the calc after the floor to find the highest cost
     }
 
@@ -576,12 +580,12 @@ window.ExponentialCostScaling = class ExponentialCostScaling {
 
     if (purchaseAmount.lte(currentPurchases)) return null;
 
+    const purchaseCost = this.calculateCost(purchaseAmount).log10().add(ppIlog);
     purchaseAmount = purchaseAmount.sub(currentPurchases);
     if (roundDown) purchaseAmount = purchaseAmount.floor();
 
-    const purchaseCost = this.calculateCost(purchaseAmount);
     purchaseAmount = purchaseAmount.times(purchasesPerIncrease);
-    return { quantity: purchaseAmount, logPrice: purchaseCost.log10() };
+    return { quantity: purchaseAmount, logPrice: purchaseCost };
   }
 
   getContinuumValue(money, perSet) {

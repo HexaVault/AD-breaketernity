@@ -62,16 +62,16 @@ export default {
   },
   methods: {
     update() {
-      this.isActive = (AutoGlyphProcessor.types[this.glyphType].specifiedMask & (1 << this.effect.bitmaskIndex)) !== 0;
-      const effarigMask = AutoGlyphProcessor.types.effarig.specifiedMask;
+      this.isActive = AutoGlyphProcessor.types[this.glyphType].specifiedMask.includes(this.effect.id);
       this.effarigSettings = {
-        RM: (effarigMask & (1 << this.effarigBits.RM)) !== 0,
-        glyph: (effarigMask & (1 << this.effarigBits.glyph)) !== 0
+        RM: AutoGlyphProcessor.types[this.glyphType].specifiedMask.includes(this.effect.id),
+        glyph: AutoGlyphProcessor.types[this.glyphType].specifiedMask.includes(this.effect.id)
       };
       this.noExclude = Ra.unlocks.glyphEffectCount.canBeApplied;
     },
     toggleSelection() {
-      AutoGlyphProcessor.types[this.glyphType].specifiedMask ^= 1 << this.effect.bitmaskIndex;
+      AutoGlyphProcessor.types[this.glyphType].specifiedMask =
+        AutoGlyphProcessor.types[this.glyphType].specifiedMask.includes(this.effect.id) ? 1 : 0;
     },
     setEffectCount(event) {
       const inputValue = event.target.value;
