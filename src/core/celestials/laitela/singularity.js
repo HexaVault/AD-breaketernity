@@ -112,7 +112,7 @@ export const SingularityMilestones = {
   lastNotified: player.celestials.laitela.lastCheckedMilestones,
 
   get sorted() {
-    return this.all.sort((a, b) => Decimal.sorter(a.remainingSingularities, b.remainingSingularities));
+    return this.all.sort((a, b) => Decimal.compare(a.remainingSingularities, b.remainingSingularities));
   },
 
   sortedForCompletions(moveNewToTop) {

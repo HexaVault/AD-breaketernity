@@ -158,7 +158,7 @@ class InfinityIPMultUpgrade extends GameMechanicState {
   }
 
   get isCapped() {
-    return this.cost.gte(this.config.costCap);
+    return this.cost.gte(this.config.costCap) || player.IPMultPurchases > 3300000;
   }
 
   get isBought() {

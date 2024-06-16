@@ -9,25 +9,34 @@ export default {
   data() {
     return {
       infinityChallengesUnlocked: false,
-      bullshitBypassVariable: new Decimal(),
       normalChallenges: [],
       infinityChallenges: []
     };
   },
   methods: {
+    ICTimes() {
+      const v = [];
+      const bullshitBypassVariable = new Decimal();
+      for (let i = 0; i < 8; i++) {
+        bullshitBypassVariable.copyFrom(player.challenge.infinity.bestTimes[i]);
+        v.push(this.bullshitBypassVariable);
+      }
+      return v;
+    },
+    NCTimes() {
+      const v = [];
+      const bullshitBypassVariable = new Decimal();
+      for (let i = 0; i < 8; i++) {
+        bullshitBypassVariable.copyFrom(player.challenge.infinity.bestTimes[i]);
+        v.push(this.bullshitBypassVariable);
+      }
+      return v;
+    },
     update() {
       this.infinityChallengesUnlocked = PlayerProgress.infinityChallengeCompleted() ||
         PlayerProgress.eternityUnlocked();
-      this.normalChallenges = [];
-      this.infinityChallenges = [];
-      for (let i = 0; i < 11; i++) {
-        this.bullshitBypassVariable.copyFrom(player.challenge.normal.bestTimes[i]);
-        this.normalChallenges.push(this.bullshitBypassVariable);
-      }
-      for (let i = 0; i < 8; i++) {
-        this.bullshitBypassVariable.copyFrom(player.challenge.infinity.bestTimes[i]);
-        this.infinityChallenges.push(this.bullshitBypassVariable);
-      }
+      this.normalChallenges = this.ICTimes;
+      this.infinityChallenges = this.ICTimes;
     }
   }
 };

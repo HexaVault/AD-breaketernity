@@ -413,8 +413,10 @@ export default {
     // other effects count up to 3 (or 6 for effarig). Used to add dots in unique positions on glyphs to show effects.
     glyphEffects() {
       // Get intIDs, then subtract smallest in next code
+      if (!this.effects) return {};
       const subVal = Object.values(GlyphTypes[this.glyph.type].effects.mapToObject(x => x.intID, x => x.intID)).nMin();
       const glyphEffects = GlyphTypes[this.glyph.type].effects.filter(e => this.glyph.effects.includes(e.id));
+      // eslint-disable-next-line consistent-return
       return glyphEffects.mapToObject(x => x.intID - subVal, x => x.id);
     },
     isRealityGlyph() {

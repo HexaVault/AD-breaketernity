@@ -157,11 +157,11 @@ export default {
       const rarityThresholds = GlyphRarities.map(r => strengthToRarity(r.minStrength));
       let newRarity;
       if (ui.view.shiftDown) {
-        const lower = rarityThresholds.filter(s => s < this.rarityThresholds[type]);
-        newRarity = lower.length === 0 ? 100 : lower.max();
+        const lower = rarityThresholds.filter(s => s.lt(this.rarityThresholds[type]));
+        newRarity = lower.length === 0 ? new Decimal(100) : lower.max();
       } else {
         // Note: As the minimum of an empty array is zero, this wraps around to 0% again if clicked at 100% rarity
-        newRarity = rarityThresholds.filter(s => s > this.rarityThresholds[type]).min();
+        newRarity = rarityThresholds.filter(s => s.gt(this.rarityThresholds[type])).min();
       }
       this.setRarityThreshold(type, newRarity);
     },

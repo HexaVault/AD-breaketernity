@@ -72,8 +72,8 @@ export default {
   computed: {
     orderedGlyphs() {
       if (!this.sort) return this.glyphs;
-      const standardOrder = ["reality", "effarig", "power", "infinity", "replication", "time", "dilation",
-        "cursed", "companion"];
+      const standardOrder = ["cursed", "reality", "effarig", "power", "infinity", "replication", "time",
+        "dilation", "companion"];
       const order = Glyphs.copyForRecords(this.glyphs);
       // Technically doesn't stable sort between glyphs of the same type, probably fine though
       order.sort((a, b) => standardOrder.indexOf(a.type) - standardOrder.indexOf(b.type));

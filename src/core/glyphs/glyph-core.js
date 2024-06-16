@@ -39,7 +39,7 @@ export const Glyphs = {
     return player.reality.glyphs.inventory;
   },
   get sortedInventoryList() {
-    return this.inventoryList.sort((a, b) => Decimal.sorter(a.level.mul(a.strength), b.level.mul(b.strength)));
+    return this.inventoryList.sort((a, b) => Decimal.compare(a.level.mul(a.strength), b.level.mul(b.strength)));
   },
   get activeList() {
     return player.reality.glyphs.active;
@@ -252,7 +252,7 @@ export const Glyphs = {
     }
 
     // Sort by increasing gap, then discard the value as it's not directly used anywhere else
-    allMatches.sort((a, b) => Decimal.sorter(a.gap, b.gap));
+    allMatches.sort((a, b) => Decimal.compare(a.gap, b.gap));
     return allMatches.map(m => m.glyph);
   },
   findById(id) {
@@ -516,13 +516,13 @@ export const Glyphs = {
     if (player.reality.autoCollapse) this.collapseEmptySlots();
   },
   sortByLevel() {
-    this.sort((a, b) => Decimal.sorter(a.level, b.level));
+    this.sort((a, b) => Decimal.compare(a.level, b.level));
   },
   sortByPower() {
-    this.sort((a, b) => Decimal.sorter(a.level.mul(a.strength), b.level.mul(b.strength)));
+    this.sort((a, b) => Decimal.compare(a.level.mul(a.strength), b.level.mul(b.strength)));
   },
   sortByScore() {
-    this.sort((a, b) => Decimal.sorter(AutoGlyphProcessor.filterValue(b), AutoGlyphProcessor.filterValue(a)));
+    this.sort((a, b) => Decimal.compare(AutoGlyphProcessor.filterValue(b), AutoGlyphProcessor.filterValue(a)));
   },
   sortByEffect() {
   // Yes the naming of this function makes 0 sense but imma leave it, since it works (hopefully)
@@ -551,12 +551,12 @@ export const Glyphs = {
       .filter(g => g !== null &&
         g.type === glyph.type &&
         g.id !== glyph.id &&
-        (g.level >= glyph.level || g.strength >= glyph.strength) &&
-        ((g.effects & glyph.effects) === glyph.effects));
-    let compareThreshold = glyph.type === "effarig" || glyph.type === "reality" ? 1 : 5;
+        (g.level.gte(glyph.level) || g.strength.gte(glyph.strength)) &&
+        ((g.effects.concat(glyph.effects)) === glyph.effects));
+    let compareThreshold = ["effarig", "reality"].includes(glyph.type) ? 1 : 5;
     compareThreshold = Math.clampMax(compareThreshold, threshold);
     if (toCompare.length < compareThreshold) return false;
-    const comparedEffects = getGlyphEffectsFromBitmask(glyph.effects).filter(x => x.id.startsWith(glyph.type));
+    const comparedEffects = getGlyphEffectsFromArray(glyph.effects).filter(x => x.id.startsWith(glyph.type));
     const betterCount = toCompare.countWhere(other => !hasSomeBetterEffects(glyph, other, comparedEffects));
     return betterCount >= compareThreshold;
   },

@@ -73,6 +73,12 @@ Decimal.prototype.copyFrom = function(decimal) {
   this.sign = decimal.sign;
 };
 
+Decimal.prototype.expEquiv = function(decimal, floor = false) {
+  if (decimal.abs().lte(1)) return new Decimal(0);
+  if (!floor) return decimal.log10();
+  return decimal.log10().floor();
+};
+
 window.copyToClipboard = (function() {
   const el = document.createElement("textarea");
   document.body.appendChild(el);
@@ -314,10 +320,4 @@ Array.fromBitmask = function(mask) {
 
 String.isWhiteSpace = function(value) {
   return value && !value.trim();
-};
-
-Decimal.sorter = function(a, b) {
-  if (Decimal.lt(a, b)) return -1;
-  if (Decimal.eq(a, b)) return 0;
-  return 1;
 };

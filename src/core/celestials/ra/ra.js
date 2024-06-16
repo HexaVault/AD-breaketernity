@@ -47,6 +47,10 @@ class RaUnlockState extends GameMechanicState {
     return this.pet.level >= this.level && !this.isUnlocked;
   }
 
+  unlock() {
+    if (this.canBeUnlocked) player.celestials.ra.unlocks.push(this.id);
+  }
+
   onUnlock() {
     player.celestials.ra.unlocks.push(this.id);
     this.config.onUnlock?.();
@@ -191,7 +195,7 @@ class RaPetState extends GameMechanicState {
   }
 
   levelUp() {
-    if (this.memories < this.requiredMemories) return;
+    if (this.memories.lt(this.requiredMemories)) return;
 
     this.memories = this.memories.sub(this.requiredMemories);
     this.level++;
@@ -372,7 +376,7 @@ export const Ra = {
     if (!Ra.unlocks.effarigUnlock.canBeApplied) return;
     const sortedReactions = AlchemyReactions.all
       .compact()
-      .sort((r1, r2) => Decimal.sorter(r2.priority, r1.priority));
+      .sort((r1, r2) => Decimal.compare(r2.priority, r1.priority));
     for (const reaction of sortedReactions) {
       reaction.combineReagents();
     }

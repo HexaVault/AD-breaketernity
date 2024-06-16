@@ -105,9 +105,9 @@ export class RealityAutobuyerState extends AutobuyerState {
     let proc = false;
     // The game generally displays amplified values, so we want to adjust the thresholds to
     // account for that and make the automation trigger based on the actual displayed values
-    const ampFactor = simulatedRealityCount(false) + 1;
+    const ampFactor = simulatedRealityCount(false).add(1);
     const rmProc = MachineHandler.gainedRealityMachines.times(ampFactor).gte(this.rm);
-    const glyphProc = gainedGlyphLevel().actualLevel >= Math.min(this.glyph, Glyphs.levelCap);
+    const glyphProc = gainedGlyphLevel().actualLevel.gte(this.glyph);
     switch (this.mode) {
       case AUTO_REALITY_MODE.RM:
         proc = rmProc;
