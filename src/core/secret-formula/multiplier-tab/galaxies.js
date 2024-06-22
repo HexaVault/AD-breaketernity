@@ -44,12 +44,12 @@ export const galaxies = {
     displayOverride: () => {
       const num = player.dilation.totalTachyonGalaxies;
       const mult = MultiplierTabHelper.globalGalaxyMult() *
-          (1 + Math.max(0, Replicanti.amount.log10() / 1e6) * AlchemyResource.alternation.effectValue);
+          (1 + Math.max(0, Replicanti.amount.max(1).log10() / 1e6) * AlchemyResource.alternation.effectValue);
       return `${format(num)}, ${formatX(mult, 2, 2)} strength`;
     },
     multValue: () => {
       const num = player.dilation.totalTachyonGalaxies;
-      const mult = 1 + Math.max(0, Replicanti.amount.log10() / 1e6) * AlchemyResource.alternation.effectValue;
+      const mult = 1 + Math.max(0, Replicanti.amount.max(1).log10() / 1e6) * AlchemyResource.alternation.effectValue;
       return Decimal.pow10(num * mult);
     },
     isActive: () => player.dilation.totalTachyonGalaxies.gt(0),

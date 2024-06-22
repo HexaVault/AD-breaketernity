@@ -308,8 +308,13 @@ function giveRealityRewards(realityProps) {
   Currency.realityMachines.add(gainedRM.times(multiplier));
   updateRealityRecords(realityProps);
   addRealityTime(
-    player.records.thisReality.time, player.records.thisReality.realTime, gainedRM,
-    realityProps.gainedGlyphLevel.actualLevel, realityAndPPMultiplier, multiplier,
+    player.records.thisReality.trueTime,
+    player.records.thisReality.time,
+    player.records.thisReality.realTime,
+    gainedRM,
+    realityProps.gainedGlyphLevel.actualLevel,
+    realityAndPPMultiplier,
+    multiplier,
     MachineHandler.projectedIMCap);
   Currency.realities.add(realityAndPPMultiplier);
   Currency.perkPoints.add(realityAndPPMultiplier);

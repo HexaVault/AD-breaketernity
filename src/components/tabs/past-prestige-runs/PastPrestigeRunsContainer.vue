@@ -2,7 +2,7 @@
 function averageRun(allRuns) {
   // Filter out all runs which have the default infinite value for time, but if we're left with no valid runs then we
   // take just one entry so that the averages also have the same value and we don't get division by zero.
-  let runs = allRuns.filter(run => run[0] !== Number.MAX_VALUE);
+  let runs = allRuns.filter(run => run[0] < 1e290);
   if (runs.length === 0) runs = [allRuns[0]];
 
   const longestRow = allRuns.map(r => r.length).max();
@@ -110,7 +110,7 @@ export default {
         }
         return 0;
       };
-      this.longestRow = this.runs.map(r => lastIndex(r)).max();
+      this.longestRow = this.runs.map(r => lastIndex(r)).nMax();
     },
     clone(runs) {
       return runs.map(run =>
@@ -127,6 +127,7 @@ export default {
 
       const cells = [name, this.gameTime(run)];
       if (this.hasRealTime) cells.push(this.realTime(run));
+      if (this.hasRealTime) cells.push(this.trueTime(run));
 
       const resources = [this.prestigeCurrencyGain(run), this.prestigeCurrencyRate(run),
         this.prestigeCountGain(run), this.prestigeCountRate(run)];
@@ -147,6 +148,7 @@ export default {
     infoCol() {
       const cells = ["Run", this.hasRealTime ? "Game Time" : "Time in Run"];
       if (this.hasRealTime) cells.push("Real Time");
+      if (this.hasRealTime) cells.push("True Time");
       cells.push(...this.resourceTitles);
       if (this.hasChallenges) cells.push("Challenge");
 

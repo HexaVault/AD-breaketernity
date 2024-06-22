@@ -1,9 +1,10 @@
-import { DC } from "../../constants";
+// eslint-disable-next-line multiline-comment-style
+/* import { DC } from "../../constants";
 import { DimensionState } from "../../dimensions/dimension";
 
 /**
  * Constants for easily adjusting values
- */
+ * /
 
 const INTERVAL_COST_MULT = 5;
 const POWER_DM_COST_MULT = 10;
@@ -236,13 +237,13 @@ export class DarkMatterDimensionState extends DimensionState {
  * @function
  * @param {number} tier
  * @return {DarkMatterDimensionState}
- */
+ * /
 export const DarkMatterDimension = DarkMatterDimensionState.createAccessor();
 
 export const DarkMatterDimensions = {
   /**
    * @type {DarkMatterDimension[]}
-   */
+   * /
   all: DarkMatterDimension.index.compact(),
 
   tick(realDiff) {
@@ -276,3 +277,4 @@ export const DarkMatterDimensions = {
     Currency.darkMatter.reset();
   },
 };
+*/

@@ -22,7 +22,14 @@ export const POWER_DE_PER_ASCENSION = 500;
 const COST_MULT_PER_TIER = 1200;
 
 export class DarkMatterDimensionState extends DimensionState {
+
+  static get dimensionCount() {
+    return 4;
+  }
+
   constructor(tier) {
+    // eslint-disable-next-line no-debugger, max-statements-per-line
+    if (tier > 4) { debugger; }
     super(() => player.celestials.laitela.dimensions, tier);
   }
 

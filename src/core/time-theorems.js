@@ -49,23 +49,25 @@ export class TimeTheoremPurchaseType {
   purchase(bulk = false) {
     if (!this.canAfford) return false;
     const cost = this.cost;
+
     if (!bulk) {
-      if (this.currency.lt(cost)) return false;
       Currency.timeTheorems.add(1);
       if (!Perk.ttFree.canBeApplied) this.currency.subtract(cost);
       this.add(1);
       return true;
     }
-
-    if (this.currency.lt(cost)) return false;
-    let amntPur = Decimal.log(this.currency.value.sub(this.costBase).max(1), this.costIncrement)
+    let amntPur = Decimal.log(this.currency.value.sub(this.costBase).clampMin(1), this.costIncrement).add(1)
       .sub(Decimal.log(cost.sub(this.costBase).max(1), this.costIncrement)).floor();
     // We can definitely afford x - 1
     amntPur = amntPur.sub(1);
     Currency.timeTheorems.add(amntPur);
     this.add(amntPur);
-    this.currency.subtract(cost.div(this.costIncrement));
-    this.purchase(false);
+    if (!Perk.ttFree.canBeApplied) this.currency.subtract(cost.div(this.costIncrement));
+    // Can we afford another? If not, just return that we definitely bought some already
+    if (this.currency.lt(cost)) return true;
+    Currency.timeTheorems.add(1);
+    if (!Perk.ttFree.canBeApplied) this.currency.subtract(cost);
+    this.add(1);
     return true;
   }
 

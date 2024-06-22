@@ -59,7 +59,7 @@ export const GameCache = {
 
   bestRunIPPM: new Lazy(() =>
     player.records.recentInfinities
-      .map(run => run[1].div(run[3].times(60000)))
+      .map(run => run[3].div(run[1].times(60000)))
       .reduce(Decimal.maxReducer)
   ),
 

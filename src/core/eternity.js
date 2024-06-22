@@ -31,6 +31,7 @@ function giveEternityRewards(auto) {
   }
 
   addEternityTime(
+    player.records.thisEternity.trueTime,
     player.records.thisEternity.time,
     player.records.thisEternity.realTime,
     gainedEternityPoints(),

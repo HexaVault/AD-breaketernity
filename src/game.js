@@ -178,19 +178,19 @@ export function ratePerMinute(amount, time) {
 }
 
 // eslint-disable-next-line max-params
-export function addInfinityTime(time, realTime, ip, infinities) {
+export function addInfinityTime(trueTime, time, realTime, ip, infinities) {
   let challenge = "";
   if (player.challenge.normal.current) challenge = `Normal Challenge ${player.challenge.normal.current}`;
   if (player.challenge.infinity.current) challenge = `Infinity Challenge ${player.challenge.infinity.current}`;
   player.records.recentInfinities.pop();
-  player.records.recentInfinities.unshift([time, realTime, ip, infinities, challenge]);
+  player.records.recentInfinities.unshift([trueTime, time, realTime, ip, infinities, challenge]);
   GameCache.bestRunIPPM.invalidate();
 }
 
 export function resetInfinityRuns() {
   player.records.recentInfinities = Array.from(
     { length: 10 },
-    () => [DC.BEMAX, DC.BEMAX, DC.D1, DC.D1, ""]
+    () => [Number.MAX_VALUE, DC.BEMAX, DC.BEMAX, DC.D1, DC.D1, ""]
   );
   GameCache.bestRunIPPM.invalidate();
 }
@@ -204,7 +204,7 @@ export function getInfinitiedMilestoneReward(ms, considerMilestoneReached) {
 }
 
 // eslint-disable-next-line max-params
-export function addEternityTime(time, realTime, ep, eternities) {
+export function addEternityTime(trueTime, time, realTime, ep, eternities) {
   let challenge = "";
   if (player.challenge.eternity.current) {
     const currEC = player.challenge.eternity.current;
@@ -215,14 +215,14 @@ export function addEternityTime(time, realTime, ep, eternities) {
   // If we call this function outside of dilation, it uses the existing AM and produces an erroneous number
   const gainedTP = player.dilation.active ? getTachyonGain() : DC.D0;
   player.records.recentEternities.pop();
-  player.records.recentEternities.unshift([time, realTime, ep, eternities, challenge, gainedTP]);
+  player.records.recentEternities.unshift([trueTime, time, realTime, ep, eternities, challenge, gainedTP]);
   GameCache.averageRealTimePerEternity.invalidate();
 }
 
 export function resetEternityRuns() {
   player.records.recentEternities = Array.from(
     { length: 10 },
-    () => [DC.BEMAX, DC.BEMAX, DC.D1, DC.D1, "", DC.D0]
+    () => [Number.MAX_VALUE, DC.BEMAX, DC.BEMAX, DC.D1, DC.D1, "", DC.D0]
   );
   GameCache.averageRealTimePerEternity.invalidate();
 }
@@ -249,7 +249,7 @@ export function getOfflineEPGain(ms) {
 // Note: realities and ampFactor must be distinct because there are a few things farther up which only multiply
 // reality count and none of the other things
 // eslint-disable-next-line max-params
-export function addRealityTime(time, realTime, rm, level, realities, ampFactor, projIM) {
+export function addRealityTime(trueTime, time, realTime, rm, level, realities, ampFactor, projIM) {
   let reality = "";
   const celestials = [Teresa, Effarig, Enslaved, V, Ra, Laitela];
   for (const cel of celestials) {
@@ -257,7 +257,7 @@ export function addRealityTime(time, realTime, rm, level, realities, ampFactor, 
   }
   const shards = Effarig.shardsGained;
   player.records.recentRealities.pop();
-  player.records.recentRealities.unshift([time, realTime, rm.times(ampFactor),
+  player.records.recentRealities.unshift([trueTime, time, realTime, rm.times(ampFactor),
     realities, reality, level, shards.mul(ampFactor), projIM]);
 }
 

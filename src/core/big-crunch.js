@@ -85,6 +85,7 @@ function bigCrunchUpdateStatistics() {
   const infinityPoints = gainedInfinityPoints();
 
   addInfinityTime(
+    player.records.thisInfinity.trueTime,
     player.records.thisInfinity.time,
     player.records.thisInfinity.realTime,
     infinityPoints,
@@ -170,14 +171,14 @@ export function secondSoftReset(enteringAntimatterChallenge) {
 
 export function preProductionGenerateIP(diff) {
   if (InfinityUpgrade.ipGen.isBought) {
-    const genPeriod = Time.bestInfinity.totalMilliseconds.max(1e-100).times(10);
+    const genPeriod = Time.bestInfinity.totalMilliseconds.clampMin(1e-100).times(10);
     let genCount;
     if (diff.gte(1e100)) {
       genCount = Decimal.div(diff, genPeriod);
     } else {
       // Partial progress (fractions from 0 to 1) are stored in player.partInfinityPoint
       const idk = diff.toNumber();
-      player.partInfinityPoint += idk / genPeriod.min(1e300).toNumber();
+      player.partInfinityPoint += idk / genPeriod.clampMax(1e300).toNumber();
       genCount = Math.floor(player.partInfinityPoint);
       player.partInfinityPoint -= genCount;
     }
