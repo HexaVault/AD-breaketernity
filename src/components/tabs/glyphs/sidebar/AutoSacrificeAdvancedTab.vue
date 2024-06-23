@@ -15,7 +15,7 @@ export default {
   },
   computed: {
     typeConfig() {
-      return GlyphTypes[this.glyphType];
+      return GlyphInfo[this.glyphType];
     },
     autoSacrificeSettings() {
       return AutoGlyphProcessor.types[this.glyphType];

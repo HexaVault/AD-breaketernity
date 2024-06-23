@@ -66,6 +66,7 @@ function getGlyphTypes() {
   }
   return v;
 }
+
 const functionalGlyphs = mapGameDataToObject(
   getGlyphTypes(),
   config => new CosmeticGlyphType(config, false)

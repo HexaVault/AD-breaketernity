@@ -16,7 +16,6 @@ export default {
     return {
       mode: AUTO_GLYPH_SCORE.LOWEST_SACRIFICE,
       effectCount: 0,
-      lockedTypes: GlyphTypes.locked.map(e => e.id),
       advancedType: GlyphInfo.glyphTypes[0],
       alchemyUnlocked: false,
       // Note: there are two units at play: strength is from 1..3.5+; rarity is 0..100
@@ -29,7 +28,7 @@ export default {
       return AUTO_GLYPH_SCORE;
     },
     glyphTypes() {
-      return GlyphTypes.list.filter(e => !this.lockedTypes.includes(e.id));
+      return GlyphInfo.glyphTypes.filter(e => GlyphInfo[e.id].generationRequirement && GlyphInfo[e.id].isGenerated);
     },
     raritySliderProps() {
       return {
@@ -76,7 +75,7 @@ export default {
       for (const type of generatedTypes) {
         this.rarityThresholds[type] = AutoGlyphProcessor.types[type].rarity;
       }
-      this.lockedTypes = GlyphTypes.locked.map(e => e.id);
+
       this.alchemyUnlocked = Ra.unlocks.unlockGlyphAlchemy.canBeApplied;
     },
     optionClass(idx) {

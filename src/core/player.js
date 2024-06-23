@@ -5,7 +5,14 @@ import { GlyphInfoVue } from "@/components/modals/options/SelectGlyphInfoDropdow
 import { AUTOMATOR_MODE, AUTOMATOR_TYPE } from "./automator/automator-backend";
 import { DC } from "./constants";
 import { deepmergeAll } from "@/utility/deepmerge";
-import { GlyphTypes } from "./glyph-effects";
+
+function getGlyphTypes() {
+  const v = { ...GlyphInfo };
+  for (const item in GlyphInfo) {
+    if (!GlyphInfo.glyphTypes.includes(item)) delete v[item];
+  }
+  return v;
+}
 
 // This is actually reassigned when importing saves
 // eslint-disable-next-line prefer-const
@@ -454,7 +461,7 @@ window.player = {
         select: AUTO_GLYPH_SCORE.LOWEST_SACRIFICE,
         trash: AUTO_GLYPH_REJECT.SACRIFICE,
         simple: 0,
-        types: GlyphTypes.list
+        types: Object.keys(getGlyphTypes())
           .filter(t => GlyphInfo.alchemyGlyphTypes.includes(t.id))
           .mapToObject(t => t.id, t => ({
             rarity: 0,

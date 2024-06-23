@@ -21,7 +21,7 @@ export default {
   },
   computed: {
     typeConfig() {
-      return GlyphTypes[this.type];
+      return GlyphInfo[this.type];
     },
     sacConfig() {
       return GlyphSacrifice[this.type].config;

@@ -1,4 +1,5 @@
 import { DC } from "../constants";
+import { GlyphInfo } from "../secret-formula/reality/core-glyph-info";
 
 export const orderedEffectList = ["powerpow", "infinitypow", "replicationpow", "timepow",
   "dilationpow", "timeshardpow", "powermult", "powerdimboost", "powerbuy10",
@@ -12,7 +13,16 @@ export const orderedEffectList = ["powerpow", "infinitypow", "replicationpow", "
   "realityglyphlevel", "realitygalaxies", "realityrow1pow", "realityDTglyph",
   "companiondescription", "companionEP"];
 
-export const generatedTypes = ["power", "infinity", "replication", "time", "dilation", "effarig"];
+function getGlyphTypes() {
+  const v = { ...GlyphInfo };
+  for (const item in GlyphInfo) {
+    if (!GlyphInfo.glyphTypes.includes(item)) delete v[item];
+    else if (!(GlyphInfo[item].isGenerated ?? true)) delete v[item];
+  }
+  return v;
+}
+
+export const generatedTypes = Object.keys(getGlyphTypes());
 
 // eslint-disable-next-line no-unused-vars
 export const GlyphEffectOrder = orderedEffectList.mapToObject(e => e, (e, idx) => idx);
@@ -752,7 +762,7 @@ export const Glyphs = {
   // Modifies a basic glyph to have timespeed, and adds the new effect to time glyphs
   applyGamespeed(glyph) {
     if (!Ra.unlocks.allGamespeedGlyphs.canBeApplied) return;
-    if (GlyphInfo.basicGlyphTypes.includes(glyph.type)) {
+    if (GlyphInfo[glyph.type].isBasic) {
       glyph.effects.push("timespeed");
       if (glyph.type === "time") {
         glyph.effects.push("timeshardpow");

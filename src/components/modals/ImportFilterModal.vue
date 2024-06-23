@@ -67,7 +67,8 @@ export default {
     },
     // Hide effarig if it hasn't been unlocked yet
     availableTypes() {
-      return GlyphInfo.alchemyGlyphTypes.filter(t => !GlyphTypes.locked.map(e => e.id).includes(t));
+      // eslint-disable-next-line max-len
+      return GlyphInfo.alchemyGlyphTypes.filter(t => GlyphInfo[t.type].isGenerated && GlyphInfo[t.type].generationRequirement);
     },
     settingTooltipText() {
       return `Mouseover each box for more details. ✔ and ✘ symbols denote an effect

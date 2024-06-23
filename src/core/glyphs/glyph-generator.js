@@ -262,7 +262,7 @@ export const GlyphGenerator = {
   },
 
   generateEffects(type, count, rng) {
-    const glyphTypeEffects = GlyphTypes[type].effects;
+    const glyphTypeEffects = GlyphInfo[type].effects();
     const effectValues = glyphTypeEffects.mapToObject(x => x.intID, () => rng.uniform());
     // Get a bunch of random numbers so that we always use 7 here.
     Array.range(0, 7 - glyphTypeEffects.length).forEach(() => rng.uniform());
@@ -287,11 +287,14 @@ export const GlyphGenerator = {
   },
 
   randomType(rng, typesSoFar = []) {
-    const generatable = generatedTypes.filter(x => EffarigUnlock.reality.isUnlocked || x !== "effarig");
+    const generatable = generatedTypes.filter(x => (GlyphInfo[x].isGenerated ?? false) &&
+      (GlyphInfo[x].generationRequirement ?? true));
     const maxOfSameTypeSoFar = generatable.map(x => typesSoFar.countWhere(y => y === x)).max();
     const blacklisted = typesSoFar.length === 0
       ? [] : generatable.filter(x => typesSoFar.countWhere(y => y === x) === maxOfSameTypeSoFar);
-    return GlyphTypes.random(rng, blacklisted);
+    const types = generatedTypes.filter(
+      x => generatable.includes(x) && !blacklisted.includes(x));
+    return types[Math.floor(rng.uniform() * types.length)];
   },
 
   /**

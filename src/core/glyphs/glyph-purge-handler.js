@@ -68,7 +68,7 @@ export const GlyphSacrificeHandler = {
     EventHub.dispatch(GAME_EVENT.GLYPH_SACRIFICED, glyph);
   },
   glyphAlchemyResource(glyph) {
-    const type = GlyphTypes[glyph.type];
+    const type = GlyphInfo[glyph.type];
     return AlchemyResources.all[type.alchemyResource];
   },
   // Scaling function to make refinement value ramp up with higher glyph levels
@@ -149,7 +149,7 @@ export const GlyphSacrificeHandler = {
     const decoherenceGain = rawRefinementGain.mul(AlchemyResource.decoherence.effectValue);
     for (const glyphTypeName of GlyphInfo.alchemyGlyphTypes) {
       if (glyphTypeName !== glyph.type) {
-        const glyphType = GlyphTypes[glyphTypeName];
+        const glyphType = GlyphInfo[glyphTypeName];
         const otherResource = AlchemyResources.all[glyphType.alchemyResource];
         const maxResource = Decimal.max(otherResource.cap, otherResource.amount);
         otherResource.amount = Decimal.clampMax(otherResource.amount.add(decoherenceGain), maxResource);

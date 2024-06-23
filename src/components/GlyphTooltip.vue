@@ -123,7 +123,7 @@ export default {
       return this.displayLevel.neq(0) && this.displayLevel.gt(this.level);
     },
     rarityText() {
-      if (!GlyphTypes[this.type].hasRarity) return "";
+      if (!GlyphInfo[this.type].hasRarity) return "";
       const strength = Pelle.isDoomed ? Pelle.glyphStrength : this.strength;
       return `| Rarity:
         <span style="color: ${this.descriptionStyle.color}">${formatRarity(strengthToRarity(strength))}</span>`;

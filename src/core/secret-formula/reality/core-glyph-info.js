@@ -29,6 +29,7 @@
 // primaryEffect gives the primary effect, which should always appear on glyphs of that type
 // alchemyResource gives the alchemy resource of that glyph, where applicable
 // setColor states whether or not the color of that glyph can be modified
+// hasRarity basically just states whether it should display (has) rarity or not. Cursed glyphs and reality glyphs, for example, have this as false in vanilla. Defaults to false.
 // To prevent issues, make sure there is always as many note().mp4 files (with the numbers 1-x) as there are glyph types, else you might get errors with music glyphs and audio
 
 export const GlyphInfo = {
