@@ -331,35 +331,6 @@ window.GLYPH_BG_SETTING = {
   DARK: 2,
 };
 
-window.GLYPH_TYPES = [
-  "power",
-  "infinity",
-  "replication",
-  "time",
-  "dilation",
-  "effarig",
-  "reality",
-  "cursed",
-  "companion"
-];
-
-window.BASIC_GLYPH_TYPES = [
-  "power",
-  "infinity",
-  "replication",
-  "time",
-  "dilation"
-];
-
-window.ALCHEMY_BASIC_GLYPH_TYPES = [
-  "power",
-  "infinity",
-  "replication",
-  "time",
-  "dilation",
-  "effarig"
-];
-
 window.GLYPH_SYMBOLS = {
   power: "Ω",
   infinity: "∞",

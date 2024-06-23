@@ -17,10 +17,10 @@ export default {
       mode: AUTO_GLYPH_SCORE.LOWEST_SACRIFICE,
       effectCount: 0,
       lockedTypes: GlyphTypes.locked.map(e => e.id),
-      advancedType: GLYPH_TYPES[0],
+      advancedType: GlyphInfo.glyphTypes[0],
       alchemyUnlocked: false,
       // Note: there are two units at play: strength is from 1..3.5+; rarity is 0..100
-      rarityThresholds: GLYPH_TYPES.mapToObject(e => e, () => 0),
+      rarityThresholds: GlyphInfo.glyphTypes.mapToObject(e => e, () => 0),
       autoRealityForFilter: player.options.autoRealityForFilter,
     };
   },
@@ -182,7 +182,7 @@ export default {
       const serializeType = settings => [settings.rarity, settings.score, settings.effectCount,
         settings.specifiedMask, settings.effectScores.join("/")].join(",");
       const simpleData = [filter.select, filter.simple, filter.trash].join("|");
-      const typeData = ALCHEMY_BASIC_GLYPH_TYPES.map(t => serializeType(filter.types[t])).join("|");
+      const typeData = GlyphInfo.alchemyGlyphTypes.map(t => serializeType(filter.types[t])).join("|");
       copyToClipboard(GameSaveSerializer.encodeText(`${simpleData}|${typeData}`, "glyph filter"));
       GameUI.notify.info("Filter settings copied to clipboard");
     },

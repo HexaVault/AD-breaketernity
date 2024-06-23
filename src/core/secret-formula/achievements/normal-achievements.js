@@ -1098,7 +1098,7 @@ export const normalAchievements = [
     id: 148,
     name: "Royal flush",
     description: "Reality with one of each basic Glyph type.",
-    checkRequirement: () => BASIC_GLYPH_TYPES
+    checkRequirement: () => GlyphInfo.basicGlyphTypes
       .every(type => Glyphs.activeList.some(g => g.type === type)),
     checkEvent: GAME_EVENT.REALITY_RESET_BEFORE,
     reward: "Gained Glyph level is increased by number of distinct Glyph types equipped.",

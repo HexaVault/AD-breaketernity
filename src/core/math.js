@@ -758,7 +758,7 @@ window.binomialDistributionSmallExpected = function binomialDistributionSmallExp
 window.binomialDistribution = function binomialDistribution(numSamples, p) {
   if (p === 0) return 0;
   if (numSamples instanceof Decimal) {
-    if (numSamples.e < 308) {
+    if (numSamples.log10().lt(300)) {
       const pNumber = typeof p === "number" ? p : p.toNumber();
       return new Decimal(binomialDistribution(numSamples.toNumber(), pNumber));
     }

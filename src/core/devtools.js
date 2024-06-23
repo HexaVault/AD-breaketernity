@@ -458,9 +458,9 @@ dev.testGlyphs = function(config) {
     withFirst.forEach(e => e.push(elements[0]));
     return withFirst.concat(withoutFirst);
   }
-  const sets5 = makeCombinationsWithRepeats(5, BASIC_GLYPH_TYPES)
+  const sets5 = makeCombinationsWithRepeats(5, GlyphInfo.basicGlyphTypes)
     .map(s => s.map(t => makeAllEffectGlyph(t)));
-  const sets4 = makeCombinationsWithRepeats(4, BASIC_GLYPH_TYPES)
+  const sets4 = makeCombinationsWithRepeats(4, GlyphInfo.basicGlyphTypes)
     .map(s => s.map(t => makeAllEffectGlyph(t)));
   const effarigSets = effarigGlyphs.map(g => sets4.map(s => [g].concat(s)));
   const glyphSets = sets5.concat(...effarigSets);

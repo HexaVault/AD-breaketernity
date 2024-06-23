@@ -111,7 +111,7 @@ export const AutoGlyphProcessor = {
       case AUTO_GLYPH_SCORE.LOWEST_SACRIFICE:
       case AUTO_GLYPH_SCORE.LOWEST_ALCHEMY:
       case AUTO_GLYPH_SCORE.ALCHEMY_VALUE:
-        // These modes never keep glyphs and always refine/sacrfice
+        // These modes never keep glyphs and always refine/sacrifice
         return DC.BEMAX;
       default:
         throw new Error("Unknown glyph score mode in threshold check");

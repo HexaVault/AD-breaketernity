@@ -1,7 +1,10 @@
 <script>
+import { GlyphInfo } from "../../../core/secret-formula/index";
+
 import { DC } from "@/core/constants";
 
 import TypeSacrifice from "./TypeSacrifice";
+
 
 export default {
   name: "SacrificedGlyphs",
@@ -20,7 +23,7 @@ export default {
     };
   },
   computed: {
-    types: () => GLYPH_TYPES.filter(type => type !== "cursed" && type !== "companion"),
+    types: () => GlyphInfo.sacrificeGlyphTypes,
     lastMachines() {
       return this.lastMachinesTeresa.lt(DC.E10000)
         ? `${quantify("Reality Machine", this.lastMachinesTeresa, 2)}`

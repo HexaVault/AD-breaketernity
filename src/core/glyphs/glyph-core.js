@@ -1,5 +1,3 @@
-import { GameMechanicState } from "../game-mechanics";
-
 import { DC } from "../constants";
 
 export const orderedEffectList = ["powerpow", "infinitypow", "replicationpow", "timepow",
@@ -754,7 +752,7 @@ export const Glyphs = {
   // Modifies a basic glyph to have timespeed, and adds the new effect to time glyphs
   applyGamespeed(glyph) {
     if (!Ra.unlocks.allGamespeedGlyphs.canBeApplied) return;
-    if (BASIC_GLYPH_TYPES.includes(glyph.type)) {
+    if (GlyphInfo.basicGlyphTypes.includes(glyph.type)) {
       glyph.effects.push("timespeed");
       if (glyph.type === "time") {
         glyph.effects.push("timeshardpow");
@@ -798,21 +796,14 @@ export const Glyphs = {
       return;
     }
     const cursedCount = this.allGlyphs.filter(g => g !== null && g.type === "cursed").length;
-    if (cursedCount >= 5) {
-      GameUI.notify.error(`You don't need more than ${format(5)} Cursed Glyphs!`);
+    if (cursedCount >= Glyphs.activeSlotCount) {
+      GameUI.notify.error(`You don't need more than ${format(Glyphs.activeSlotCount)} Cursed Glyphs!`);
     } else {
       this.addToInventory(GlyphGenerator.cursedGlyph());
       GameUI.notify.error("Created a Cursed Glyph");
     }
   }
 };
-
-class GlyphSacrificeState extends GameMechanicState { }
-
-export const GlyphSacrifice = mapGameDataToObject(
-  GameDatabase.reality.glyphSacrifice,
-  config => new GlyphSacrificeState(config)
-);
 
 export function recalculateAllGlyphs() {
   for (let i = 0; i < player.reality.glyphs.active.length; i++) {
@@ -856,7 +847,7 @@ export function getAdjustedGlyphLevel(glyph, realityGlyphBoost = Glyphs.levelBoo
     if (Enslaved.isRunning) return Decimal.max(level, Enslaved.glyphLevelMin);
     if (Effarig.isRunning) return Decimal.min(level, Effarig.glyphLevelCap);
   }
-  if (BASIC_GLYPH_TYPES.includes(glyph.type)) return Decimal.add(level, realityGlyphBoost);
+  if (GlyphInfo[glyph.type].isBasic) return Decimal.add(level, realityGlyphBoost);
   return level;
 }
 

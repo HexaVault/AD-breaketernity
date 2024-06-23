@@ -1,5 +1,5 @@
 <script>
-export const GlyphInfo = {
+export const GlyphInfoVue = {
   types: {
     NONE: 0,
     LEVEL: 1,
@@ -18,7 +18,7 @@ export default {
   name: "SelectGlyphInfoDropdown",
   computed: {
     availableTypes() {
-      const typeEnum = GlyphInfo.types;
+      const typeEnum = GlyphInfoVue.types;
       const options = [typeEnum.NONE, typeEnum.LEVEL, typeEnum.RARITY];
       if (GlyphSacrificeHandler.canSacrifice) options.push(typeEnum.SAC_VALUE);
       if (EffarigUnlock.glyphFilter.isUnlocked) options.push(typeEnum.FILTER_SCORE);
@@ -35,7 +35,7 @@ export default {
       EventHub.dispatch(GAME_EVENT.GLYPH_VISUAL_CHANGE);
     },
     getType(type) {
-      return GlyphInfo.labels[type];
+      return GlyphInfoVue.labels[type];
     }
   }
 };

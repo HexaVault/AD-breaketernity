@@ -100,7 +100,7 @@ export default {
       return `${adjectives.join(" ")} ${nounPhrase}`;
     },
     basicTypePhrase() {
-      const basicGlyphList = this.sortedGlyphs.filter(t => BASIC_GLYPH_TYPES.includes(t.type) && t.perc !== 0);
+      const basicGlyphList = this.sortedGlyphs.filter(t => GlyphInfo[t.type].isBasic && t.perc !== 0);
       switch (basicGlyphList.length) {
         case 1:
           return GLYPH_NAMES[basicGlyphList[0].type].noun;

@@ -2,7 +2,12 @@
 
 // To help adding new glyphs to the game, we can concentrate a ton of information to this file.
 // The name of each object should be the same as it is in glyph types, so that we can easily check all glyphs
+// --- Some glyphs are specially handled in GlyphSetName.vue - You should make sure your glyph is working here aswell
 // glyphTypes is not only used to actually make glyphs exist, it's also the used sort order
+// basicGlyphTypes is used throughout the code for taking basic glyphs.
+// alchemyGlyphTypes is used throughout the code for taking all the glyphs that can be refined (alchemy)
+// sacrificeGlyphTypes is used throughout the code for taking all the glyphs that can be sacrificed.
+// id is just the glyph type - its used in a couple places, mainly glyph cosmetics.
 // Adjective is whats used for GlyphSetName.vue - If undefined, will default to ""
 // Noun is also used by GlyphSetName.vue - The word at the end of the set name (the "Infinity" in "Boundless Infinity")
 // adjNounImportance dictates which noun to use - Lower means itll be used earlier for noun if it exists, higher is later
@@ -13,12 +18,18 @@
 // regularGlyphSymbol is the symbol shown when not using design theme, else cancerGlyphSymbol is used
 // hasSacrifice states whether or not the glyph has a sacrifice.
 // sacrificeInfo holds information about the sacrifice, if it exists
+// - id: The id of the sacrifice. Only really used in cases where we need this legacy info
+// - effect: the effect of the sacrifice
+// - description: the description shown im the glyph tab, under glyph sacrifice
+// - cap: the cap of the effect
+// - unlock: when is the sacrifice unlocked, defaults to ru19
 // hasAlchemyResource states whether or not the glyph can be refined into it's appropriate alcheemy resource (if it exists)
 // pelleUniqueEffect states whether or not the glyph has a unique effect in Pelle due to rift 3
 // color gives the base color of the glyph
 // primaryEffect gives the primary effect, which should always appear on glyphs of that type
 // alchemyResource gives the alchemy resource of that glyph, where applicable
 // setColor states whether or not the color of that glyph can be modified
+// To prevent issues, make sure there is always as many note().mp4 files (with the numbers 1-x) as there are glyph types, else you might get errors with music glyphs and audio
 
 export const GlyphInfo = {
   glyphTypes: [
@@ -33,7 +44,36 @@ export const GlyphInfo = {
     "companion",
   ],
 
+  basicGlyphTypes: [
+    "power",
+    "infinity",
+    "replication",
+    "time",
+    "dilation"
+  ],
+
+  alchemyGlyphTypes: [
+    "power",
+    "infinity",
+    "replication",
+    "time",
+    "dilation",
+    "effarig"
+  ],
+
+  sacrificeGlyphTypes: [
+    "power",
+    "infinity",
+    "replication",
+    "time",
+    "dilation",
+    "effarig",
+    "reality,"
+  ],
+
   cursed: {
+    id: "cursed",
+    effects: () => GlyphEffects.all.filter(e => e.glyphTypes.includes("cursed")),
     adjective: { high: "Cursed", mid: "Hexed", low: "Jinxed" },
     noun: "Curse",
     isBasic: false,
@@ -50,6 +90,8 @@ export const GlyphInfo = {
   },
 
   reality: {
+    id: "reality",
+    effects: () => GlyphEffects.all.filter(e => e.glyphTypes.includes("reality")),
     adjective: "Real",
     noun: "Reality",
     isBasic: false,
@@ -77,6 +119,8 @@ export const GlyphInfo = {
   },
 
   effarig: {
+    id: "effarig",
+    effects: () => GlyphEffects.all.filter(e => e.glyphTypes.includes("effarig")),
     adjective: { both: "Meta", glyph: "Stable", rm: "Mechanical", none: "Fragmented" },
     noun: { both: "Effarig", glyph: "Stability", rm: "Mechanism", none: "Fragmentation" },
     isBasic: false,
@@ -106,6 +150,8 @@ export const GlyphInfo = {
   },
 
   companion: {
+    id: "companion",
+    effects: () => GlyphEffects.all.filter(e => e.glyphTypes.includes("companion")),
     adjective: "Huggable",
     noun: "Companion",
     isBasic: false,
@@ -122,9 +168,11 @@ export const GlyphInfo = {
   },
 
   power: {
+    id: "power",
+    effects: () => GlyphEffects.all.filter(e => e.glyphTypes.includes("power")),
     adjective: { high: "Powerful", mid: "Mastered", low: "Potential" },
     noun: "Power",
-    isBasic: false,
+    isBasic: true,
     regularGlyphSymbol: "Ω",
     cancerGlyphSymbol: "⚡",
     hasSacrifice: true,
@@ -159,9 +207,11 @@ export const GlyphInfo = {
   },
 
   infinity: {
+    id: "infinity",
+    effects: () => GlyphEffects.all.filter(e => e.glyphTypes.includes("infinity")),
     adjective: { high: "Infinite", mid: "Boundless", low: "Immense" },
     noun: "Infinity",
-    isBasic: false,
+    isBasic: true,
     regularGlyphSymbol: "∞",
     cancerGlyphSymbol: "8",
     hasSacrifice: true,
@@ -187,9 +237,11 @@ export const GlyphInfo = {
   },
 
   replication: {
+    id: "replication",
+    effects: () => GlyphEffects.all.filter(e => e.glyphTypes.includes("replication")),
     adjective: { high: "Replicated", mid: "Simulated", low: "Duplicated" },
     noun: "Replication",
-    isBasic: false,
+    isBasic: true,
     regularGlyphSymbol: "Ξ",
     cancerGlyphSymbol: "⚤",
     hasSacrifice: true,
@@ -223,9 +275,11 @@ export const GlyphInfo = {
   },
 
   time: {
+    id: "time",
+    effects: () => GlyphEffects.all.filter(e => e.glyphTypes.includes("time")),
     adjective: { high: "Temporal", mid: "Chronal", low: "Transient" },
     noun: "Time",
-    isBasic: false,
+    isBasic: true,
     regularGlyphSymbol: "Δ",
     cancerGlyphSymbol: "🕟",
     hasSacrifice: true,
@@ -251,9 +305,11 @@ export const GlyphInfo = {
   },
 
   dilation: {
+    id: "dilation",
+    effects: () => GlyphEffects.all.filter(e => e.glyphTypes.includes("dilation")),
     adjective: { high: "Dilated", mid: "Attenuated", low: "Diluted" },
     noun: "Dilation",
-    isBasic: false,
+    isBasic: true,
     regularGlyphSymbol: "Ψ",
     cancerGlyphSymbol: "☎",
     hasSacrifice: true,

@@ -1,12 +1,14 @@
+import { GlyphInfo } from "../secret-formula/reality/core-glyph-info";
+
 class CosmeticGlyphType {
   constructor(setup, isCosmetic) {
     this.id = setup.id;
-    this._defaultSymbol = setup.symbol;
+    this._defaultSymbol = setup.regularGlyphSymbol ?? setup.symbol;
     this._defaultColor = setup.color;
     this.preventBlur = setup.preventBlur ?? false;
-    this.isUnlocked = setup.isUnlocked;
-    this._canCustomize = setup.canCustomize;
-    this.fixedSymbolColor = setup.fixedSymbolColor ?? false;
+    this.isUnlocked = setup.isUnlocked ?? false;
+    this._canCustomize = setup.canCustomize ?? true;
+    this.fixedSymbolColor = setup.fixedSymbolColor ?? setup.setColor ?? false;
     this.isCosmetic = isCosmetic;
   }
 
@@ -57,8 +59,15 @@ class CosmeticGlyphType {
   }
 }
 
+function getGlyphTypes() {
+  const v = { ...GlyphInfo };
+  for (const item in GlyphInfo) {
+    if (!GlyphInfo.glyphTypes.includes(item)) delete v[item];
+  }
+  return v;
+}
 const functionalGlyphs = mapGameDataToObject(
-  GameDatabase.reality.glyphTypes,
+  getGlyphTypes(),
   config => new CosmeticGlyphType(config, false)
 );
 

@@ -85,10 +85,10 @@ function getTotalEffect(effectKey) {
 export function separateEffectKey(effectKey) {
   let type = "";
   let effect = "";
-  for (let i = 0; i < GLYPH_TYPES.length; i++) {
-    if (effectKey.substring(0, GLYPH_TYPES[i].length) === GLYPH_TYPES[i]) {
-      type = GLYPH_TYPES[i];
-      effect = effectKey.substring(GLYPH_TYPES[i].length);
+  for (let i = 0; i < GlyphInfo.glyphTypes.length; i++) {
+    if (effectKey.substring(0, GlyphInfo.glyphTypes[i].length) === GlyphInfo.glyphTypes[i]) {
+      type = GlyphInfo.glyphTypes[i];
+      effect = effectKey.substring(GlyphInfo.glyphTypes[i].length);
       break;
     }
   }

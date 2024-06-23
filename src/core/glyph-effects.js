@@ -1,4 +1,5 @@
 import { GameDatabase } from "./secret-formula/game-database";
+import { GlyphInfo } from "./secret-formula/reality/core-glyph-info";
 
 /**
  * Multiple glyph effects are combined into a summary object of this type.
@@ -144,7 +145,7 @@ class GlyphEffectConfig {
       throw new Error(`Glyph effect "${setup.id}" includes unrecognized field "${unknownField}"`);
     }
 
-    const unknownGlyphType = setup.glyphTypes.find(e => !GLYPH_TYPES.includes(e));
+    const unknownGlyphType = setup.glyphTypes.find(e => !GlyphInfo.glyphTypes.includes(e));
     if (unknownGlyphType !== undefined) {
       throw new Error(`Glyph effect "${setup.id}" references unknown glyphType "${unknownGlyphType}"`);
     }
@@ -241,8 +242,8 @@ class FunctionalGlyphType {
     this.alchemyResource = setup.alchemyResource;
     /** @type {boolean} */
     this.hasRarity = setup.hasRarity;
-    if (!GLYPH_TYPES.includes(this.id)) {
-      throw new Error(`Id ${this.id} not found in GLYPH_TYPES`);
+    if (!GlyphInfo.glyphTypes.includes(this.id)) {
+      throw new Error(`Id ${this.id} not found in GlyphInfo.glyphTypes`);
     }
   }
 
@@ -270,7 +271,7 @@ export const GlyphTypes = {
     return types[Math.floor(rng.uniform() * types.length)];
   },
   get list() {
-    return GLYPH_TYPES.map(e => GlyphTypes[e]);
+    return GlyphInfo.glyphTypes.map(e => GlyphTypes[e]);
   },
   get locked() {
     return this.list.filter(e => !e.isUnlocked);

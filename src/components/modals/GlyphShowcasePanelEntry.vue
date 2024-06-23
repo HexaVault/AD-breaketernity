@@ -139,7 +139,7 @@ export default {
     },
     clickGlyph(glyph) {
       if (Glyphs.isMusicGlyph(glyph)) {
-        new Audio(`audio/note${GLYPH_TYPES.indexOf(glyph.type) + 1}.mp3`).play();
+        new Audio(`audio/note${GlyphInfo.glyphTypes.indexOf(glyph.type) + 1}.mp3`).play();
       }
     },
   },

@@ -2,6 +2,7 @@
 import ImportFilterSingleType from "./ImportFilterSingleType";
 import ModalWrapperChoice from "@/components/modals/ModalWrapperChoice";
 import PrimaryButton from "@/components/PrimaryButton";
+import { GlyphInfo } from "../../core/secret-formula/index";
 
 export default {
   name: "ImportFilterModal",
@@ -33,7 +34,7 @@ export default {
       const parts = decoded.split("|");
       const typeInfo = {};
       let partIndex = 3;
-      for (const type of ALCHEMY_BASIC_GLYPH_TYPES) {
+      for (const type of GlyphInfo.alchemyGlyphTypes) {
         if (!type) continue;
         const subparts = parts[partIndex].split(",");
         typeInfo[type] = {
@@ -66,7 +67,7 @@ export default {
     },
     // Hide effarig if it hasn't been unlocked yet
     availableTypes() {
-      return ALCHEMY_BASIC_GLYPH_TYPES.filter(t => !GlyphTypes.locked.map(e => e.id).includes(t));
+      return GlyphInfo.alchemyGlyphTypes.filter(t => !GlyphTypes.locked.map(e => e.id).includes(t));
     },
     settingTooltipText() {
       return `Mouseover each box for more details. ✔ and ✘ symbols denote an effect

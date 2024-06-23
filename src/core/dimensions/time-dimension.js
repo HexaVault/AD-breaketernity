@@ -313,7 +313,7 @@ class TimeDimensionState extends DimensionState {
 
   get powerMultiplier() {
     return DC.D4
-      .timesEffectsOf(this._tier === 8 ? GlyphSacrifice.time : null)
+      .times(this._tier === 8 ? GlyphInfo.time.sacrificeInfo.effect() : null)
       .pow(ImaginaryUpgrade(14).effectOrDefault(1));
   }
 

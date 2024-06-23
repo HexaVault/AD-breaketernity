@@ -165,12 +165,13 @@ export class Galaxy {
   }
 
   static get costScalingStart() {
-    return DC.E2.add(new Decimal(TimeStudy(302).effectOrDefault(0)).add(Effects.sum(
-      TimeStudy(223),
-      TimeStudy(224),
-      EternityChallenge(5).reward,
-      GlyphSacrifice.power
-    )));
+    return DC.E2.add(new Decimal(TimeStudy(302).effectOrDefault(0))
+      .add(Effects.sum(
+        TimeStudy(223),
+        TimeStudy(224),
+        EternityChallenge(5).reward,
+      )
+        .add(GlyphInfo.power.sacrificeInfo.effect())));
   }
 
   static get type() {

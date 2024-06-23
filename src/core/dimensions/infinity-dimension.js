@@ -202,7 +202,7 @@ class InfinityDimensionState extends DimensionState {
 
   get powerMultiplier() {
     return new Decimal(this._powerMultiplier)
-      .timesEffectsOf(this._tier === 8 ? GlyphSacrifice.infinity : null)
+      .times(this._tier === 8 ? GlyphInfo.infinity.sacrificeInfo.effect() : null)
       .pow(ImaginaryUpgrade(14).effectOrDefault(1));
   }
 

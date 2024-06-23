@@ -1,5 +1,5 @@
 <script>
-import SelectGlyphInfoDropdown, { GlyphInfo } from ".././SelectGlyphInfoDropdown";
+import SelectGlyphInfoDropdown, { GlyphInfoVue } from ".././SelectGlyphInfoDropdown";
 
 import ExpandingControlBox from "@/components/ExpandingControlBox";
 import GlyphCustomization from "@/components/modals/options/glyph-appearance/GlyphCustomization";
@@ -30,7 +30,7 @@ export default {
   },
   computed: {
     infoLabel() {
-      return GlyphInfo.labels[this.glyphInfoType];
+      return GlyphInfoVue.labels[this.glyphInfoType];
     },
     glyphBGStr() {
       switch (this.glyphBG) {

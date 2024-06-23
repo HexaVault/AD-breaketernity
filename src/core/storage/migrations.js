@@ -291,8 +291,8 @@ export const migrations = {
       const reducedFilter = {};
       const effectDB = Object.values(GameDatabase.reality.glyphEffects);
       // The previous filter format had entries for companion/reality/cursed glyphs, which are removed by only copying
-      // the types in ALCHEMY_BASIC_GLYPH_TYPES. Any errors which show up elsewhere for have also been resolved
-      for (const type of ALCHEMY_BASIC_GLYPH_TYPES) {
+      // the types in GlyphInfo.alchemyGlyphTypes. Any errors which show up elsewhere for have also been resolved
+      for (const type of GlyphInfo.alchemyGlyphTypes) {
         const oldData = effarig.glyphScoreSettings?.types[type];
         const typeEffects = effectDB
           .filter(t => t.glyphTypes.includes(type))

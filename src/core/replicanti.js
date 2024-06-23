@@ -426,11 +426,11 @@ export const ReplicantiUpgrade = {
     set baseCost(value) { player.replicanti.galCost = value; }
 
     get distantRGStart() {
-      return Effects.sum(GlyphSacrifice.replication).add(100);
+      return GlyphInfo.replication.sacrificeInfo.effect().add(100);
     }
 
     get remoteRGStart() {
-      return Effects.sum(GlyphSacrifice.replication).add(1000);
+      return GlyphInfo.replication.sacrificeInfo.effect().add(1000);
     }
 
     get costIncrease() {
@@ -460,8 +460,8 @@ export const ReplicantiUpgrade = {
       const logBase = new Decimal(170);
       const logBaseIncrease = EternityChallenge(6).isRunning ? DC.D2 : new Decimal(25);
       const logCostScaling = EternityChallenge(6).isRunning ? DC.D2 : DC.D5;
-      const distantReplicatedGalaxyStart = Effects.sum(GlyphSacrifice.replication).add(100);
-      const remoteReplicatedGalaxyStart = Effects.sum(GlyphSacrifice.replication).add(1000);
+      const distantReplicatedGalaxyStart = GlyphInfo.replication.sacrificeInfo.effect().add(100);
+      const remoteReplicatedGalaxyStart = GlyphInfo.replication.sacrificeInfo.effect().add(1000);
       const logDistantScaling = new Decimal(50);
       const logRemoteScaling = DC.D5;
 
@@ -515,8 +515,8 @@ export const ReplicantiUpgrade = {
       const logBase = new Decimal(170);
       const logBaseIncrease = EternityChallenge(6).isRunning ? 2 : 25;
       const logCostScaling = EternityChallenge(6).isRunning ? 2 : 5;
-      const distantReplicatedGalaxyStart = Effects.sum(GlyphSacrifice.replication).add(100);
-      const remoteReplicatedGalaxyStart = Effects.sum(GlyphSacrifice.replication).add(1000);
+      const distantReplicatedGalaxyStart = GlyphInfo.replication.sacrificeInfo.effect().add(100);
+      const remoteReplicatedGalaxyStart = GlyphInfo.replication.sacrificeInfo.effect().add(1000);
       let logCost = logBase.add(count.times(logBaseIncrease))
         .add((count.times(count.sub(1)).div(2)).times(logCostScaling));
       if (count.gt(distantReplicatedGalaxyStart)) {

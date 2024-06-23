@@ -221,7 +221,7 @@ export const GlyphGenerator = {
     const relicShardFactor = Ra.unlocks.extraGlyphChoicesAndRelicShardRarityAlwaysMax.canBeApplied
       ? new Decimal(1) : rng.uniform();
     const increasedRarity = Effarig.maxRarityBoost.mul(relicShardFactor)
-      .add(Effects.sum(Achievement(146), GlyphSacrifice.effarig));
+      .add(Effects.sum(Achievement(146)).add(GlyphInfo.effarig.sacrificeInfo.effect()));
     // Each rarity% is 0.025 strength.
     result = result.add(increasedRarity.div(40));
     // Raise the result to the next-highest 0.1% rarity.
@@ -325,7 +325,7 @@ export const GlyphGenerator = {
     }
 
     // Determine which effect needs to be added for uniformity (startID is a hardcoded array of the lowest ID glyph
-    // effect of each type, in the same type order as BASIC_GLYPH_TYPES). We use type, initial seed, and group index
+    // effect of each type, same type order as GlyphInfo.basicGlyphTypes). We use type, initial seed, and group index
     // to pick a random permutation, again to make it less predictable and to make sure they're generally different
     const uniformEffects = [];
     const startID = [16, 12, 8, 0, 4];
@@ -344,7 +344,7 @@ export const GlyphGenerator = {
     // uniformity code to make glyph generation disproportionately worse in that case
     const glyphs = [];
     for (let i = 0; i < 4; ++i) {
-      const newGlyph = GlyphGenerator.randomGlyph(level, rng, BASIC_GLYPH_TYPES[typesThisReality[i]]);
+      const newGlyph = GlyphGenerator.randomGlyph(level, rng, GlyphInfo.basicGlyphTypes[typesThisReality[i]]);
       const newMask = (initSeed + realityCount.toNumber() + i) % 2 === 0
         ? (1 << uniformEffects[i])
         : newGlyph.effects | (1 << uniformEffects[i]);

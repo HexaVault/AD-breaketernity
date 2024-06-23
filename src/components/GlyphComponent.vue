@@ -1,6 +1,6 @@
 <script>
 import { getRarity } from "../core/globals";
-import { GlyphInfo } from "../../src/components/modals/options/SelectGlyphInfoDropdown";
+import { GlyphInfoVue } from "../../src/components/modals/options/SelectGlyphInfoDropdown";
 
 import GlyphTooltip from "@/components/GlyphTooltip";
 
@@ -282,7 +282,7 @@ export default {
       return Boolean(this.glyph.effects);
     },
     typeConfig() {
-      return GlyphTypes[this.glyph.type];
+      return GlyphInfo[this.glyph.type];
     },
     cosmeticConfig() {
       return CosmeticGlyphTypes[this.glyph.cosmetic ?? this.glyph.type];
@@ -296,7 +296,7 @@ export default {
       if (this.isBlobHeart) return "\uE019";
       if (symbol) return symbol;
       return (this.$viewModel.theme === "S4" && !this.glyph.cosmetic)
-        ? CANCER_GLYPH_SYMBOLS[this.glyph.type]
+        ? GlyphInfo[this.glyph.type].cancerGlyphSymbol
         : this.cosmeticConfig.currentSymbol.symbol;
     },
     symbolBlur() {
@@ -436,12 +436,12 @@ export default {
       if (!this.isInventoryGlyph || blacklist.includes(this.glyph.type)) return null;
 
       const options = player.options.showHintText;
-      if (options.glyphInfoType === GlyphInfo.types.NONE ||
+      if (options.glyphInfoType === GlyphInfoVue.types.NONE ||
         (!options.showGlyphInfoByDefault && !this.$viewModel.shiftDown)) {
         return null;
       }
 
-      const typeEnum = GlyphInfo.types;
+      const typeEnum = GlyphInfoVue.types;
       switch (options.glyphInfoType) {
         case typeEnum.LEVEL:
           this.updateDisplayLevel();
@@ -503,10 +503,10 @@ export default {
         ? null
         : GlyphAppearanceHandler.realityColor;
       this.sacrificeReward = GlyphSacrificeHandler.glyphSacrificeGain(this.glyph);
-      this.uncappedRefineReward = ALCHEMY_BASIC_GLYPH_TYPES.includes(this.glyph.type)
+      this.uncappedRefineReward = GlyphInfo[this.glyph.type].hasAlchemyResource
         ? GlyphSacrificeHandler.glyphRawRefinementGain(this.glyph)
         : new Decimal();
-      this.refineReward = ALCHEMY_BASIC_GLYPH_TYPES.includes(this.glyph.type)
+      this.refineReward = GlyphInfo[this.glyph.type].hasAlchemyResource
         ? GlyphSacrificeHandler.glyphRefinementGain(this.glyph)
         : new Decimal();
       if (this.tooltipLoaded) this.updateDisplayLevel();
@@ -531,7 +531,7 @@ export default {
       else if (this.isInventoryGlyph) this.displayLevel = getAdjustedGlyphLevel(this.glyph, 0);
       else {
         this.displayLevel = this.glyph.level
-          .add(BASIC_GLYPH_TYPES.includes(this.glyph.type) ? this.realityGlyphBoost : 0);
+          .add(GlyphInfo[this.glyph.type].isBasic ? this.realityGlyphBoost : 0);
       }
     },
     hideTooltip() {

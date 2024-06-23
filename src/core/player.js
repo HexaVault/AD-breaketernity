@@ -1,5 +1,6 @@
 import { AutomatorPanels } from "@/components/tabs/automator/AutomatorDocs";
-import { GlyphInfo } from "@/components/modals/options/SelectGlyphInfoDropdown";
+import { GlyphInfo } from "./secret-formula/reality/core-glyph-info";
+import { GlyphInfoVue } from "@/components/modals/options/SelectGlyphInfoDropdown";
 
 import { AUTOMATOR_MODE, AUTOMATOR_TYPE } from "./automator/automator-backend";
 import { DC } from "./constants";
@@ -454,7 +455,7 @@ window.player = {
         trash: AUTO_GLYPH_REJECT.SACRIFICE,
         simple: 0,
         types: GlyphTypes.list
-          .filter(t => ALCHEMY_BASIC_GLYPH_TYPES.includes(t.id))
+          .filter(t => GlyphInfo.alchemyGlyphTypes.includes(t.id))
           .mapToObject(t => t.id, t => ({
             rarity: 0,
             score: 0,
@@ -839,7 +840,7 @@ window.player = {
       realityUpgrades: true,
       perks: true,
       alchemy: true,
-      glyphInfoType: GlyphInfo.types.NONE,
+      glyphInfoType: GlyphInfoVue.types.NONE,
       showGlyphInfoByDefault: false,
     },
     animations: {

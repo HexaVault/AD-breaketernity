@@ -7,7 +7,7 @@ const BEMAX = new Decimal("10^^9000000000000000");
 
 function updateGlyphs(glyph) {
   if (glyph.effects instanceof Array) return glyph;
-  let intIDindex = (glyph.isGenerated === true ? 28 : 0);
+  let intIDindex = (["companion", "cursed", "reality"].includes(glyph.type) ? 28 : 0);
   const effectList = [];
   for (let i = 0; i < 32; i++) {
     if ((glyph.effects >> i) % 2 === 1) {
@@ -29,7 +29,6 @@ function raFix(player) {
   const array = [];
   for (let i = 0; i < 32; i++) {
     if ((player.celestials.ra.unlockBits >> i) % 2 === 1) {
-      // eslint-disable-next-line no-loop-func, eqeqeq
       array.push(i);
     }
   }
