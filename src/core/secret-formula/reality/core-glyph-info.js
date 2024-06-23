@@ -69,7 +69,7 @@ export const GlyphInfo = {
     "time",
     "dilation",
     "effarig",
-    "reality,"
+    "reality"
   ],
 
   cursed: {

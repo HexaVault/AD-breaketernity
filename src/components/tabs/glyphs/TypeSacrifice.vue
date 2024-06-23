@@ -24,7 +24,7 @@ export default {
       return GlyphInfo[this.type];
     },
     sacConfig() {
-      return GlyphSacrifice[this.type].config;
+      return GlyphInfo[this.type].sacrificeInfo;
     },
     style() {
       if (!this.isColored) return { };
@@ -77,7 +77,7 @@ export default {
   methods: {
     update() {
       this.amount.copyFrom(player.reality.glyphs.sac[this.type]);
-      this.effectValue = GlyphSacrifice[this.type].effectValue;
+      this.effectValue = GlyphInfo[this.type].sacrificeInfo.effect();
       this.isColored = player.options.glyphTextColors;
       this.willSacrifice = AutoGlyphProcessor.sacMode === AUTO_GLYPH_REJECT.SACRIFICE ||
         (AutoGlyphProcessor.sacMode === AUTO_GLYPH_REJECT.REFINE_TO_CAP &&
