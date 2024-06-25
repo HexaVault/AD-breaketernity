@@ -109,7 +109,7 @@ export default {
       this.hasPerkShop = TeresaUnlocks.shop.isUnlocked;
       this.raisedPerkShop = Ra.unlocks.perkShopIncrease.canBeApplied;
       this.bestAM.copyFrom(player.celestials.teresa.bestRunAM);
-      this.bestAMSet = structuredClone(Glyphs.copyForRecords(player.celestials.teresa.bestAMSet));
+      this.bestAMSet = cloneDeep(Glyphs.copyForRecords(player.celestials.teresa.bestAMSet));
       this.lastMachines.copyFrom(player.celestials.teresa.lastRepeatedMachines);
       this.lastiM.copyFrom(player.celestials.teresa.lastRepeatediM);
       this.runReward.copyFrom(Teresa.runRewardMultiplier);

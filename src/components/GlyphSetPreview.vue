@@ -103,8 +103,8 @@ export default {
       });
     },
     // Necessary to force a re-render for the set name if the set itself changes
-    glyphHash() {
-      return Glyphs.hash(this.glyphs);
+    glyphIds() {
+      return this.glyphs.map(x => x.id).reduce(Number.sumReducer);
     }
   }
 };
@@ -123,7 +123,7 @@ export default {
     >
       <GlyphSetName
         v-if="showName"
-        :key="glyphHash()"
+        :key="glyphIds()"
         :glyph-set="glyphs"
         :force-color="forceNameColor"
       />

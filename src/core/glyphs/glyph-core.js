@@ -790,12 +790,12 @@ export const Glyphs = {
   // relatively unlikely to cause collisions between different glyph sets unless they're actually the same glyphs.
   // Different permutations of the same glyphs should produce the same hash, but aren't guaranteed to
   hash(glyphSet) {
-    let hash = 1;
+    let hash = DC.D1;
     for (const glyph of glyphSet) {
-      // This should be at most around e23 or so in practice
-      const singleGlyphHash = Math.pow(glyph.level, 2) * Math.pow(glyph.strength, 4) * glyph.effects *
-        glyph.type.charCodeAt(0);
-      hash *= singleGlyphHash;
+      const singleGlyphHash = glyph.level.pow(2).mul(glyph.strength.pow(4))
+        // eslint-disable-next-line no-loop-func
+        .mul(glyph.effects.map(x => GlyphEffects[x].intID).max()).mul(glyph.type.charCodeAt(0));
+      hash = hash.mul(singleGlyphHash);
     }
     return hash;
   },

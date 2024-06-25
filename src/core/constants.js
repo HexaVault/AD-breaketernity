@@ -506,3 +506,16 @@ window.SPEEDRUN_SEED_STATE = {
   RANDOM: 2,
   PLAYER: 3,
 };
+
+window.cloneDeep = function cloneDeep(obj) {
+  if (Array.isArray(obj)) {
+    return obj.map(i => cloneDeep(i));
+  }
+  if (obj instanceof Decimal) {
+    return new Decimal(obj);
+  }
+  if (typeof obj === "object" && obj !== null) {
+    return Object.fromEntries(Object.entries(obj).map(([i, j]) => [i, cloneDeep(j)]));
+  }
+  return obj;
+};
