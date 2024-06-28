@@ -208,9 +208,10 @@ export const Tickspeed = {
 
 export const FreeTickspeed = {
   BASE_SOFTCAP: new Decimal(3e5),
-  GROWTH_RATE: new Decimal(6e-6),
+  GROWTH_RATE: new Decimal(6e-6).add(1),
   GROWTH_EXP: DC.D2,
-  multToNext: new Decimal(1.33),
+  tickmult: () => DC.D1.add(Effects.min(1.33, TimeStudy(171)).sub(1)).mul(
+    Decimal.max(getAdjustedGlyphEffect("cursedtickspeed"), 1)),
 
   get amount() {
     return player.totalTickGained;
@@ -224,56 +225,25 @@ export const FreeTickspeed = {
     return softcap;
   },
 
+  get multToNext() {
+    if (this.amount.lt(this.softcap)) return new Decimal(this.tickmult());
+    return this.tickmult().mul(this.GROWTH_RATE.pow(this.amount.sub(this.softcap)));
+  },
+
+  get tickExpo() {
+    return new ExponentialCostScaling({
+      baseCost: DC.D1,
+      baseIncrease: this.tickmult(),
+      costScale: FreeTickspeed.GROWTH_RATE,
+      purchasesBeforeScaling: FreeTickspeed.softcap
+    });
+  },
+
   fromShards(shards) {
-    const tickmult = DC.D1.add(Effects.min(1.33, TimeStudy(171)).sub(1)).mul(
-      Decimal.max(getAdjustedGlyphEffect("cursedtickspeed"), 1));
-    const logTickmult = tickmult.ln();
-    const logShards = shards.clampMin(1).ln();
-    const uncapped = logShards.div(logTickmult).max(0);
-    if (uncapped.lte(FreeTickspeed.softcap)) {
-      this.multToNext = tickmult;
-      return {
-        newAmount: Decimal.ceil(uncapped),
-        nextShards: Decimal.pow(tickmult, Decimal.ceil(uncapped))
-      };
+    if (shards.lt(1)) {
+      return { newAmount: DC.D0, nextShards: DC.D1 };
     }
-    // Log of (cost - cost up to softcap)
-    const priceToCap = logTickmult.mul(FreeTickspeed.softcap);
-    // In the following we're implicitly applying the function (ln(x) - priceToCap) / logTickmult to all costs,
-    // so, for example, if the cost is 1 that means it's actually exp(priceToCap) * tickmult.
-    const desiredCost = logShards.sub(priceToCap).div(logTickmult);
-    const costFormulaCoefficient = FreeTickspeed.GROWTH_RATE.div(FreeTickspeed.GROWTH_EXP).div(logTickmult);
-    // In the following we're implicitly subtracting softcap from bought,
-    // so, for example, if bought is 1 that means it's actually softcap + 1.
-    // The first term (the big one) is the asymptotically more important term (since FreeTickspeed.GROWTH_EXP > 1),
-    // but is small initially. The second term allows us to continue the pre-cap free tickspeed upgrade scaling
-    // of tickmult per upgrade.
-    const boughtToCost = bought => costFormulaCoefficient.mul(
-      bought.max(0).pow(FreeTickspeed.GROWTH_EXP)).add(bought);
-    const derivativeOfBoughtToCost = x => FreeTickspeed.GROWTH_EXP.mul(costFormulaCoefficient).mul(
-      x.max(0).pow(FreeTickspeed.GROWTH_EXP.sub(1))).add(1);
-    const newtonsMethod = bought => bought.sub(boughtToCost(bought).div(desiredCost)).div(
-      derivativeOfBoughtToCost(bought));
-    let oldApproximation;
-    let approximation = desiredCost.min(
-      desiredCost.div(costFormulaCoefficient).pow(DC.D1.div(FreeTickspeed.GROWTH_EXP))
-    );
-    let counter = 0;
-    // The bought formula is concave upwards. We start with an over-estimate; when using newton's method,
-    // this means that successive iterations are also over-etimates. Thus, we can just check for continued
-    // progress with the approximation < oldApproximation check. The counter is a fallback.
-    do {
-      oldApproximation = approximation;
-      approximation = newtonsMethod(approximation);
-    } while (approximation.lt(oldApproximation) && ++counter < 100);
-    const purchases = approximation.floor();
-    // This undoes the function we're implicitly applying to costs (the ".add(1)" is because we want
-    // the cost of the next upgrade.)
-    const next = Decimal.exp(priceToCap.add(boughtToCost(purchases.add(1)).mul(logTickmult)));
-    this.multToNext = Decimal.exp((boughtToCost(purchases.add(1)).sub(boughtToCost(purchases))).mul(logTickmult));
-    return {
-      newAmount: purchases.add(FreeTickspeed.softcap),
-      nextShards: next,
-    };
+    const quant = this.tickExpo.getMaxBought(DC.D0, shards, DC.D1);
+    return { newAmount: quant.quantity, nextShards: this.tickExpo.calculateCost(quant.quantity.add(1)) };
   }
 };

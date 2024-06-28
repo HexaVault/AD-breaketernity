@@ -563,7 +563,7 @@ export const GameStorage = {
     // manually above
     GameIntervals.restart();
     GameStorage.ignoreBackupTimer = false;
-    Enslaved.nextTickDiff = player.options.updateRate;
+    Enslaved.nextTickDiff = new Decimal(player.options.updateRate);
     // The condition for this secret achievement is only checked when the player is actively storing real time, either
     // when online or simulating time. When only storing offline, the condition is never actually entered in the
     // gameLoop due to the option technically being false, so we need to check it on-load too.

@@ -34,7 +34,7 @@ export const Enslaved = {
   possessiveName: "The Nameless Ones'",
   boostReality: false,
   BROKEN_CHALLENGES: [2, 3, 4, 5, 7, 8, 10, 11, 12],
-  nextTickDiff: 50,
+  nextTickDiff: new Decimal(50),
   isReleaseTick: false,
   autoReleaseTick: 0,
   autoReleaseSpeed: 0,
