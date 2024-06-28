@@ -499,6 +499,26 @@ window.ExponentialCostScaling = class ExponentialCostScaling {
     };
   }
 
+  updateData(param) {
+    this._baseCost = param.baseCost;
+    this._baseIncrease = param.baseIncrease;
+    this._costScale = param.costScale;
+    if (param.purchasesBeforeScaling === undefined && param.scalingCostThreshold === undefined) {
+      throw new Error("purchasesBeforeScaling or scalingCostThreshold must be defined");
+    }
+    if (!(param.purchasesBeforeScaling instanceof Decimal || param.scalingCostThreshold instanceof Decimal)) {
+      throw new Error("purchasesBeforeScaling or scalingCostThreshold must be Decimal");
+    }
+    if (param.purchasesBeforeScaling instanceof Decimal) this._purchasesBeforeScaling = param.purchasesBeforeScaling;
+    if (param.scalingCostThreshold instanceof Decimal) this._purchasesBeforeScaling =
+      (param.scalingCostThreshold.log10().sub(this._baseCost.log10()).div(this._baseIncrease.log10())).ceil();
+    this.log = {
+      _baseCost: param.baseCost.log10(),
+      _baseIncrease: param.baseIncrease.log10(),
+      _costScale: param.costScale.log10(),
+    };
+  }
+
   get costScale() {
     return this._costScale;
   }

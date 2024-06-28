@@ -98,7 +98,6 @@ export class Galaxy {
     */
 
     if (Galaxy.remoteStart.gt(1e6) || Galaxy.requirementAt(DC.E6).amount.lt(currency)) {
-      console.log("fuck");
       return Decimal.log(currency.div(Galaxy.requirementAt(Galaxy.remoteStart.max(1e6))), 1.008).add(1e6);
     }
     // Ignore BBBS' warning, even though its theoretically quite dangerous

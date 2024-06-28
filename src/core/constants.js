@@ -257,9 +257,6 @@ window.RECENT_PRESTIGE_RESOURCE = {
   PRESTIGE_COUNT: 3,
 };
 
-// Free tickspeed multiplier with TS171. Shared here because formatting glyph effects depends on it
-window.TS171_MULTIPLIER = 1.25;
-
 // Used as drag and drop data type
 window.GLYPH_MIME_TYPE = "text/x-ivark-glyph";
 
@@ -497,8 +494,6 @@ window.PROGRESS_STAGE = {
   LAITELA: 16,
   PELLE: 17,
 };
-
-window.STD_BACKEND_URL = "https://antimatterdimensionspayments.ew.r.appspot.com";
 
 window.SPEEDRUN_SEED_STATE = {
   UNKNOWN: 0,

@@ -448,14 +448,11 @@ export function gameLoop(passedDiff, options = {}) {
     ? Math.clamp(thisUpdate - player.lastUpdate, 1, 8.64e7) : passedDiff;
     // This is really, really bad but we dont want 0 getting passed into every function on the fucking earth
   let diff = new Decimal(passDiff);
-  if (diff === undefined) {
-    diff = Enslaved.nextTickDiff;
-  }
   const trueDiff = passDiff === undefined
     ? Math.clamp(thisUpdate - player.lastUpdate, 1, 8.64e7)
     : passDiff;
   // eslint-disable-next-line prefer-const
-  let realDiff = diff;
+  let realDiff = new Decimal(trueDiff);
   if (!GameStorage.ignoreBackupTimer) player.backupTimer += trueDiff;
 
   // For single ticks longer than a minute from the GameInterval loop, we assume that the device has gone to sleep or
@@ -473,6 +470,10 @@ export function gameLoop(passedDiff, options = {}) {
   }
 
   trueTimeMechanics(trueDiff);
+
+  if (diff === undefined || Enslaved.isReleaseTick) {
+    diff = new Decimal(Enslaved.nextTickDiff);
+  }
   // Run all the functions which only depend on real time and not game time, skipping the rest of the loop if needed
   if (realTimeMechanics(realDiff)) return;
 
@@ -505,7 +506,7 @@ export function gameLoop(passedDiff, options = {}) {
       const amplification = Ra.unlocks.improvedStoredTime.effects.gameTimeAmplification.effectOrDefault(1);
       const beforeStore = player.celestials.enslaved.stored;
       player.celestials.enslaved.stored = Decimal.clampMax(player.celestials.enslaved.stored
-        .add(diff.times(totalTimeFactor.sub(reducedTimeFactor))).times(amplification), Enslaved.timeCap);
+        .add(diff.times(totalTimeFactor.sub(reducedTimeFactor)).times(amplification)), Enslaved.timeCap);
       Enslaved.currentBlackHoleStoreAmountPerMs = (player.celestials.enslaved.stored.sub(beforeStore)).div(diff);
       speedFactor = reducedTimeFactor;
     }
