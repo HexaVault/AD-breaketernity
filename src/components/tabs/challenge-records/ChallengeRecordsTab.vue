@@ -14,29 +14,31 @@ export default {
     };
   },
   methods: {
-    ICTimes() {
-      const v = [];
-      const bullshitBypassVariable = new Decimal();
-      for (let i = 0; i < 8; i++) {
-        bullshitBypassVariable.copyFrom(player.challenge.infinity.bestTimes[i]);
-        v.push(this.bullshitBypassVariable);
+    getNormalChallengeTimes(){
+      let times = [];
+      let BBV = new Decimal();
+      for (let i = 0; i < 11; i++) {
+        BBV = new Decimal();
+        BBV.copyFrom(player.challenge.normal.bestTimes[i]);
+        times.push(BBV);
       }
-      return v;
+      return times;
     },
-    NCTimes() {
-      const v = [];
-      const bullshitBypassVariable = new Decimal();
+    getInfinityChallengeTimes(){
+      let timesi = [];
+      let BBVi = new Decimal();
       for (let i = 0; i < 8; i++) {
-        bullshitBypassVariable.copyFrom(player.challenge.infinity.bestTimes[i]);
-        v.push(this.bullshitBypassVariable);
+        BBVi = new Decimal();
+        BBVi.copyFrom(player.challenge.infinity.bestTimes[i]);
+        timesi.push(BBVi);
       }
-      return v;
+      return timesi;
     },
     update() {
       this.infinityChallengesUnlocked = PlayerProgress.infinityChallengeCompleted() ||
         PlayerProgress.eternityUnlocked();
-      this.normalChallenges = this.ICTimes;
-      this.infinityChallenges = this.ICTimes;
+      this.normalChallenges = this.getNormalChallengeTimes();
+      this.infinityChallenges = this.getInfinityChallengeTimes();
     }
   }
 };
