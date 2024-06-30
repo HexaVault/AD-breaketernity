@@ -74,7 +74,6 @@ export default {
       >
         Glyph Filter
       </button>
-      <!--
       <button
         v-if="unlockedSets"
         :class="sidebarClass(sidebarEnum.SAVED_SETS)"
@@ -82,7 +81,6 @@ export default {
       >
         Glyph Presets
       </button>
-    -->
       <button
         v-if="unlockedAlchemy"
         :class="sidebarClass(sidebarEnum.SACRIFICE_TYPE)"

@@ -235,9 +235,10 @@ export default {
     refineText() {
       if (this.type === "companion" || this.type === "cursed" || this.type === "reality") return "";
       if (!AlchemyResource[this.type].isUnlocked) return "";
-      let refinementText = `${format(this.uncappedRefineReward, 2, 2)} ${GLYPH_SYMBOLS[this.type]}`;
+      let refinementText = `${format(this.uncappedRefineReward, 2, 2)} ${GlyphInfo[this.type].regularGlyphSymbol}`;
       if (this.uncappedRefineReward.neq(this.refineReward)) {
-        refinementText += ` (Actual value due to cap: ${format(this.refineReward, 2, 2)} ${GLYPH_SYMBOLS[this.type]})`;
+        // eslint-disable-next-line max-len
+        refinementText += ` (Actual value due to cap: ${format(this.refineReward, 2, 2)} ${GlyphInfo[this.type].regularGlyphSymbol})`;
       }
       const isCurrentAction = this.currentAction === "refine";
       return `<span style="font-weight: ${isCurrentAction ? "bold" : ""};">

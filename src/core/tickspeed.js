@@ -2,9 +2,9 @@ import { DC } from "./constants";
 
 export function effectiveBaseGalaxies() {
   // Note that this already includes the "50% more" active path effect
-  let replicantiGalaxies = new Decimal(Replicanti.galaxies.bought);
-  replicantiGalaxies = replicantiGalaxies.times(1 + TimeStudy(133).effectOrDefault(1) +
-    TimeStudy(132).effectOrDefault(1));
+  let replicantiGalaxies = Replicanti.galaxies.bought;
+  replicantiGalaxies = replicantiGalaxies.times(1 + TimeStudy(133).effectOrDefault(0) +
+    TimeStudy(132).effectOrDefault(0));
   // "extra" galaxies unaffected by the passive/idle boosts come from studies 225/226 and Effarig Infinity
   replicantiGalaxies = replicantiGalaxies.add(Replicanti.galaxies.extra);
   const nonActivePathReplicantiGalaxies = Decimal.min(Replicanti.galaxies.bought,

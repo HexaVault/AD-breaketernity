@@ -473,7 +473,7 @@ export const ReplicantiUpgrade = {
       let c = logBase.sub(cur);
       if (decimalQuadraticSolution(a, b, c).floor().lte(distantReplicatedGalaxyStart)) {
         // eslint-disable-next-line consistent-return
-        return decimalQuadraticSolution(a, b, c).floor();
+        return decimalQuadraticSolution(a, b, c).floor().add(1);
       }
       a = logCostScaling.add(logDistantScaling).div(2);
       // eslint-disable-next-line max-len
@@ -482,7 +482,7 @@ export const ReplicantiUpgrade = {
       c = cur.neg().add(170).add(distantReplicatedGalaxyStart.pow(2).times(logDistantScaling).div(2)).sub(distantReplicatedGalaxyStart.times(4.5).times(logDistantScaling));
       if (decimalQuadraticSolution(a, b, c).floor().lte(remoteReplicatedGalaxyStart)) {
         // eslint-disable-next-line consistent-return
-        return decimalQuadraticSolution(a, b, c).floor();
+        return decimalQuadraticSolution(a, b, c).floor().add(1);
       }
       a = logRemoteScaling.div(3);
 
@@ -499,7 +499,7 @@ export const ReplicantiUpgrade = {
         .sub(logRemoteScaling.mul(remoteReplicatedGalaxyStart).div(6));
 
       // eslint-disable-next-line consistent-return
-      return decimalCubicSolution(a, b, c, d, false).floor();
+      return decimalCubicSolution(a, b, c, d, false).floor().add(1);
     }
 
     autobuyerTick() {
@@ -507,8 +507,10 @@ export const ReplicantiUpgrade = {
       const bulk = this.bulkPurchaseCalc();
       if (!bulk || bulk.floor().sub(this.value).lte(0)) return;
       Currency.infinityPoints.subtract(this.baseCostAfterCount(this.value).sub(1));
-      this.value = this.value.add(bulk);
+      this.value = this.value.add(bulk.sub(this.value));
       this.baseCost = this.baseCostAfterCount(this.value);
+      // The code is weird and if we add one the whole thing goes out to like double + 1, for no reason, so
+      // we will instead just do 1 purchase call instead, which can also prevent us overbuying by 1
     }
 
     baseCostAfterCount(count) {

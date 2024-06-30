@@ -464,8 +464,8 @@ window.player = {
         types: Object.keys(getGlyphTypes())
           .filter(t => GlyphInfo.alchemyGlyphTypes.includes(t.id))
           .mapToObject(t => t.id, t => ({
-            rarity: 0,
-            score: 0,
+            rarity: new Decimal(),
+            score: new Decimal(),
             effectCount: 0,
             specifiedMask: [],
             effectScores: Array.repeat(0, t.effects.length),

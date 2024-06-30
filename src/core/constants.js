@@ -260,96 +260,10 @@ window.RECENT_PRESTIGE_RESOURCE = {
 // Used as drag and drop data type
 window.GLYPH_MIME_TYPE = "text/x-ivark-glyph";
 
-// These need to be in descending order for searching over them to work trivially, and all need to be hex codes
-// in order for reality glyph color parsing to work properly in the cosmetic handler
-window.GlyphRarities = [
-  {
-    minStrength: 3.5,
-    name: "Celestial",
-    darkColor: "#3d3dec",
-    lightColor: "#9696ff",
-    darkHighContrast: "#ffff00",
-    lightHighContrast: "#c0c000"
-  }, {
-    minStrength: 3.25,
-    name: "Transcendent",
-    darkColor: "#03ffec",
-    lightColor: "#00c3c3",
-    darkHighContrast: "#00ffff",
-    lightHighContrast: "#00c0c0"
-  }, {
-    minStrength: 3,
-    name: "Mythical",
-    darkColor: "#d50000",
-    lightColor: "#d50000",
-    darkHighContrast: "#c00000",
-    lightHighContrast: "#ff0000"
-  }, {
-    minStrength: 2.75,
-    name: "Legendary",
-    darkColor: "#ff9800",
-    lightColor: "#d68100",
-    darkHighContrast: "#ff8000",
-    lightHighContrast: "#ff8000"
-  }, {
-    minStrength: 2.5,
-    name: "Epic",
-    darkColor: "#9c27b0",
-    lightColor: "#9c27b0",
-    darkHighContrast: "#ff00ff",
-    lightHighContrast: "#ff00ff"
-  }, {
-    minStrength: 2,
-    name: "Rare",
-    darkColor: "#5096f3",
-    lightColor: "#0d40ff",
-    darkHighContrast: "#6060ff",
-    lightHighContrast: "#0000ff"
-  }, {
-    minStrength: 1.5,
-    name: "Uncommon",
-    darkColor: "#43a047",
-    lightColor: "#1e8622",
-    darkHighContrast: "#00ff00",
-    lightHighContrast: "#00b000"
-  }, {
-    minStrength: 1,
-    name: "Common",
-    darkColor: "#ffffff",
-    lightColor: "#000000",
-    darkHighContrast: "#ffffff",
-    lightHighContrast: "#000000"
-  },
-];
-
 window.GLYPH_BG_SETTING = {
   AUTO: 0,
   LIGHT: 1,
   DARK: 2,
-};
-
-window.GLYPH_SYMBOLS = {
-  power: "Ω",
-  infinity: "∞",
-  replication: "Ξ",
-  time: "Δ",
-  dilation: "Ψ",
-  effarig: "Ϙ",
-  reality: "Ϟ",
-  cursed: "⸸",
-  companion: "♥"
-};
-
-window.CANCER_GLYPH_SYMBOLS = {
-  power: "⚡",
-  infinity: "8",
-  replication: "⚤",
-  time: "🕟",
-  dilation: "☎",
-  effarig: "🦒",
-  reality: "⛧",
-  cursed: "☠",
-  companion: "³"
 };
 
 window.ALTERATION_TYPE = {
@@ -369,14 +283,6 @@ window.GLYPH_SIDEBAR_MODE = {
   FILTER_SETTINGS: 1,
   SAVED_SETS: 2,
   SACRIFICE_TYPE: 3,
-};
-
-window.AUTO_SORT_MODE = {
-  NONE: 0,
-  LEVEL: 1,
-  POWER: 2,
-  EFFECT: 3,
-  SCORE: 4
 };
 
 window.AUTO_GLYPH_SCORE = {

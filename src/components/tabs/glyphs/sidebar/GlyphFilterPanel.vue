@@ -19,7 +19,7 @@ export default {
       advancedType: GlyphInfo.glyphTypes[0],
       alchemyUnlocked: false,
       // Note: there are two units at play: strength is from 1..3.5+; rarity is 0..100
-      rarityThresholds: GlyphInfo.glyphTypes.mapToObject(e => e, () => 0),
+      rarityThresholds: GlyphInfo.glyphTypes.mapToObject(e => e, () => new Decimal()),
       autoRealityForFilter: player.options.autoRealityForFilter,
     };
   },
@@ -28,7 +28,7 @@ export default {
       return AUTO_GLYPH_SCORE;
     },
     glyphTypes() {
-      return GlyphInfo.glyphTypes.filter(e => GlyphInfo[e.id].generationRequirement && GlyphInfo[e.id].isGenerated);
+      return GlyphInfo.glyphTypes.filter(e => GlyphInfo[e].generationRequirement !== false && GlyphInfo[e].isGenerated);
     },
     raritySliderProps() {
       return {
@@ -73,7 +73,7 @@ export default {
       this.effectCount = player.reality.glyphs.filter.simple;
       this.mode = AutoGlyphProcessor.scoreMode;
       for (const type of generatedTypes) {
-        this.rarityThresholds[type] = AutoGlyphProcessor.types[type].rarity;
+        this.rarityThresholds[type].copyFrom(AutoGlyphProcessor.types[type].rarity);
       }
 
       this.alchemyUnlocked = Ra.unlocks.unlockGlyphAlchemy.canBeApplied;
@@ -123,7 +123,7 @@ export default {
       player.reality.hasCheckedFilter = false;
     },
     setRarityThreshold(id, value) {
-      AutoGlyphProcessor.types[id].rarity = value;
+      AutoGlyphProcessor.types[id].rarity = new Decimal(value);
     },
     setEffectCount(event) {
       const inputValue = event.target.value;
@@ -153,7 +153,7 @@ export default {
     // Clicking bumps the rarity over to adjacent thresholds between rarities; normal clicks move to the higher one
     // and shift-clicks move to the lower one. There is a loop-around that makes 100 go to 0 next and vice versa
     bumpRarity(type) {
-      const rarityThresholds = GlyphRarities.map(r => strengthToRarity(r.minStrength));
+      const rarityThresholds = GlyphInfo.rarities.map(r => strengthToRarity(r.minStrength));
       let newRarity;
       if (ui.view.shiftDown) {
         const lower = rarityThresholds.filter(s => s.lt(this.rarityThresholds[type]));
@@ -279,7 +279,7 @@ export default {
       >
         <span @click="bumpRarity(type.id)">
           <GlyphComponent
-            :glyph="{type: type.id, strength: strengthThreshold(type.id) }"
+            :glyph="{type: type, strength: strengthThreshold(type.id) }"
             v-bind="glyphIconProps"
             class="o-clickable"
           />
@@ -288,7 +288,7 @@ export default {
           v-bind="raritySliderProps"
           :value="rarityThresholds[type.id]"
           :width="'100%'"
-          @input="setRarityThreshold(type.id, $event)"
+          @input="setRarityThreshold(type, $event)"
         />
       </div>
     </div>

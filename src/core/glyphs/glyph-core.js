@@ -639,6 +639,13 @@ export const Glyphs = {
   },
   processSortingAfterReality() {
     if (VUnlocks.autoAutoClean.canBeApplied && player.reality.autoAutoClean) this.autoClean();
+    const AUTO_SORT_MODE = {
+      NONE: 0,
+      LEVEL: 1,
+      POWER: 2,
+      EFFECT: 3,
+      SCORE: 4
+    };
     switch (player.reality.autoSort) {
       case AUTO_SORT_MODE.NONE:
         break;
@@ -847,7 +854,7 @@ export function calculateGlyph(glyph) {
 }
 
 export function getRarity(x) {
-  return GlyphRarities.find(e => Decimal.gte(x, e.minStrength));
+  return GlyphInfo.rarities.find(e => Decimal.gte(x, e.minStrength));
 }
 
 export function getAdjustedGlyphLevel(glyph, realityGlyphBoost = Glyphs.levelBoost, ignoreCelestialEffects = false) {

@@ -332,12 +332,12 @@ export function getGlyphLevelInputs() {
   const instabilitySoftcap = (level, begin, rate) => {
     if (level.lt(begin)) return level;
     const excess = (level.sub(begin)).div(rate);
-    return begin.plus(rate.div(2).times(Decimal.sqrt(new Decimal(1).add(excess.times(4))).sub(1)));
+    return begin.plus(rate.div(2).times(Decimal.sqrt(excess.times(4).add(1)).sub(1)));
   };
   scaledLevel = instabilitySoftcap(scaledLevel, staticFactors.instability, new Decimal(500));
   scaledLevel = instabilitySoftcap(scaledLevel, staticFactors.hyperInstability, new Decimal(400));
 
-  const scalePenalty = scaledLevel.gt(0) ? baseLevel.div(scaledLevel) : 1;
+  const scalePenalty = scaledLevel.gt(0) ? baseLevel.div(scaledLevel) : DC.D1;
   const incAfterInstability = staticFactors.achievements.add(staticFactors.realityUpgrades);
   baseLevel = baseLevel.add(incAfterInstability);
   scaledLevel = scaledLevel.add(incAfterInstability);

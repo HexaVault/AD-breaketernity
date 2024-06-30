@@ -48,36 +48,40 @@ export function toggleAllTimeDims() {
   }
 }
 
-function calcHighestPurchaseableTD(tier, currency) {
-  let logC = currency.log10();
-  let logBase = TimeDimension(tier)._baseCost.log10();
-  const logMult = Decimal.log10(TimeDimension(tier)._costMultiplier);
+export function calcHighestPurchaseableTD(tier, currency) {
+  const logC = currency.log10();
+  const logBase = TimeDimension(tier)._baseCost.log10();
+  let logMult = Decimal.log10(TimeDimension(tier)._costMultiplier);
+
   if (tier > 4 && currency.lt(DC.E6000)) {
     return Decimal.max(0, logC.sub(logBase).div(logMult)).floor();
   }
+
   if (currency.lt(DC.NUMMAX)) {
     return Decimal.max(0, logC.sub(logBase).div(logMult)).floor();
   }
+
   if (currency.lt(DC.E1300)) {
-    const preInc = Decimal.max(0, DC.NUMMAX.log10().sub(logBase).div(logMult)).floor();
-    logBase = logBase.add(Math.log10(1.5));
-    const postInc = Decimal.max(0, logC.sub(logBase).div(logMult)).floor();
-    return Decimal.max(preInc, postInc);
+    const preInc = Decimal.log10(DC.NUMMAX).sub(logBase).div(logMult).floor();
+    logMult = TimeDimension(tier)._costMultiplier.mul(1.5).log10();
+    const decCur = logC.sub(preInc.mul(1.5));
+    const postInc = decCur.div(logMult).clampMin(0).floor();
+    return Decimal.add(preInc, postInc);
   }
+
   if (currency.lt(DC.E6000)) {
-    logBase = logBase.add(Math.log10(1.5));
-    const preInc = Decimal.max(0, DC.E1300.log10().sub(logBase).div(logMult)).floor();
-    logBase = logBase.add(Math.log10(2.2) - Math.log10(1.5));
-    const postInc = Decimal.max(0, logC.sub(logBase).div(logMult)).floor();
-    return Decimal.max(preInc, postInc);
+    logMult = TimeDimension(tier)._costMultiplier.mul(1.5).log10();
+    const preInc = Decimal.log10(DC.E1300).sub(logBase).div(logMult).floor();
+    logMult = TimeDimension(tier)._costMultiplier.mul(2.2).log10();
+    const decCur = logC.sub(preInc.mul(2.2));
+    const postInc = decCur.div(logMult).clampMin(0).floor();
+    return Decimal.add(preInc, postInc);
   }
-  if (tier <= 4) {
-    logBase = logBase.add(Math.log10(2.2));
-  }
-  const preInc = Decimal.max(0, DC.E6000.log10().sub(logBase).div(logMult)).floor();
-  logC = logC.sub(6000);
-  const postInc = Decimal.max(0, logC.sub(logBase).div(logMult).div(4)).floor();
-  return postInc.add(preInc);
+
+  logMult = TimeDimension(tier)._costMultiplier.mul(tier <= 4 ? 2.2 : 1).log10();
+  const preInc = Decimal.log10(DC.E6000).sub(logBase).div(logMult);
+  const postInc = Decimal.log10(logC).sub(logBase).div(logMult).div(4).clampMin(0);
+  return postInc.add(preInc).floor();
 }
 
 export function buyMaxTimeDimension(tier, portionToSpend = 1, isMaxAll = false) {

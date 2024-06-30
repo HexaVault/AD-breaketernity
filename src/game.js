@@ -847,12 +847,12 @@ function updateTachyonGalaxies() {
   const thresholdMult = getTachyonGalaxyMult();
   player.dilation.baseTachyonGalaxies = Decimal.max(player.dilation.baseTachyonGalaxies,
     DC.D1.plus(Decimal.floor(Decimal.log(Currency.dilatedTime.value.dividedBy(1000), thresholdMult))));
-  player.dilation.nextThreshold = DC.E3.times(new Decimal(thresholdMult)
+  player.dilation.nextThreshold = DC.E3.times(thresholdMult
     .pow(player.dilation.baseTachyonGalaxies));
   player.dilation.totalTachyonGalaxies =
-    Decimal.min(player.dilation.baseTachyonGalaxies.times(tachyonGalaxyMult), tachyonGalaxyThreshold).add(Decimal.max(
-      player.dilation.baseTachyonGalaxies.times(tachyonGalaxyMult).sub(tachyonGalaxyThreshold), 0))
-      .div(tachyonGalaxyMult);
+    Decimal.min(player.dilation.baseTachyonGalaxies.times(tachyonGalaxyMult), tachyonGalaxyThreshold)
+      .add(Decimal.max(player.dilation.baseTachyonGalaxies.times(tachyonGalaxyMult).sub(tachyonGalaxyThreshold), 0)
+        .div(tachyonGalaxyMult));
 
   player.dilation.totalTachyonGalaxies = player.dilation.totalTachyonGalaxies
     .times(DilationUpgrade.galaxyMultiplier.effectValue);

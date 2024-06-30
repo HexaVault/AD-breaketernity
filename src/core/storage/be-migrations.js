@@ -147,6 +147,10 @@ export function beMigration(player) {
   player.reality.achTimer = D(player.reality.achTimer);
   player.reality.glyphs.active = player.reality.glyphs.active.map(n => updateGlyphs(n));
   player.reality.glyphs.inventory = player.reality.glyphs.inventory.map(n => updateGlyphs(n));
+  for (const item in player.reality.glyphs.filter.types) {
+    player.reality.glyphs.filter.types[item].rarity = D(player.reality.glyphs.filter.types[item].rarity);
+    player.reality.glyphs.filter.types[item].score = D(player.reality.glyphs.filter.types[item].score);
+  }
   if (player.reality.glyphs.sac !== undefined) {
     player.reality.glyphs.sac.dilation = D(player.reality.glyphs.sac.dilation);
     player.reality.glyphs.sac.effarig = D(player.reality.glyphs.sac.effarig);

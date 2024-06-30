@@ -251,9 +251,9 @@ export const glyphEffects = {
     formatEffect: x => format(x, 3, 3),
     combine: effects => {
       let sum = effects.reduce(Decimal.sumReducer, DC.D0);
-      if (effects.length > 2) sum = sum.times(6 / (effects.length + 4));
+      if (effects.length > 2) sum = sum.times(6).div(effects.length + 4);
       return sum.gt(0.1)
-        ? { value: (sum.sub(0.1)).div(5).add(1), capped: true }
+        ? { value: (sum.sub(0.1)).div(5).add(0.1), capped: true }
         : { value: sum, capped: effects.length > 2 };
     },
     enabledInDoomed: true,

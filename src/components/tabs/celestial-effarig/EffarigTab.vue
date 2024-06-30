@@ -39,7 +39,7 @@ export default {
       EffarigUnlock.eternity,
       EffarigUnlock.reality
     ],
-    symbol: () => GLYPH_SYMBOLS.effarig,
+    symbol: () => GlyphInfo.effarig.regularGlyphSymbol,
     runButtonOuterClass() {
       return {
         "l-effarig-run-button": true,
@@ -71,7 +71,7 @@ export default {
     update() {
       this.relicShards.copyFrom(Currency.relicShards.value);
       this.shardRarityBoost.copyFrom(Effarig.maxRarityBoost.div(100));
-      this.shardPower = Ra.unlocks.maxGlyphRarityAndShardSacrificeBoost.effectOrDefault(1);
+      this.shardPower = Ra.unlocks.maxGlyphRarityAndShardSacrificeBoost.effectOrDefault(new Decimal(1));
       this.shardsGained.copyFrom(Effarig.shardsGained);
       this.currentShardsRate = (this.shardsGained.div(Time.thisRealityRealTime.totalMinutes));
       this.amplification.copyFrom(simulatedRealityCount(false));
@@ -118,7 +118,7 @@ export default {
         <div class="c-effarig-relic-description">
           You will gain {{ quantify("Relic Shard", shardsGained, 2) }} next Reality
           ({{ format(currentShardsRate, 2) }}/min).
-          <span v-if="amplification !== 0">
+          <span v-if="amplification.neq(0)">
             <br>
             Due to amplification of your current Reality,
             <br>

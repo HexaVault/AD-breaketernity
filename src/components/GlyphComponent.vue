@@ -413,9 +413,9 @@ export default {
     // other effects count up to 3 (or 6 for effarig). Used to add dots in unique positions on glyphs to show effects.
     glyphEffects() {
       // Get intIDs, then subtract smallest in next code
-      if (!this.effects) return {};
-      const subVal = Object.values(GlyphInfo[this.glyph.type].effects.mapToObject(x => x.intID, x => x.intID)).nMin();
-      const glyphEffects = GlyphInfo[this.glyph.type].effects.filter(e => this.glyph.effects.includes(e.id));
+      if (!this.glyph.effects) return {};
+      const subVal = Object.values(GlyphInfo[this.glyph.type].effects().mapToObject(x => x.intID, x => x.intID)).nMin();
+      const glyphEffects = GlyphInfo[this.glyph.type].effects().filter(e => this.glyph.effects.includes(e.id));
       // eslint-disable-next-line consistent-return
       return glyphEffects.mapToObject(x => x.intID - subVal, x => x.id);
     },
@@ -665,7 +665,7 @@ export default {
     effectIconPos(id) {
       // Place dots clockwise starting from the bottom left
       // eslint-disable-next-line max-len
-      const numOfEffects = Object.keys(GlyphInfo[this.glyph.type].effects.mapToObject(x => x.intID, x => x.intID)).length;
+      const numOfEffects = GlyphInfo[this.glyph.type].effects().length;
       const angle = (Math.PI / (16 / numOfEffects)) * (id + (4 / numOfEffects));
       const scale = 0.28 * this.size.replace("rem", "");
       const dx = -scale * Math.sin(angle);
@@ -691,6 +691,7 @@ export default {
       let borderAttrs;
       if (this.isCursedGlyph) borderAttrs = rarityBorderStyles.cursed;
       else if (this.isCompanionGlyph) borderAttrs = rarityBorderStyles.companion;
+      else if (rarityBorderStyles[getRarity(this.glyph.strength).name.toLowerCase()] === undefined) return null;
       else borderAttrs = rarityBorderStyles[getRarity(this.glyph.strength).name.toLowerCase()];
       const lines = borderAttrs.map(attr => generateGradient(attr, this.borderColor, this.glyph, this.circular));
 

@@ -484,6 +484,10 @@ export const GameStorage = {
         player.records.bestReality.laitelaSet = player.records.bestReality.laitelaSet?.map(n => fixGlyph(n));
         player.records.bestReality.speedSet = player.records.bestReality.speedSet?.map(n => fixGlyph(n));
       }
+      for (const item in player.reality.glyphs.filter.types) {
+        player.reality.glyphs.filter.types[item].rarity = new Decimal(player.reality.glyphs.filter.types[item].rarity);
+        player.reality.glyphs.filter.types[item].score = new Decimal(player.reality.glyphs.filter.types[item].score);
+      }
 
       player = migrations.patchPostReality(player);
     }
