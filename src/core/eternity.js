@@ -316,8 +316,8 @@ class EPMultiplierState extends GameMechanicState {
 
   // eslint-disable-next-line consistent-return
   costInv() {
-    let tempVal = new Decimal(0);
-    let bulk = new Decimal(0);
+    let tempVal = DC.D0;
+    let bulk = DC.D1;
     let cur = Currency.eternityPoints.value.max(1);
     if (cur.gt(this.costIncreaseThresholds[3])) {
       cur = Decimal.log(cur.div(500), 1e3);

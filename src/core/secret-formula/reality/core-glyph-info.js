@@ -7,6 +7,8 @@
 // basicGlyphTypes is used throughout the code for taking basic glyphs.
 // alchemyGlyphTypes is used throughout the code for taking all the glyphs that can be refined (alchemy)
 // sacrificeGlyphTypes is used throughout the code for taking all the glyphs that can be sacrificed.
+// rarities are just the rarities. They must be descending in rarity, and must use hex codes
+// GLYPH INFO
 // id is just the glyph type - its used in a couple places, mainly glyph cosmetics.
 // Adjective is whats used for GlyphSetName.vue - If undefined, will default to ""
 // Noun is also used by GlyphSetName.vue - The word at the end of the set name (the "Infinity" in "Boundless Infinity")
@@ -70,6 +72,66 @@ export const GlyphInfo = {
     "dilation",
     "effarig",
     "reality"
+  ],
+
+  rarities: [
+    {
+      minStrength: 3.5,
+      name: "Celestial",
+      darkColor: "#3d3dec",
+      lightColor: "#9696ff",
+      darkHighContrast: "#ffff00",
+      lightHighContrast: "#c0c000"
+    }, {
+      minStrength: 3.25,
+      name: "Transcendent",
+      darkColor: "#03ffec",
+      lightColor: "#00c3c3",
+      darkHighContrast: "#00ffff",
+      lightHighContrast: "#00c0c0"
+    }, {
+      minStrength: 3,
+      name: "Mythical",
+      darkColor: "#d50000",
+      lightColor: "#d50000",
+      darkHighContrast: "#c00000",
+      lightHighContrast: "#ff0000"
+    }, {
+      minStrength: 2.75,
+      name: "Legendary",
+      darkColor: "#ff9800",
+      lightColor: "#d68100",
+      darkHighContrast: "#ff8000",
+      lightHighContrast: "#ff8000"
+    }, {
+      minStrength: 2.5,
+      name: "Epic",
+      darkColor: "#9c27b0",
+      lightColor: "#9c27b0",
+      darkHighContrast: "#ff00ff",
+      lightHighContrast: "#ff00ff"
+    }, {
+      minStrength: 2,
+      name: "Rare",
+      darkColor: "#5096f3",
+      lightColor: "#0d40ff",
+      darkHighContrast: "#6060ff",
+      lightHighContrast: "#0000ff"
+    }, {
+      minStrength: 1.5,
+      name: "Uncommon",
+      darkColor: "#43a047",
+      lightColor: "#1e8622",
+      darkHighContrast: "#00ff00",
+      lightHighContrast: "#00b000"
+    }, {
+      minStrength: 1,
+      name: "Common",
+      darkColor: "#ffffff",
+      lightColor: "#000000",
+      darkHighContrast: "#ffffff",
+      lightHighContrast: "#000000"
+    }
   ],
 
   cursed: {

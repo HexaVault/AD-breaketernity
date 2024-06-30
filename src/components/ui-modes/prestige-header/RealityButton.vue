@@ -13,11 +13,11 @@ export default {
       glyphLevel: new Decimal(),
       nextGlyphPercent: 0,
       nextMachineEP: new Decimal(),
-      shardsGained: 0,
-      currentShardsRate: 0,
-      bestShardRate: 0,
-      bestShardRateVal: 0,
-      ppGained: 0,
+      shardsGained: new Decimal(),
+      currentShardsRate: new Decimal(),
+      bestShardRate: new Decimal(),
+      bestShardRateVal: new Decimal(),
+      ppGained: new Decimal(),
       celestialRunText: ["", "", "", "", ""]
     };
   },
@@ -45,8 +45,8 @@ export default {
       return "";
     },
     formatGlyphLevel() {
-      if (this.glyphLevel.gte(1e4)) return `Glyph level: ${format(this.glyphLevel)}`;
-      return `Glyph level: ${format(this.glyphLevel)} (${this.nextGlyphPercent} to next)`;
+      if (this.glyphLevel.gte(1e4)) return `Glyph level: ${formatInt(this.glyphLevel)}`;
+      return `Glyph level: ${formatInt(this.glyphLevel)} (${this.nextGlyphPercent} to next)`;
     },
     showShardsRate() {
       return this.currentShardsRate;
@@ -75,7 +75,7 @@ export default {
       this.canReality = isRealityAvailable();
       this.showSpecialEffect = this.hasSpecialReward();
       if (!this.canReality) {
-        this.shardsGained = 0;
+        this.shardsGained = new Decimal();
         return;
       }
       function EPforRM(rm) {
@@ -94,15 +94,15 @@ export default {
         .clampMax(MachineHandler.hardcapRM);
       this.newIMCap = MachineHandler.projectedIMCap;
       this.machinesGained = this.projectedRM.clampMax(MachineHandler.distanceToRMCap);
-      this.realityTime = Time.thisRealityRealTime.totalMinutes;
-      this.glyphLevel = gainedGlyphLevel().actualLevel;
+      this.realityTime.copyFrom(Time.thisRealityRealTime.totalMinutes);
+      this.glyphLevel.copyFrom(gainedGlyphLevel().actualLevel);
       this.nextGlyphPercent = this.percentToNextGlyphLevelText();
       this.nextMachineEP.copyFrom(EPforRM(this.machinesGained.plus(1)));
-      this.ppGained = multiplier;
-      this.shardsGained = Effarig.shardsGained.mul(multiplier);
-      this.currentShardsRate = this.shardsGained.div(Time.thisRealityRealTime.totalMinutes);
-      this.bestShardRate = multiplier.mul(player.records.thisReality.bestRSmin);
-      this.bestShardRateVal = multiplier.mul(player.records.thisReality.bestRSminVal);
+      this.ppGained.copyFrom(multiplier);
+      this.shardsGained.copyFrom(Effarig.shardsGained.mul(multiplier));
+      this.currentShardsRate.copyFrom(this.shardsGained.div(Time.thisRealityRealTime.totalMinutes));
+      this.bestShardRate.copyFrom(multiplier.mul(player.records.thisReality.bestRSmin));
+      this.bestShardRateVal.copyFrom(multiplier.mul(player.records.thisReality.bestRSminVal));
 
       const teresaReward = this.formatScalingMultiplierText(
         "Glyph Sacrifice",

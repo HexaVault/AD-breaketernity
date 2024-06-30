@@ -61,19 +61,11 @@ export const Effarig = {
         return new Decimal(2000);
     }
   },
-  get glyphEffectAmount() {
-    const genEffectBitmask = Glyphs.activeWithoutCompanion
-      .filter(g => generatedTypes.includes(g.type))
-      .reduce((prev, curr) => prev | curr.effects, 0);
-    const nongenEffectBitmask = Glyphs.activeWithoutCompanion
-      .filter(g => !generatedTypes.includes(g.type))
-      .reduce((prev, curr) => prev | curr.effects, 0);
-    return countValuesFromBitmask(genEffectBitmask) + countValuesFromBitmask(nongenEffectBitmask);
-  },
+
   get shardsGained() {
     if (!TeresaUnlocks.effarig.canBeApplied) return DC.D0;
-    return Decimal.floor(Decimal.pow(Currency.eternityPoints.value.add(1).log10().div(7500), this.glyphEffectAmount))
-      .times(AlchemyResource.effarig.effectValue);
+    return Decimal.floor(Decimal.pow(Currency.eternityPoints.value.add(1).log10().div(7500),
+      getActiveGlyphEffects().length)).times(AlchemyResource.effarig.effectValue);
   },
   get maxRarityBoost() {
     return Decimal.log10(Decimal.log10(Currency.relicShards.value.add(10))).times(5);

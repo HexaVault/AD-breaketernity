@@ -20,7 +20,7 @@ export default {
       return JSON.stringify(this.currSettings) !== JSON.stringify(this.newSettings);
     },
     symbol() {
-      return GLYPH_SYMBOLS[this.type];
+      return GlyphInfo[this.type].regularGlyphSymbol;
     },
     capitalized() {
       return `${this.type.charAt(0).toUpperCase()}${this.type.substring(1)}`;

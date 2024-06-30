@@ -97,10 +97,12 @@ export class Galaxy {
     return Decimal.max(pur, player.galaxies);
     */
 
-    if (Galaxy.remoteStart.gt(1e6) || Galaxy.requirementAt(DC.E6).amount.lt(currency)) {
-      return Decimal.log(currency.div(Galaxy.requirementAt(Galaxy.remoteStart.max(1e6))), 1.008).add(1e6);
+    if (Galaxy.requirementAt(Decimal.max(1e6, Galaxy.remoteStart)).amount.lt(currency)) {
+      return Decimal.log(currency.div(Galaxy.requirementAt(Decimal.max(1e6, Galaxy.remoteStart))), 1.008).add(1e6);
     }
     // Ignore BBBS' warning, even though its theoretically quite dangerous
+    // We can do this because at most, 1e6 galaxies of dimension would be put into this
+    // So at most the output is 1e6, less than its 1e15 max, and for higher we use the above equation
     return new Decimal(bulkBuyBinarySearch(new Decimal(currency), {
       costFunction: x => this.requirementAt(new Decimal(x)).amount,
       cumulative: false,
@@ -108,15 +110,19 @@ export class Galaxy {
   }
 
   static requirementAt(galaxies) {
-    let amount = Galaxy.baseCost.add((galaxies.times(Galaxy.costMult)));
+    // Beyond 1e6 (or further if remote is beyond that) the other effects are so small in changes that it doesn't matter
+    // This does technically make it slightly weaker than vanilla, but its so minor you would rarely ever notice, and it
+    // allows the inverse to be correct beyond 1e6 without using any really annoying math methods that i dont understand
+    const equivGal = Decimal.min(Decimal.max(1e6, Galaxy.remoteStart), galaxies);
+    let amount = Galaxy.baseCost.add((equivGal.times(Galaxy.costMult)));
 
     const type = Galaxy.typeAt(galaxies);
 
     if (type === GALAXY_TYPE.DISTANT && EternityChallenge(5).isRunning) {
-      amount = amount.add(Decimal.pow(galaxies, 2).add(galaxies));
+      amount = amount.add(Decimal.pow(equivGal, 2).add(equivGal));
     } else if (type === GALAXY_TYPE.DISTANT || type === GALAXY_TYPE.REMOTE) {
       const galaxyCostScalingStart = this.costScalingStart;
-      const galaxiesBeforeDistant = Decimal.clampMin(galaxies.sub(galaxyCostScalingStart.add(1)), 0);
+      const galaxiesBeforeDistant = Decimal.clampMin(equivGal.sub(galaxyCostScalingStart).add(1), 0);
       amount = amount.add(Decimal.pow(galaxiesBeforeDistant, 2).add(galaxiesBeforeDistant));
     }
 
@@ -233,6 +239,7 @@ function maxBuyGalaxies(limit = DC.BEMAX) {
   const req = Galaxy.requirement;
   if (!req.isSatisfied) return false;
   const dim = AntimatterDimension(req.tier);
+  if (Galaxy.buyableGalaxies(Decimal.round(dim.totalAmount)).lte(player.galaxies)) return false;
   const newGalaxies = Decimal.min(
     Galaxy.buyableGalaxies(Decimal.round(dim.totalAmount)), limit);
   if (Notations.current === Notation.emoji) {

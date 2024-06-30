@@ -223,7 +223,7 @@ Array.prototype.max = function() {
  */
 Array.prototype.min = function() {
   if (this.length === 0) return DC.D0;
-  return this.reduce((a, b) => Decimal.min(a, b), 0);
+  return this.reduce((a, b) => Decimal.min(a, b), DC.BEMAX);
 };
 
 /**

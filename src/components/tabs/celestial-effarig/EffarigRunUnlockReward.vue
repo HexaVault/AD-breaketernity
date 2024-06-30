@@ -16,7 +16,7 @@ export default {
     descriptionLines() {
       return this.unlock.config.description.split("\n").map(x => x.trim());
     },
-    symbol: () => GLYPH_SYMBOLS.effarig,
+    symbol: () => GlyphInfo.effarig.regularGlyphSymbol,
     isDoomed: () => Pelle.isDoomed,
   },
   methods: {
