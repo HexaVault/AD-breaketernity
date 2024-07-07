@@ -64,16 +64,21 @@ export default {
   },
   methods: {
     update() {
-      this.isActive = false; // AutoGlyphProcessor.types[this.glyphType].specifiedMask.includes(this.effect.id);
+      this.isActive = AutoGlyphProcessor.types[this.glyphType].specifiedMask.includes(this.effect.id);
       this.effarigSettings = {
-        RM: false, // AutoGlyphProcessor.types[this.glyphType].specifiedMask.includes(this.effect.id),
-        glyph: false// AutoGlyphProcessor.types[this.glyphType].specifiedMask.includes(this.effect.id)
+        RM: AutoGlyphProcessor.types.effarig.specifiedMask.includes("effarigrm"),
+        glyph: AutoGlyphProcessor.types.effarig.specifiedMask.includes("effarigglyph")
       };
       this.noExclude = Ra.unlocks.glyphEffectCount.canBeApplied;
     },
     toggleSelection() {
-      AutoGlyphProcessor.types[this.glyphType].specifiedMask =
-        AutoGlyphProcessor.types[this.glyphType].specifiedMask.includes(this.effect.id) ? 1 : 0;
+      if (AutoGlyphProcessor.types[this.glyphType].specifiedMask.includes(this.effect.id)) {
+        AutoGlyphProcessor.types[this.glyphType].specifiedMask =
+        // Lazy workaround to remove only the glyph effect id and nothing else
+        AutoGlyphProcessor.types[this.glyphType].specifiedMask.filter(e => e !== this.effect.id);
+      } else {
+        AutoGlyphProcessor.types[this.glyphType].specifiedMask.push(this.effect.id);
+      }
     },
     setEffectCount(event) {
       const inputValue = event.target.value;

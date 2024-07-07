@@ -35,6 +35,7 @@ function raFix(player) {
   return array;
 }
 
+// eslint-disable-next-line complexity
 export function beMigration(player) {
   player.auto.annihilation.multiplier = D(player.auto.annihilation.multiplier);
   player.auto.dimBoost.galaxies = D(player.auto.dimBoost.galaxies);
@@ -149,7 +150,19 @@ export function beMigration(player) {
   player.reality.glyphs.inventory = player.reality.glyphs.inventory.map(n => updateGlyphs(n));
   for (const item in player.reality.glyphs.filter.types) {
     player.reality.glyphs.filter.types[item].rarity = D(player.reality.glyphs.filter.types[item].rarity);
-    player.reality.glyphs.filter.types[item].score = D(player.reality.glyphs.filter.types[item].score);
+    // Eplayer.reality.glyphs.filter.types[item].score = D(player.reality.glyphs.filter.types[item].score);
+    player.reality.glyphs.filter.types[item].effectScores = {};
+    const effectList = [];
+    for (let i = 0; i < 30; i++) {
+      if ((player.reality.glyphs.filter.types[item].specifiedMask >> i) % 2 === 1) {
+      // eslint-disable-next-line no-loop-func, eqeqeq
+        effectList.push(GlyphEffects.all.filter(e => e.intID == i)[0].id);
+      }
+      if (i <= 26 && GlyphEffects.all[i].glyphTypes.includes(item)) {
+        player.reality.glyphs.filter.types[item].effectScores[GlyphEffects.all[i].id] = 0;
+      }
+      player.reality.glyphs.filter.types[item].specifiedMask = effectList;
+    }
   }
   if (player.reality.glyphs.sac !== undefined) {
     player.reality.glyphs.sac.dilation = D(player.reality.glyphs.sac.dilation);

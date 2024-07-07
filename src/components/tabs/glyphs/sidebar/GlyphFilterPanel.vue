@@ -20,6 +20,7 @@ export default {
       alchemyUnlocked: false,
       // Note: there are two units at play: strength is from 1..3.5+; rarity is 0..100
       rarityThresholds: GlyphInfo.glyphTypes.mapToObject(e => e, () => new Decimal()),
+      scaledRarityThresholds: GlyphInfo.glyphTypes.mapToObject(e => e, () => 0),
       autoRealityForFilter: player.options.autoRealityForFilter,
     };
   },
@@ -69,11 +70,19 @@ export default {
     }
   },
   methods: {
+    glyphInfoFromType(type) {
+      return GlyphInfo[type];
+    },
     update() {
       this.effectCount = player.reality.glyphs.filter.simple;
       this.mode = AutoGlyphProcessor.scoreMode;
       for (const type of generatedTypes) {
         this.rarityThresholds[type].copyFrom(AutoGlyphProcessor.types[type].rarity);
+      }
+
+      for (const type of generatedTypes) {
+        // The div here would be like the highest rarity you can get or whatever
+        this.scaledRarityThresholds[type] = AutoGlyphProcessor.types[type].rarity.toNumber();
       }
 
       this.alchemyUnlocked = Ra.unlocks.unlockGlyphAlchemy.canBeApplied;
@@ -153,6 +162,7 @@ export default {
     // Clicking bumps the rarity over to adjacent thresholds between rarities; normal clicks move to the higher one
     // and shift-clicks move to the lower one. There is a loop-around that makes 100 go to 0 next and vice versa
     bumpRarity(type) {
+      // eslint-disable-next-line no-param-reassign
       const rarityThresholds = GlyphInfo.rarities.map(r => strengthToRarity(r.minStrength));
       let newRarity;
       if (ui.view.shiftDown) {
@@ -274,19 +284,19 @@ export default {
       </span>
       <div
         v-for="type in glyphTypes"
-        :key="type.id"
+        :key="glyphInfoFromType(type).id"
         class="l-glyph-sacrifice-options__rarity-slider-div"
       >
-        <span @click="bumpRarity(type.id)">
+        <span @click="bumpRarity(glyphInfoFromType(type).id)">
           <GlyphComponent
-            :glyph="{type: type, strength: strengthThreshold(type.id) }"
+            :glyph="{type: type, strength: strengthThreshold(glyphInfoFromType(type).id) }"
             v-bind="glyphIconProps"
             class="o-clickable"
           />
         </span>
         <SliderComponent
           v-bind="raritySliderProps"
-          :value="rarityThresholds[type.id]"
+          :value="scaledRarityThresholds[glyphInfoFromType(type).id]"
           :width="'100%'"
           @input="setRarityThreshold(type, $event)"
         />
@@ -300,13 +310,13 @@ export default {
         Glyph Type:
         <span
           v-for="type in glyphTypes"
-          :key="type.id"
-          v-tooltip="type.id.capitalize()"
+          :key="glyphInfoFromType(type).id"
+          v-tooltip="glyphInfoFromType(type).id.capitalize()"
           class="l-glyph-sacrifice-options__advanced-type-select c-glyph-sacrifice-options__advanced-type-select"
-          :style="advancedTypeSelectStyle(type)"
-          @click="advancedType=type.id"
+          :style="advancedTypeSelectStyle(glyphInfoFromType(type))"
+          @click="advancedType=glyphInfoFromType(type).id"
         >
-          {{ getSymbol(type.id) }}
+          {{ getSymbol(glyphInfoFromType(type).id) }}
         </span>
       </div>
       <br>
@@ -320,16 +330,16 @@ export default {
         </span>
         <SliderComponent
           v-bind="raritySliderProps"
-          :value="rarityThresholds[advancedType]"
+          :value="scaledRarityThresholds[advancedType]"
           :width="'100%'"
           @input="setRarityThreshold(advancedType, $event)"
         />
       </div>
       <template v-for="type in glyphTypes">
         <AutoSacrificeEffectTab
-          v-show="type.id === advancedType"
-          :key="type.id"
-          :glyph-type="type.id"
+          v-show="glyphInfoFromType(type).id === advancedType"
+          :key="glyphInfoFromType(type).id"
+          :glyph-type="glyphInfoFromType(type).id"
         />
       </template>
     </div>
@@ -341,21 +351,21 @@ export default {
         Glyph Type:
         <span
           v-for="type in glyphTypes"
-          :key="type.id"
-          v-tooltip="type.id.capitalize()"
+          :key="glyphInfoFromType(type).id"
+          v-tooltip="glyphInfoFromType(type).id.capitalize()"
           class="l-glyph-sacrifice-options__advanced-type-select c-glyph-sacrifice-options__advanced-type-select"
-          :style="advancedTypeSelectStyle(type)"
-          @click="advancedType=type.id"
+          :style="advancedTypeSelectStyle(glyphInfoFromType(type))"
+          @click="advancedType=glyphInfoFromType(type).id"
         >
-          {{ getSymbol(type.id) }}
+          {{ getSymbol(glyphInfoFromType(type).id) }}
         </span>
       </div>
       <br>
       <template v-for="type in glyphTypes">
         <AutoSacrificeAdvancedTab
-          v-show="type.id === advancedType"
-          :key="type.id"
-          :glyph-type="type.id"
+          v-show="glyphInfoFromType(type).id === advancedType"
+          :key="glyphInfoFromType(type).id"
+          :glyph-type="glyphInfoFromType(type).id"
         />
       </template>
     </div>

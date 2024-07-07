@@ -1,48 +1,27 @@
 <script>
+import { GlyphInfo } from "../core/secret-formula/reality/core-glyph-info";
+
 const GLYPH_NAMES = {
-  companion: {
-    adjective: "Huggable",
-    noun: "Companion"
-  },
-  reality: {
-    adjective: "Real",
-    noun: "Reality"
-  },
   music: {
     adjective: { high: "Melodic", mid: "Chordal", low: "Tuned" },
     // This noun is only used in the case of a single companion reskinned as music (resulting in "Huggable Music");
     // otherwise the set's noun will always come from an actual glyph type instead of music
     noun: "Music"
   },
-  effarig: {
-    adjective: { both: "Meta", glyph: "Stable", rm: "Mechanical", none: "Fragmented" },
-    noun: { both: "Effarig", glyph: "Stability", rm: "Mechanism", none: "Fragmentation" }
-  },
-  cursed: {
-    adjective: { high: "Cursed", mid: "Hexed", low: "Jinxed" },
-    noun: "Curse"
-  },
-  power: {
-    adjective: { high: "Powerful", mid: "Mastered", low: "Potential" },
-    noun: "Power"
-  },
-  infinity: {
-    adjective: { high: "Infinite", mid: "Boundless", low: "Immense" },
-    noun: "Infinity"
-  },
-  replication: {
-    adjective: { high: "Replicated", mid: "Simulated", low: "Duplicated" },
-    noun: "Replication"
-  },
-  time: {
-    adjective: { high: "Temporal", mid: "Chronal", low: "Transient" },
-    noun: "Time"
-  },
-  dilation: {
-    adjective: { high: "Dilated", mid: "Attenuated", low: "Diluted" },
-    noun: "Dilation"
-  },
 };
+
+const glyphsObj = { ...GlyphInfo };
+for (const item in GlyphInfo) {
+  if (!GlyphInfo.glyphTypes.includes(item)) delete glyphsObj[item];
+}
+
+for (const item in glyphsObj) {
+  const oItem = GlyphInfo[item];
+  GLYPH_NAMES[oItem.id] = {
+    adjective: oItem.adjective ?? { high: "", mid: "", low: "" },
+    noun: oItem.noun ?? ""
+  };
+}
 
 export default {
   name: "GlyphSetName",
@@ -58,21 +37,19 @@ export default {
     }
   },
   data() {
+    const gtList = [{ type: "music", perc: 0, adjOrder: 3 }];
+    for (const item in glyphsObj) {
+      const oItem = GlyphInfo[item];
+      gtList.push({
+        type: oItem.id,
+        perc: 0,
+        adjOrder: oItem.adjNounImportance ?? 777
+      });
+    }
     return {
       isColored: true,
       // Adjectives are added in descending order of adjOrder (basic glyphs are handled together)
-      glyphTypeList: [
-        { type: "power", perc: 0, adjOrder: 1 },
-        { type: "infinity", perc: 0, adjOrder: 1 },
-        { type: "replication", perc: 0, adjOrder: 1 },
-        { type: "time", perc: 0, adjOrder: 1 },
-        { type: "dilation", perc: 0, adjOrder: 1 },
-        { type: "effarig", perc: 0, adjOrder: 2 },
-        { type: "music", perc: 0, adjOrder: 3 },
-        { type: "reality", perc: 0, adjOrder: 4 },
-        { type: "companion", perc: 0, adjOrder: 5 },
-        { type: "cursed", perc: 0, adjOrder: 6 },
-      ],
+      glyphTypeList: gtList,
       sortedGlyphs: [],
       slotCount: 0
     };
@@ -147,7 +124,8 @@ export default {
     // Check for single-type sets and give them a special name based on how much of the full equipped slots they take up
     singletonName() {
       if (this.sortedGlyphs[0].type === "effarig") return GLYPH_NAMES.effarig.noun[this.getEffarigProp()];
-      const singleGlyphTypes = ["reality", "companion"];
+      // eslint-disable-next-line max-len
+      const singleGlyphTypes = GlyphInfo.filter(e => GlyphInfo.glyphTypes.includes(e) && GlyphInfo[e].maxEquipped === 1);
       for (const key of singleGlyphTypes) {
         if (this.sortedGlyphs[0].type === key) return GLYPH_NAMES[key].noun;
       }
@@ -225,7 +203,12 @@ export default {
       const percentPerGlyph = this.slotCount ? 100 / this.slotCount : 0;
       if (name === "music") return this.glyphSet.filter(i => Glyphs.isMusicGlyph(i)).length * percentPerGlyph;
       // Take the amount of a type of glyph in the set, divide by the maximum number of glyphs, then * 100 to get %
-      return this.glyphSet.filter(i => i.type === name).length * percentPerGlyph;
+      // Also, if the max equipped is less than 6, multiply the perc accordingly. Yes we use stacked ??, but that's
+      // how it goes ig.
+      if (name === undefined) return 0
+      const eachSlotEquiv = name === "music" ? 1 : (GlyphInfo[name].maxEquipped ?? (this.slotCount ?? 1));
+      // eslint-disable-next-line max-len
+      return this.glyphSet.filter(i => i.type === name).length * percentPerGlyph * ((this.slotCount / eachSlotEquiv) ?? 0);
     },
     sortGlyphList() {
       this.$recompute("textColor");

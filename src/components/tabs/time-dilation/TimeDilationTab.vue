@@ -87,6 +87,9 @@ export default {
     },
   },
   methods: {
+    maxPurchaseDilationUpgrades() {
+      maxPurchaseDilationUpgrades();
+    },
     update() {
       this.tachyons.copyFrom(Currency.tachyonParticles);
       this.dilatedTime.copyFrom(Currency.dilatedTime);
@@ -164,6 +167,12 @@ export default {
         class="max-accent"
       >{{ format(maxDT, 2, 1) }}</span>.
     </span>
+    <button
+      class="o-primary-btn l-button-container"
+      @click="maxPurchaseDilationUpgrades"
+    >
+      Max Dilation Upgrades
+    </button>
     <div class="l-dilation-upgrades-grid">
       <div
         v-for="(upgradeRow, row) in allRebuyables"

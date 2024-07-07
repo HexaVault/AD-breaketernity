@@ -104,6 +104,44 @@ export function buyDilationUpgrade(id, bulk = 1) {
   return true;
 }
 
+export function maxPurchaseDilationUpgrades() {
+  if (Pelle.isDoomed) return false;
+  const dtQuikBuy = Currency.dilatedTime.value.div(1000);
+  // Insta buy everything costing up to 0.1% of DT, without even worrying about subtracting DT
+  let didBuy = false;
+  const UpgPurchased = player.dilation.rebuyables[1];
+  player.dilation.rebuyables[1] = Decimal.max(player.dilation.rebuyables[1], dtQuikBuy.div(1e3).log(10).floor());
+  if (UpgPurchased.neq(player.dilation.rebuyables[1])) didBuy = true;
+  // eslint-disable-next-line max-len
+  const tpUpgPurchased = Decimal.max(player.dilation.rebuyables[3], dtQuikBuy.div(1e4).log(20).floor()).sub(player.dilation.rebuyables[3]);
+  player.dilation.rebuyables[3] = player.dilation.rebuyables[3].add(tpUpgPurchased);
+  if (tpUpgPurchased.gt(0)) didBuy = didBuy || true;
+  if (Perk.bypassTGReset.isBought) {
+    // Just call the above function, since it handles caps and everything for us already
+    didBuy = didBuy || buyDilationUpgrade(2, 123456);
+  }
+
+  function allrebuyablesLayer() {
+    if (player.dilation.rebuyables[1].layer !== 0) return false;
+    // eslint-disable-next-line max-len
+    if (player.dilation.rebuyables[2].layer !== 0 || player.dilation.rebuyables[1].gt(DilationUpgrade.galaxyThreshold.config.purchaseCap)) return false;
+    if (player.dilation.rebuyables[3].layer !== 0) return false;
+    return true;
+  }
+
+  let didBuyLastIter = false;
+  for (let i = 0; i < 500 && !allrebuyablesLayer(); i++) {
+    didBuyLastIter = buyDilationUpgrade(1, 1);
+    if (Perk.bypassTGReset.isBought) {
+      didBuyLastIter = didBuyLastIter || buyDilationUpgrade(2, 1);
+    }
+    didBuyLastIter = didBuyLastIter || buyDilationUpgrade(3, 1);
+    didBuy = didBuy || didBuyLastIter;
+  }
+  didBuy = didBuy || buyDilationUpgrade(2, 1);
+  return didBuy;
+}
+
 export function getTachyonGalaxyMult(thresholdUpgrade) {
   // This specifically needs to be an undefined check because sometimes thresholdUpgrade is zero
   const upgrade = thresholdUpgrade === undefined ? DilationUpgrade.galaxyThreshold.effectValue : thresholdUpgrade;

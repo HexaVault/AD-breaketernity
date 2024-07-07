@@ -196,7 +196,7 @@ export const glyphEffects = {
     totalDesc: "Replicanti multiplier ^{value}",
     shortDesc: "Replicanti mult. power +{value}",
     effect: (level, strength) => Decimal.pow(level, 0.5).times(strength).div(25)
-      .add(GlyphAlteration.sacrificeBoost("replication").times(3)).add(1),
+      .add(GlyphAlteration.sacrificeBoost("replication").times(3)).add(1.1),
     formatEffect: x => format(x, 2, 2),
     formatSingleEffect: x => format(x.sub(1), 2, 2),
     combine: GlyphCombiner.addExponents,

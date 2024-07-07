@@ -9,7 +9,7 @@
 // sacrificeGlyphTypes is used throughout the code for taking all the glyphs that can be sacrificed.
 // rarities are just the rarities. They must be descending in rarity, and must use hex codes
 // GLYPH INFO
-// id is just the glyph type - its used in a couple places, mainly glyph cosmetics.
+// id is just the glyph type - its used in a couple places, mainly glyph cosmetics. Must be the same as name of glyph type object
 // Adjective is whats used for GlyphSetName.vue - If undefined, will default to ""
 // Noun is also used by GlyphSetName.vue - The word at the end of the set name (the "Infinity" in "Boundless Infinity")
 // adjNounImportance dictates which noun to use - Lower means itll be used earlier for noun if it exists, higher is later
@@ -33,6 +33,7 @@
 // setColor states whether or not the color of that glyph can be modified
 // hasRarity basically just states whether it should display (has) rarity or not. Cursed glyphs and reality glyphs, for example, have this as false in vanilla. Defaults to false.
 // To prevent issues, make sure there is always as many note().mp4 files (with the numbers 1-x) as there are glyph types, else you might get errors with music glyphs and audio
+// Its not perfect, you will likely still need to touch GlyphSetName.vue to implement new glyphs completely, but i tried my best :P
 
 export const GlyphInfo = {
   glyphTypes: [
@@ -178,7 +179,8 @@ export const GlyphInfo = {
     canCustomize: () => player.reality.glyphs.createdRealityGlyph,
     adjNounImportance: 4,
     alchemyResource: ALCHEMY_RESOURCE.REALITY,
-    setColor: true
+    setColor: true,
+    maxEquipped: 1,
   },
 
   effarig: {
@@ -209,7 +211,8 @@ export const GlyphInfo = {
     adjNounImportance: 2,
     color: "#e21717",
     alchemyResource: ALCHEMY_RESOURCE.EFFARIG,
-    hasRarity: true
+    hasRarity: true,
+    maxEquipped: 1,
   },
 
   companion: {

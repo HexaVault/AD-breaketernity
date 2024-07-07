@@ -16,7 +16,7 @@ export const AutoGlyphProcessor = {
   get types() {
     return player.reality.glyphs.filter.types;
   },
-  // This exists to avoid unnecessary repeated object initialization in the filtering code
+  // This exists only to make a couple code sections cleaner.
   bitmaskIndexOffset(type) {
     switch (type) {
       case "time":

@@ -486,7 +486,8 @@ export const GameStorage = {
       }
       for (const item in player.reality.glyphs.filter.types) {
         player.reality.glyphs.filter.types[item].rarity = new Decimal(player.reality.glyphs.filter.types[item].rarity);
-        player.reality.glyphs.filter.types[item].score = new Decimal(player.reality.glyphs.filter.types[item].score);
+        // eslint-disable-next-line max-len
+        // Eplayer.reality.glyphs.filter.types[item].score = new Decimal(player.reality.glyphs.filter.types[item].score);
       }
 
       player = migrations.patchPostReality(player);

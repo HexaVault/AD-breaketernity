@@ -465,10 +465,10 @@ window.player = {
           .filter(t => GlyphInfo.alchemyGlyphTypes.includes(t.id))
           .mapToObject(t => t.id, t => ({
             rarity: new Decimal(),
-            score: new Decimal(),
+            score: 0,
             effectCount: 0,
             specifiedMask: [],
-            effectScores: Array.repeat(0, t.effects.length),
+            effectScores: Array.repeat(0, t.effects().length).mapToObject(e => t.effects()[e].id, n => n),
           })),
       },
       createdRealityGlyph: false,
