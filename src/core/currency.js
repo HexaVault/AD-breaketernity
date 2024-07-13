@@ -437,7 +437,7 @@ Currency.darkMatter = new class extends DecimalCurrency {
   set max(value) { player.celestials.laitela.maxDarkMatter = value; }
 }();
 
-Currency.darkEnergy = new class extends NumberCurrency {
+Currency.darkEnergy = new class extends DecimalCurrency {
   get value() { return player.celestials.laitela.darkEnergy; }
   set value(value) { player.celestials.laitela.darkEnergy = value; }
 

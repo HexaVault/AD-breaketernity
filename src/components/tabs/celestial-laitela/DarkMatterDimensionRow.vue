@@ -10,26 +10,26 @@ export default {
   data() {
     return {
       isUnlocked: false,
-      ascension: 0,
+      ascension: new Decimal(0),
       hasAscended: false,
-      powerDMPerAscension: 0,
-      interval: 0,
+      powerDMPerAscension: new Decimal(0),
+      interval: new Decimal(0),
       powerDM: new Decimal(0),
-      powerDE: 0,
-      intervalCost: 0,
-      powerDMCost: 0,
-      powerDECost: 0,
+      powerDE: new Decimal(0),
+      intervalCost: new Decimal(0),
+      powerDMCost: new Decimal(0),
+      powerDECost: new Decimal(0),
       amount: new Decimal(0),
       canBuyInterval: false,
       canBuyPowerDM: false,
       canBuyPowerDE: false,
       isIntervalCapped: false,
-      timer: 0,
-      timerPecent: 0,
-      intervalAscensionBump: 10000,
-      intervalAfterAscension: 0,
-      darkEnergyPerSecond: 0,
-      portionDE: 0,
+      timer: new Decimal(0),
+      timerPercent: new Decimal(0),
+      intervalAscensionBump: new Decimal(10000),
+      intervalAfterAscension: new Decimal(0),
+      darkEnergyPerSecond: new Decimal(0),
+      portionDE: new Decimal(0),
       productionPerSecond: new Decimal(0),
       percentPerSecond: 0,
       hoverOverAscension: false,
@@ -65,7 +65,7 @@ export default {
     },
     intervalText() {
       const interval = this.hoverOverAscension ? this.intervalAfterAscension : this.interval;
-      const str = interval > 1000 ? `${format(interval / 1000, 2, 2)}s` : `${format(interval, 2, 2)}ms`;
+      const str = `${TimeSpan.fromMilliseconds(interval, 2, 2).toStringShort()}`;
       const line1 = this.hoverOverAscension ? `<b>${str}</b>` : str;
 
       let line2;
@@ -78,17 +78,17 @@ export default {
       const str = `DM ${formatX(dm, 2, 2)}`;
       const line1 = this.hoverOverAscension ? `<b>${str}</b>` : str;
 
-      const ascMult = this.powerDMPerAscension * this.interval / this.intervalAfterAscension;
+      const ascMult = this.powerDMPerAscension.mul(this.interval).div(this.intervalAfterAscension);
       const line2 = this.hoverOverAscension
         ? `${formatX(ascMult, 2, 2)} / sec`
         : `Cost: ${this.formatDMCost(this.powerDMCost)} DM`;
       return `${line1}<br>${line2}`;
     },
     darkEnergyText() {
-      const de = this.powerDE * (this.hoverOverAscension ? POWER_DE_PER_ASCENSION : 1);
+      const de = this.powerDE.mul(this.hoverOverAscension ? POWER_DE_PER_ASCENSION : 1);
       const str = `DE +${format(de, 2, 4)}`;
       const line1 = this.hoverOverAscension ? `<b>${str}</b>` : str;
-      const ascMult = POWER_DE_PER_ASCENSION * this.interval / this.intervalAfterAscension;
+      const ascMult = POWER_DE_PER_ASCENSION.mul(this.interval).div(this.intervalAfterAscension);
       const line2 = this.hoverOverAscension
         ? `${formatX(ascMult, 2, 2)} / sec`
         : `Cost: ${this.formatDMCost(this.powerDECost)} DM`;
@@ -104,28 +104,28 @@ export default {
     update() {
       const dim = DarkMatterDimension(this.tier);
       this.isUnlocked = dim.isUnlocked;
-      this.ascension = dim.ascensions;
-      this.hasAscended = this.ascension > 0;
-      this.powerDMPerAscension = dim.powerDMPerAscension;
-      this.interval = dim.interval;
+      this.ascension.copyFrom(dim.ascensions);
+      this.hasAscended = this.ascension.gt(0);
+      this.powerDMPerAscension.copyFrom(dim.powerDMPerAscension);
+      this.interval.copyFrom(dim.interval);
       this.powerDM.copyFrom(dim.powerDM);
-      this.powerDE = dim.powerDE;
-      this.intervalCost = dim.intervalCost;
-      this.powerDMCost = dim.powerDMCost;
-      this.powerDECost = dim.powerDECost;
+      this.powerDE.copyFrom(dim.powerDE);
+      this.intervalCost.copyFrom(dim.intervalCost);
+      this.powerDMCost.copyFrom(dim.powerDMCost);
+      this.powerDECost.copyFrom(dim.powerDECost);
       this.amount.copyFrom(dim.amount);
       this.canBuyInterval = dim.canBuyInterval;
       this.canBuyPowerDM = dim.canBuyPowerDM;
       this.canBuyPowerDE = dim.canBuyPowerDE;
-      this.isIntervalCapped = dim.interval <= dim.intervalPurchaseCap;
-      this.timer = dim.timeSinceLastUpdate;
-      this.timerPercent = this.timer / this.interval;
-      this.intervalAscensionBump = SingularityMilestone.ascensionIntervalScaling.effectOrDefault(1200);
-      this.intervalAfterAscension = dim.intervalAfterAscension;
-      this.darkEnergyPerSecond = dim.productionPerSecond;
-      this.portionDE = this.darkEnergyPerSecond / Currency.darkEnergy.productionPerSecond;
+      this.isIntervalCapped = dim.interval.lte(dim.intervalPurchaseCap);
+      this.timer.copyFrom(dim.realDiff);
+      this.timerPercent.copyFrom(this.timer.div(this.interval));
+      this.intervalAscensionBump.copyFrom(SingularityMilestone.ascensionIntervalScaling.effectOrDefault(new Decimal(1200)));
+      this.intervalAfterAscension.copyFrom(dim.intervalAfterAscension);
+      this.darkEnergyPerSecond.copyFrom(dim.productionPerSecond);
+      this.portionDE.copyFrom(this.darkEnergyPerSecond.div(Currency.darkEnergy.productionPerSecond));
       this.productionPerSecond = this.dimensionProduction(this.tier);
-      this.percentPerSecond = Decimal.divide(this.productionPerSecond, this.amount).toNumber();
+      this.percentPerSecond = Decimal.divide(this.productionPerSecond, this.amount).clampMax(1).toNumber();
       if (!this.isIntervalCapped) this.hoverOverAscension = false;
     },
     handleIntervalClick() {
@@ -145,7 +145,7 @@ export default {
       return cost.gt(Number.MAX_VALUE) ? Notations.current.infinite : format(cost, 2);
     },
     dimensionProduction(tier) {
-      if (tier === 4) return SingularityMilestone.dim4Generation.effectOrDefault(0);
+      if (tier === 4) return SingularityMilestone.dim4Generation.effectOrDefault(new Decimal(0));
       const prodDim = DarkMatterDimension(tier + 1);
       return prodDim.amount.times(prodDim.powerDM).divide(prodDim.interval).times(1000);
     },
@@ -197,11 +197,11 @@ export default {
         <span v-html="darkEnergyText" />
       </button>
     </div>
-    <div v-if="interval > 200">
+    <div v-if="interval.gt(200)">
       Tick: {{ formatInt(timer) }} ms ({{ formatPercents(timerPercent, 1) }})
     </div>
     <div v-else>
-      {{ format(1000 / interval, 2, 2) }} ticks / sec
+      {{ format(interval.div(1000).recip(), 2, 2) }} ticks / sec
     </div>
     <div>
       Dark Energy: {{ format(darkEnergyPerSecond, 2, 4) }}/s ({{ formatPercents(portionDE, 1) }} of total)

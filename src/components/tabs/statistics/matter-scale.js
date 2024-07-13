@@ -1,7 +1,7 @@
 import { DC } from "@/core/constants";
 
-function roundToAmnt(decimal, amnt = 4) {
-  return decimal.mul(10 ** amnt).round().div(10 ** amnt);
+function roundAndStr(decimal, amnt = 4) {
+  return decimal.toString().substring(0, amnt + Math.ceil(decimal.log10().toNumber()));
 }
 export const MatterScale = {
   proton: new Decimal("2.82e-45"),
@@ -15,7 +15,7 @@ export const MatterScale = {
     }
     if (matter.gt(DC.E1_5E12)) {
       return [
-        `It would take ${roundToAmnt(matter.log10().div(2437102080 * 3)).toString()}%`,
+        `It would take ${roundAndStr(matter.log10().div(2437102080 * 3))}%`,
         "of the current age of the Universe to write out your antimatter count"
       ];
     }
@@ -23,12 +23,12 @@ export const MatterScale = {
       return [
         `If you wrote ${formatInt(3)} numbers a second, it would take you`,
         // eslint-disable-next-line max-len
-        `${roundToAmnt(matter.log10().div(2437102080 * 3)).toString()} average American lifespans to write down your antimatter amount.`
+        `${roundAndStr(matter.log10().div(2437102080 * 3))} average American lifespans to write down your antimatter amount.`
       ];
     }
     if (matter.gt(DC.E1E7)) {
       return [
-        `It would take ${roundToAmnt(matter.log10().div(2437102080 * 3)).toString()}%`,
+        `It would take ${roundAndStr(matter.log10().div(2437102080 * 3))}%`,
         " of the average American lifespan to write out your antimatter count"
       ];
     }

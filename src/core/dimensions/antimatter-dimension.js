@@ -486,8 +486,8 @@ class AntimatterDimensionState extends DimensionState {
    * @returns {number}
    */
   get continuumAmount() {
-    if (!Laitela.continuumActive) return 0;
-    return Math.floor(10 * this.continuumValue);
+    if (!Laitela.continuumActive) return DC.D0;
+    return this.continuumValue.floor();
   }
 
   /**

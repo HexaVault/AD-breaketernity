@@ -4,13 +4,13 @@ export default {
   data() {
     return {
       darkMatter: new Decimal(0),
-      darkMatterMult: 0,
-      darkMatterMultGain: 0,
+      darkMatterMult: new Decimal(),
+      darkMatterMultGain: new Decimal(),
       autobuyerUnlocked: false,
       annihilationButtonVisible: false,
       matterRequirement: 0,
       darkMatterMultRatio: 0,
-      autoAnnihilationInput: player.auto.annihilation.multiplier,
+      autoAnnihilationInput: new Decimal(),
       isEnabled: true,
     };
   },
@@ -22,8 +22,8 @@ export default {
   methods: {
     update() {
       this.darkMatter.copyFrom(Currency.darkMatter);
-      this.darkMatterMult = Laitela.darkMatterMult;
-      this.darkMatterMultGain = Laitela.darkMatterMultGain;
+      this.darkMatterMult.copyFrom(Laitela.darkMatterMult);
+      this.darkMatterMultGain.copyFrom(Laitela.darkMatterMultGain);
       this.autobuyerUnlocked = Autobuyer.annihilation.isUnlocked;
       this.annihilationButtonVisible = Laitela.canAnnihilate || this.autobuyerUnlocked;
       this.matterRequirement = Laitela.annihilationDMRequirement;
@@ -34,9 +34,9 @@ export default {
       Laitela.annihilate();
     },
     handleAutoAnnihilationInputChange() {
-      const float = parseFloat(this.autoAnnihilationInput);
+      const float = new Decimal(this.autoAnnihilationInput);
       if (isNaN(float)) {
-        this.autoAnnihilationInput = player.auto.annihilation.multiplier;
+        this.autoAnnihilationInput.copyFrom(player.auto.annihilation.multiplier);
       } else {
         player.auto.annihilation.multiplier = float;
       }
@@ -62,7 +62,7 @@ export default {
     </button>
     <br>
     <br>
-    <span v-if="darkMatterMult > 1">
+    <span v-if="darkMatterMult.gt(1)">
       Current multiplier to all Dark Matter Dimensions: <b>{{ formatX(darkMatterMult, 2, 2) }}</b>
       <br>
       <br>

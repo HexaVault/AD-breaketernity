@@ -82,10 +82,10 @@ export default {
       this.canPerformSingularity = Singularity.capIsReached;
       this.unlockedBulkSingularity = Currency.singularities.gte(10);
       this.singularityCap.copyFrom(Singularity.cap);
-      this.baseTimeToSingularity = Singularity.timePerCondense;
-      this.currentTimeToSingularity = Singularity.timeUntilCap;
-      this.extraTimeAfterSingularity = Singularity.timeDelayFromAuto;
-      this.singularitiesGained = Singularity.singularitiesGained;
+      this.baseTimeToSingularity.copyFrom(Singularity.timePerCondense);
+      this.currentTimeToSingularity.copyFrom(Singularity.timeUntilCap);
+      this.extraTimeAfterSingularity.copyFrom(Singularity.timeDelayFromAuto);
+      this.singularitiesGained.copyFrom(Singularity.singularitiesGained);
       this.autoSingularityFactor = SingularityMilestone.autoCondense.effectOrDefault(Infinity);
       this.perStepFactor.copyFrom(Singularity.gainPerCapIncrease);
       this.isAutoEnabled = player.auto.singularity.isActive && SingularityMilestone.autoCondense.canBeApplied;

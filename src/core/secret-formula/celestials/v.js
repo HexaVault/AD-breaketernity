@@ -85,7 +85,7 @@ export const v = {
       values: [4000, 4300, 4600, 4900, 5200, 5500],
       condition: () => V.isRunning,
       currentValue: () => player.dilation.totalTachyonGalaxies.add(Replicanti.galaxies.total).add(player.galaxies),
-      formatRecord: x => format(x),
+      formatRecord: x => formatInt(x),
       shardReduction: tiers => Decimal.floor(300 * tiers),
       maxShardReduction: goal => goal - 4000,
       perReductionStep: 3,
@@ -171,7 +171,7 @@ export const v = {
         Currency.timeTheorems.gte(400000)
           ? Decimal.log10(player.requirementChecks.reality.slowestBH).neg()
           : new Decimal()),
-      formatRecord: x => `${formatInt(1)} / ${format(Math.pow(10, x))}`,
+      formatRecord: x => `${formatInt(1)} / ${format(Decimal.pow(10, x))}`,
       shardReduction: tiers => 50 * tiers,
       maxShardReduction: goal => goal - 50,
       reductionStepSize: 2,

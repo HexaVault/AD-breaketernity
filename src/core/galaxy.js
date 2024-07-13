@@ -40,17 +40,19 @@ export class Galaxy {
     // eslint-disable-next-line max-len
     // Plz no ask how exponential math work i dont know i just code, see https://discord.com/channels/351476683016241162/439241762603663370/1210707188964659230m
     const minV = Galaxy.costScalingStart.min(Galaxy.remoteStart); // Take the smallest of the two values
-    if (currency.lt(Galaxy.baseCost.add(Galaxy.costMult.times(minV) /* Pre exponential/quadratic? */))) {
+    if (currency.lt(Galaxy.requirementAt(minV).amount /* Pre exponential/quadratic? */)) {
       return Decimal.max(currency.sub(Galaxy.baseCost).div(Galaxy.costMult).floor(), player.galaxies);
     }
+
     if (currency.lt(Galaxy.requirementAt(Galaxy.remoteStart).amount)) {
+      const alter = GlyphAlteration.isAdded("power") ? getSecondaryGlyphEffect("powerpow") : DC.D1;
       const dis = Galaxy.costScalingStart;
       const scale = Galaxy.costMult;
       const base = Galaxy.baseCost;
-      // Quadratic equation
+      // Quadratic equation https://discord.com/channels/351476683016241162/1131505261903880244/1261706311901511691
       const a = DC.D1;
-      const b = scale.sub(1).sub(dis.times(2));
-      const c = base.add(dis.pow(2)).sub(currency).sub(dis);
+      const b = scale.add(3).sub(dis.mul(2));
+      const c = base.add(dis.pow(2)).sub(dis.mul(3)).add(2).sub(currency.div(alter));
       const quad = decimalQuadraticSolution(a, b, c);
       return Decimal.max(quad, player.galaxies);
     }
@@ -122,8 +124,8 @@ export class Galaxy {
       amount = amount.add(Decimal.pow(equivGal, 2).add(equivGal));
     } else if (type === GALAXY_TYPE.DISTANT || type === GALAXY_TYPE.REMOTE) {
       const galaxyCostScalingStart = this.costScalingStart;
-      const galaxiesBeforeDistant = Decimal.clampMin(equivGal.sub(galaxyCostScalingStart).add(1), 0);
-      amount = amount.add(Decimal.pow(galaxiesBeforeDistant, 2).add(galaxiesBeforeDistant));
+      const galaxiesAfterDistant = Decimal.clampMin(equivGal.sub(galaxyCostScalingStart).add(1), 0);
+      amount = amount.add(Decimal.pow(galaxiesAfterDistant, 2).add(galaxiesAfterDistant));
     }
 
     if (type === GALAXY_TYPE.REMOTE) {

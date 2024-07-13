@@ -383,9 +383,9 @@ export const GlyphInfo = {
       effect: added => {
         if (Pelle.isDisabled("glyphsac")) return DC.D1;
         const sac = player.reality.glyphs.sac.dilation.add(added ?? 0);
-        const capped = Decimal.min(sac, GlyphSacrificeHandler.maxSacrificeForEffects);
-        const exponent = Decimal.pow(Decimal.log10(capped.add(1)).times(0.32)
-          .div(Decimal.log10(GlyphSacrificeHandler.maxSacrificeForEffects)), 0.1);
+        const capped = Decimal.clampMax(sac, GlyphSacrificeHandler.maxSacrificeForEffects);
+        const exponent = Decimal.pow(Decimal.log10(capped.add(1))
+          .div(Decimal.log10(GlyphSacrificeHandler.maxSacrificeForEffects)), 0.1).mul(0.32);
         return Decimal.pow(Decimal.max(capped, 1), exponent);
       },
       description: amount => `Multiply Tachyon Particle gain by ${formatX(amount, 2, 2)}`,

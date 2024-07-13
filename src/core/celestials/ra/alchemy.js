@@ -222,7 +222,7 @@ class AlchemyReaction {
     const unpredictabilityEffect = AlchemyResource.unpredictability.effectValue;
     let times = poissonDistribution(unpredictabilityEffect.div(unpredictabilityEffect.sub(1).neg())).add(1);
     const cap = this._product.cap;
-    times = times.clampMax(1e4).toNumber()
+    times = times.clampMax(1e4).toNumber();
     for (let i = 0; i < times; i++) {
       const reactionYield = this.actualYield;
       for (const reagent of this._reagents) {

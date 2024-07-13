@@ -27,13 +27,13 @@ export default {
       darkMatterGain: new Decimal(0),
       isDMCapped: false,
       maxDarkMatter: new Decimal(0),
-      darkEnergy: 0,
-      matterExtraPurchasePercentage: 0,
+      darkEnergy: new Decimal(0),
+      matterExtraPurchasePercentage: new Decimal(0),
       autobuyersUnlocked: false,
       singularityPanelVisible: false,
       singularitiesUnlocked: false,
-      singularityCap: 0,
-      singularityWaitTime: 0,
+      singularityCap: new Decimal(0),
+      singularityWaitTime: "",
       showAnnihilation: false
     };
   },
@@ -47,18 +47,18 @@ export default {
   methods: {
     update() {
       this.isDoomed = Pelle.isDoomed;
-      this.darkMatter.copyFrom(Currency.darkMatter);
+      this.darkMatter.copyFrom(Currency.darkMatter.value);
       this.isDMCapped = this.darkMatter.eq(Number.MAX_VALUE);
       this.maxDarkMatter.copyFrom(Currency.darkMatter.max);
-      this.darkEnergy = player.celestials.laitela.darkEnergy;
-      this.matterExtraPurchasePercentage = Laitela.matterExtraPurchaseFactor - 1;
+      this.darkEnergy.copyFrom(player.celestials.laitela.darkEnergy);
+      this.matterExtraPurchasePercentage.copyFrom(Laitela.matterExtraPurchaseFactor.sub(1));
       this.autobuyersUnlocked = SingularityMilestone.darkDimensionAutobuyers.canBeApplied ||
         SingularityMilestone.darkDimensionAutobuyers.canBeApplied ||
         SingularityMilestone.autoCondense.canBeApplied ||
-        Laitela.darkMatterMult > 1;
+        Laitela.darkMatterMult.gt(1);
       this.singularityPanelVisible = Currency.singularities.gt(0);
       this.singularitiesUnlocked = Singularity.capIsReached || this.singularityPanelVisible;
-      this.singularityCap = new Decimal(Singularity.cap);
+      this.singularityCap.copyFrom(Singularity.cap);
       this.singularityWaitTime = TimeSpan.fromSeconds((this.singularityCap.sub(this.darkEnergy))
         .div(Currency.darkEnergy.productionPerSecond)).toStringShort();
       this.showAnnihilation = Laitela.annihilationUnlocked;

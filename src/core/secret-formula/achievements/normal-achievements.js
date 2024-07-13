@@ -1301,7 +1301,7 @@ export const normalAchievements = [
     id: 177,
     name: "This mile took a celestial",
     description: "Complete all Singularity Milestones at least once.",
-    checkRequirement: () => SingularityMilestones.all.every(x => x.completions > 0),
+    checkRequirement: () => SingularityMilestones.all.every(x => x.completions.gt(0)),
     checkEvent: GAME_EVENT.SINGULARITY_RESET_AFTER,
   },
   {
