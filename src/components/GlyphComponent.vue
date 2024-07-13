@@ -665,8 +665,10 @@ export default {
     effectIconPos(id) {
       // Place dots clockwise starting from the bottom left
       // eslint-disable-next-line max-len
-      const numOfEffects = GlyphInfo[this.glyph.type].effects().length;
-      const angle = (Math.PI / (16 / numOfEffects)) * (id + (4 / numOfEffects));
+      let numOfEffects = GlyphInfo[this.glyph.type].effects().length;
+      if (numOfEffects > 6) numOfEffects += 1;
+      // Take the smallest power of 2, greater than the number of effects
+      const angle = (Math.PI / (numOfEffects / 2)) * (parseInt(id, 10) + (numOfEffects / 8));
       const scale = 0.28 * this.size.replace("rem", "");
       const dx = -scale * Math.sin(angle);
       const dy = scale * (Math.cos(angle) + 0.15);
