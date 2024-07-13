@@ -729,25 +729,26 @@ function applyAutoUnlockPerks() {
 function laitelaRealityTick(realDiff) {
   const laitelaInfo = player.celestials.laitela;
   if (!Laitela.isRunning) return;
-  if (laitelaInfo.entropy >= 0) {
-    laitelaInfo.entropy += (realDiff / 1000) * Laitela.entropyGainPerSecond;
+  if (laitelaInfo.entropy.gte(0)) {
+    laitelaInfo.entropy = laitelaInfo.entropy.add(realDiff.div(1e3).mul(Laitela.entropyGainPerSecond));
   }
 
   // Setting entropy to -1 on completion prevents the modal from showing up repeatedly
-  if (laitelaInfo.entropy >= 1) {
+  if (laitelaInfo.entropy.gte(1)) {
     let completionText = `Lai'tela's Reality has been destabilized after ${Time.thisRealityRealTime.toStringShort()}.`;
-    laitelaInfo.entropy = -1;
+    laitelaInfo.entropy = DC.DM1;
     const oldInfo = {
       fastestCompletion: laitelaInfo.fastestCompletion,
       difficultyTier: laitelaInfo.difficultyTier,
       realityReward: Laitela.realityReward
     };
     laitelaInfo.thisCompletion = Time.thisRealityRealTime.totalSeconds;
-    laitelaInfo.fastestCompletion = Math.min(laitelaInfo.thisCompletion, laitelaInfo.fastestCompletion);
+    laitelaInfo.fastestCompletion = laitelaInfo.thisCompletion.clampMax(laitelaInfo.fastestCompletion);
     clearCelestialRuns();
-    if (Time.thisRealityRealTime.totalSeconds < 30) {
+    const destabilising = Time.thisRealityRealTime.totalSeconds.lte(30);
+    if (destabilising) {
       laitelaInfo.difficultyTier++;
-      laitelaInfo.fastestCompletion = 300;
+      laitelaInfo.fastestCompletion = new Decimal(300);
       completionText += laitelaBeatText(Laitela.maxAllowedDimension + 1);
       for (const quote of Laitela.quotes.all) {
         if (quote.requirement) {
@@ -755,40 +756,19 @@ function laitelaRealityTick(realDiff) {
         }
       }
     }
-    if (Laitela.realityReward > oldInfo.realityReward) {
+    if (Laitela.realityReward.gt(oldInfo.realityReward)) {
       completionText += `<br><br>Dark Matter Multiplier: ${formatX(oldInfo.realityReward, 2, 2)}
-      ➜ ${formatX(Laitela.realityReward, 2, 2)}`;
-      if (oldInfo.fastestCompletion === 3600 || oldInfo.fastestCompletion === 300 && oldInfo.difficultyTier > 0) {
-        if (Time.thisRealityRealTime.totalSeconds < 30) {
-          // First attempt - destabilising
-          completionText += `<br>Best Completion Time: None ➜ Destabilized
-          <br>Highest Active Dimension: ${formatInt(8 - oldInfo.difficultyTier)} ➜
-          ${formatInt(8 - laitelaInfo.difficultyTier)}`;
-        } else {
-          // First attempt - not destabilising
-          completionText += `<br>Best Completion Time: None ➜
-            ${TimeSpan.fromSeconds(new Decimal(laitelaInfo.fastestCompletion)).toStringShort()}
-            <br>Highest Active Dimension: ${formatInt(8 - laitelaInfo.difficultyTier)}`;
-        }
-      } else if (Time.thisRealityRealTime.totalSeconds < 30) {
-        // Second+ attempt - destabilising
-        completionText += `<br>Best Completion Time: ${TimeSpan.fromSeconds(new Decimal(oldInfo.fastestCompletion))
-          .toStringShort()}
-          ➜ Destabilized
-          <br>Highest Active Dimension: ${formatInt(8 - oldInfo.difficultyTier)} ➜
-          ${formatInt(8 - laitelaInfo.difficultyTier)}`;
-      } else {
-        // Second+ attempt - not destabilising
-        completionText += `<br>Best Completion Time: ${TimeSpan.fromSeconds(new Decimal(oldInfo.fastestCompletion))
-          .toStringShort()}
-        ➜ ${TimeSpan.fromSeconds(new Decimal(laitelaInfo.fastestCompletion)).toStringShort()}
-        <br>Highest Active Dimension: ${formatInt(8 - oldInfo.difficultyTier)}`;
-      }
+      ➜ ${formatX(Laitela.realityReward, 2, 2)}<br>Best Completion Time: `;
+      const firstAttempt =
+        oldInfo.fastestCompletion.eq(3600) || oldInfo.fastestCompletion.eq(300) && oldInfo.difficultyTier > 0;
+      completionText += `${firstAttempt ? "None" : TimeSpan.fromSeconds(oldInfo.fastestCompletion).toStringShort()} ➜
+        ${destabilising ? "Destabilized" : TimeSpan.fromSeconds(laitelaInfo.fastestCompletion).toStringShort()}
+        <br>Highest Active Dimension: ${destabilising ? `${formatInt(8 - oldInfo.difficultyTier)} ➜` : ""}
+        ${formatInt(8 - laitelaInfo.difficultyTier)}`;
       player.records.bestReality.laitelaSet = Glyphs.copyForRecords(Glyphs.active.filter(g => g !== null));
     } else {
       completionText += ` You need to destabilize in faster than
-        ${TimeSpan.fromSeconds(new Decimal(laitelaInfo.fastestCompletion))
-    .toStringShort()} to improve your multiplier.`;
+        ${TimeSpan.fromSeconds(laitelaInfo.fastestCompletion).toStringShort()} to improve your multiplier.`;
     }
     if (Laitela.isFullyDestabilized) SpeedrunMilestones(24).tryComplete();
     Modal.message.show(completionText, {}, 2);

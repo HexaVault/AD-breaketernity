@@ -690,7 +690,7 @@ window.player = {
           realDiff: DC.D0,
           ascensionCount: DC.D0
         })),
-      entropy: 0,
+      entropy: DC.D0,
       thisCompletion: new Decimal(3600),
       fastestCompletion: new Decimal(3600),
       difficultyTier: 0,

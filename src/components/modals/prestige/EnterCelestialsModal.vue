@@ -20,9 +20,9 @@ export default {
   },
   data() {
     return {
-      laitelaFastest: 3600,
+      laitelaFastest: new Decimal(3600),
       teresaBestAM: new Decimal(),
-      teresaRunMult: 0,
+      teresaRunMult: new Decimal(),
       effarigDone: false,
       effarigLayer: "",
       enslavedDone: false,
@@ -60,7 +60,7 @@ export default {
         case 3: return "";
         case 4: return `Within Ra's Reality, some resources will generate Memory Chunks
           for Celestial Memories based on their amounts:`;
-        case 5: return this.laitelaFastest >= 300
+        case 5: return this.laitelaFastest.gte(300)
           ? "You have not completed Lai'tela at this tier."
           : `Your fastest completion on this tier is ${this.laitelaTime}.`;
         case 6: return "";
@@ -71,13 +71,13 @@ export default {
   methods: {
     update() {
       this.teresaBestAM.copyFrom(player.celestials.teresa.bestRunAM);
-      this.teresaRunMult = Teresa.runRewardMultiplier;
+      this.teresaRunMult.copyFrom(Teresa.runRewardMultiplier);
       const effarigStage = Effarig.currentStage;
       this.effarigDone = effarigStage === EFFARIG_STAGES.COMPLETED;
       this.effarigLayer = [null, "Infinity", "Eternity", "Reality"][effarigStage];
       this.enslavedDone = Enslaved.isCompleted;
-      this.laitelaFastest = player.celestials.laitela.fastestCompletion;
-      this.laitelaTime = TimeSpan.fromSeconds(new Decimal(this.laitelaFastest)).toStringShort();
+      this.laitelaFastest.copyFrom(player.celestials.laitela.fastestCompletion);
+      this.laitelaTime = TimeSpan.fromSeconds(this.laitelaFastest).toStringShort();
     },
     handleYesClick() {
       beginProcessReality(getRealityProps(true));
