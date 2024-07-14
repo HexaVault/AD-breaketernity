@@ -109,7 +109,7 @@ export const SingularityMilestone = mapGameDataToObject(
 
 export const SingularityMilestones = {
   all: SingularityMilestone.all,
-  lastNotified: new Decimal(player.celestials.laitela.lastCheckedMilestones).clampMax(1e150).toNumber(),
+  lastNotified: player.celestials.laitela.lastCheckedMilestones,
 
   get sorted() {
     return this.all.sort((a, b) => Decimal.compare(a.remainingSingularities, b.remainingSingularities));
@@ -199,7 +199,7 @@ export const SingularityMilestones = {
   get unseenMilestones() {
     const laitela = player.celestials.laitela;
     return SingularityMilestoneThresholds
-      .filter(s => s > laitela.lastCheckedMilestones && Currency.singularities.gte(s));
+      .filter(s => laitela.lastCheckedMilestones.lt(s) && Currency.singularities.gte(s));
   },
 
   // This code is stupid and forces us to do this bs

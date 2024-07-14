@@ -16,20 +16,20 @@ export default {
   data: () => ({
     isMaxed: false,
     progressToNext: "",
-    remainingSingularities: 0,
+    remainingSingularities: new Decimal(),
     description: "",
     effectDisplay: "",
     isUnique: false,
     nextEffectDisplay: "",
-    start: 0,
-    completions: 0,
+    start: new Decimal(),
+    completions: new Decimal(),
     limit: 0,
     milestoneMode: false,
-    singularitiesPerCondense: 0,
-    baseCondenseTime: 0,
-    currentCondenseTime: 0,
-    autoCondenseDelay: 0,
-    lastCheckedMilestones: 0,
+    singularitiesPerCondense: new Decimal(),
+    baseCondenseTime: new Decimal(),
+    currentCondenseTime: new Decimal(),
+    autoCondenseDelay: new Decimal(),
+    lastCheckedMilestones: new Decimal(),
     autoSingActive: false,
   }),
   computed: {
@@ -51,7 +51,7 @@ export default {
       return {
         "c-laitela-milestone": true,
         "o-laitela-milestone--glow": !this.suppressGlow &&
-          this.milestone.previousGoal > this.lastCheckedMilestones
+          this.milestone.previousGoal.gt(this.lastCheckedMilestones)
       };
     },
     upgradeDirectionIcon() {
@@ -70,7 +70,7 @@ export default {
       return `${formatInt(this.completions)}/${maxStr} ${pluralize("completion", this.completions)}`;
     },
     progressDisplay() {
-      const condenseCount = this.remainingSingularities / this.singularitiesPerCondense;
+      const condenseCount = this.remainingSingularities.div(this.singularitiesPerCondense);
       let thisSingularityTime, extraTime, timeText;
       switch (this.milestoneMode) {
         case SINGULARITY_MILESTONE_RESOURCE.SINGULARITIES:
@@ -78,13 +78,13 @@ export default {
         case SINGULARITY_MILESTONE_RESOURCE.CONDENSE_COUNT:
           return `Condense ${quantify("time", condenseCount, 2, 2)}`;
         case SINGULARITY_MILESTONE_RESOURCE.MANUAL_TIME:
-          thisSingularityTime = Math.clampMin(0, this.currentCondenseTime);
-          extraTime = Math.ceil(condenseCount - 1) * this.baseCondenseTime;
-          return `In ${TimeSpan.fromSeconds(new Decimal(thisSingularityTime + extraTime)).toStringShort()} (manual)`;
+          thisSingularityTime = Decimal.clampMin(0, this.currentCondenseTime);
+          extraTime = Decimal.ceil(condenseCount.sub(1)).mul(this.baseCondenseTime);
+          return `In ${TimeSpan.fromSeconds(new Decimal(thisSingularityTime.add(extraTime))).toStringShort()} (manual)`;
         case SINGULARITY_MILESTONE_RESOURCE.AUTO_TIME:
-          thisSingularityTime = Math.clampMin(0, this.currentCondenseTime + this.autoCondenseDelay);
-          extraTime = Math.ceil(condenseCount - 1) * (this.baseCondenseTime + this.autoCondenseDelay);
-          timeText = `In ${TimeSpan.fromSeconds(new Decimal(thisSingularityTime + extraTime)).toStringShort()}`;
+          thisSingularityTime = Decimal.clampMin(0, this.currentCondenseTime.add(this.autoCondenseDelay));
+          extraTime = Decimal.ceil(condenseCount.sub(1)).mul(this.baseCondenseTime.add(this.autoCondenseDelay));
+          timeText = `In ${TimeSpan.fromSeconds(new Decimal(thisSingularityTime.add(extraTime))).toStringShort()}`;
           return this.autoSingActive ? timeText : `Auto-Singularity is OFF`;
         default:
           throw new Error("Unrecognized Singularity Milestone mode");
@@ -97,19 +97,19 @@ export default {
       this.autoSingActive = player.auto.singularity.isActive;
       this.isMaxed = this.milestone.isMaxed;
       this.progressToNext = this.milestone.progressToNext;
-      this.remainingSingularities = this.milestone.remainingSingularities;
+      this.remainingSingularities.copyFrom(this.milestone.remainingSingularities);
       this.description = this.milestone.description;
       this.effectDisplay = this.milestone.effectDisplay;
       this.isUnique = this.milestone.isUnique;
       if (!this.isUnique && !this.isMaxed) this.nextEffectDisplay = this.milestone.nextEffectDisplay;
-      this.completions = this.milestone.completions;
+      this.completions.copyFrom(this.milestone.completions);
       this.limit = this.milestone.limit;
       this.milestoneMode = player.celestials.laitela.singularitySorting.displayResource;
-      this.singularitiesPerCondense = Singularity.singularitiesGained;
-      this.baseCondenseTime = Singularity.timePerCondense;
-      this.currentCondenseTime = Singularity.timeUntilCap;
-      this.autoCondenseDelay = Singularity.timeDelayFromAuto;
-      this.lastCheckedMilestones = player.celestials.laitela.lastCheckedMilestones;
+      this.singularitiesPerCondense.copyFrom(Singularity.singularitiesGained);
+      this.baseCondenseTime.copyFrom(Singularity.timePerCondense);
+      this.currentCondenseTime.copyFrom(Singularity.timeUntilCap);
+      this.autoCondenseDelay.copyFrom(Singularity.timeDelayFromAuto);
+      this.lastCheckedMilestones.copyFrom(player.celestials.laitela.lastCheckedMilestones);
       this.isMetro = Theme.current().isMetro;
     },
   }

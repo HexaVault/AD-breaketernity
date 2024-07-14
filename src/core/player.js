@@ -705,7 +705,7 @@ window.player = {
       },
       singularities: DC.D0,
       singularityCapIncreases: DC.D0,
-      lastCheckedMilestones: 0,
+      lastCheckedMilestones: DC.D0,
       milestoneGlow: true,
     },
     pelle: {
