@@ -36,25 +36,26 @@ export class Galaxy {
    * @param {number} currency Either dim 8 or dim 6, depends on current challenge
    * @returns {number} Max number of galaxies (total)
    */
-  static buyableGalaxies(currency) {
+  static buyableGalaxies(currency, minVal = player.galaxies) {
+    const alter = GlyphAlteration.isAdded("power") ? getSecondaryGlyphEffect("powerpow") : DC.D1;
+    const dis = Galaxy.costScalingStart;
+    const scale = Galaxy.costMult;
+    let base = Galaxy.baseCost.sub(Effects.sum(InfinityUpgrade.resetBoost));
+    if (InfinityChallenge(5).isCompleted) base = base.sub(1);
     // eslint-disable-next-line max-len
     // Plz no ask how exponential math work i dont know i just code, see https://discord.com/channels/351476683016241162/439241762603663370/1210707188964659230m
     const minV = Galaxy.costScalingStart.min(Galaxy.remoteStart); // Take the smallest of the two values
     if (currency.lt(Galaxy.requirementAt(minV).amount /* Pre exponential/quadratic? */)) {
-      return Decimal.max(currency.sub(Galaxy.baseCost).div(Galaxy.costMult).floor(), player.galaxies);
+      return Decimal.max(currency.sub(base).div(scale).floor(), minVal);
     }
 
     if (currency.lt(Galaxy.requirementAt(Galaxy.remoteStart).amount)) {
-      const alter = GlyphAlteration.isAdded("power") ? getSecondaryGlyphEffect("powerpow") : DC.D1;
-      const dis = Galaxy.costScalingStart;
-      const scale = Galaxy.costMult;
-      const base = Galaxy.baseCost;
       // Quadratic equation https://discord.com/channels/351476683016241162/1131505261903880244/1261706311901511691
       const a = DC.D1;
       const b = scale.add(3).sub(dis.mul(2));
       const c = base.add(dis.pow(2)).sub(dis.mul(3)).add(2).sub(currency.div(alter));
-      const quad = decimalQuadraticSolution(a, b, c);
-      return Decimal.max(quad, player.galaxies);
+      const quad = decimalQuadraticSolution(a, b, c).floor();
+      return Decimal.max(quad, minVal);
     }
     // eslint-disable-next-line multiline-comment-style
     /*
@@ -100,7 +101,8 @@ export class Galaxy {
     */
 
     if (Galaxy.requirementAt(Decimal.max(1e6, Galaxy.remoteStart)).amount.lt(currency)) {
-      return Decimal.log(currency.div(Galaxy.requirementAt(Decimal.max(1e6, Galaxy.remoteStart))), 1.008).add(1e6);
+      return Decimal.log(currency.div(Galaxy.requirementAt(Decimal.max(1e6, Galaxy.remoteStart))), 1.008)
+        .add(Decimal.max(1e6, Galaxy.remoteStart)).floor().max(minVal);
     }
     // Ignore BBBS' warning, even though its theoretically quite dangerous
     // We can do this because at most, 1e6 galaxies of dimension would be put into this
@@ -108,15 +110,16 @@ export class Galaxy {
     return new Decimal(bulkBuyBinarySearch(new Decimal(currency), {
       costFunction: x => this.requirementAt(new Decimal(x)).amount,
       cumulative: false,
-    }, 0, true).quantity);
+    }, 0, true).quantity).floor().add(1).max(minVal);
   }
 
-  static requirementAt(galaxies) {
+  static requirementAt(galaxies, log = false) {
     // Beyond 1e6 (or further if remote is beyond that) the other effects are so small in changes that it doesn't matter
     // This does technically make it slightly weaker than vanilla, but its so minor you would rarely ever notice, and it
     // allows the inverse to be correct beyond 1e6 without using any really annoying math methods that i dont understand
     const equivGal = Decimal.min(Decimal.max(1e6, Galaxy.remoteStart), galaxies);
     let amount = Galaxy.baseCost.add((equivGal.times(Galaxy.costMult)));
+    if (log) console.log(amount)
 
     const type = Galaxy.typeAt(galaxies);
 

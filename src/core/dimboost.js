@@ -270,15 +270,16 @@ function maxBuyDimBoosts() {
 
   if (EternityChallenge(5).isRunning) {
     calcBoosts = decimalDepressedCubicSolution(DC.D1.add(multiplierPerDB),
-      amount.sub(AntimatterDimension(tier)).sub(1));
+      amount.sub(AntimatterDimension(tier)).sub(1)).floor();
   }
 
   calcBoosts = calcBoosts.add(NormalChallenge(10).isRunning ? 2 : 4);
   // Dimension boosts 1-4 dont use 8th dims, 1-2 dont use 6th dims, so add those extras afterwards.
 
-  if (calcBoosts.floor().lte(DimBoost.purchasedBoosts)) return;
+  // Add one cause (x-b)/i is off by one otherwise
+  if (calcBoosts.floor().add(1).lte(DimBoost.purchasedBoosts)) return;
   calcBoosts = calcBoosts.sub(DimBoost.purchasedBoosts);
-  const minBoosts = Decimal.min(DC.BEMAX, calcBoosts.floor());
+  const minBoosts = Decimal.min(DC.BEMAX, calcBoosts.floor().add(1));
 
   softReset(minBoosts);
 }
