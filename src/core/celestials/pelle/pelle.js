@@ -355,6 +355,75 @@ export const Pelle = {
   endTabNames: "End Is Nigh Destruction Is Imminent Help Us Good Bye Forever".split(" "),
 
   quotes: Quotes.pelle,
+
+  reset() {
+    player.celestials.pelle = {
+      doomed: false,
+      upgrades: new Set(),
+      remnants: DC.D0,
+      realityShards: DC.D0,
+      records: {
+        totalAntimatter: DC.D0,
+        totalInfinityPoints: DC.D0,
+        totalEternityPoints: DC.D0,
+      },
+      rebuyables: {
+        antimatterDimensionMult: DC.D0,
+        timeSpeedMult: DC.D0,
+        glyphLevels: DC.D0,
+        infConversion: DC.D0,
+        galaxyPower: DC.D0,
+        galaxyGeneratorAdditive: DC.D0,
+        galaxyGeneratorMultiplicative: DC.D0,
+        galaxyGeneratorAntimatterMult: DC.D0,
+        galaxyGeneratorIPMult: DC.D0,
+        galaxyGeneratorEPMult: DC.D0,
+      },
+      rifts: {
+        vacuum: {
+          fill: DC.D0,
+          active: false,
+          reducedTo: 1
+        },
+        decay: {
+          fill: DC.D0,
+          active: false,
+          percentageSpent: 0,
+          reducedTo: 1
+        },
+        chaos: {
+          fill: 0,
+          active: false,
+          reducedTo: 1
+        },
+        recursion: {
+          fill: DC.D0,
+          active: false,
+          reducedTo: 1
+        },
+        paradox: {
+          fill: DC.D0,
+          active: false,
+          reducedTo: 1
+        }
+      },
+      progressBits: 0,
+      galaxyGenerator: {
+        unlocked: false,
+        spentGalaxies: DC.D0,
+        generatedGalaxies: DC.D0,
+        phase: 0,
+        sacrificeActive: false
+      },
+      quoteBits: 0,
+      collapsed: {
+        upgrades: false,
+        rifts: false,
+        galaxies: false
+      },
+      showBought: false,
+    };
+  },
 };
 
 EventHub.logic.on(GAME_EVENT.ARMAGEDDON_AFTER, () => {

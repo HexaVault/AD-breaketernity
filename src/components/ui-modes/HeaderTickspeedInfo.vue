@@ -21,7 +21,7 @@ export default {
     },
     perUpgrade() {
       if (InfinityChallenge(3).isRunning) return `Tickspeed upgrades give
-        ${formatX(1.05 + this.galaxyCount * 0.005, 3, 3)} to all ADs`;
+        ${formatX(this.galaxyCount.times(0.005).add(1.05))} to all ADs`;
       return `ADs produce ${formatX(this.mult.reciprocal(), 2, 3)} faster per Tickspeed upgrade`;
     },
   },

@@ -1,4 +1,5 @@
 import { BitUpgradeState, RebuyableMechanicState } from "../game-mechanics";
+import { DC } from "../constants";
 import { GameDatabase } from "../secret-formula/game-database";
 
 import { Quotes } from "./quotes";
@@ -58,7 +59,18 @@ export const Teresa = {
     return player.celestials.teresa.bestRunAM.gt(1);
   },
   quotes: Quotes.teresa,
-  symbol: "Ϟ"
+  symbol: "Ϟ",
+
+  reset() {
+    player.celestials.teresa.pouredAmount = 0;
+    player.celestials.teresa.unlockBits = 0;
+    player.celestials.teresa.run = false;
+    player.celestials.teresa.bestRunAM = DC.D1;
+    player.celestials.teresa.bestAMSet = [];
+    player.celestials.teresa.perkShop = [0, 0, 0, 0, 0];
+    player.celestials.teresa.lastRepeatedMachines = DC.D0;
+    player.celestials.teresa.lastRepeatediM = DC.D0;
+  },
 };
 
 class PerkShopUpgradeState extends RebuyableMechanicState {

@@ -84,7 +84,7 @@ export const Effarig = {
         c = 25;
         break;
     }
-    return (DC.D1.sub(c.div(Decimal.sqrt(power.add(1).absLog10()).add(c)))).times(3);
+    return (DC.D1.sub(new Decimal(c).div(Decimal.sqrt(power.add(1).absLog10()).add(c)))).times(3);
   },
   get tickDilation() {
     return this.nerfFactor(Currency.timeShards.value).div(10).add(0.7);
@@ -105,7 +105,18 @@ export const Effarig = {
     return Decimal.floor(replicantiCap().log10().div(LOG10_MAX_VALUE).sub(1));
   },
   quotes: Quotes.effarig,
-  symbol: "Ϙ"
+  symbol: "Ϙ",
+
+  reset() {
+    player.celestials.effarig.relicShards = DC.D0;
+    player.celestials.effarig.unlockBits = 0;
+    player.celestials.effarig.run = false;
+    player.celestials.effarig.glyphWeights.ep = 25;
+    player.celestials.effarig.glyphWeights.repl = 25;
+    player.celestials.effarig.glyphWeights.dt = 25;
+    player.celestials.effarig.glyphWeights.eternities = 25;
+    player.celestials.effarig.autoAdjustGlyphWeights = false;
+  },
 };
 
 class EffarigUnlockState extends BitUpgradeState {

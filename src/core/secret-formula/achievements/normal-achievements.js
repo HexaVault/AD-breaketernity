@@ -961,7 +961,7 @@ export const normalAchievements = [
       buying any Infinity Dimensions or the ${formatX(2)} Infinity Point multiplier.`;
     },
     checkRequirement: () =>
-      Array.dimensionTiers.map(InfinityDimension).every(dim => dim.baseAmount === 0) &&
+      Array.dimensionTiers.map(InfinityDimension).every(dim => dim.baseAmount.eq(0)) &&
       player.IPMultPurchases === 0 &&
       Currency.infinityPoints.gte(DC.E200000),
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
