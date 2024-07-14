@@ -423,6 +423,9 @@ export const migrations = {
       // This update has a rebalance that assumes the 3rd dilation repeatable is unpurchasable in cel7
       if (player.celestials.pelle.doomed) player.dilation.rebuyables[3] = 0;
     },
+    26: player => {
+      delete player.infinity?.upgradeBits;
+    },
     // 83 is used because 8 = B, and 3 = E, so 83 = BE, short for BE port (blob edition).
     // Recommended to start any modded migrations at 100.
     83: player => {

@@ -5,7 +5,6 @@ import AntimatterGalaxyRow from "@/components/tabs/antimatter-dimensions/ModernA
 import DimensionBoostRow from "@/components/tabs/antimatter-dimensions/ModernDimensionBoostRow";
 import PrimaryButton from "@/components/PrimaryButton";
 import TickspeedRow from "@/components/tabs/antimatter-dimensions/TickspeedRow";
-import { Achievement } from "../../../core/globals";
 
 export default {
   name: "ModernAntimatterDimensionsTab",
@@ -36,7 +35,7 @@ export default {
   },
   computed: {
     sacrificeTooltip() {
-      if (this.isFullyAutomated) return `Sacrifice autobuyer is enabled and r118 is completed, so there is no reason to manually sacrifice`;
+      if (this.isFullyAutomated) return `Sacrifice autobuyer is enabled and Achievement 118 is unlocked, so Sacrifice is now fully automated`;
       return `Boosts 8th Antimatter Dimension by ${formatX(this.sacrificeBoost, 2, 2)}`;
     },
   },

@@ -60,9 +60,6 @@ window.player = {
       requirementBits: 0,
     }
   },
-  infinity: {
-    upgradeBits: 0
-  },
   auto: {
     autobuyersOn: true,
     disableContinuum: false,
@@ -857,7 +854,8 @@ window.player = {
       tachyonParticles: true,
       reality: true,
       background: true,
-      blobSnowflakes: 16
+      blobSnowflakes: 16,
+      blobHole: false
     },
     confirmations: {
       armageddon: true,

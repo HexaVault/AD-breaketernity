@@ -67,7 +67,7 @@ export default {
       return this.isCapped ? "Capped" : `${this.showCostTitle ? "Cost: " : ""}${format(this.cost, 2)} EP`;
     },
     hasLongText() {
-      return this.buttonContents.length > 15;
+      return this.buttonContents.length > 20;
     },
     showCostTitle() {
       return this.cost.log10().lte(1e6);
