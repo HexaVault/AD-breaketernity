@@ -370,7 +370,7 @@ window.player = {
     initialSeed: 0,
     previousRuns: {}
   },
-  IPMultPurchases: 0,
+  IPMultPurchases: DC.D0,
   version: 83,
   infinityPower: DC.D1,
   postC4Tier: 0,
