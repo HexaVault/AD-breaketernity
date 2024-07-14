@@ -36,6 +36,8 @@ import { DC } from "../../constants";
 // To prevent issues, make sure there is always as many note().mp4 files (with the numbers 1-x) as there are glyph types, else you might get errors with music glyphs and audio
 // Its not perfect, you will likely still need to touch GlyphSetName.vue to implement new glyphs completely, but i tried my best :P
 
+const complexIncludes = (x, filterItem) => x.map(n => n().includes(filterItem)).includes(true);
+
 export const GlyphInfo = {
   glyphTypes: [
     "power",
@@ -138,7 +140,7 @@ export const GlyphInfo = {
 
   cursed: {
     id: "cursed",
-    effects: () => GlyphEffects.all.filter(e => e.glyphTypes.includes("cursed")),
+    effects: () => GlyphEffects.all.filter(e => complexIncludes(e.glyphTypes, "cursed")),
     adjective: { high: "Cursed", mid: "Hexed", low: "Jinxed" },
     noun: "Curse",
     isBasic: false,
@@ -156,7 +158,7 @@ export const GlyphInfo = {
 
   reality: {
     id: "reality",
-    effects: () => GlyphEffects.all.filter(e => e.glyphTypes.includes("reality")),
+    effects: () => GlyphEffects.all.filter(e => complexIncludes(e.glyphTypes, "reality")),
     adjective: "Real",
     noun: "Reality",
     isBasic: false,
@@ -186,7 +188,7 @@ export const GlyphInfo = {
 
   effarig: {
     id: "effarig",
-    effects: () => GlyphEffects.all.filter(e => e.glyphTypes.includes("effarig")),
+    effects: () => GlyphEffects.all.filter(e => complexIncludes(e.glyphTypes, "effarig")),
     adjective: { both: "Meta", glyph: "Stable", rm: "Mechanical", none: "Fragmented" },
     noun: { both: "Effarig", glyph: "Stability", rm: "Mechanism", none: "Fragmentation" },
     isBasic: false,
@@ -218,7 +220,7 @@ export const GlyphInfo = {
 
   companion: {
     id: "companion",
-    effects: () => GlyphEffects.all.filter(e => e.glyphTypes.includes("companion")),
+    effects: () => GlyphEffects.all.filter(e => complexIncludes(e.glyphTypes, "companion")),
     adjective: "Huggable",
     noun: "Companion",
     isBasic: false,
@@ -236,7 +238,7 @@ export const GlyphInfo = {
 
   power: {
     id: "power",
-    effects: () => GlyphEffects.all.filter(e => e.glyphTypes.includes("power")),
+    effects: () => GlyphEffects.all.filter(e => complexIncludes(e.glyphTypes, "power")),
     adjective: { high: "Powerful", mid: "Mastered", low: "Potential" },
     noun: "Power",
     isBasic: true,
@@ -275,7 +277,7 @@ export const GlyphInfo = {
 
   infinity: {
     id: "infinity",
-    effects: () => GlyphEffects.all.filter(e => e.glyphTypes.includes("infinity")),
+    effects: () => GlyphEffects.all.filter(e => complexIncludes(e.glyphTypes, "infinity")),
     adjective: { high: "Infinite", mid: "Boundless", low: "Immense" },
     noun: "Infinity",
     isBasic: true,
@@ -305,7 +307,7 @@ export const GlyphInfo = {
 
   replication: {
     id: "replication",
-    effects: () => GlyphEffects.all.filter(e => e.glyphTypes.includes("replication")),
+    effects: () => GlyphEffects.all.filter(e => complexIncludes(e.glyphTypes, "replication")),
     adjective: { high: "Replicated", mid: "Simulated", low: "Duplicated" },
     noun: "Replication",
     isBasic: true,
@@ -343,7 +345,7 @@ export const GlyphInfo = {
 
   time: {
     id: "time",
-    effects: () => GlyphEffects.all.filter(e => e.glyphTypes.includes("time")),
+    effects: () => GlyphEffects.all.filter(e => complexIncludes(e.glyphTypes, "time")),
     adjective: { high: "Temporal", mid: "Chronal", low: "Transient" },
     noun: "Time",
     isBasic: true,
@@ -373,7 +375,7 @@ export const GlyphInfo = {
 
   dilation: {
     id: "dilation",
-    effects: () => GlyphEffects.all.filter(e => e.glyphTypes.includes("dilation")),
+    effects: () => GlyphEffects.all.filter(e => complexIncludes(e.glyphTypes, "dilation")),
     adjective: { high: "Dilated", mid: "Attenuated", low: "Diluted" },
     noun: "Dilation",
     isBasic: true,

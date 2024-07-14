@@ -57,8 +57,8 @@ export default {
     effarigBits() {
       const effectDB = GameDatabase.reality.glyphEffects;
       return {
-        RM: effectDB.effarigrm.bitmaskIndex,
-        glyph: effectDB.effarigglyph.bitmaskIndex,
+        RM: effectDB.effarigrm.intID,
+        glyph: effectDB.effarigglyph.intID,
       };
     }
   },

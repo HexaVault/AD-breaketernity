@@ -32,8 +32,8 @@ export default {
     return {
       enslavedHint: "",
       showInstability: false,
-      instabilityThreshold: 0,
-      hyperInstabilityThreshold: 0,
+      instabilityThreshold: new Decimal(),
+      hyperInstabilityThreshold: new Decimal(),
       isInCelestialReality: false,
       canAmplify: false,
       glyphTextColors: true,
@@ -58,9 +58,9 @@ export default {
   methods: {
     update() {
       this.resetRealityDisplayed = PlayerProgress.realityUnlocked();
-      this.showInstability = player.records.bestReality.glyphLevel.gt(800);
-      this.instabilityThreshold = Glyphs.instabilityThreshold;
-      this.hyperInstabilityThreshold = Glyphs.hyperInstabilityThreshold;
+      this.instabilityThreshold.copyFrom(Glyphs.instabilityThreshold);
+      this.hyperInstabilityThreshold.copyFrom(Glyphs.hyperInstabilityThreshold);
+      this.showInstability = player.records.bestReality.glyphLevel.gt(this.instabilityThreshold.sub(200));
       this.isInCelestialReality = isInCelestialReality();
       this.canAmplify = Enslaved.isUnlocked && !this.isInCelestialReality;
       this.autoRestartCelestialRuns = player.options.retryCelestial;

@@ -145,7 +145,7 @@ class GlyphEffectConfig {
       throw new Error(`Glyph effect "${setup.id}" includes unrecognized field "${unknownField}"`);
     }
 
-    const unknownGlyphType = setup.glyphTypes.find(e => !GlyphInfo.glyphTypes.includes(e));
+    const unknownGlyphType = setup.glyphTypes.find(e => !GlyphInfo.glyphTypes.includes(e()));
     if (unknownGlyphType !== undefined) {
       throw new Error(`Glyph effect "${setup.id}" references unknown glyphType "${unknownGlyphType}"`);
     }
@@ -196,10 +196,6 @@ export const GlyphEffects = mapGameDataToObject(
   GameDatabase.reality.glyphEffects,
   config => new GlyphEffectConfig(config)
 );
-
-export function findGlyphTypeEffects(glyphType) {
-  return GlyphEffects.all.filter(e => e.glyphTypes.includes(glyphType));
-}
 
 export function makeGlyphEffectBitmask(effectList) {
   return effectList.reduce((mask, eff) => mask + (1 << GlyphEffects[eff].bitmaskIndex), 0);
