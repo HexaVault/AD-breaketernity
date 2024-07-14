@@ -32,7 +32,7 @@ export default {
     return {
       canBuy: false,
       isBought: false,
-      purchases: 0,
+      purchases: new Decimal(0),
       currentTimeEstimate: new Decimal(0),
       projectedTimeEstimate: new Decimal(0),
       isCapped: false,
@@ -52,7 +52,7 @@ export default {
       const formattedEffect = x => this.config.formatEffect(this.config.effect(x));
       const value = formattedEffect(this.purchases);
       const next = (!this.isCapped && this.hovering)
-        ? formattedEffect(this.purchases + 1)
+        ? formattedEffect(this.purchases.add(1))
         : undefined;
       return { prefix, value, next };
     },
@@ -84,22 +84,22 @@ export default {
       this.canBuy = this.upgrade.canBeBought && !this.faded;
       this.isBought = this.upgrade.isBought;
       this.isCapped = this.upgrade.isCapped;
-      this.purchases = player.celestials.pelle.rebuyables[this.upgrade.config.id];
+      this.purchases.copyFrom(player.celestials.pelle.rebuyables[this.upgrade.config.id] ?? new Decimal(0));
       this.currentTimeEstimate = TimeSpan
-        .fromSeconds(new Decimal(this.secondsUntilCost(this.galaxyGenerator ? GalaxyGenerator.gainPerSecond
-          : Pelle.realityShardGainPerSecond))).toNumber()
-        .toTimeEstimate();
+        .fromSeconds(this.secondsUntilCost(this.galaxyGenerator ? GalaxyGenerator.gainPerSecond
+          : Pelle.realityShardGainPerSecond)).toTimeEstimate();
       this.projectedTimeEstimate = TimeSpan
-        .fromSeconds(new Decimal(this.secondsUntilCost(Pelle.nextRealityShardGain).toNumber()))
+        .fromSeconds(this.secondsUntilCost(Pelle.nextRealityShardGain))
         .toTimeEstimate();
-      this.hasRemnants = Pelle.cel.remnants > 0;
+      this.hasRemnants = Pelle.cel.remnants.gt(0);
       this.galaxyCap = GalaxyGenerator.generationCap;
       const genDB = GameDatabase.celestials.pelle.galaxyGeneratorUpgrades;
       this.notAffordable = (this.config === genDB.additive || this.config === genDB.multiplicative) &&
-        (Decimal.gt(this.upgrade.cost, this.galaxyCap - GalaxyGenerator.generatedGalaxies + player.galaxies));
+        (Decimal.gt(this.upgrade.cost,
+          this.galaxyCap.sub(GalaxyGenerator.generatedGalaxies.add(player.galaxies))));
     },
     secondsUntilCost(rate) {
-      const value = this.galaxyGenerator ? player.galaxies + GalaxyGenerator.galaxies : Currency.realityShards.value;
+      const value = this.galaxyGenerator ? player.galaxies.add(GalaxyGenerator.galaxies) : Currency.realityShards.value;
       return Decimal.sub(this.upgrade.cost, value).div(rate);
     },
   }

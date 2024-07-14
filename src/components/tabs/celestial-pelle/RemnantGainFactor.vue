@@ -21,8 +21,8 @@ export default {
         ep: new Decimal(0)
       },
       dilationMult: [1, 1, 1],
-      remnants: 0,
-      remnantsGain: 0
+      remnants: new Decimal(0),
+      remnantsGain: new Decimal(0)
     };
   },
   computed: {
@@ -36,8 +36,8 @@ export default {
       this.best.ip.copyFrom(player.celestials.pelle.records.totalInfinityPoints);
       this.best.ep.copyFrom(player.celestials.pelle.records.totalEternityPoints);
       this.dilationMult = PelleStrikes.dilation.hasStrike ? [500, 10, 5] : [1, 1, 1];
-      this.remnants = Pelle.cel.remnants;
-      this.remnantsGain = Pelle.remnantsGain;
+      this.remnants.copyFrom(Pelle.cel.remnants);
+      this.remnantsGain.copyFrom(Pelle.remnantsGain);
     }
   }
 };
@@ -99,13 +99,13 @@ export default {
             </div>
             <div class="l-remnant-factors-col">
               <div class="l-remnant-factors-item">
-                {{ format(Math.log10(best.am.add(1).log10()*dilationMult[0] + 2), 2, 2) }}
+                {{ format(best.am.add(1).log10().mul(dilationMult[0]).add(2).log10(), 2, 2) }}
               </div>
               <div class="l-remnant-factors-item">
-                {{ format(Math.log10(best.ip.add(1).log10()*dilationMult[1] + 2), 2, 2) }}
+                {{ format(best.ip.add(1).log10().mul(dilationMult[1]).add(2).log10(), 2, 2) }}
               </div>
               <div class="l-remnant-factors-item">
-                {{ format(Math.log10(best.ep.add(1).log10()*dilationMult[2] + 2), 2, 2) }}
+                {{ format(best.ep.add(1).log10().mul(dilationMult[2]).add(2).log10(), 2, 2) }}
               </div>
               <div class="l-remnant-factors-item">
                 {{ format(1.64, 2, 2) }}
@@ -117,7 +117,7 @@ export default {
                 {{ format(remnants, 2, 0) }}
               </div>
               <div class="l-remnant-factors-item">
-                {{ format(remnantsGain, 2, remnantsGain >= 1 ? 0 : 2) }}
+                {{ format(remnantsGain, 2, remnantsGain.gte(1) ? 0 : 2) }}
               </div>
             </div>
           </div>

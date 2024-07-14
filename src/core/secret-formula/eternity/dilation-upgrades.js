@@ -27,10 +27,10 @@ export const dilationUpgrades = {
     increment: 10,
     description: () =>
       ((SingularityMilestone.dilatedTimeFromSingularities.canBeApplied || Achievement(187).canBeApplied)
-        ? `${formatX(2 * Effects.product(
+        ? `${formatX(Effects.product(
           SingularityMilestone.dilatedTimeFromSingularities,
           Achievement(187)
-        ), 2, 2)} Dilated Time gain`
+        ).mul(2), 2, 2)} Dilated Time gain`
         : "Double Dilated Time gain"),
     effect: bought => {
       const base = Effects.product(
@@ -154,7 +154,7 @@ export const dilationUpgrades = {
     effect: bought => Decimal.pow(5, bought),
     formatEffect: value => formatX(value, 2),
     formatCost: value => format(value, 2),
-    purchaseCap: Number.MAX_VALUE
+    purchaseCap: DC.BEMAX
   }),
   galaxyMultiplier: rebuyable({
     id: 12,
@@ -163,9 +163,9 @@ export const dilationUpgrades = {
     pelleOnly: true,
     description: "Multiply Tachyon Galaxies gained, applies after TG doubling upgrade",
     effect: bought => bought.add(1),
-    formatEffect: value => `${formatX(value, 2)} ➜ ${formatX(value + 1, 2)}`,
+    formatEffect: value => `${formatX(value, 2)} ➜ ${formatX(value.add(1), 2)}`,
     formatCost: value => format(value, 2),
-    purchaseCap: Number.MAX_VALUE
+    purchaseCap: DC.BEMAX
   }),
   tickspeedPower: rebuyable({
     id: 13,
@@ -173,10 +173,10 @@ export const dilationUpgrades = {
     increment: 1e4,
     pelleOnly: true,
     description: "Gain a power to Tickspeed",
-    effect: bought => 1 + bought * 0.03,
-    formatEffect: value => `${formatPow(value, 2, 2)} ➜ ${formatPow(value + 0.03, 2, 2)}`,
+    effect: bought => bought.mul(0.03).add(1),
+    formatEffect: value => `${formatPow(value, 2, 2)} ➜ ${formatPow(value.add(0.03), 2, 2)}`,
     formatCost: value => format(value, 2),
-    purchaseCap: Number.MAX_VALUE
+    purchaseCap: DC.BEMAX
   }),
   galaxyThresholdPelle: {
     id: 14,
@@ -190,7 +190,7 @@ export const dilationUpgrades = {
     cost: 1e55,
     pelleOnly: true,
     description: () => `Gain more Dilated Time based on current EP`,
-    effect: () => 1e9 ** Math.min((Math.max(player.eternityPoints.log10() - 1500, 0) / 2500) ** 1.2, 1),
+    effect: () => DC.E9.pow((Decimal.max(player.eternityPoints.log10().sub(1500), 0).div(2500)).pow(1.2).clampMax(1)),
     formatEffect: value => formatX(value, 2, 2)
   },
 };

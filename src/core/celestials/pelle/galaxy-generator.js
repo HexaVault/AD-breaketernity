@@ -12,7 +12,7 @@ export const GalaxyGenerator = {
   get generationCaps() {
     return PelleRifts.all
       .map(x => ({ rift: x.config.key, cap: x.config.galaxyGeneratorThreshold }))
-      .sort((a, b) => a.cap - b.cap);
+      .sort((a, b) => Decimal.compare(a.cap, b.cap));
   },
 
   get spentGalaxies() {
@@ -42,7 +42,7 @@ export const GalaxyGenerator = {
   },
 
   get generationCap() {
-    return this.capObj ? this.capObj.cap : Infinity;
+    return this.capObj ? this.capObj.cap : DC.BEMAX;
   },
 
   get capRift() {

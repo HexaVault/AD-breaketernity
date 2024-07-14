@@ -33,15 +33,15 @@ export default {
       return GalaxyGeneratorUpgrades.all;
     },
     galaxyText() {
-      let text = format(Math.max(this.galaxies, 0), 2);
-      if (this.galaxies < 0) text += ` [${format(this.galaxies, 2)}]`;
+      let text = format(Decimal.max(this.galaxies, 0), 2);
+      if (this.galaxies.lt(0)) text += ` [${format(this.galaxies, 2)}]`;
       return text;
     },
     sacrificeText() {
       return this.capRift.galaxyGeneratorText.replace("$value", this.capRiftName);
     },
     emphasisedStart() {
-      return Math.pow(this.generatedGalaxies / this.cap, 0.45);
+      return Decimal.pow(this.generatedGalaxies.div(this.cap), 0.45).toNumber();
     }
   },
   methods: {

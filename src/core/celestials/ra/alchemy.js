@@ -77,8 +77,8 @@ class AlchemyResourceState extends GameMechanicState {
 
   get effectValue() {
     // Disable Exponential alchemy effect in V reality.
-    if (V.isRunning && this.config.id === 14) return 0;
-    return this.config.effect(Pelle.isDisabled("alchemy") ? 0 : this.amount);
+    if (V.isRunning && this.config.id === 14) return DC.D0;
+    return this.config.effect(Pelle.isDisabled("alchemy") ? DC.D0 : this.amount);
   }
 
   get reaction() {

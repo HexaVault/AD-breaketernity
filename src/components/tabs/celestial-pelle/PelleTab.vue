@@ -43,7 +43,7 @@ export default {
           this.cappedResources === this.totalAlchemyResources;
       }
       this.hasStrike = PelleStrikes.all.some(s => s.hasStrike);
-      this.hasGalaxyGenerator = PelleRifts.recursion.milestones[2].canBeApplied || GalaxyGenerator.spentGalaxies > 0;
+      this.hasGalaxyGenerator = PelleRifts.recursion.milestones[2].canBeApplied || GalaxyGenerator.spentGalaxies.gt(0);
     },
     toggleBought() {
       Pelle.cel.showBought = !Pelle.cel.showBought;

@@ -149,7 +149,7 @@ export const Pelle = {
   },
 
   get canArmageddon() {
-    return this.remnantsGain >= 1;
+    return this.remnantsGain.gte(1);
   },
 
   armageddon(gainStuff) {
@@ -264,7 +264,7 @@ export const Pelle = {
   },
 
   get canDilateInPelle() {
-    return this.cel.remnants >= this.remnantRequirementForDilation;
+    return this.cel.remnants.gte(this.remnantRequirementForDilation);
   },
 
   resetResourcesForDilation() {
@@ -290,7 +290,7 @@ export const Pelle = {
       ep = ep.times(5);
     }
 
-    const gain = ((Decimal.log10(am.add(2)) + Decimal.log10(ip.add(2)) + Decimal.log10(ep.add(2))).div(1.64).pow(7.5));
+    const gain = am.add(2).log10().add(ip.add(2).log10()).add(ep.add(2).log10()).div(1.64).pow(7.5);
 
     return gain.lt(1) ? gain : Decimal.floor(gain.minus(this.cel.remnants));
   },
@@ -321,7 +321,7 @@ export const Pelle = {
   },
 
   antimatterDimensionMult(x) {
-    return Decimal.pow(10, Math.log10(x + 1) + x ** 5.1 / 1e3 + 4 ** x / 1e19);
+    return Decimal.pow(10, Decimal.log10(x.add(1)).add(x.pow(5.1).div(1e3)).add(DC.D4.pow(x).div(1e19)));
   },
 
   get activeGlyphType() {
@@ -394,7 +394,7 @@ export class RebuyablePelleUpgradeState extends RebuyableMechanicState {
   }
 
   get isCapped() {
-    return this.boughtAmount >= this.config.cap;
+    return this.boughtAmount.gte(this.config.cap);
   }
 
   get isCustomEffect() { return true; }

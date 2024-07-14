@@ -9,7 +9,7 @@ export default {
   data() {
     return {
       isDoomed: false,
-      remnantsGain: 0,
+      remnantsGain: new Decimal(0),
       realityShardGain: new Decimal(0),
       nextRealityShardGain: new Decimal(0),
       canArmageddon: false,
@@ -33,7 +33,7 @@ export default {
   methods: {
     update() {
       this.isDoomed = Pelle.isDoomed;
-      this.remnantsGain = Pelle.remnantsGain;
+      this.remnantsGain.copyFrom(Pelle.remnantsGain);
       this.realityShardGain.copyFrom(Pelle.realityShardGainPerSecond);
       this.nextRealityShardGain.copyFrom(Pelle.nextRealityShardGain);
       this.canArmageddon = Pelle.canArmageddon;

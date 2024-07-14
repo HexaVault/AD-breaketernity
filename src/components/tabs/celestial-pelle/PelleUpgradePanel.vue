@@ -15,7 +15,7 @@ export default {
       showBought: false,
       isCollapsed: false,
       isHovering: false,
-      remnants: 0,
+      remnants: new Decimal(0),
       realityShards: new Decimal(0),
       shardRate: new Decimal(0),
       upgrades: [],
@@ -45,7 +45,7 @@ export default {
     update() {
       this.showBought = Pelle.cel.showBought;
       this.isCollapsed = player.celestials.pelle.collapsed.upgrades;
-      this.remnants = Pelle.cel.remnants;
+      this.remnants.copyFrom(Pelle.cel.remnants);
       this.realityShards.copyFrom(Pelle.cel.realityShards);
       this.shardRate.copyFrom(Pelle.realityShardGainPerSecond);
       this.upgrades = PelleUpgrade.singles.filter(u => !u.isBought);

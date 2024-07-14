@@ -125,7 +125,12 @@ export default {
     singletonName() {
       if (this.sortedGlyphs[0].type === "effarig") return GLYPH_NAMES.effarig.noun[this.getEffarigProp()];
       // eslint-disable-next-line max-len
-      const singleGlyphTypes = GlyphInfo.filter(e => GlyphInfo.glyphTypes.includes(e) && GlyphInfo[e].maxEquipped === 1);
+      const v = { ...GlyphInfo };
+      for (const item in GlyphInfo) {
+        if (!GlyphInfo.glyphTypes.includes(item)) delete v[item];
+        else if (!(GlyphInfo[item].maxEquipped === 1)) delete v[item];
+      }
+      const singleGlyphTypes = Object.keys(v);
       for (const key of singleGlyphTypes) {
         if (this.sortedGlyphs[0].type === key) return GLYPH_NAMES[key].noun;
       }
@@ -205,7 +210,7 @@ export default {
       // Take the amount of a type of glyph in the set, divide by the maximum number of glyphs, then * 100 to get %
       // Also, if the max equipped is less than 6, multiply the perc accordingly. Yes we use stacked ??, but that's
       // how it goes ig.
-      if (name === undefined) return 0
+      if (name === undefined) return 0;
       const eachSlotEquiv = name === "music" ? 1 : (GlyphInfo[name].maxEquipped ?? (this.slotCount ?? 1));
       // eslint-disable-next-line max-len
       return this.glyphSet.filter(i => i.type === name).length * percentPerGlyph * ((this.slotCount / eachSlotEquiv) ?? 0);
