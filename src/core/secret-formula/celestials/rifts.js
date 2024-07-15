@@ -151,7 +151,7 @@ export const pelleRifts = {
     baseEffect: x => `EP formula: log(x)/${formatInt(308)} ➜ log(x)/${formatFloat(308 - x, 2)}`,
     additionalEffects: () => [PelleRifts.recursion.milestones[0], PelleRifts.recursion.milestones[1]],
     strike: () => PelleStrikes.ECs,
-    percentage: totalFill => totalFill.log10().pow(0.4).times(3.624).div(100).toNumber(),
+    percentage: totalFill => totalFill.max(1).log10().pow(0.4).times(3.624).div(100).toNumber(),
     percentageToFill: percentage => Decimal.pow10((percentage * 100 / 3.624) ** 2.5),
     effect: totalFill => new Decimal(58).times(new Decimal(totalFill).add(1).log10()
       .pow(0.2).div(4000 ** 0.2)).toNumber(),
