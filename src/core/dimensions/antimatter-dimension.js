@@ -553,7 +553,7 @@ class AntimatterDimensionState extends DimensionState {
         dimension.costBumps = dimension.costBumps.add(1);
       }
     }
-    if (Tickspeed.cost.e === this.cost.e) player.chall9TickspeedCostBumps++;
+    if (Tickspeed.cost.e === this.cost.e) chall9TickspeedCostBumps = chall9TickspeedCostBumps.add(1);
   }
 
   multiplyIC5Costs() {
