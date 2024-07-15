@@ -79,7 +79,7 @@ export const progressStages = [
     id: PROGRESS_STAGE.LATE_ETERNITY,
     name: "Late Eternity",
     hasReached: save => new Decimal(save.dilation.dilatedTime).gt(1e15),
-    suggestedResource: () => (new Decimal(player.eternityPoints).log10() > 4000
+    suggestedResource: () => (new Decimal(player.eternityPoints).log10().gt(4000)
       ? "Eternity Points and/or Dilated Time. Alternatively, you can unlock and perform your first Reality"
       : "Eternity Points and/or Dilated Time"
     ),
