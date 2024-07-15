@@ -110,13 +110,13 @@ export const GlyphGenerator = {
   },
 
   // eslint-disable-next-line max-params
-  randomGlyph(level, rngIn, typeIn = null, effects = []) {
+  randomGlyph(level, rngIn, typeIn = null, effectsIn = []) {
     const rng = rngIn || new GlyphGenerator.RealGlyphRNG();
     const strength = this.randomStrength(rng);
     const type = typeIn || this.randomType(rng);
     let numEffects = this.randomNumberOfEffects(type, strength, level.actualLevel, rng);
     if (type !== "effarig" && numEffects > 4) numEffects = 4;
-    const effectBitmask = this.generateEffects(type, numEffects, rng, effects);
+    const effects = this.generateEffects(type, numEffects, rng, effectsIn);
     if (rngIn === undefined) rng.finalize();
     return {
       id: undefined,
@@ -125,13 +125,13 @@ export const GlyphGenerator = {
       strength,
       level: level.actualLevel,
       rawLevel: level.rawLevel,
-      effects: effectBitmask,
+      effects,
     };
   },
 
   realityGlyph(level) {
     const str = rarityToStrength(100);
-    const effectss = this.generateRealityEffects(level);
+    const effects = this.generateRealityEffects(level);
     return {
       id: undefined,
       idx: null,
@@ -139,13 +139,13 @@ export const GlyphGenerator = {
       strength: str,
       level,
       rawLevel: level,
-      effects: effectss,
+      effects,
     };
   },
 
   cursedGlyph() {
     const str = rarityToStrength(100);
-    const effectBitmask = GlyphEffects.all.filter(e => e.glyphTypes.contains("cursed"));
+    const effects = GlyphEffects.all.filter(e => e.glyphTypes.contains("cursed"));
     return {
       id: undefined,
       idx: null,
@@ -153,15 +153,15 @@ export const GlyphGenerator = {
       strength: str,
       level: 6666,
       rawLevel: 6666,
-      effects: effectBitmask,
+      effects,
     };
   },
 
   // These Glyphs are given on entering Doomed to prevent the player
   // from having none of each basic glyphs which are requied to beat pelle
   doomedGlyph(type) {
-    const effectList = GlyphEffects.all.filter(e => e.id.startsWith(type));
-    effectList.push(GlyphEffects.timespeed);
+    const effects = GlyphEffects.all.filter(e => e.id.startsWith(type));
+    effects.push(GlyphEffects.timespeed);
     const glyphLevel = Math.max(player.records.bestReality.glyphLevel, 5000);
     return {
       id: undefined,
@@ -170,14 +170,14 @@ export const GlyphGenerator = {
       strength: 3.5,
       level: glyphLevel,
       rawLevel: glyphLevel,
-      effects: effectList,
+      effects,
     };
   },
 
   companionGlyph(eternityPoints) {
     // Store the pre-Reality EP value in the glyph's rarity
     const str = rarityToStrength(eternityPoints.log10() / 1e6);
-    const effectss = orderedEffectList.filter(effect => effect.match("companion*"));
+    const effects = orderedEffectList.filter(effect => effect.match("companion*"));
     return {
       id: undefined,
       idx: null,
@@ -185,7 +185,7 @@ export const GlyphGenerator = {
       strength: str,
       level: 1,
       rawLevel: 1,
-      effects: effectss,
+      effects,
     };
   },
 
@@ -335,7 +335,6 @@ export const GlyphGenerator = {
 
     const glyphs = [];
     for (let i = 0; i <= 3; i++) {
-      console.log(level, rng, glyphsChosen[i], [effectsAsIds[i]])
       glyphs.push(this.randomGlyph(level, rng, glyphsChosen[i], [effectsAsIds[i]]));
     }
 
