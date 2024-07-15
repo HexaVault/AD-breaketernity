@@ -140,7 +140,6 @@ export const TimeTheorems = {
     const ttAM = TimeTheoremPurchaseType.am.purchase(true);
     const ttIP = TimeTheoremPurchaseType.ip.purchase(true);
     const ttEP = TimeTheoremPurchaseType.ep.purchase(true);
-    console.log(ttAM, ttIP, ttEP)
     return ttAM + ttIP + ttEP;
   },
 
