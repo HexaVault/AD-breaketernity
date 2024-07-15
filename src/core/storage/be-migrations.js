@@ -141,7 +141,7 @@ export function beMigration(player) {
   player.infinityRebuyables[0] = D(player.infinityRebuyables[0]);
   player.infinityRebuyables[1] = D(player.infinityRebuyables[1]);
   player.infinityRebuyables[2] = D(player.infinityRebuyables[2]);
-  player.IPMultPurchases = DC.D0;
+  player.IPMultPurchases = D(player.IPMultPurchases);
   if (player.options.lastOpenSubtab[2] === 3) player.options.lastOpenSubtab[2] = 1;
   player.options.lnotation = "Stacked Scientific";
   player.partSimulatedReality = D(player.partSimulatedReality);
