@@ -638,7 +638,7 @@ export function finishProcessReality(realityProps) {
   player.partInfinityPoint = 0;
   player.partInfinitied = 0;
   player.break = false;
-  player.IPMultPurchases = 0;
+  player.IPMultPurchases = DC.D0;
   Currency.infinityPower.reset();
   Currency.timeShards.reset();
   Replicanti.reset(true);

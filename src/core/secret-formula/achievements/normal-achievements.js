@@ -962,7 +962,7 @@ export const normalAchievements = [
     },
     checkRequirement: () =>
       Array.dimensionTiers.map(InfinityDimension).every(dim => dim.baseAmount.eq(0)) &&
-      player.IPMultPurchases === 0 &&
+      player.IPMultPurchases === DC.D0 &&
       Currency.infinityPoints.gte(DC.E200000),
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     reward: "You start Eternities with all Infinity Challenges unlocked and completed."
