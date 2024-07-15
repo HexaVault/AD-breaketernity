@@ -226,7 +226,7 @@ window.player = {
   chall2Pow: DC.D1,
   chall3Pow: DC.D0_01,
   matter: DC.D1,
-  chall9TickspeedCostBumps: 0,
+  chall9TickspeedCostBumps: DC.D0,
   chall8TotalSacrifice: DC.D1,
   ic2Count: 0,
   partInfinityPoint: 0,
