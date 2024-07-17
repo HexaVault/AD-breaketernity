@@ -67,7 +67,7 @@ export const GalaxyGenerator = {
       Pelle.quotes.galaxyGeneratorRifts.show();
     }
     if (this.sacrificeActive) {
-      this.capRift.reducedTo = Decimal.max(this.capRift.reducedTo.sub(diff.div(1e5).mul(3)), 0);
+      this.capRift.reducedTo = Decimal.sub(this.capRift.reducedTo, diff.div(1e5).mul(3)).max(0).toNumber();
       if (this.capRift.reducedTo === 0) {
         player.celestials.pelle.galaxyGenerator.sacrificeActive = false;
         player.celestials.pelle.galaxyGenerator.phase++;
@@ -102,7 +102,7 @@ export const GalaxyGenerator = {
     );
 
     if (!this.capRift) {
-      PelleRifts.all.forEach(r => r.reducedTo = Math.min(r.reducedTo + 0.03 * diff / 1000, 2));
+      PelleRifts.all.forEach(r => r.reducedTo = Decimal.add(r.reducedTo, diff.div(1e5).mul(3)).min(2).toNumber());
       if (PelleRifts.vacuum.milestones[0].canBeApplied && !this.hasReturnedGlyphSlot) {
         Glyphs.refreshActive();
         EventHub.dispatch(GAME_EVENT.GLYPHS_EQUIPPED_CHANGED);
