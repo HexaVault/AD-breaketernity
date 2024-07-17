@@ -18,12 +18,9 @@ export const END_STATE_MARKERS = {
 
 export const GameEnd = {
   get endState() {
-    if (this.removeAdditionalEnd) return this.additionalEnd;
-    let x = 0;
-    if (player.celestials.pelle.records.totalAntimatter.layer >= 2 && player.bypassEnd !== true) {
-      x = player.celestials.pelle.records.totalAntimatter.max(1).log10().sub(9e15).min(5000).toNumber();
-    }
-    return Math.max(x, 0);
+    if (this.removeAdditionalEnd || player.bypassEnd) return this.additionalEnd;
+    return Math.max(player.celestials.pelle.records.totalAntimatter.add(1).log10().add(1).log10().sub(8.7)
+      .div(Math.log10(9e15) - 8.7).min(1).toNumber() + this.additionalEnd, 0);
   },
 
   _additionalEnd: 0,
