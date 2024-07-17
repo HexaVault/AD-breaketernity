@@ -52,8 +52,8 @@ export class Galaxy {
     if (currency.lt(Galaxy.requirementAt(Galaxy.remoteStart).amount)) {
       // Quadratic equation https://discord.com/channels/351476683016241162/1131505261903880244/1261706311901511691
       const a = DC.D1;
-      const b = scale.add(3).sub(dis.mul(2));
-      const c = base.add(dis.pow(2)).sub(dis.mul(3)).add(2).sub(currency.div(alter));
+      const b = scale.add(1);
+      const c = base.add(dis.pow(2)).sub(dis.mul(3)).sub(currency.div(alter));
       const quad = decimalQuadraticSolution(a, b, c).floor();
       return Decimal.max(quad, minVal);
     }

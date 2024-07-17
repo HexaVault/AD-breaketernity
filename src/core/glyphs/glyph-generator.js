@@ -6,6 +6,7 @@
  * using it, call finalize on it to write the seed out.
  */
 import { DC } from "../constants";
+import { GlyphInfo } from "../secret-formula/reality/core-glyph-info";
 
 import { deepmerge } from "@/utility/deepmerge";
 
@@ -59,7 +60,7 @@ export const GlyphGenerator = {
   // of uniform glyphs. The size of a uniformity group is 5, so this gives uniformly-distributed
   // properties up to a reality count one more than 5x this value; the modified RNG for uniform
   // glyphs excludes the first fixed glyph and only starts from the 2nd one onward
-  uniformityGroups: 4,
+  uniformityGroups: GlyphInfo.basicGlyphTypes.length,
   get isUniformityActive() {
     return player.realities.lte(5 * this.uniformityGroups);
   },
@@ -176,7 +177,7 @@ export const GlyphGenerator = {
 
   companionGlyph(eternityPoints) {
     // Store the pre-Reality EP value in the glyph's rarity
-    const str = rarityToStrength(eternityPoints.log10() / 1e6);
+    const str = rarityToStrength(eternityPoints.log10().div(1e6));
     const effects = orderedEffectList.filter(effect => effect.match("companion*"));
     return {
       id: undefined,
@@ -284,6 +285,7 @@ export const GlyphGenerator = {
       // eslint-disable-next-line no-loop-func
       effectValues[GlyphInfo[type].effects().filter(e => e.id === guarenteedEffects[i])[0].intID] = 2;
     }
+
     if (GlyphInfo[type].primaryEffect !== undefined) {
       // eslint-disable-next-line no-param-reassign
       count = Math.max(count, guarenteedEffects.length + 1);
@@ -310,15 +312,20 @@ export const GlyphGenerator = {
 
   uniformGlyphSelections(level, rng, realityCount) {
     const basics = GlyphInfo.basicGlyphTypes.length;
-    const groupNum = Decimal.floor(realityCount.sub(1).div(basics)).clampMax(basics * 4 + 1).toNumber();
-    let groupIndex = realityCount.sub(1).mod(basics).toNumber();
+    const groupNum = Decimal.floor(realityCount.sub(1).max(0).div(basics))
+      .clampMax(basics * this.uniformityGroups + 1).toNumber();
+    let groupIndex = realityCount.floor().sub(1).mod(basics).toNumber();
+    // Mod here returns negative for negative numbers, so turn into positive mod if lt 0
+    if (groupIndex < 0) groupIndex += basics;
 
     const initSeed = player.reality.initialSeed;
     const typePerm = permutationIndex(basics, groupNum * (31 + initSeed % 7) + (initSeed % 1123));
-    const effectPerm = permutationIndex(4, (7 + initSeed % 5) * groupNum + initSeed % 11);
 
-    const glyphsChosen = [...GlyphInfo.basicGlyphTypes];
-    while (glyphsChosen.length > 4) {
+    let glyphsChosen = [...GlyphInfo.basicGlyphTypes];
+    while (glyphsChosen.length < GlyphSelection.choiceCount) {
+      glyphsChosen = [...glyphsChosen, ...GlyphInfo.basicGlyphTypes];
+    }
+    while (glyphsChosen.length > GlyphSelection.choiceCount) {
       while (groupIndex.length <= groupIndex) {
         groupIndex--;
       }
@@ -326,15 +333,20 @@ export const GlyphGenerator = {
       groupIndex--;
     }
 
-    groupIndex = effectPerm[realityCount.sub(1).mod(4).toNumber()];
     const effectsAsIds = [];
-    for (let i = 0; i <= 3; i++) {
+    for (let i = 0; i <= (GlyphSelection.choiceCount - 1); i++) {
+      // eslint-disable-next-line max-len
+      const effectPerm = permutationIndex(GlyphInfo[glyphsChosen[i]].effects().length, (7 + initSeed % 5) * groupNum + initSeed % 11);
+      // Why add n - 1?
+      // Well, +(n-1) = -1, since in modulo n arithmetic +n = +0. This way also prevents negatives, read above comments
+      // eslint-disable-next-line max-len
+      groupIndex = effectPerm[realityCount.add(GlyphInfo[glyphsChosen[i]].effects().length - 1).mod(GlyphInfo[glyphsChosen[i]].effects().length).toNumber()];
       effectsAsIds.push(GlyphInfo[glyphsChosen[i]].effects()[groupIndex].id);
     }
     // GlyphEffects.all.filter(e => e.intID % 4 == 0)
 
     const glyphs = [];
-    for (let i = 0; i <= 3; i++) {
+    for (let i = 0; i <= (GlyphSelection.choiceCount - 1); i++) {
       glyphs.push(this.randomGlyph(level, rng, glyphsChosen[i], [effectsAsIds[i]]));
     }
 

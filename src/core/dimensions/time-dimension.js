@@ -12,7 +12,7 @@ export function buySingleTimeDimension(tier, auto = false) {
     }
   }
   if (Currency.eternityPoints.lt(dim.cost)) return false;
-  if (Enslaved.isRunning && dim.bought > 0) return false;
+  if (Enslaved.isRunning && dim.bought.gt(0)) return false;
   if (ImaginaryUpgrade(15).isLockingMechanics && EternityChallenge(7).completions > 0) {
     if (!auto) {
       ImaginaryUpgrade(15).tryShowWarningModal(`purchase a Time Dimension,
@@ -22,7 +22,7 @@ export function buySingleTimeDimension(tier, auto = false) {
   }
 
   Currency.eternityPoints.subtract(dim.cost);
-  dim.amount = dim.amount.plus(1);
+  dim.amount = dim.amount.add(1);
   dim.bought = dim.bought.add(1);
   dim.cost = dim.nextCost(dim.bought);
   return true;

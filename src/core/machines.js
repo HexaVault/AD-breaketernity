@@ -22,7 +22,7 @@ export const MachineHandler = {
       if (log10FinalEP.gt(8000)) log10FinalEP = new Decimal(8000);
       if (log10FinalEP.gt(6000)) log10FinalEP = log10FinalEP.sub((log10FinalEP.sub(6000)).times(0.75));
     }
-    let rmGain = DC.E3.pow(log10FinalEP.div(4000 - 1));
+    let rmGain = DC.E3.pow(log10FinalEP.div(4000).sub(1));
     // Increase base RM gain if <10 RM
     if (rmGain.gte(1) && rmGain.lt(10)) rmGain = new Decimal(new Decimal(27).div(log10FinalEP.minus(26).times(4000)));
     rmGain = rmGain.times(this.realityMachineMultiplier);

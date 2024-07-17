@@ -321,21 +321,21 @@ class EPMultiplierState extends GameMechanicState {
     let cur = Currency.eternityPoints.value.max(1);
     if (cur.gt(this.costIncreaseThresholds[3])) {
       cur = Decimal.log(cur.div(500), 1e3);
-      return cur.add(Math.pow(1332, 1.2)).root(1.2).floor();
+      return cur.add(Math.pow(1332, 1.2)).root(1.2).floor().max(1332);
       // eslint-disable-next-line no-else-return
     } else {
       if (cur.gt(this.costIncreaseThresholds[0])) {
         bulk = DC.E100.div(500).log(50).floor();
         tempVal = DC.E2.pow(bulk).times(500);
       } else {
-        return cur.div(500).log(50).floor();
+        return cur.div(500).log(50).max(0).floor();
       }
       if (cur.gt(this.costIncreaseThresholds[1])) {
         tempVal = DC.NUMMAX.div(tempVal);
         bulk = bulk.add(tempVal.log(100));
         tempVal = (DC.E2.times(5)).pow(bulk).times(500);
       } else {
-        return bulk.add(cur.div(tempVal).log(100)).floor();
+        return bulk.add(cur.div(tempVal).log(100).max(0)).floor();
       }
       if (cur.gt(this.costIncreaseThresholds[2])) {
         tempVal = DC.E1300.div(tempVal);
@@ -370,7 +370,7 @@ class EPMultiplierState extends GameMechanicState {
     while (Currency.eternityPoints.gt(this.costAfterCount(this.boughtAmount.add(1))) &&
     i < 50 && this.boughtAmount.layer < 1) {
       this.boughtAmount = this.boughtAmount.add(1);
-      Currency.eternityPoints.subtract(this.costAfterCount(this.boughtAmount.add(1)));
+      Currency.eternityPoints.subtract(this.costAfterCount(this.boughtAmount));
       i += 1;
     }
     return true;
@@ -391,7 +391,7 @@ class EPMultiplierState extends GameMechanicState {
       const cost = Decimal.pow(multPerUpgrade[i], count).times(500);
       if (cost.lt(costThresholds[i])) return cost;
     }
-    // This formula is slightly harsher than base AD but who gives a fuck
+    // This formula is slightly weaker than base AD but who gives a fuck
     return DC.E3.pow(count.pow(1.2).sub(Math.pow(1332, 1.2))).times(500);
   }
 }

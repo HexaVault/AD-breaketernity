@@ -122,15 +122,16 @@ export function maxPurchaseDilationUpgrades() {
   }
 
   function allrebuyablesLayer() {
-    if (player.dilation.rebuyables[1].layer !== 0) return false;
+    let bool = true;
+    if (player.dilation.rebuyables[1].layer !== 0) bool = false;
     // eslint-disable-next-line max-len
-    if (player.dilation.rebuyables[2].layer !== 0 || player.dilation.rebuyables[1].gt(DilationUpgrade.galaxyThreshold.config.purchaseCap)) return false;
-    if (player.dilation.rebuyables[3].layer !== 0) return false;
-    return true;
+    if (player.dilation.rebuyables[2].layer !== 0 || player.dilation.rebuyables[1].gt(DilationUpgrade.galaxyThreshold.config.purchaseCap)) bool = false;
+    if (player.dilation.rebuyables[3].layer !== 0) bool = false;
+    return bool;
   }
 
   let didBuyLastIter = false;
-  for (let i = 0; i < 500 && !allrebuyablesLayer(); i++) {
+  for (let i = 0; i < 50 && allrebuyablesLayer(); i++) {
     didBuyLastIter = buyDilationUpgrade(1, 1);
     if (Perk.bypassTGReset.isBought) {
       didBuyLastIter = didBuyLastIter || buyDilationUpgrade(2, 1);

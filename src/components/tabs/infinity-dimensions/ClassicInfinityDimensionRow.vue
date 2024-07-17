@@ -33,7 +33,7 @@ export default {
       capIP: new Decimal(0),
       isAutobuyerOn: false,
       isEC8Running: false,
-      hardcap: InfinityDimensions.HARDCAP_PURCHASES,
+      hardcap: new Decimal(0),
       eternityReached: false,
       enslavedRunning: false,
     };

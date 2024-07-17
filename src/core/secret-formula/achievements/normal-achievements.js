@@ -766,7 +766,7 @@ export const normalAchievements = [
     },
     checkRequirement: () => {
       if (player.records.recentInfinities.some(i => i[0] === Number.MAX_VALUE)) return false;
-      const infinities = player.records.recentInfinities.map(run => run[2]);
+      const infinities = player.records.recentInfinities.map(run => run[3]);
       for (let i = 0; i < infinities.length - 1; i++) {
         if (infinities[i].lt(infinities[i + 1].times(DC.NUMMAX))) return false;
       }
@@ -1052,7 +1052,7 @@ export const normalAchievements = [
     },
     checkRequirement: () => {
       if (player.records.recentEternities.some(i => i[0] === Number.MAX_VALUE)) return false;
-      const eternities = player.records.recentEternities.map(run => run[2]);
+      const eternities = player.records.recentEternities.map(run => run[3]);
       for (let i = 0; i < eternities.length - 1; i++) {
         if (eternities[i].lt(eternities[i + 1].times(DC.NUMMAX))) return false;
       }
