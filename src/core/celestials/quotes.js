@@ -34,7 +34,7 @@ export const Quote = {
 // Gives an array specifying proportions of celestials to blend together on the modal, as a function of time, to
 // provide a smoother transition between different celestials to reduce potential photosensitivity issues
 function blendCel(cels) {
-  const totalTime = cels.map(cel => cel[1]).sum();
+  const totalTime = cels.map(cel => cel[1]).nSum();
   const tick = (Date.now() / 1000) % totalTime;
 
   // Blend the first blendTime seconds with the previous celestial and the last blendTime seconds with the next;
