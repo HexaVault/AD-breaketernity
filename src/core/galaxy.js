@@ -52,8 +52,8 @@ export class Galaxy {
     if (currency.lt(Galaxy.requirementAt(Galaxy.remoteStart).amount)) {
       // Quadratic equation https://discord.com/channels/351476683016241162/1131505261903880244/1261706311901511691
       const a = DC.D1;
-      const b = scale.add(1);
-      const c = base.add(dis.pow(2)).sub(dis.mul(3)).sub(currency.div(alter));
+      const b = scale.add(1).sub(dis.mul(2));
+      const c = base.add(dis.pow(2)).sub(dis).sub(scale).sub(currency.div(alter));
       const quad = decimalQuadraticSolution(a, b, c).floor();
       return Decimal.max(quad, minVal);
     }
@@ -113,17 +113,15 @@ export class Galaxy {
     }, 0, true).quantity).floor().add(1).max(minVal);
   }
 
-  static requirementAt(galaxies, log = false) {
+  static requirementAt(galaxies) {
     // Beyond 1e6 (or further if remote is beyond that) the other effects are so small in changes that it doesn't matter
     // This does technically make it slightly weaker than vanilla, but its so minor you would rarely ever notice, and it
     // allows the inverse to be correct beyond 1e6 without using any really annoying math methods that i dont understand
     const equivGal = Decimal.min(Decimal.max(1e6, Galaxy.remoteStart), galaxies);
     let amount = Galaxy.baseCost.add((equivGal.times(Galaxy.costMult)));
-    if (log) console.log(amount)
-
     const type = Galaxy.typeAt(galaxies);
 
-    if (type === GALAXY_TYPE.DISTANT && EternityChallenge(5).isRunning) {
+    if (type === GALAXY_TYPE.DISTANT) {
       amount = amount.add(Decimal.pow(equivGal, 2).add(equivGal));
     } else if (type === GALAXY_TYPE.DISTANT || type === GALAXY_TYPE.REMOTE) {
       const galaxyCostScalingStart = this.costScalingStart;
@@ -175,6 +173,7 @@ export class Galaxy {
   }
 
   static get costScalingStart() {
+    if (EternityChallenge(5).isRunning) return DC.D0;
     return DC.E2.add(new Decimal(TimeStudy(302).effectOrDefault(0))
       .add(Effects.sum(
         TimeStudy(223),
@@ -192,7 +191,7 @@ export class Galaxy {
     if (galaxies.gte(Galaxy.remoteStart)) {
       return GALAXY_TYPE.REMOTE;
     }
-    if (EternityChallenge(5).isRunning || galaxies.gte(this.costScalingStart)) {
+    if (galaxies.gte(this.costScalingStart)) {
       return GALAXY_TYPE.DISTANT;
     }
     return GALAXY_TYPE.NORMAL;
