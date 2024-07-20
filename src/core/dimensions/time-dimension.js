@@ -72,7 +72,7 @@ export function calcHighestPurchaseableTD(tier, currency) {
     const preInc = Decimal.log10(DC.NUMMAX).sub(logBase).div(logMult).floor();
     logMult = TimeDimension(tier)._costMultiplier.mul(1.5).log10();
     const decCur = logC.sub(preInc.mul(logMult));
-    const postInc = decCur.div(logMult).add(1).clampMin(0).floor();
+    const postInc = decCur.div(logMult).clampMin(0).floor();
     return Decimal.add(preInc, postInc);
   }
 
@@ -81,7 +81,7 @@ export function calcHighestPurchaseableTD(tier, currency) {
     const preInc = Decimal.log10(DC.E1300).sub(logBase).div(logMult).floor();
     logMult = TimeDimension(tier)._costMultiplier.mul(2.2).log10();
     const decCur = logC.sub(preInc.mul(logMult));
-    const postInc = decCur.div(logMult).add(1).clampMin(0).floor();
+    const postInc = decCur.div(logMult).clampMin(0).floor();
     return Decimal.add(preInc, postInc);
   }
   throw new Error("calcHighestPurchasableTD reached too far in code");
