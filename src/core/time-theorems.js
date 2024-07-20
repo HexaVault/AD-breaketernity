@@ -109,8 +109,8 @@ TimeTheoremPurchaseType.ep = new class extends TimeTheoremPurchaseType {
   get costIncrement() { return DC.D2; }
 
   bulkCost(amount) {
-    if (Perk.ttFree.canBeApplied || this.currency.layer > 1) return this.cost.times(this.costIncrement.pow(amount.sub(1)));
-    return this.costIncrement.pow(amount.add(this.amount)).subtract(this.cost);
+    if (Perk.ttFree.canBeApplied || this.currency.layer > 1) return this.cost.times(this.costIncrement.pow(amount));
+    return this.cost.times(this.costIncrement.pow(amount.sub(1)));
   }
 }();
 
