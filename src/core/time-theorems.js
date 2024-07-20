@@ -60,12 +60,12 @@ export class TimeTheoremPurchaseType {
       .clampMin(this.costIncrement.recip()).log(this.costIncrement);
     let amntPur = canBuy.sub(this.amount).floor();
     // We can definitely afford x - 1
-    amntPur = amntPur.sub(1);
+    amntPur = amntPur.sub(1).max(0);
     Currency.timeTheorems.add(amntPur);
     this.add(amntPur);
-    if (!Perk.ttFree.canBeApplied && this.currency.layer <= 1) this.currency.subtract(this.cost);
+    if (!Perk.ttFree.canBeApplied && this.currency.layer <= 1 && amntPur.neq(0)) this.currency.subtract(this.cost);
     // Can we afford another? If not, just return that we definitely bought some already
-    if (this.currency.lt(this.cost)) return true;
+    if (this.currency.lt(this.cost) && amntPur.neq(0)) return true;
     Currency.timeTheorems.add(1);
     if (!Perk.ttFree.canBeApplied && this.currency.layer <= 1) this.currency.subtract(this.cost);
     this.add(1);
