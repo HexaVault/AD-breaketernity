@@ -46,7 +46,7 @@ export class Galaxy {
     // Plz no ask how exponential math work i dont know i just code, see https://discord.com/channels/351476683016241162/439241762603663370/1210707188964659230m
     const minV = Galaxy.costScalingStart.min(Galaxy.remoteStart); // Take the smallest of the two values
     if (currency.lt(Galaxy.requirementAt(minV).amount /* Pre exponential/quadratic? */)) {
-      return Decimal.max(currency.sub(base).div(scale).floor(), minVal);
+      return Decimal.max(currency.sub(base).div(scale).floor().add(1), minVal);
     }
 
     if (currency.lt(Galaxy.requirementAt(Galaxy.remoteStart).amount)) {
@@ -121,9 +121,7 @@ export class Galaxy {
     let amount = Galaxy.baseCost.add((equivGal.times(Galaxy.costMult)));
     const type = Galaxy.typeAt(galaxies);
 
-    if (type === GALAXY_TYPE.DISTANT) {
-      amount = amount.add(Decimal.pow(equivGal, 2).add(equivGal));
-    } else if (type === GALAXY_TYPE.DISTANT || type === GALAXY_TYPE.REMOTE) {
+    if (type === GALAXY_TYPE.DISTANT || type === GALAXY_TYPE.REMOTE) {
       const galaxyCostScalingStart = this.costScalingStart;
       const galaxiesAfterDistant = Decimal.clampMin(equivGal.sub(galaxyCostScalingStart).add(1), 0);
       amount = amount.add(Decimal.pow(galaxiesAfterDistant, 2).add(galaxiesAfterDistant));
