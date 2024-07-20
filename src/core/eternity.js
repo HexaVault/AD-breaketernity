@@ -358,17 +358,17 @@ class EPMultiplierState extends GameMechanicState {
 
     let bulk = Decimal.floor(this.costInv());
     if (bulk.lt(1)) return false;
-    const price = this.costAfterCount(bulk);
+    const price = this.costAfterCount(bulk.sub(1));
     bulk = bulk.sub(this.boughtAmount).max(0);
 
     if (bulk.eq(0)) return false;
     Currency.eternityPoints.subtract(price);
     this.boughtAmount = this.boughtAmount.add(bulk);
     let i = 0;
-    while (Currency.eternityPoints.gt(this.costAfterCount(this.boughtAmount.add(1))) &&
+    while (Currency.eternityPoints.gt(this.costAfterCount(this.boughtAmount)) &&
     i < 50 && this.boughtAmount.layer < 1) {
       this.boughtAmount = this.boughtAmount.add(1);
-      Currency.eternityPoints.subtract(this.costAfterCount(this.boughtAmount));
+      Currency.eternityPoints.subtract(this.costAfterCount(this.boughtAmount.sub(1)));
       i += 1;
     }
     return true;
