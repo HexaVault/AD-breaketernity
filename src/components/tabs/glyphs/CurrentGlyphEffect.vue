@@ -31,7 +31,7 @@ export default {
       if (!this.isColored) return { };
       const typeObject = this.effectConfig.id === "timeshardpow"
         ? CosmeticGlyphTypes.time
-        : CosmeticGlyphTypes[this.effectConfig.glyphTypes];
+        : CosmeticGlyphTypes[this.effectConfig.glyphTypes[0]()];
 
       let glyphColor = typeObject.currentColor.border;
       if (typeObject.id === "cursed") glyphColor = "var(--color-celestials)";
