@@ -465,7 +465,7 @@ window.player = {
             score: 0,
             effectCount: 0,
             specifiedMask: [],
-            effectScores: Array.repeat(0, t.effectIDs.length).mapToObject(e => t.effectIDs[e], n => n),
+            effectScores: Array.repeat(0, GlyphInfo[t].effectIDs.length).mapToObject(e => GlyphInfo[t].effectIDs[e], n => n),
           })),
       },
       createdRealityGlyph: false,
