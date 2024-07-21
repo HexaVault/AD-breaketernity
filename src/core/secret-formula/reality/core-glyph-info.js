@@ -78,7 +78,7 @@ export const GlyphInfo = {
     "reality"
   ],
 
-  generatedGlyphEffects: [
+  generatedGlyphTypes: [
     "power",
     "infinity",
     "replication",
