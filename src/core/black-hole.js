@@ -181,7 +181,7 @@ class BlackHoleState {
       ? this.timeToNextStateChange.add(this.interval)
       : this.timeToNextStateChange;
     // This is the number of full cycles needed...
-    totalTime = totalTime.add(timeActive.div().floor().mul(this.cycleLength));
+    totalTime = totalTime.add(timeActive.div(this.duration).floor().mul(this.cycleLength));
     // And the time from a partial cycle.
     totalTime = totalTime.add(timeActive.mod(this.duration));
     return totalTime;
