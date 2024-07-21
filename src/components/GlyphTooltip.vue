@@ -1,4 +1,6 @@
 <script>
+import { GlyphInfo } from "../core/secret-formula/reality/core-glyph-info";
+
 import GlyphTooltipEffect from "@/components/GlyphTooltipEffect";
 
 export default {
@@ -225,7 +227,7 @@ export default {
       return Theme.current().isDark() ? "#cccccc" : "black";
     },
     sacrificeText() {
-      if (this.type === "companion" || this.type === "cursed") return "";
+      if (!GlyphInfo[this.type].hasSacrifice) return "";
       const powerText = `${format(this.sacrificeReward, 2, 2)}`;
       const isCurrentAction = this.currentAction === "sacrifice";
       return `<span style="font-weight: ${isCurrentAction ? "bold" : ""};">
@@ -233,7 +235,7 @@ export default {
               </span>`;
     },
     refineText() {
-      if (this.type === "companion" || this.type === "cursed" || this.type === "reality") return "";
+      if (!GlyphInfo[this.type].hasAlchemyResource) return "";
       if (!AlchemyResource[this.type].isUnlocked) return "";
       let refinementText = `${format(this.uncappedRefineReward, 2, 2)} ${GlyphInfo[this.type].regularGlyphSymbol}`;
       if (this.uncappedRefineReward.neq(this.refineReward)) {

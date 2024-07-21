@@ -78,6 +78,15 @@ export const GlyphInfo = {
     "reality"
   ],
 
+  generatedGlyphEffects: [
+    "power",
+    "infinity",
+    "replication",
+    "time",
+    "dilation",
+    "effarig"
+  ],
+
   rarities: [
     {
       minStrength: 3.5,
@@ -141,6 +150,7 @@ export const GlyphInfo = {
   cursed: {
     id: "cursed",
     effects: () => GlyphEffects.all.filter(e => complexIncludes(e.glyphTypes, "cursed")),
+    effectIDs: ["cursedgalaxies", "curseddimensions", "cursedtickspeed", "cursedEP"],
     adjective: { high: "Cursed", mid: "Hexed", low: "Jinxed" },
     noun: "Curse",
     isBasic: false,
@@ -159,6 +169,7 @@ export const GlyphInfo = {
   reality: {
     id: "reality",
     effects: () => GlyphEffects.all.filter(e => complexIncludes(e.glyphTypes, "reality")),
+    effectIDs: ["realityglyphlevel", "realitygalaxies", "realityrow1pow", "realityDTglyph"],
     adjective: "Real",
     noun: "Reality",
     isBasic: false,
@@ -189,6 +200,7 @@ export const GlyphInfo = {
   effarig: {
     id: "effarig",
     effects: () => GlyphEffects.all.filter(e => complexIncludes(e.glyphTypes, "effarig")),
+    effectIDs: ["effarigrm", "effarigglyph", "effarigblackhole", "effarigachievement", "effarigforgotten", "effarigdimensions", "effarigantimatter"],
     adjective: { both: "Meta", glyph: "Stable", rm: "Mechanical", none: "Fragmented" },
     noun: { both: "Effarig", glyph: "Stability", rm: "Mechanism", none: "Fragmentation" },
     isBasic: false,
@@ -221,6 +233,7 @@ export const GlyphInfo = {
   companion: {
     id: "companion",
     effects: () => GlyphEffects.all.filter(e => complexIncludes(e.glyphTypes, "companion")),
+    effectIDs: ["companiondescription", "companionEP"],
     adjective: "Huggable",
     noun: "Companion",
     isBasic: false,
@@ -240,6 +253,7 @@ export const GlyphInfo = {
     id: "power",
     effects: () => GlyphEffects.all.filter(e => complexIncludes(e.glyphTypes, "power")),
     adjective: { high: "Powerful", mid: "Mastered", low: "Potential" },
+    effectIDs: ["powerpow", "powermult", "powerdimboost", "powerbuy10"],
     noun: "Power",
     isBasic: true,
     regularGlyphSymbol: "Ω",
@@ -278,6 +292,7 @@ export const GlyphInfo = {
   infinity: {
     id: "infinity",
     effects: () => GlyphEffects.all.filter(e => complexIncludes(e.glyphTypes, "infinity")),
+    effectIDs: ["infinitypow", "infinityrate", "infinityIP", "infinityinfmult"],
     adjective: { high: "Infinite", mid: "Boundless", low: "Immense" },
     noun: "Infinity",
     isBasic: true,
@@ -308,6 +323,7 @@ export const GlyphInfo = {
   replication: {
     id: "replication",
     effects: () => GlyphEffects.all.filter(e => complexIncludes(e.glyphTypes, "replication")),
+    effectIDs: ["replicationspeed", "replicationpow", "replicationdtgain", "replicationglyphlevel"],
     adjective: { high: "Replicated", mid: "Simulated", low: "Duplicated" },
     noun: "Replication",
     isBasic: true,
@@ -346,6 +362,7 @@ export const GlyphInfo = {
   time: {
     id: "time",
     effects: () => GlyphEffects.all.filter(e => complexIncludes(e.glyphTypes, "time")),
+    effectIDs: ["timepow", "timespeed", "timeetermult", "timeEP"],
     adjective: { high: "Temporal", mid: "Chronal", low: "Transient" },
     noun: "Time",
     isBasic: true,
@@ -376,6 +393,7 @@ export const GlyphInfo = {
   dilation: {
     id: "dilation",
     effects: () => GlyphEffects.all.filter(e => complexIncludes(e.glyphTypes, "dilation")),
+    effectIDs: ["dilationDT", "dilationgalaxyThreshold", "dilationTTgen", "dilationpow"],
     adjective: { high: "Dilated", mid: "Attenuated", low: "Diluted" },
     noun: "Dilation",
     isBasic: true,

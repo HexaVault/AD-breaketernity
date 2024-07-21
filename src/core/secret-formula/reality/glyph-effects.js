@@ -27,6 +27,7 @@ export const GlyphCombiner = Object.freeze({
   multiplyDecimal: x => x.reduce(Decimal.prodReducer, DC.D1)
 });
 
+// Make sure to add your effects to glyph-core.js orderedEffectList
 export const glyphEffects = {
   timepow: {
     id: "timepow",

@@ -459,13 +459,13 @@ window.player = {
         trash: AUTO_GLYPH_REJECT.SACRIFICE,
         simple: 0,
         types: Object.keys(getGlyphTypes())
-          .filter(t => GlyphInfo.alchemyGlyphTypes.includes(t.id))
+          .filter(t => GlyphInfo.generatedGlyphTypes.includes(t))
           .mapToObject(t => t.id, t => ({
             rarity: new Decimal(),
             score: 0,
             effectCount: 0,
             specifiedMask: [],
-            effectScores: Array.repeat(0, t.effects().length).mapToObject(e => t.effects()[e].id, n => n),
+            effectScores: Array.repeat(0, t.effectIDs.length).mapToObject(e => t.effectIDs[e], n => n),
           })),
       },
       createdRealityGlyph: false,

@@ -51,10 +51,10 @@ export default {
       return getAdjustedGlyphLevel(this.glyph, this.realityGlyphBoost, true);
     },
     isLevelCapped() {
-      return this.effectiveLevel && this.effectiveLevel < this.level;
+      return this.effectiveLevel && this.effectiveLevel.lt(this.level);
     },
     isLevelBoosted() {
-      return this.effectiveLevel && this.effectiveLevel > this.level;
+      return this.effectiveLevel && this.effectiveLevel.gt(this.level);
     },
     levelText() {
       if (this.type === "companion") return "";
