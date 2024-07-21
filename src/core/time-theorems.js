@@ -130,19 +130,19 @@ export const TimeTheorems = {
 
   // This is only called via automation and there's no manual use-case, so we assume auto is true and simplify a bit
   buyOneOfEach() {
-    if (!this.checkForBuying(true)) return 0;
+    if (!this.checkForBuying(true)) return DC.D0;
     const ttAM = this.buyOne(true, "am");
     const ttIP = this.buyOne(true, "ip");
     const ttEP = this.buyOne(true, "ep");
-    return ttAM + ttIP + ttEP;
+    return ttAM.add(ttIP).add(ttEP);
   },
 
   buyMax(auto = false) {
-    if (!this.checkForBuying(auto)) return 0;
+    if (!this.checkForBuying(auto)) return DC.D0;
     const ttAM = TimeTheoremPurchaseType.am.purchase(true);
     const ttIP = TimeTheoremPurchaseType.ip.purchase(true);
     const ttEP = TimeTheoremPurchaseType.ep.purchase(true);
-    return ttAM + ttIP + ttEP;
+    return ttAM.add(ttIP).add(ttEP);
   },
 
   totalPurchased() {
