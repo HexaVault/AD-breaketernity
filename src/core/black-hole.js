@@ -245,7 +245,7 @@ class BlackHoleState {
     // should work even if activePeriods[i] is very large. To check:
     // This used to always use the period of blackHole[0], now it doesn't,
     // will this cause other bugs?
-    this._data.phase = this._data.phase.add(activePeriod.div(1000));
+    this._data.phase = this._data.phase.add(activePeriod);
 
     if (this.phase.gte(this.cycleLength)) {
       // One activation for each full cycle.
@@ -285,7 +285,7 @@ class BlackHoleState {
     const duration = this.duration;
     const fullCycle = this.cycleLength;
     const currentActivationDuration = nextDeactivation.clampMax(duration);
-    const activeCyclesUntilLastDeactivation = time.sub(nextDeactivation).floor().div(fullCycle);
+    const activeCyclesUntilLastDeactivation = time.sub(nextDeactivation).div(fullCycle).floor();
     const activeTimeUntilLastDeactivation = duration.mul(activeCyclesUntilLastDeactivation);
     const timeLeftAfterLastDeactivation = time.sub(nextDeactivation).add(fullCycle).mod(fullCycle);
     const lastActivationDuration = timeLeftAfterLastDeactivation.sub(cooldown).clampMin(0);
