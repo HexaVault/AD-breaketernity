@@ -245,7 +245,7 @@ class BlackHoleState {
     // should work even if activePeriods[i] is very large. To check:
     // This used to always use the period of blackHole[0], now it doesn't,
     // will this cause other bugs?
-    this._data.phase = this._data.phase.add(activePeriod);
+    this._data.phase = this._data.phase.add(activePeriod.div(1000));
 
     if (this.phase.gte(this.cycleLength)) {
       // One activation for each full cycle.
