@@ -238,11 +238,12 @@ export const GlyphGenerator = {
     // as preventing all of the glyphs changing drastically when RU17 is purchased.
     const random1 = rng.uniform();
     const random2 = rng.uniform();
-    if (type !== "effarig" && Ra.unlocks.glyphEffectCount.canBeApplied) return 4;
-    const maxEffects = Ra.unlocks.glyphEffectCount.canBeApplied ? 7 : 4;
+    if (type !== "effarig" && Ra.unlocks.glyphEffectCount.canBeApplied) return GlyphInfo[type].effects().length;
+    const maxEffects = !Ra.unlocks.glyphEffectCount.canBeApplied && type === "effarig" ? 4 : GlyphInfo[type].effects().length;
     let num = Decimal.min(
       maxEffects,
-      Decimal.floor(Decimal.pow(random1, DC.D1.sub(Decimal.pow(level.times(strength), 0.5)).div(100)).times(1.5).add(1))
+      // eslint-disable-next-line max-len
+      Decimal.floor(Decimal.pow(random1, DC.D1.sub((Decimal.pow(level.times(strength), 0.5)).div(100))).times(1.5).add(1))
     ).min(1e10).toNumber();
     // Incase someone somehow forgets to put a limit, this .min(1e10) is a final protection
     // If we do decide to add anything else that boosts chance of an extra effect, keeping the code like this
@@ -267,8 +268,8 @@ export const GlyphGenerator = {
   generateEffects(type, count, rng, guarenteedEffects = []) {
     const glyphTypeEffects = GlyphInfo[type].effects();
     const effectValues = glyphTypeEffects.mapToObject(x => x.intID, () => rng.uniform());
-    // Get a bunch of random numbers so that we always use 7 here.
-    Array.range(0, 7 - glyphTypeEffects.length).forEach(() => rng.uniform());
+    // Get a bunch of random numbers so that we always use 250 here. Can be increased if you *really* need to
+    Array.range(0, 250 - glyphTypeEffects.length).forEach(() => rng.uniform());
     if (type === "effarig") {
       // This is effarigrm/effarigglyph
       const unincluded = effectValues[20] < effectValues[21] ? 20 : 21;
