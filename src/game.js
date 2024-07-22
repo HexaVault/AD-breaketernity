@@ -423,6 +423,8 @@ export function realTimeMechanics(realDiff) {
     GameUI.update();
     return true;
   }
+
+  BlackHoles.updatePhases(realDiff);
   return false;
 }
 
@@ -486,7 +488,6 @@ export function gameLoop(passedDiff, options = {}) {
   GameCache.timeDimensionCommonMultiplier.invalidate();
   GameCache.totalIPMult.invalidate();
 
-  const blackHoleDiff = realDiff;
   const fixedSpeedActive = EternityChallenge(12).isRunning;
   if (!Enslaved.isReleaseTick && !fixedSpeedActive) {
     let speedFactor;
@@ -592,8 +593,6 @@ export function gameLoop(passedDiff, options = {}) {
   updateTachyonGalaxies();
   Currency.timeTheorems.add(getTTPerSecond().times(diff.div(1000)));
   InfinityDimensions.tryAutoUnlock();
-
-  BlackHoles.updatePhases(blackHoleDiff);
 
   // Unlocks dilation at a certain total TT count for free, but we add the cost first in order to make
   // sure that TT count doesn't go negative and that we can actually buy it. This technically bumps the max theorem
