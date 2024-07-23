@@ -66,7 +66,7 @@ export default {
       return format(this.currentSacrifice.sacrificeValue, 2, 2);
     },
     formatTotalAmount() {
-      return format(this.amount + this.currentSacrifice.sacrificeValue, 2, 2);
+      return format(this.amount.add(this.currentSacrifice.sacrificeValue), 2, 2);
     },
   },
   created() {

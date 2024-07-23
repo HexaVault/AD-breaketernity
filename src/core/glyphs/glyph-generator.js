@@ -302,7 +302,7 @@ export const GlyphGenerator = {
 
   randomType(rng, typesSoFar = []) {
     const generatable = generatedTypes.filter(x => (GlyphInfo[x].isGenerated ?? false) &&
-      (GlyphInfo[x].generationRequirement ?? true));
+      (GlyphInfo[x].generationRequirement ? GlyphInfo[x].generationRequirement() : true));
     const maxOfSameTypeSoFar = generatable.map(x => typesSoFar.countWhere(y => y === x)).max();
     const blacklisted = typesSoFar.length === 0
       ? [] : generatable.filter(x => typesSoFar.countWhere(y => y === x) === maxOfSameTypeSoFar);

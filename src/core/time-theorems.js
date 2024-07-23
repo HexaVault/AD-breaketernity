@@ -116,7 +116,7 @@ TimeTheoremPurchaseType.ep = new class extends TimeTheoremPurchaseType {
 
 export const TimeTheorems = {
   checkForBuying(auto) {
-    if (PlayerProgress.realityUnlocked() || TimeDimension(1).bought) return true;
+    if (PlayerProgress.realityUnlocked() || TimeDimension(1).bought.neq(0)) return true;
     if (!auto) Modal.message.show(`You need to buy at least ${formatInt(1)} Time Dimension before you can purchase
       Time Theorems.`, { closeEvent: GAME_EVENT.REALITY_RESET_AFTER });
     return false;
@@ -130,19 +130,17 @@ export const TimeTheorems = {
 
   // This is only called via automation and there's no manual use-case, so we assume auto is true and simplify a bit
   buyOneOfEach() {
-    if (!this.checkForBuying(true)) return DC.D0;
-    const ttAM = this.buyOne(true, "am");
-    const ttIP = this.buyOne(true, "ip");
-    const ttEP = this.buyOne(true, "ep");
-    return ttAM.add(ttIP).add(ttEP);
+    if (!this.checkForBuying(true)) return;
+    this.buyOne(true, "am");
+    this.buyOne(true, "ip");
+    this.buyOne(true, "ep");
   },
 
   buyMax(auto = false) {
-    if (!this.checkForBuying(auto)) return DC.D0;
-    const ttAM = TimeTheoremPurchaseType.am.purchase(true);
-    const ttIP = TimeTheoremPurchaseType.ip.purchase(true);
-    const ttEP = TimeTheoremPurchaseType.ep.purchase(true);
-    return ttAM.add(ttIP).add(ttEP);
+    if (!this.checkForBuying(auto)) return;
+    TimeTheoremPurchaseType.am.purchase(true);
+    TimeTheoremPurchaseType.ip.purchase(true);
+    TimeTheoremPurchaseType.ep.purchase(true);
   },
 
   totalPurchased() {

@@ -29,7 +29,8 @@ export default {
       return AUTO_GLYPH_SCORE;
     },
     glyphTypes() {
-      return GlyphInfo.glyphTypes.filter(e => GlyphInfo[e].generationRequirement !== false && GlyphInfo[e].isGenerated);
+      return GlyphInfo.glyphTypes.filter(e => (GlyphInfo[e].generationRequirement ? GlyphInfo[e].generationRequirement()
+        : true && GlyphInfo[e].isGenerated));
     },
     raritySliderProps() {
       return {
