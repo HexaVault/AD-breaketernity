@@ -1,5 +1,5 @@
 function rebuyableCost(initialCost, increment, id) {
-  return initialCost * Math.pow(increment, player.celestials.teresa.perkShop[id]);
+  return Decimal.mul(initialCost, Decimal.pow(increment, player.celestials.teresa.perkShop[id]));
 }
 function rebuyable(config) {
   const { id, otherReq, cap, costCap, description, formatEffect, formatCost } = config;
