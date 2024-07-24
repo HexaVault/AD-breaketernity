@@ -460,12 +460,12 @@ window.player = {
         simple: 0,
         types: Object.keys(getGlyphTypes())
           .filter(t => GlyphInfo.generatedGlyphTypes.includes(t))
-          .mapToObject(t => t.id, t => ({
+          .mapToObject(t => t, t => ({
             rarity: new Decimal(),
             score: 0,
             effectCount: 0,
             specifiedMask: [],
-            effectScores: Array.repeat(0, GlyphInfo[t].effectIDs.length).mapToObject(e => GlyphInfo[t].effectIDs[e], n => n),
+            effectScores: [...Array(GlyphInfo[t].effectIDs.length).keys()].mapToObject(e => GlyphInfo[t].effectIDs[e], () => 0),
           })),
       },
       createdRealityGlyph: false,
