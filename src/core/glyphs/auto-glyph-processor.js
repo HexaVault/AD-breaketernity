@@ -360,7 +360,7 @@ export function getGlyphLevelInputs() {
 // Calculates glyph weights which don't change over the course of a reality unless particular events occur; this is
 // stored in the GameCache and only invalidated as needed
 export function staticGlyphWeights() {
-  const perkShop = Effects.max(new Decimal(1), PerkShopUpgrade.glyphLevel);
+  const perkShop = PerkShopUpgrade.glyphLevel.effectOrDefault(DC.D1);
   const instability = Glyphs.instabilityThreshold;
   const hyperInstability = Glyphs.hyperInstabilityThreshold;
   const realityUpgrades = [Array.range(1, 5).every(x => RealityUpgrade(x).boughtAmount.gt(0))]
