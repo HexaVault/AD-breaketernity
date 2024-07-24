@@ -67,7 +67,7 @@ export const Teresa = {
     player.celestials.teresa.run = false;
     player.celestials.teresa.bestRunAM = DC.D1;
     player.celestials.teresa.bestAMSet = [];
-    player.celestials.teresa.perkShop = [0, 0, 0, 0, 0];
+    player.celestials.teresa.perkShop = [DC.D0, DC.D0, DC.D0, DC.D0, DC.D0];
     player.celestials.teresa.lastRepeatedMachines = DC.D0;
     player.celestials.teresa.lastRepeatediM = DC.D0;
   },
@@ -92,7 +92,7 @@ class PerkShopUpgradeState extends RebuyableMechanicState {
   }
 
   get isCapped() {
-    return this.cost === this.costCap(this.bought);
+    return this.cost.eq(this.costCap(this.bought));
   }
 
   get isAvailableForPurchase() {

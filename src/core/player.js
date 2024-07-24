@@ -571,7 +571,7 @@ window.player = {
       run: false,
       bestRunAM: DC.D1,
       bestAMSet: [],
-      perkShop: Array.repeat(0, 5),
+      perkShop: Array.repeat(DC.D0, 5),
       lastRepeatedMachines: DC.D0,
       lastRepeatediM: DC.D0
     },
