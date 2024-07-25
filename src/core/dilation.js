@@ -89,14 +89,14 @@ export function buyDilationUpgrade(id, bulk = 1) {
 
     if (id === 3 && !Pelle.isDisabled("tpMults")) {
       let retroactiveTPFactor = Effects.max(
-        1,
+        DC.D1,
         Perk.retroactiveTP1,
         Perk.retroactiveTP2,
         Perk.retroactiveTP3,
         Perk.retroactiveTP4
       );
       if (Enslaved.isRunning) {
-        retroactiveTPFactor = Math.pow(retroactiveTPFactor, Enslaved.tachyonNerf);
+        retroactiveTPFactor = Decimal.pow(retroactiveTPFactor, Enslaved.tachyonNerf);
       }
       Currency.tachyonParticles.multiply(Decimal.pow(retroactiveTPFactor, buying));
     }

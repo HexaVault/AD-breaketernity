@@ -229,7 +229,7 @@ export const glyphEffects = {
     // We also introduce a 3x mult per glyph after the first, so that stacking level 1, 0% glyphs still has an effect.
     // This is still just a flat DT mult when stacking multiple glyphs, but at least it's bigger than 2 or 3.
     combine: effects => ({
-      value: effects.length === 0 ? DC.D0 : effects.reduce(Decimal.prodReducer, Math.pow(0.0001, 1 - effects.length)),
+      value: effects.length === 0 ? DC.D0 : effects.reduce(Decimal.prodReducer, Decimal.pow(0.0001, 1 - effects.length)),
       capped: false
     }),
     conversion: x => x,
@@ -310,7 +310,7 @@ export const glyphEffects = {
     formatEffect: x => format(x, 2, 3),
     combine: GlyphCombiner.multiply,
     // eslint-disable-next-line no-negated-condition
-    softcap: value => ((Effarig.eternityCap !== undefined) ? Math.min(value, Effarig.eternityCap) : value),
+    softcap: value => ((Effarig.eternityCap !== undefined) ? Decimal.min(value, Effarig.eternityCap) : value),
     conversion: x => Decimal.log10(x).div(1800).add(1),
     formatSecondaryEffect: x => format(x, 4, 4),
     alteredColor: () => GlyphAlteration.getAdditionColor("infinity"),
