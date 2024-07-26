@@ -604,7 +604,7 @@ window.player = {
       feltEternity: false,
       progressBits: 0,
       hintBits: 0,
-      hintUnlockProgress: 0,
+      hintUnlockProgress: DC.D0,
       glyphHintsGiven: 0,
       zeroHintTime: 0
     },
