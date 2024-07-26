@@ -87,7 +87,7 @@ export default {
     update() {
       const tier = this.tier;
       const dimension = TimeDimension(tier);
-      this.isCapped = Enslaved.isRunning && dimension.bought > 0;
+      this.isCapped = Enslaved.isRunning && dimension.bought.gt(0);
       this.isUnlocked = dimension.isUnlocked;
       this.multiplier.copyFrom(dimension.multiplier);
       this.amount.copyFrom(dimension.amount);
