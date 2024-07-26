@@ -129,7 +129,7 @@ export default {
     },
     // Make the button have a visual animation if Realitying will give a reward
     hasSpecialReward() {
-      if (Teresa.isRunning && Teresa.rewardMultiplier(Currency.antimatter.value) > Teresa.runRewardMultiplier) {
+      if (Teresa.isRunning && Teresa.rewardMultiplier(Currency.antimatter.value).gt(Teresa.runRewardMultiplier)) {
         return true;
       }
       return Currency.eternityPoints.value.max(1).log10().gte(4000) &&
