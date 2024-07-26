@@ -615,8 +615,8 @@ export function gameLoop(passedDiff, options = {}) {
   if ((teresa1 || teresa25) && !Pelle.isDoomed) rewardTP();
 
   if (Enslaved.canTickHintTimer) {
-    player.celestials.enslaved.hintUnlockProgress += Enslaved.isRunning ? realDiff.clampMax(1e10).toNumber()
-      : realDiff.mul(0.4).clampMax(1e10).toNumber();
+    player.celestials.enslaved.hintUnlockProgress = player.celestials.enslaved.hintUnlockProgress.add(Enslaved.isRunning ? realDiff.clampMax(1e10)
+      : realDiff.mul(0.4).clampMax(1e10));
     if (player.celestials.enslaved.hintUnlockProgress.gte(TimeSpan.fromHours(5).totalMilliseconds)) {
       EnslavedProgress.hintsUnlocked.giveProgress();
       Enslaved.quotes.hintUnlock.show();
