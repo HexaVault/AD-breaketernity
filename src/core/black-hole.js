@@ -385,7 +385,7 @@ export const BlackHoles = {
   },
 
   get areNegative() {
-    return this.arePaused && !Enslaved.isRunning && !Laitela.isRunning && player.blackHoleNegative < 1;
+    return this.arePaused && !Enslaved.isRunning && !Laitela.isRunning && player.blackHoleNegative.lt(1);
   },
 
   get arePermanent() {

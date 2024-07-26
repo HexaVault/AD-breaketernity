@@ -40,14 +40,14 @@ const complexIncludes = (x, filterItem) => x.map(n => n().includes(filterItem)).
 
 export const GlyphInfo = {
   glyphTypes: [
+    "cursed",
+    "reality",
+    "effarig",
     "power",
     "infinity",
     "replication",
     "time",
     "dilation",
-    "reality",
-    "effarig",
-    "cursed",
     "companion",
   ],
 
