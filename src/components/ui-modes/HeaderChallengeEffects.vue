@@ -49,9 +49,8 @@ export default {
       }
 
       this.waitingforHint = Enslaved.canTickHintTimer;
-      const rawMsUntilHints = 5 * 3600 * 1000 - player.celestials.enslaved.hintUnlockProgress;
-      this.enslavedTimer = TimeSpan.fromMilliseconds(new Decimal(rawMsUntilHints / (Enslaved.isRunning ? 1 : 0.4)))
-        .toStringShort();
+      const rawMsUntilHints = Decimal.sub(5 * 3600 * 1000, player.celestials.enslaved.hintUnlockProgress);
+      this.enslavedTimer = TimeSpan.fromMilliseconds(rawMsUntilHints.div(Enslaved.isRunning ? 1 : 0.4)).toStringShort();
     },
     updateChallengePower() {
       const isC2Running = NormalChallenge(2).isRunning;
