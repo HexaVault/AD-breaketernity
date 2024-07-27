@@ -147,7 +147,7 @@ export const GlyphGenerator = {
   cursedGlyph() {
     const str = rarityToStrength(100);
     const effects = [];
-    GlyphEffects.all.filter(e => e.id.includes("cursed")).forEach(e => effect.push(e.id));
+    GlyphEffects.all.filter(e => e.id.startsWith("cursed")).forEach(e => effects.push(e.id));
     return {
       id: undefined,
       idx: null,
@@ -164,7 +164,7 @@ export const GlyphGenerator = {
   doomedGlyph(type) {
     const effects = GlyphEffects.all.filter(e => e.id.startsWith(type));
     effects.push(GlyphEffects.timespeed);
-    const glyphLevel = Math.max(player.records.bestReality.glyphLevel, 5000);
+    const glyphLevel = Decimal.max(player.records.bestReality.glyphLevel, 5000);
     return {
       id: undefined,
       idx: null,
