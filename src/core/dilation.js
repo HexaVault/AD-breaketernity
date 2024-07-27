@@ -172,7 +172,8 @@ export function getDilationGainPerSecond() {
       Ra.unlocks.peakGamespeedDT
     );
   dtRate = dtRate.times(getAdjustedGlyphEffect("dilationDT"));
-  dtRate = dtRate.times(Decimal.clampMin(Decimal.log10(Replicanti.amount.add(1)).mul(getAdjustedGlyphEffect("replicationdtgain")), 1));
+  dtRate = dtRate.times(
+    Decimal.clampMin(Decimal.log10(Replicanti.amount.add(1)).mul(getAdjustedGlyphEffect("replicationdtgain")), 1));
   if (Enslaved.isRunning && !dtRate.eq(0)) dtRate = Decimal.pow10(Decimal.pow(dtRate.plus(1).log10(), 0.85).sub(1));
   if (V.isRunning) dtRate = dtRate.pow(0.5);
   return dtRate;

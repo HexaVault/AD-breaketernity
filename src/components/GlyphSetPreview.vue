@@ -1,4 +1,6 @@
 <script>
+import { GlyphInfo } from "../core/secret-formula/reality/core-glyph-info";
+
 import GlyphComponent from "@/components/GlyphComponent";
 import GlyphSetName from "@/components/GlyphSetName";
 
@@ -72,8 +74,7 @@ export default {
   computed: {
     orderedGlyphs() {
       if (!this.sort) return this.glyphs;
-      const standardOrder = ["cursed", "reality", "effarig", "power", "infinity", "replication", "time",
-        "dilation", "companion"];
+      const standardOrder = GlyphInfo.glyphTypes;
       const order = Glyphs.copyForRecords(this.glyphs);
       // Technically doesn't stable sort between glyphs of the same type, probably fine though
       order.sort((a, b) => standardOrder.indexOf(a.type) - standardOrder.indexOf(b.type));
@@ -91,7 +92,7 @@ export default {
       const realityGlyph = this.glyphs.filter(g => g.type === "reality")[0];
       this.realityGlyphBoost = realityGlyph
         ? GlyphEffects.realityglyphlevel.effect(realityGlyph.level)
-        : 0;
+        : new Decimal();
     },
     showModal() {
       if (this.isInModal) return;

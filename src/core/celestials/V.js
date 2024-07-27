@@ -59,7 +59,7 @@ class VRunUnlockState extends GameMechanicState {
     let value = this.conditionBaseValue;
     if (!this.isReduced) return value;
     if (value instanceof Decimal) {
-      value.sub(this.reduction);
+      value = value.sub(this.reduction);
     } else {
       value = Decimal.sub(value, this.reduction).toNumber();
     }
@@ -207,7 +207,7 @@ export const V = {
       goalReductionSteps: [0, 0, 0, 0, 0, 0, 0, 0, 0],
       STSpent: 0,
       runGlyphs: [[], [], [], [], [], [], [], [], []],
-      runRecords: [-10, 0, 0, 0, 0, 0, 0, 0, 0],
+      runRecords: [-10, DC.D0, DC.D0, DC.D0, DC.D0, DC.D0, 0, DC.D0, DC.D0],
     };
     this.spaceTheorems = 0;
   },

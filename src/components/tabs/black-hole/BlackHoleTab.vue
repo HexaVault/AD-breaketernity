@@ -68,7 +68,7 @@ export default {
         BlackHole(2).duration.div(BlackHole(2).cycleLength)];
       this.detailedBH2 = this.bh2Status();
 
-      if (player.blackHoleNegative < 1 && !this.isLaitela) this.stateChange = this.isPaused ? "Uninvert" : "Invert";
+      if (player.blackHoleNegative.lt(1) && !this.isLaitela) this.stateChange = this.isPaused ? "Uninvert" : "Invert";
       else this.stateChange = this.isPaused ? "Unpause" : "Pause";
     },
     bh2Status() {

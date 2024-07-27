@@ -55,11 +55,11 @@ export default {
       this.isAutoReleasing = player.celestials.enslaved.isAutoReleasing;
     },
     pauseButtonText() {
-      if (BlackHoles.arePaused && player.blackHoleNegative < 1) return "Uninvert BH";
+      if (BlackHoles.arePaused && player.blackHoleNegative.lt(1)) return "Uninvert BH";
       if (BlackHoles.arePaused) return "Unpause BH";
       const accel = BlackHoles.unpauseAccelerationFactor;
-      if (accel !== 1) return `${formatPercents(new Decimal(accel), 1)} speed`;
-      if (player.blackHoleNegative < 1) return "Invert BH";
+      if (accel.lt(1)) return `${formatPercents(new Decimal(accel), 1)} speed`;
+      if (player.blackHoleNegative.lt(1)) return "Invert BH";
       return "Pause BH";
     },
     timeDisplayShort(ms) {

@@ -268,7 +268,8 @@ function maxBuyDimBoosts() {
   calcBoosts = AntimatterDimension(tier).amount.sub(amount).div(multiplierPerDB);
 
   if (EternityChallenge(5).isRunning) {
-    calcBoosts = decimalCubicSolution(DC.D1, DC.D1.neg(), multiplierPerDB.add(2), AntimatterDimension(tier).amount.add(18).neg(), true);
+    calcBoosts = decimalCubicSolution(DC.D1, DC.D1.neg(), multiplierPerDB.add(2),
+      AntimatterDimension(tier).amount.add(18).neg(), false);
   }
   
   calcBoosts = calcBoosts.add(NormalChallenge(10).isRunning ? 2 : 4);

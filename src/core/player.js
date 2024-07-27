@@ -562,7 +562,7 @@ window.player = {
   blackHolePause: false,
   blackHoleAutoPauseMode: 0,
   blackHolePauseTime: DC.D0,
-  blackHoleNegative: 1,
+  blackHoleNegative: DC.D1,
   celestials: {
     teresa: {
       pouredAmount: 0,
