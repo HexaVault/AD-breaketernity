@@ -15,10 +15,11 @@ Math.PI_2 = Math.PI * 2;
 
 // cube root is more like this
 Decimal.cbrt = value => {
+  value = new Decimal(value);
   let neg = value.lt(0);
   let v = value.abs().pow(1 / 3);
   v = (neg ? v.neg() : v);
-  return v
+  return v;
 }
 /**
  * This is a file for general math utilities that can be used by many mechanics
