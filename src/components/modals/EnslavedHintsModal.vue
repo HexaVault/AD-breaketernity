@@ -11,7 +11,7 @@ export default {
   data() {
     return {
       currentStored: new Decimal(0),
-      nextHintCost: 0,
+      nextHintCost: new Decimal(0),
       canGetHint: false,
       shownEntries: [],
       realityHintsLeft: 0,
@@ -36,23 +36,22 @@ export default {
       if (this.currentStored >= this.nextHintCost) return "";
 
       // Relevant values are stored as milliseconds, so multiply the rate by 1000 to get to seconds
-      const storeRate = 1000 * (Enslaved.isStoringGameTime
+      const storeRate = Decimal.mul(1000, (Enslaved.isStoringGameTime
         ? Enslaved.currentBlackHoleStoreAmountPerMs
-        : getGameSpeedupFactor());
-      const alreadyWaited = this.currentStored / storeRate;
-      const decaylessTime = this.nextHintCost / storeRate;
+        : getGameSpeedupFactor()));
+      const alreadyWaited = this.currentStored.div(storeRate);
+      const decaylessTime = this.nextHintCost.div(storeRate);
 
       // Check if decay is irrelevant and don't do the hard calculations if so
-      const minCostEstimate = (TimeSpan.fromYears(new Decimal(1e40)).totalMilliseconds.sub(this.currentStored))
-        .div(storeRate);
+      const minCostEstimate = (TimeSpan.fromYears(new Decimal(1e40)).totalMilliseconds.sub(this.currentStored)).div(storeRate);
       if (TimeSpan.fromSeconds(minCostEstimate).totalDays.gt(this.hints)) {
         return `${TimeSpan.fromSeconds(minCostEstimate).toStringShort(true)}`;
       }
 
       // Decay is 3x per day, but the math needs decay per second
       const K = Math.pow(3, 1 / 86400);
-      const x = decaylessTime * Math.log(K) * Math.pow(K, alreadyWaited);
-      const timeToGoal = productLog(x) / Math.log(K) - alreadyWaited;
+      const x = Decimal.pow(K, alreadyWaited).mul(Math.log(K)).mul(decaylessTime).toNumber();
+      const timeToGoal = Decimal.sub(productLog(x) / Math.log(K), alreadyWaited);
       return `${TimeSpan.fromSeconds(timeToGoal).toStringShort(true)}`;
     }
   },
@@ -60,7 +59,7 @@ export default {
     update() {
       this.currentStored.copyFrom(player.celestials.enslaved.stored);
       this.nextHintCost = Enslaved.nextHintCost;
-      this.canGetHint = this.currentStored >= this.nextHintCost;
+      this.canGetHint = this.currentStored.gte(this.nextHintCost);
       this.shownEntries = [];
 
       this.realityHintsLeft = EnslavedProgress.all.length;
