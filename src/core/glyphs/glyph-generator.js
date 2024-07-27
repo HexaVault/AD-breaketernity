@@ -146,7 +146,8 @@ export const GlyphGenerator = {
 
   cursedGlyph() {
     const str = rarityToStrength(100);
-    const effects = GlyphEffects.all.filter(e => e.id.includes("cursed"));
+    const effects = [];
+    GlyphEffects.all.filter(e => e.id.includes("cursed")).forEach(e => effect.push(e.id));
     return {
       id: undefined,
       idx: null,
