@@ -267,6 +267,10 @@ function maxBuyDimBoosts() {
   let calcBoosts;
   calcBoosts = AntimatterDimension(tier).amount.sub(amount).div(multiplierPerDB);
 
+  if (EternityChallenge(5).isRunning) {
+    calcBoosts = decimalCubicSolution(DC.D1, DC.D1.neg(), multiplierPerDB.add(2), AntimatterDimension(tier).amount.add(18).neg(), true);
+  }
+  
   calcBoosts = calcBoosts.add(NormalChallenge(10).isRunning ? 2 : 4);
   // Dimension boosts 1-4 dont use 8th dims, 1-2 dont use 6th dims, so add those extras afterwards.
 
