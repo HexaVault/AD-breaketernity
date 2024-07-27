@@ -338,7 +338,7 @@ function giveRealityRewards(realityProps) {
   if (Teresa.isRunning) {
     const current = Teresa.runRewardMultiplier;
     const newMultiplier = Teresa.rewardMultiplier(player.antimatter);
-    const isHigher = newMultiplier > current;
+    const isHigher = newMultiplier.gt(current);
     const modalText = `You have completed Teresa's Reality! ${isHigher
       ? `Since you gained more Antimatter, you increased your
       Glyph Sacrifice multiplier from ${format(current, 2, 2)} to ${format(newMultiplier, 2, 2)}`

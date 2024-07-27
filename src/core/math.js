@@ -45,8 +45,8 @@ window.decimalQuadraticSolution = function decimalQuadraticSolution(a, b, c, n =
 window.decimalCubicSolution = function decimalCubicSolution(a, b, c, d, n = false) {
   const delta0 = b.pow(2).sub(a.times(3).times(c));
   const delta1 = b.pow(2).times(2).sub(a.times(b).times(c).times(9)).add(a.pow(2).times(d).times(27));
-  const ne = n ? Decimal.sqrt(delta1.pow(2).sub(delta0.pow(3).times(4)), 2).neg()
-    : Decimal.root(delta1.pow(2).sub(delta0.pow(3).times(4)));
+  const ne = n ? Decimal.sqrt(delta1.pow(2).sub(delta0.pow(3).times(4))).neg()
+    : Decimal.sqrt(delta1.pow(2).sub(delta0.pow(3).times(4)));
   const C = Decimal.cbrt(delta1.add(ne).div(2));
   const x = DC.D1.div(a.times(3)).neg().times(b.add(C).add(delta0.div(C)));
   return x;
@@ -624,6 +624,15 @@ window.productLog = function productLog(x) {
     prev = curr;
     curr -= 1 - (1 + x * Math.exp(-curr)) / (1 + curr);
   } while (Math.abs(curr - prev) > 1e-6 * curr);
+  return curr;
+};
+
+window.decimalProductLog = function decimalProductLog(x) {
+  let curr = x, prev = new Decimal();
+  do {
+    prev = curr;
+    curr = curr.add(1).sub((Decimal.pow(Math.E, curr.neg())).mul(x).add(1).div(curr.add(1)));
+  } while (Decimal.abs(curr.sub(prev)).gt(cur.div(1e6)));
   return curr;
 };
 

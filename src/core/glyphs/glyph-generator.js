@@ -152,8 +152,8 @@ export const GlyphGenerator = {
       idx: null,
       type: "cursed",
       strength: str,
-      level: 6666,
-      rawLevel: 6666,
+      level: new Decimal(6666),
+      rawLevel: new Decimal(6666),
       effects,
     };
   },
@@ -163,7 +163,7 @@ export const GlyphGenerator = {
   doomedGlyph(type) {
     const effects = GlyphEffects.all.filter(e => e.id.startsWith(type));
     effects.push(GlyphEffects.timespeed);
-    const glyphLevel = Math.max(player.records.bestReality.glyphLevel, 5000);
+    const glyphLevel = Decimal.max(player.records.bestReality.glyphLevel, 5000);
     return {
       id: undefined,
       idx: null,

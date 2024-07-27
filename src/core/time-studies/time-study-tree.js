@@ -260,7 +260,7 @@ export class TimeStudyTree {
     const hasST = this.spentTheorems[1] + stNeeded <= maxST;
     if (checkCosts) {
       const maxTT = Currency.timeTheorems.value.add(GameCache.currentStudyTree.value.spentTheorems[0]);
-      const hasTT = this.spentTheorems[0] + config.cost.gte(maxTT);
+      const hasTT = this.spentTheorems[0].add(config.cost.gte(maxTT));
       if (!hasTT || !hasST) return;
     }
 

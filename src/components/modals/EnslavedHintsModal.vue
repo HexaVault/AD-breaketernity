@@ -11,7 +11,7 @@ export default {
   data() {
     return {
       currentStored: new Decimal(0),
-      nextHintCost: 0,
+      nextHintCost: new Decimal(0),
       canGetHint: false,
       shownEntries: [],
       realityHintsLeft: 0,
@@ -21,7 +21,7 @@ export default {
   },
   computed: {
     hintCost() {
-      return `${quantify("year", TimeSpan.fromMilliseconds(new Decimal(this.nextHintCost)).totalYears, 2)}`;
+      return `${quantify("year", TimeSpan.fromMilliseconds(this.nextHintCost).totalYears, 2)}`;
     },
     formattedStored() {
       return `${quantify("year", TimeSpan.fromMilliseconds(this.currentStored).totalYears, 2)}`;
@@ -33,14 +33,14 @@ export default {
     // of cost bumps and I'm not entirely sure why. There's probably a numerical issue I can't quite figure out, but
     // considering that much cost raising can't happen in practice I think I'm just going to leave it be.
     timeEstimate() {
-      if (this.currentStored >= this.nextHintCost) return "";
+      if (this.currentStore.gte(this.nextHintCost)) return "";
 
       // Relevant values are stored as milliseconds, so multiply the rate by 1000 to get to seconds
-      const storeRate = 1000 * (Enslaved.isStoringGameTime
+      const storeRate = (Enslaved.isStoringGameTime
         ? Enslaved.currentBlackHoleStoreAmountPerMs
-        : getGameSpeedupFactor());
-      const alreadyWaited = this.currentStored / storeRate;
-      const decaylessTime = this.nextHintCost / storeRate;
+        : getGameSpeedupFactor()).mul(1e3);
+      const alreadyWaited = this.currentStored.div(storeRate);
+      const decaylessTime = this.nextHintCost.div(storeRate);
 
       // Check if decay is irrelevant and don't do the hard calculations if so
       const minCostEstimate = (TimeSpan.fromYears(new Decimal(1e40)).totalMilliseconds.sub(this.currentStored))
@@ -50,9 +50,9 @@ export default {
       }
 
       // Decay is 3x per day, but the math needs decay per second
-      const K = Math.pow(3, 1 / 86400);
-      const x = decaylessTime * Math.log(K) * Math.pow(K, alreadyWaited);
-      const timeToGoal = productLog(x) / Math.log(K) - alreadyWaited;
+      const K = Decimal.pow(3, 1 / 86400);
+      const x = Decimal.ln(K).mul(Decimal.pow(K, alreadyWaited)).mul(decaylessTime);
+      const timeToGoal = decimalProductLog(x).div(Decimal.ln(K).sub(alreadyWaited));
       return `${TimeSpan.fromSeconds(timeToGoal).toStringShort(true)}`;
     }
   },
@@ -60,7 +60,7 @@ export default {
     update() {
       this.currentStored.copyFrom(player.celestials.enslaved.stored);
       this.nextHintCost = Enslaved.nextHintCost;
-      this.canGetHint = this.currentStored >= this.nextHintCost;
+      this.canGetHint = this.currentStored.gte(this.nextHintCost);
       this.shownEntries = [];
 
       this.realityHintsLeft = EnslavedProgress.all.length;
@@ -134,7 +134,7 @@ export default {
         divide the cost by {{ formatInt(2) }}. The cost can't be reduced below {{ format(1e40) }} years.
         <br><br>
         The next hint will cost {{ hintCost }} of Stored Time. You currently have {{ formattedStored }}.
-        <span v-if="currentStored < nextHintCost">
+        <span v-if="currentStored.lt(nextHintCost)">
           You will reach this if you charge your Black Hole for {{ timeEstimate }}.
         </span>
         <br><br>
