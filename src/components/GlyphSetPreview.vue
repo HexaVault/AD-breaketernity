@@ -68,7 +68,7 @@ export default {
   },
   data() {
     return {
-      realityGlyphBoost: 0,
+      realityGlyphBoost: new Decimal(),
     };
   },
   computed: {

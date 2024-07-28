@@ -79,7 +79,7 @@ export default {
       <SliderComponent
         v-if="!isDisabled"
         v-bind="sliderProps(true)"
-        :value="negativeSlider"
+        :value="-negativeSlider"
         @input="adjustSliderNegative($event)"
       />
       <div
