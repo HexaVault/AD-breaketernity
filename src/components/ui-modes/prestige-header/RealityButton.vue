@@ -75,9 +75,10 @@ export default {
       this.canReality = isRealityAvailable();
       this.showSpecialEffect = this.hasSpecialReward();
       if (!this.canReality) {
-        this.shardsGained = new Decimal();
+        this.shardsGained = new Decimal(0);
         return;
       }
+      
       function EPforRM(rm) {
         const adjusted = Decimal.divide(rm, MachineHandler.realityMachineMultiplier);
         if (adjusted.lte(1)) return Decimal.pow10(4000);
@@ -99,7 +100,7 @@ export default {
       this.nextGlyphPercent = this.percentToNextGlyphLevelText();
       this.nextMachineEP.copyFrom(EPforRM(this.machinesGained.plus(1)));
       this.ppGained.copyFrom(multiplier);
-      this.shardsGained.copyFrom(Effarig.shardsGained.mul(multiplier));
+      .copyFrom(Effarig.shardsGained.mul(multiplier));
       this.currentShardsRate.copyFrom(this.shardsGained.div(Time.thisRealityRealTime.totalMinutes));
       this.bestShardRate.copyFrom(multiplier.mul(player.records.thisReality.bestRSmin));
       this.bestShardRateVal.copyFrom(multiplier.mul(player.records.thisReality.bestRSminVal));
