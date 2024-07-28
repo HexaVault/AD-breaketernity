@@ -74,10 +74,6 @@ export default {
       this.hasRealityStudy = TimeStudy.reality.isBought;
       this.canReality = isRealityAvailable();
       this.showSpecialEffect = this.hasSpecialReward();
-      if (!this.canReality) {
-        this.shardsGained = new Decimal(0);
-        return;
-      }
       
       function EPforRM(rm) {
         const adjusted = Decimal.divide(rm, MachineHandler.realityMachineMultiplier);
