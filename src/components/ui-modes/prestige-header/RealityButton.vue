@@ -100,7 +100,7 @@ export default {
       this.nextGlyphPercent = this.percentToNextGlyphLevelText();
       this.nextMachineEP.copyFrom(EPforRM(this.machinesGained.plus(1)));
       this.ppGained.copyFrom(multiplier);
-      .copyFrom(Effarig.shardsGained.mul(multiplier));
+      this.shardsGained.copyFrom(Effarig.shardsGained.mul(multiplier));
       this.currentShardsRate.copyFrom(this.shardsGained.div(Time.thisRealityRealTime.totalMinutes));
       this.bestShardRate.copyFrom(multiplier.mul(player.records.thisReality.bestRSmin));
       this.bestShardRateVal.copyFrom(multiplier.mul(player.records.thisReality.bestRSminVal));
