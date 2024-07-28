@@ -530,8 +530,8 @@ export default {
       if (this.isActiveGlyph) this.displayLevel = getAdjustedGlyphLevel(this.glyph);
       else if (this.isInventoryGlyph) this.displayLevel = getAdjustedGlyphLevel(this.glyph, 0);
       else {
-        this.displayLevel = this.glyph.level
-          .add(GlyphInfo[this.glyph.type].isBasic ? this.realityGlyphBoost : 0);
+        this.displayLevel = Decimal.add(this.glyph.level,
+          GlyphInfo[this.glyph.type].isBasic ? this.realityGlyphBoost : 0);
       }
     },
     hideTooltip() {
