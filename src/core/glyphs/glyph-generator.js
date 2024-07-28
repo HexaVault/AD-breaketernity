@@ -146,7 +146,7 @@ export const GlyphGenerator = {
 
   cursedGlyph() {
     const str = rarityToStrength(100);
-    const effects = GlyphEffects.all.filter(e => GlyphInfo.cursed.effects().contains(e));
+    const effects = GlyphInfo.cursed.effects();
     return {
       id: undefined,
       idx: null,
@@ -178,7 +178,7 @@ export const GlyphGenerator = {
   companionGlyph(eternityPoints) {
     // Store the pre-Reality EP value in the glyph's rarity
     const str = rarityToStrength(eternityPoints.log10().div(1e6));
-    const effects = orderedEffectList.filter(effect => effect.match("companion*"));
+    const effects = GlyphInfo.companion.effects();
     return {
       id: undefined,
       idx: null,
