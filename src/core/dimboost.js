@@ -264,13 +264,13 @@ function maxBuyDimBoosts() {
   multiplierPerDB = multiplierPerDB.times(InfinityUpgrade.resetBoost.chargedEffect.effectOrDefault(1));
   amount = amount.times(InfinityUpgrade.resetBoost.chargedEffect.effectOrDefault(1));
 
+  const ad = AntimatterDimension(tier).amount;
   let calcBoosts;
-  calcBoosts = AntimatterDimension(tier).amount.sub(amount).div(multiplierPerDB);
+  calcBoosts = ad.sub(amount).div(multiplierPerDB);
 
 
   if (EternityChallenge(5).isRunning) {
-    calcBoosts = decimalCubicSolution(DC.D1, DC.D1.neg(), multiplierPerDB.add(2),
-      AntimatterDimension(tier).amount.add(18).neg(), false);
+    calcBoosts = decimalCubicSolution(DC.D1, DC.D1.neg(), multiplierPerDB.add(2), ad.add(18).neg(), false);
   }
 
   calcBoosts = calcBoosts.add(NormalChallenge(10).isRunning ? 2 : 4);

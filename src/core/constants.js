@@ -1,3 +1,5 @@
+import { cloneDeep } from "lodash";
+
 window.PRESTIGE_EVENT = {
   DIMENSION_BOOST: 0,
   ANTIMATTER_GALAXY: 1,
@@ -409,15 +411,20 @@ window.SPEEDRUN_SEED_STATE = {
   PLAYER: 3,
 };
 
-window.cloneDeep = function cloneDeep(obj) {
-  if (Array.isArray(obj)) {
-    return obj.map(i => cloneDeep(i));
-  }
-  if (obj instanceof Decimal) {
-    return new Decimal(obj);
-  }
-  if (typeof obj === "object" && obj !== null) {
-    return Object.fromEntries(Object.entries(obj).map(([i, j]) => [i, cloneDeep(j)]));
-  }
-  return obj;
-};
+// We're just going to use cloneDeep from lodash, since its better
+window.cloneDeep = value => cloneDeep(value);
+
+//
+// window.cloneDeep = function cloneDeep(obj) {
+// if (Array.isArray(obj)) {
+//     return obj.map(i => cloneDeep(i));
+// }
+// if (obj instanceof Decimal) {
+//     return new Decimal(obj);
+// }
+// if (typeof obj === "object" && obj !== null) {
+//     return Object.fromEntries(Object.entries(obj).map(([i, j]) => [i, cloneDeep(j)]));
+// }
+// return obj;
+// };
+//

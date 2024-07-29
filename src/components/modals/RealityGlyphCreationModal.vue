@@ -11,7 +11,7 @@ export default {
   data() {
     return {
       isDoomed: false,
-      realityGlyphLevel: 0,
+      realityGlyphLevel: new Decimal(),
       // This contains an array where each entry is an array looking like [4000, "realitygalaxies"]
       possibleEffects: [],
     };
@@ -19,13 +19,13 @@ export default {
   methods: {
     update() {
       this.isDoomed = Pelle.isDoomed;
-      this.realityGlyphLevel = AlchemyResource.reality.effectValue;
+      this.realityGlyphLevel.copyFrom(AlchemyResource.reality.effectValue);
       const realityEffectConfigs = GlyphEffects.all
         .filter(eff => eff.glyphTypes.includes("reality"))
         .sort((a, b) => a.intID - b.intID);
-      const minRealityEffectIndex = realityEffectConfigs.map(cfg => cfg.bitmaskIndex).min();
+      const minRealityEffectIndex = realityEffectConfigs.map(cfg => cfg.intID).min();
       this.possibleEffects = realityEffectConfigs
-        .map(cfg => [realityGlyphEffectLevelThresholds[cfg.bitmaskIndex - minRealityEffectIndex], cfg.id]);
+        .map(cfg => [realityGlyphEffectLevelThresholds[cfg.intID - minRealityEffectIndex], cfg.id]);
     },
     createRealityGlyph() {
       if (GameCache.glyphInventorySpace.value === 0) {
@@ -34,12 +34,12 @@ export default {
         return;
       }
       Glyphs.addToInventory(GlyphGenerator.realityGlyph(this.realityGlyphLevel));
-      AlchemyResource.reality.amount = 0;
+      AlchemyResource.reality.amount = new Decimal();
       player.reality.glyphs.createdRealityGlyph = true;
       this.emitClose();
     },
     formatGlyphEffect(effect) {
-      if (this.realityGlyphLevel < effect[0]) return `(Requires Glyph level ${formatInt(effect[0])})`;
+      if (this.realityGlyphLevel.lt(effect[0])) return `(Requires Glyph level ${formatInt(effect[0])})`;
       const config = GlyphEffects[effect[1]];
       const value = config.effect(this.realityGlyphLevel, rarityToStrength(100));
       const effectTemplate = config.singleDesc;
@@ -81,7 +81,7 @@ export default {
         You cannot create Reality Glyphs while Doomed
       </PrimaryButton>
       <PrimaryButton
-        v-else-if="realityGlyphLevel !== 0"
+        v-else-if="realityGlyphLevel.neq(0)"
         @click="createRealityGlyph"
       >
         Create a Reality Glyph!

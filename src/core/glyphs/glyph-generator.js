@@ -116,7 +116,8 @@ export const GlyphGenerator = {
     const strength = this.randomStrength(rng);
     const type = typeIn || this.randomType(rng);
     let numEffects = this.randomNumberOfEffects(type, strength, level.actualLevel, rng);
-    if (type !== "effarig" && numEffects > 4) numEffects = 4;
+    const maxEffects = GlyphInfo[type].effects().length;
+    if (type !== "effarig" && numEffects > maxEffects) numEffects = maxEffects;
     const effects = this.generateEffects(type, numEffects, rng, effectsIn);
     if (rngIn === undefined) rng.finalize();
     return {
@@ -239,7 +240,8 @@ export const GlyphGenerator = {
     const random1 = rng.uniform();
     const random2 = rng.uniform();
     if (type !== "effarig" && Ra.unlocks.glyphEffectCount.canBeApplied) return GlyphInfo[type].effects().length;
-    const maxEffects = !Ra.unlocks.glyphEffectCount.canBeApplied && type === "effarig" ? 4 : GlyphInfo[type].effects().length;
+    const maxEffects = !Ra.unlocks.glyphEffectCount.canBeApplied && type === "effarig" ? 4
+      : GlyphInfo[type].effects().length;
     let num = Decimal.min(
       maxEffects,
       // eslint-disable-next-line max-len
@@ -256,7 +258,7 @@ export const GlyphGenerator = {
 
   // Populate a list of reality glyph effects based on level
   generateRealityEffects(level) {
-    const numberOfEffects = realityGlyphEffectLevelThresholds.filter(lv => lv <= level).length;
+    const numberOfEffects = realityGlyphEffectLevelThresholds.filter(lv => level.gte(lv)).length;
     const sortedRealityEffects = GlyphInfo.reality.effects()
       .sort((a, b) => a.intID - b.intID)
       .map(eff => eff.id);

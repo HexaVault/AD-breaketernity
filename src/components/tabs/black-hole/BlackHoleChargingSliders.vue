@@ -41,7 +41,7 @@ export default {
       this.isDisabled = ImaginaryUpgrade(24).isLockingMechanics && Ra.isRunning && maxInversion;
     },
     adjustSliderNegative(value) {
-      this.negativeSlider = value;
+      this.negativeSlider = -value;
       player.blackHoleNegative = Decimal.pow10(-this.negativeSlider);
       player.requirementChecks.reality.slowestBH = Decimal.max(
         player.requirementChecks.reality.slowestBH,
@@ -79,7 +79,7 @@ export default {
       <SliderComponent
         v-if="!isDisabled"
         v-bind="sliderProps(true)"
-        :value="-negativeSlider"
+        :value="Math.min(maxNegativeBlackHole, Math.abs(negativeSlider))"
         @input="adjustSliderNegative($event)"
       />
       <div
