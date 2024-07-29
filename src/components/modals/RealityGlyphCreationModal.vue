@@ -24,7 +24,7 @@ export default {
       const minRealityEffectIndex = realityEffectConfigs.map(cfg => cfg.id);
       const effects = [];  
       for (let x=0; x < 4; x++){
-        if(Decimal.gte(realityGlyphEffectLevelThresholds[x], this.realityGlyphLevel)) effects.push(minRealityEffectIndex[x]);
+        if(Decimal.lte(realityGlyphEffectLevelThresholds[x], this.realityGlyphLevel)) effects.push(minRealityEffectIndex[x]);
       }
       this.possibleEffects = effects;
     },
@@ -42,7 +42,7 @@ export default {
     formatGlyphEffect(effect) {
 
       const eff = GlyphEffects.all.filter(eff => eff.id.includes(effect));
-      const efflevel = realityGlyphEffectLevelThresholds[eff.intID - 32];
+      const efflevel = realityGlyphEffectLevelThresholds[eff[0].intID - 32];
       
       if (this.realityGlyphLevel.lt(efflevel)) return `(Requires Glyph level ${formatInt(efflevel)})`;
       const config = GlyphEffects[effect];
