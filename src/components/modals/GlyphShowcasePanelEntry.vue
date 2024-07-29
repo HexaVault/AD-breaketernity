@@ -20,8 +20,8 @@ export default {
       required: true
     },
     realityGlyphBoost: {
-      type: Number,
-      default: 0
+      type: Decimal,
+      default: new Decimal()
     },
     maxGlyphEffects: {
       type: Number,

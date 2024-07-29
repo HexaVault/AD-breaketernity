@@ -86,7 +86,7 @@ export default {
         You cannot create Reality Glyphs while Doomed
       </PrimaryButton>
       <PrimaryButton
-        v-else-if="!realityGlyphLevel.eq(0)"
+        v-else-if="realityGlyphLevel.neq(0)"
         @click="createRealityGlyph"
       >
         Create a Reality Glyph!

@@ -283,7 +283,7 @@ export const Glyphs = {
           RealityUpgrade(9).tryShowWarningModal("equip another non-Companion Glyph");
           return;
         }
-        if (glyph.level < 3) {
+        if (glyph.level.lt(3)) {
           RealityUpgrade(9).tryShowWarningModal(`equip a Glyph whose level is less than ${formatInt(3)}`);
           return;
         }

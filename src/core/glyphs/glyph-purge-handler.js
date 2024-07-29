@@ -122,13 +122,9 @@ export const GlyphSacrificeHandler = {
       this.refineGlyph(glyph);
       return;
     }
-    const resource = this.glyphAlchemyResource(glyph);
+
     Modal.glyphRefine.show({
       idx: glyph.idx,
-      resourceName: resource.name,
-      resourceAmount: resource.amount,
-      gain: this.glyphRefinementGain(glyph),
-      cap: resource.cap
     });
 
   },

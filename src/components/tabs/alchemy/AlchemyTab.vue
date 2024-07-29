@@ -19,7 +19,7 @@ export default {
       realityCreationVisible: false,
       animationTimer: 0,
       alchemyCap: 0,
-      capFactor: 0,
+      capFactor: new Decimal(),
       createdRealityGlyph: false,
       allReactionsDisabled: false,
       // Used to force a re-render of reaction lines when reality glyphs are created
@@ -66,7 +66,7 @@ export default {
       this.realityCreationVisible = Ra.pets.effarig.level === 25;
       this.animationTimer += 35;
       this.alchemyCap = Ra.alchemyResourceCap;
-      this.capFactor = 1 / GlyphSacrificeHandler.glyphRefinementEfficiency;
+      this.capFactor = new Decimal(GlyphSacrificeHandler.glyphRefinementEfficiency).recip();
       this.createdRealityGlyph = player.reality.glyphs.createdRealityGlyph;
       this.allReactionsDisabled = this.reactions.every(reaction => !reaction.isActive);
       this.realityAmount = structuredClone(AlchemyResource.reality.amount.max(1e200).toNumber());

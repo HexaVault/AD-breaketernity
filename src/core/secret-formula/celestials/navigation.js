@@ -1812,9 +1812,9 @@ export const celestialNavigation = {
     visible: () => Laitela.difficultyTier > 4,
     complete: () => {
       if (Pelle.isUnlocked) return 1;
-      const imCost = Decimal.clampMax(emphasizeEnd(Currency.imaginaryMachines.value.log10()
+      const imCost = Decimal.clampMax(emphasizeEnd(Currency.imaginaryMachines.value.max(1).log10()
         .div(Math.log10(1.6e15))), 1).toNumber();
-      let laitelaProgress = Laitela.isRunning ? Decimal.min(Currency.eternityPoints.value.log10()
+      let laitelaProgress = Laitela.isRunning ? Decimal.min(Currency.eternityPoints.value.max(1).log10()
         .div(4000), 0.99).toNumber() : 0;
       if (Laitela.difficultyTier !== 8 || Glyphs.activeWithoutCompanion.length > 1) laitelaProgress = 0;
       else if (ImaginaryUpgrade(25).isAvailableForPurchase) laitelaProgress = 1;

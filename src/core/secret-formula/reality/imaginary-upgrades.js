@@ -244,7 +244,7 @@ export const imaginaryUpgrades = [
     requirement: () => `Reach ${format("1e7400000000000")} antimatter with Continuum disabled for the entire Reality`,
     hasFailed: () => !player.requirementChecks.reality.noContinuum,
     checkRequirement: () => player.requirementChecks.reality.noContinuum &&
-      Currency.antimatter.value.log10().add(1).gte(7.4e12),
+      Currency.antimatter.value.max(1).log10().gte(7.4e12),
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     canLock: true,
     lockEvent: "enable Continuum",

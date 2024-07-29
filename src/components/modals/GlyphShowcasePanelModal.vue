@@ -35,9 +35,9 @@ export default {
   data() {
     return {
       glyphs: [],
-      gainedLevel: 0,
+      gainedLevel: new Decimal(),
       canSacrifice: false,
-      realityGlyphBoost: 0,
+      realityGlyphBoost: new Decimal(),
     };
   },
   computed: {
@@ -66,7 +66,7 @@ export default {
       const realityGlyph = this.glyphs.filter(g => g.type === "reality")[0];
       this.realityGlyphBoost = realityGlyph
         ? GlyphEffects.realityglyphlevel.effect(realityGlyph.level)
-        : 0;
+        : new Decimal();
     },
     sortGlyphs() {
       const standardOrder = ["reality", "effarig", "power", "infinity", "replication", "time", "dilation",
