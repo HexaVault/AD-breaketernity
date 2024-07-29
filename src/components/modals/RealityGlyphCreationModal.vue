@@ -24,7 +24,7 @@ export default {
       const minRealityEffectIndex = realityEffectConfigs.map(cfg => cfg.id);
       const effects = [];  
       for (let x=0; x < 4; x++){
-        if(Decimal.gt(realityGlyphEffectLevelThresholds[x], realityGlyphLevel)) effects.push(minRealityEffectIndex[x]);
+        if(Decimal.gt(realityGlyphEffectLevelThresholds[x], this.realityGlyphLevel)) effects.push(minRealityEffectIndex[x]);
       }
       this.possibleEffects = effects;
     },
