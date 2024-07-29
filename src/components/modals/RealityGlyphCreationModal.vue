@@ -40,8 +40,12 @@ export default {
       this.emitClose();
     },
     formatGlyphEffect(effect) {
-      if (this.realityGlyphLevel.lt(effect[0])) return `(Requires Glyph level ${formatInt(effect[0])})`;
-      const config = GlyphEffects[effect[1]];
+      
+      const eff = GlyphEffects.all.filter(eff => eff.id == effect);
+      const efflevel = realityGlyphEffectLevelThresholds[eff.intID - 32];
+      
+      if (this.realityGlyphLevel.lt(efflevel)) return `(Requires Glyph level ${formatInt(efflevel)})`;
+      const config = GlyphEffects[eff];
       const value = config.effect(this.realityGlyphLevel, rarityToStrength(100));
       const effectTemplate = config.singleDesc;
       return effectTemplate.replace("{value}", config.formatEffect(value));
@@ -82,7 +86,7 @@ export default {
         You cannot create Reality Glyphs while Doomed
       </PrimaryButton>
       <PrimaryButton
-        v-else-if="realityGlyphLevel !== 0"
+        v-else-if="!realityGlyphLevel.eq(0)"
         @click="createRealityGlyph"
       >
         Create a Reality Glyph!
