@@ -29,7 +29,7 @@ export default {
           { closeEvent: GAME_EVENT.GLYPHS_CHANGED });
         return;
       }
-      Glyphs.addToInventoryReality(this.realityGlyphLevel));
+      Glyphs.addToInventoryReality(this.realityGlyphLevel);
       AlchemyResource.reality.amount = new Decimal();
       player.reality.glyphs.createdRealityGlyph = true;
       this.emitClose();
