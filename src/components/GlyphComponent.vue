@@ -204,9 +204,9 @@ export default {
       default: false
     },
     realityGlyphBoost: {
-      type: Number,
+      type: Object,
       required: false,
-      default: 0
+      default: new Decimal()
     },
     isInventoryGlyph: {
       type: Boolean,
@@ -528,10 +528,10 @@ export default {
       //   reality glyph boost based on the rest of its existing set (which is passed in via realityGlyphBoost) and
       //   nothing else. This case applies to glyphs appearing in presets, records, and previews.
       if (this.isActiveGlyph) this.displayLevel = getAdjustedGlyphLevel(this.glyph);
-      else if (this.isInventoryGlyph) this.displayLevel = getAdjustedGlyphLevel(this.glyph, 0);
+      else if (this.isInventoryGlyph) this.displayLevel = getAdjustedGlyphLevel(this.glyph, new Decimal());
       else {
         this.displayLevel = Decimal.add(this.glyph.level,
-          GlyphInfo[this.glyph.type].isBasic ? this.realityGlyphBoost : 0);
+          GlyphInfo[this.glyph.type].isBasic ? this.realityGlyphBoost : new Decimal());
       }
     },
     hideTooltip() {
