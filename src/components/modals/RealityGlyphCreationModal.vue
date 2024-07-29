@@ -11,7 +11,7 @@ export default {
   data() {
     return {
       isDoomed: false,
-      realityGlyphLevel: 0,
+      realityGlyphLevel: new Decimal(),
       // This contains an array where each entry is an array looking like [4000, "realitygalaxies"]
       possibleEffects: [],
     };
@@ -20,12 +20,13 @@ export default {
     update() {
       this.isDoomed = Pelle.isDoomed;
       this.realityGlyphLevel = AlchemyResource.reality.effectValue;
-      const realityEffectConfigs = GlyphEffects.all
-        .filter(eff => eff.glyphTypes.includes("reality"))
-        .sort((a, b) => a.intID - b.intID);
-      const minRealityEffectIndex = realityEffectConfigs.map(cfg => cfg.bitmaskIndex).min();
-      this.possibleEffects = realityEffectConfigs
-        .map(cfg => [realityGlyphEffectLevelThresholds[cfg.bitmaskIndex - minRealityEffectIndex], cfg.id]);
+      const realityEffectConfigs = GlyphEffects.all.filter(eff => eff.id.includes("reality"));
+      const minRealityEffectIndex = realityEffectConfigs.map(cfg => cfg.id);
+      const effects = [];  
+      for (let x=0; x < 4; x++){
+        if(Decimal.gt(realityGlyphEffectLevelThresholds[x], realityGlyphLevel)) effects.push(minRealityEffectIndex[x]);
+      }
+      this.possibleEffects = effects;
     },
     createRealityGlyph() {
       if (GameCache.glyphInventorySpace.value === 0) {
@@ -34,7 +35,7 @@ export default {
         return;
       }
       Glyphs.addToInventory(GlyphGenerator.realityGlyph(this.realityGlyphLevel));
-      AlchemyResource.reality.amount = 0;
+      AlchemyResource.reality.amount = new Decimal();
       player.reality.glyphs.createdRealityGlyph = true;
       this.emitClose();
     },
