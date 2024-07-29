@@ -204,9 +204,9 @@ export default {
       default: false
     },
     realityGlyphBoost: {
-      type: Decimal,
+      type: Number,
       required: false,
-      default: new Decimal()
+      default: 0
     },
     isInventoryGlyph: {
       type: Boolean,
