@@ -21,12 +21,7 @@ export default {
       this.isDoomed = Pelle.isDoomed;
       this.realityGlyphLevel = AlchemyResource.reality.effectValue;
       const realityEffectConfigs = GlyphEffects.all.filter(eff => eff.id.includes("reality"));
-      const minRealityEffectIndex = realityEffectConfigs.map(cfg => cfg.id);
-      const effects = [];  
-      for (let x=0; x < 4; x++){
-        if(Decimal.lte(realityGlyphEffectLevelThresholds[x], this.realityGlyphLevel)) effects.push(minRealityEffectIndex[x]);
-      }
-      this.possibleEffects = effects;
+      this.possibleEffects = realityEffectConfigs.map(cfg => cfg.id);
     },
     createRealityGlyph() {
       if (GameCache.glyphInventorySpace.value === 0) {
