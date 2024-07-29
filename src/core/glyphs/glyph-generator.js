@@ -256,7 +256,7 @@ export const GlyphGenerator = {
 
   // Populate a list of reality glyph effects based on level
   generateRealityEffects(level) {
-    const numberOfEffects = realityGlyphEffectLevelThresholds.filter(lv => lv.lte(level)).length;
+    const numberOfEffects = realityGlyphEffectLevelThresholds.filter(lv => Decimal.lte(lv, level)).length;
     const sortedRealityEffects = GlyphEffects.all
       .filter(eff => eff.glyphTypes.includes("reality"))
       .sort((a, b) => a.intID - b.intID)
