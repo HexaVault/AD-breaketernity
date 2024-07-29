@@ -41,7 +41,6 @@ export default {
     },
     formatGlyphEffect(effect) {
 
-      console.log(effect)// ???
       const eff = GlyphEffects.all.filter(eff => eff.id.includes(effect));
       const efflevel = realityGlyphEffectLevelThresholds[eff.intID - 32];
       
