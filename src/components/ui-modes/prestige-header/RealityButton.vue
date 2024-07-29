@@ -75,11 +75,12 @@ export default {
       this.canReality = isRealityAvailable();
       this.showSpecialEffect = this.hasSpecialReward();
 
+      console.log("1")
       if(this.canReality){
         this.shardsGained = new Decimal();
         return;
       }
-      
+      console.log("2")
       function EPforRM(rm) {
         const adjusted = Decimal.divide(rm, MachineHandler.realityMachineMultiplier);
         if (adjusted.lte(1)) return Decimal.pow10(4000);
@@ -105,7 +106,7 @@ export default {
       this.currentShardsRate.copyFrom(this.shardsGained.div(Time.thisRealityRealTime.totalMinutes));
       this.bestShardRate.copyFrom(multiplier.mul(player.records.thisReality.bestRSmin));
       this.bestShardRateVal.copyFrom(multiplier.mul(player.records.thisReality.bestRSminVal));
-
+console.log("3")
       const teresaReward = this.formatScalingMultiplierText(
         "Glyph Sacrifice",
         Teresa.runRewardMultiplier,
@@ -116,6 +117,7 @@ export default {
         "antimatter");
       this.celestialRunText = [
         [Teresa.isRunning, teresaReward, teresaThreshold]];
+      console.log("4")
     },
     handleClick() {
       if (this.canReality) {
