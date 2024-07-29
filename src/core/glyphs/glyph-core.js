@@ -455,7 +455,7 @@ export const Glyphs = {
     this.validate();
   },
   addToInventoryReality(level = new Decimal(25000)){
-    Glyphs.addToInventory(GlyphGenerator.realityGlyph(level));
+    this.addToInventory(GlyphGenerator.realityGlyph(level));
   },
   // These two visual flag functions update the corner tooltips for "New!" and unequipped glyphs
   addVisualFlag(target, glyph) {
