@@ -454,8 +454,8 @@ export const Glyphs = {
     EventHub.dispatch(GAME_EVENT.GLYPHS_CHANGED);
     this.validate();
   },
-  addToInventoryReality(level = new Decimal(25000)){
-    this.addToInventory(GlyphGenerator.realityGlyph(level));
+  addToInventoryReality(level = 25000){
+    this.addToInventory(GlyphGenerator.realityGlyph( new Decimal(level) ));
   },
   // These two visual flag functions update the corner tooltips for "New!" and unequipped glyphs
   addVisualFlag(target, glyph) {
