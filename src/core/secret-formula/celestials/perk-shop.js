@@ -27,7 +27,7 @@ export const perkShop = {
     formatEffect: value => formatX(value, 2, 2),
     formatCost: value => format(value, 2),
     costCap: () => (Ra.unlocks.perkShopIncrease.canBeApplied ? 1048576 : 2048),
-    cap: () => (Ra.unlocks.perkShopIncrease.canBeApplied ? Math.pow(1.05, 20) : Math.pow(1.05, 11))
+    cap: () => (Ra.unlocks.perkShopIncrease.canBeApplied ? Decimal.pow(1.05, 20) : Decimal.pow(1.05, 11))
   }),
   rmMult: rebuyable({
     id: 1,

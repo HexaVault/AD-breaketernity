@@ -92,7 +92,7 @@ class PerkShopUpgradeState extends RebuyableMechanicState {
   }
 
   get isCapped() {
-    return Decimal.eq(this.cost, this.costCap(this.bought));
+    return Decimal.gte(this.cost, this.costCap());
   }
 
   get isAvailableForPurchase() {
