@@ -499,7 +499,7 @@ export const ReplicantiUpgrade = {
         .sub(logRemoteScaling.mul(remoteReplicatedGalaxyStart).div(6));
 
       // eslint-disable-next-line consistent-return
-      return decimalCubicSolution(a, b, c, d, false).floor().add(1);
+      return decimalCubicSolution(a, b, c, d, true).floor().add(1);
     }
 
     autobuyerTick() {
