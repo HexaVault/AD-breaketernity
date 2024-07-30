@@ -1499,7 +1499,7 @@ export const celestialNavigation = {
       if (upgrade.isAvailableForPurchase) return Decimal.div(upgrade.currency.value, upgrade.cost).toNumber();
       return Laitela.difficultyTier < 1
         ? 0
-        : Decimal.div(30, player.celestials.laitela.fastestCompletion);
+        : Decimal.div(30, player.celestials.laitela.fastestCompletion).toNumber();
     },
     node: {
       clickAction: () => Tab.celestials.laitela.show(true),
