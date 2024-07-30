@@ -264,7 +264,7 @@ function maxBuyDimBoosts() {
   multiplierPerDB = multiplierPerDB.times(InfinityUpgrade.resetBoost.chargedEffect.effectOrDefault(1));
   amount = amount.times(InfinityUpgrade.resetBoost.chargedEffect.effectOrDefault(1));
 
-  const ad = AntimatterDimension(tier).amount;
+  const ad = Laitela.continuumActive ? AntimatterDimension(tier).amount : AntimatterDimension(tier).continuumAmount;
   let calcBoosts;
   calcBoosts = ad.sub(amount).div(multiplierPerDB);
 
