@@ -156,7 +156,7 @@ export const Pelle = {
     if (!this.canArmageddon && gainStuff) return;
     EventHub.dispatch(GAME_EVENT.ARMAGEDDON_BEFORE, gainStuff);
     if (gainStuff) {
-      this.cel.remnants += this.remnantsGain;
+      this.cel.remnants = this.remnantsGain.add(this.cel.remnants);
     }
     finishProcessReality({ reset: true, armageddon: true });
     disChargeAll();
