@@ -43,10 +43,9 @@ window.decimalQuadraticSolution = function decimalQuadraticSolution(a, b, c, n =
  * @returns {Decimal}
 */
 window.decimalCubicSolution = function decimalCubicSolution(a, b, c, d, n = false) {
-  const delta0 = b.pow(3).sub(a.times(3).times(c));
+  const delta0 = b.pow(2).sub(a.times(3).times(c));
   const delta1 = b.pow(3).times(2).sub(a.times(b).times(c).times(9)).add(a.pow(2).times(d).times(27));
-  const ne = n ? Decimal.sqrt(delta1.pow(2).sub(delta0.pow(3).times(4))).neg()
-    : Decimal.sqrt(delta1.pow(2).sub(delta0.pow(3).times(4)));
+  const ne = Decimal.sqrt(delta1.pow(2).sub(delta0.pow(3).times(4))).mul(n ? -1 : 1);
   const C = Decimal.cbrt(delta1.add(ne).div(2));
   const x = DC.D1.div(a.times(3)).neg().times(b.add(C).add(delta0.div(C)));
   return x;
