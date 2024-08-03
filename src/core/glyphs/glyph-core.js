@@ -560,7 +560,9 @@ export const Glyphs = {
         g.type === glyph.type &&
         g.id !== glyph.id &&
         (g.level.gte(glyph.level) || g.strength.gte(glyph.strength)) &&
-        ((g.effects.concat(glyph.effects)) === glyph.effects));
+        // eslint-disable-next-line eqeqeq
+        (glyph.effects.every(el => g.effects.includes(el)))
+      )
     let compareThreshold = ["effarig", "reality"].includes(glyph.type) ? 1 : 5;
     compareThreshold = Math.clampMax(compareThreshold, threshold);
     if (toCompare.length < compareThreshold) return false;
@@ -582,7 +584,8 @@ export const Glyphs = {
     for (let inventoryIndex = this.totalSlots - 1; inventoryIndex >= this.protectedSlots; --inventoryIndex) {
       const glyph = (inventoryCopy ?? this.inventory)[inventoryIndex];
       // Never clean companion, and only clean cursed if we choose to sacrifice all
-      if (glyph === null || glyph.type === "companion" || (glyph.type === "cursed" && threshold !== 0)) continue;
+      if (glyph === null || ["companion"].includes(glyph.type) ||
+      (glyph.type === "cursed" && threshold !== 0)) continue;
       // Don't auto-clean individually customized glyphs (eg. music glyphs) unless it's harsh or delete all
       const isCustomGlyph = glyph.color !== undefined || glyph.symbol !== undefined;
       if (isCustomGlyph && !isHarsh) continue;
