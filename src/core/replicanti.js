@@ -486,17 +486,18 @@ export const ReplicantiUpgrade = {
       }
       a = logRemoteScaling.div(3);
 
-      b = logCostScaling.div(2).add(logDistantScaling.div(2)).sub(logRemoteScaling.mul(remoteReplicatedGalaxyStart))
+      b = logCostScaling.add(logDistantScaling).div(2).sub(logRemoteScaling.mul(remoteReplicatedGalaxyStart))
         .add(logRemoteScaling.div(2));
 
       c = logBaseIncrease.sub(logCostScaling.div(2)).sub(distantReplicatedGalaxyStart.times(logDistantScaling))
-        .add(logDistantScaling.times(4.5)).add(remoteReplicatedGalaxyStart.mul(logRemoteScaling));
+        .add(logDistantScaling.times(4.5)).add(remoteReplicatedGalaxyStart.pow(2).mul(logRemoteScaling))
+        .sub(remoteReplicatedGalaxyStart.mul(logRemoteScaling));
 
       const d = cur.neg().add(170).add(distantReplicatedGalaxyStart.pow(2).mul(logDistantScaling).div(2))
         .sub(distantReplicatedGalaxyStart.mul(4.5).mul(logDistantScaling))
-        .sub(logRemoteScaling.pow(3).mul(remoteReplicatedGalaxyStart).div(3))
-        .add(logRemoteScaling.pow(2).mul(remoteReplicatedGalaxyStart).div(2))
-        .sub(logRemoteScaling.mul(remoteReplicatedGalaxyStart).div(6));
+        .sub(remoteReplicatedGalaxyStart.pow(3).mul(logRemoteScaling).div(3))
+        .add(remoteReplicatedGalaxyStart.pow(2).mul(logRemoteScaling).div(2))
+        .sub(remoteReplicatedGalaxyStart.mul(logRemoteScaling).div(6));
 
       // eslint-disable-next-line consistent-return
       return decimalCubicSolution(a, b, c, d, true).floor().add(1);

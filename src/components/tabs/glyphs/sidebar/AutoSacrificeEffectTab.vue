@@ -22,7 +22,7 @@ export default {
       return GlyphInfo[this.glyphType];
     },
     autoSacrificeSettings() {
-      return { ...AutoGlyphProcessor.types[this.glyphType] };
+      return AutoGlyphProcessor.types[this.glyphType];
     },
     effects() {
       return this.typeConfig.effects();

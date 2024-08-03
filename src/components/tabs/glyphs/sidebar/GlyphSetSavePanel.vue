@@ -54,7 +54,7 @@ export default {
       this.level = player.options.ignoreGlyphLevel;
     },
     refreshGlyphSets() {
-      this.glyphSets = cloneDeep(layer.reality.glyphs.sets.map(g => cloneDeep(Glyphs.copyForRecords(g.glyphs))));
+      this.glyphSets = cloneDeep(player.reality.glyphs.sets.map(g => cloneDeep(Glyphs.copyForRecords(g.glyphs))));
     },
     setName(id) {
       const name = this.names[id] === "" ? "" : `: ${this.names[id]}`;
