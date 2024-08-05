@@ -14,7 +14,7 @@ export function effectiveBaseGalaxies() {
   replicantiGalaxies = replicantiGalaxies.add(nonActivePathReplicantiGalaxies
     .times(Effects.sum(EternityChallenge(8).reward)));
   let freeGalaxies = player.dilation.totalTachyonGalaxies;
-  freeGalaxies = freeGalaxies.mul(DC.D1.add(Decimal.max(0, Replicanti.amount.log10().div(1e6))
+  freeGalaxies = freeGalaxies.mul(DC.D1.add(Decimal.max(0, Replicanti.amount.max(1).log10().div(1e6))
     .times(AlchemyResource.alternation.effectValue)));
   return Decimal.max(player.galaxies.add(GalaxyGenerator.galaxies).add(replicantiGalaxies).add(freeGalaxies), 0);
 }
@@ -100,7 +100,7 @@ export function buyMaxTickSpeed() {
   } else {
     const purchases = Tickspeed.costScale.getMaxBought(player.totalTickBought, Currency.antimatter.value, DC.D1, true);
     if (purchases !== null) {
-      if (purchases.logPrice.eq(player.antimatter.log10()) && player.dimensions.antimatter[0].amount.eq(0)) {
+      if (purchases.logPrice.eq(player.antimatter.max(1).log10()) && player.dimensions.antimatter[0].amount.eq(0)) {
         purchases.logPrice = Tickspeed.costScale.calculateCost(purchases.quantity.sub(1));
         purchases.quantity = purchases.quantity.sub(1);
       }

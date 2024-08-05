@@ -89,7 +89,7 @@ export default {
           const extra = upgrade.extra;
           if (extra.gt(0)) {
             const total = extra.add(value);
-            description += `<br>${formatInt(value)} + ${format(extra)} = ${format(total)}`;
+            description += `<br>${formatInt(value)} + ${formatInt(extra)} = ${formatInt(total)}`;
           } else {
             description += formatInt(value);
           }

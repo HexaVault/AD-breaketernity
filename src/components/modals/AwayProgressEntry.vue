@@ -84,7 +84,7 @@ export default {
       // not any text is even shown at all and sometimes this gets checked on variables which don't have values yet
       if (number === undefined) return "";
       // Surrounding text is formatted differently to specify that this is log10
-      if (this.isVeryLarge) return format(Decimal.floor(number.log10()));
+      if (this.isVeryLarge) return format(Decimal.floor(number.max(1).log10()));
       if (Decimal.lt(number, 1e9)) {
         // Both numbers and decimals get passed in here so this is needed
         // Not a fan of this solution but whatever

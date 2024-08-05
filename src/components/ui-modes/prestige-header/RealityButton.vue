@@ -82,7 +82,7 @@ export default {
         const adjusted = Decimal.divide(rm, MachineHandler.realityMachineMultiplier);
         if (adjusted.lte(1)) return Decimal.pow10(4000);
         if (adjusted.lte(10)) return Decimal.pow10(adjusted.add(26).mul(4000).div(27));
-        let result = Decimal.pow10(adjusted.log10().div(3).add(1).mul(4e3));
+        let result = Decimal.pow10(adjusted.max(1).log10().div(3).add(1).mul(4e3));
         if (!PlayerProgress.realityUnlocked() && result.gte("1e6000")) {
           result = result.div("1e6000").pow(4).times("1e6000");
         }

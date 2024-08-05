@@ -75,8 +75,8 @@ Decimal.prototype.copyFrom = function(decimal) {
 
 Decimal.prototype.expEquiv = function(decimal, floor = false) {
   if (decimal.abs().lte(1)) return new Decimal(0);
-  if (!floor) return decimal.log10();
-  return decimal.log10().floor();
+  if (!floor) return decimal.max(1).log10();
+  return decimal.max(1).log10().floor();
 };
 
 window.copyToClipboard = (function() {

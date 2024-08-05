@@ -84,9 +84,9 @@ export default {
       // Repeatable dilation upgrades don't have isBought, but do have boughtAmount
       this.unpurchasedDilationUpgrades = DilationUpgrade.all
         .countWhere(u => (u.isBought === undefined ? u.boughtAmount === 0 : !u.isBought) && !u.config.pelleOnly);
-      this.currLog10EP = player.eternityPoints.log10();
-      this.cheapestLog10TD = Decimal.min(...TimeDimensions.all.map(x => x.cost.log10()));
-      this.multEPLog10Cost = EternityUpgrade.epMult.cost.log10();
+      this.currLog10EP = player.eternityPoints.max(1).log10();
+      this.cheapestLog10TD = Decimal.min(...TimeDimensions.all.map(x => x.cost.max(1).log10()));
+      this.multEPLog10Cost = EternityUpgrade.epMult.cost.max(1).log10();
       this.purchasableTS = NormalTimeStudyState.studies.countWhere(s => s && s.canBeBought && !s.isBought);
       this.hasDilated = Perk.startTP.canBeApplied ? player.dilation.lastEP.gt(0)
         : player.dilation.tachyonParticles.gt(0);

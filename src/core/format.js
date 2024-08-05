@@ -50,6 +50,8 @@ window.formatPostBreak = function formatPostBreak(value, places, placesUnder1000
 
   const decimal = Decimal.fromValue_noAlloc(value);
 
+  if (decimal.eq(0)) return notation.formatUnder1000(0, placesUnder1000);
+
   if (decimal.abs().log10().lt(-300)) {
     return decimal.sign < 0
       ? notation.formatVerySmallNegativeDecimal(decimal.abs(), placesUnder1000)

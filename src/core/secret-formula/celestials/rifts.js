@@ -41,7 +41,7 @@ export const pelleRifts = {
         resource: "vacuum",
         requirement: 0.4,
         description: () => `${wordShift.wordCycle(PelleRifts.vacuum.name)} also affects EP gain`,
-        effect: () => Decimal.pow(4, PelleRifts.vacuum.totalFill.log10().div(616).add(3)),
+        effect: () => Decimal.pow(4, PelleRifts.vacuum.totalFill.max(1).log10().div(616).add(3)),
         formatEffect: x => `EP gain ${formatX(x, 2, 2)}`
       },
     ],

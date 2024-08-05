@@ -72,17 +72,17 @@ function fastReplicantiBelow308(log10GainFactor, isAutobuyerActive) {
   }
 
   if (!shouldBuyRG) {
-    const remainingGain = log10GainFactor.minus(replicantiCap().log10()
+    const remainingGain = log10GainFactor.minus(replicantiCap().max(1).log10()
       .sub(Replicanti.amount.max(1).log10())).clampMin(0);
     Replicanti.amount = Decimal.min(uncappedAmount, replicantiCap());
     return remainingGain;
   }
 
-  const gainNeededPerRG = DC.NUMMAX.log10();
+  const gainNeededPerRG = DC.NUMMAX.max(1).log10();
   const replicantiExponent = log10GainFactor.add(Replicanti.amount.max(1).log10());
   const toBuy = Decimal.floor(Decimal.min(replicantiExponent.div(gainNeededPerRG),
     Replicanti.galaxies.max.sub(player.replicanti.galaxies)));
-  const maxUsedGain = gainNeededPerRG.times(toBuy).add(replicantiCap().log10()).sub(Replicanti.amount.max(1).log10());
+  const maxUsedGain = gainNeededPerRG.times(toBuy).add(replicantiCap().max(1).log10()).sub(Replicanti.amount.max(1).log10());
   const remainingGain = log10GainFactor.minus(maxUsedGain).clampMin(0);
   Replicanti.amount = Decimal.pow10(replicantiExponent.sub(gainNeededPerRG.times(toBuy)))
     .clampMax(replicantiCap());
@@ -104,11 +104,11 @@ export function getReplicantiInterval(overCapOverride, intervalIn) {
   }
 
   if (overCap) {
-    let increases = (amount.log10().sub(replicantiCap().log10())).div(ReplicantiGrowth.scaleLog10);
+    let increases = (amount.max(1).log10().sub(replicantiCap().max(1).log10())).div(ReplicantiGrowth.scaleLog10);
     if (PelleStrikes.eternity.hasStrike && amount.gte(DC.E2000)) {
       // The above code assumes in this case there's 10x scaling for every 1e308 increase;
       // in fact, before e2000 it's only 2x.
-      increases = increases.sub(Decimal.log10(5).times(DC.E2000.sub(replicantiCap()).log10())
+      increases = increases.sub(Decimal.log10(5).times(DC.E2000.sub(replicantiCap()).max(1).log10())
         .div(ReplicantiGrowth.scaleLog10));
     }
     interval = interval.times(Decimal.pow(ReplicantiGrowth.scaleFactor, increases));
@@ -245,7 +245,7 @@ export function replicantiLoop(diff) {
 
   if (!isUncapped) Replicanti.amount = Decimal.min(replicantiCap(), Replicanti.amount);
 
-  if (Pelle.isDoomed && Replicanti.amount.max(1).log10().sub(replicantiBeforeLoop.log10()).gt(308)) {
+  if (Pelle.isDoomed && Replicanti.amount.max(1).log10().sub(replicantiBeforeLoop.max(1).log10()).gt(308)) {
     Replicanti.amount = replicantiBeforeLoop.times(1e308);
   }
 
@@ -465,7 +465,7 @@ export const ReplicantiUpgrade = {
       const logDistantScaling = new Decimal(50);
       const logRemoteScaling = DC.D5;
 
-      const cur = Currency.infinityPoints.value.times(TimeStudy(233).effectOrDefault(1)).log10();
+      const cur = Currency.infinityPoints.value.times(TimeStudy(233).effectOrDefault(1)).max(1).log10();
 
       if (logBase.gt(cur)) return;
       let a = logCostScaling.div(2);
