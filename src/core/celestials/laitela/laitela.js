@@ -50,7 +50,7 @@ export const Laitela = {
   },
   get realityReward() {
     return Decimal.clampMin(Decimal.pow(100, this.difficultyTier)
-      .mul(Decimal.pow(player.celestials.laitela.fastestCompletion.recip().mul(360)), 2), 1);
+      .mul(Decimal.pow(player.celestials.laitela.fastestCompletion.recip().mul(360), 2)), 1);
   },
   // Note that entropy goes from 0 to 1, with 1 being completion
   get entropyGainPerSecond() {
