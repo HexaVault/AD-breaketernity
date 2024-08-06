@@ -2628,7 +2628,7 @@ export const news = [
   {
     id: "l7",
     text: "To understand dimensional sacrifice, you do actually need a PhD in theoretical physics. Sorry!",
-    get unlocked() { return player.sacrificed.log10().gt(10) || DimBoost.totalBoosts.gte(6); }
+    get unlocked() { return player.sacrificed.max(1).log10().gt(10) || DimBoost.totalBoosts.gte(6); }
   },
   {
     id: "l8",
@@ -2638,7 +2638,7 @@ export const news = [
   {
     id: "l9",
     text: "Antimatter ice cream stand has recently opened- they have octillions of flavors!",
-    get unlocked() { return player.records.totalAntimatter.log10().gt(27); }
+    get unlocked() { return player.records.totalAntimatter.max(1).log10().gt(27); }
   },
   {
     id: "l10",
@@ -2869,7 +2869,7 @@ export const news = [
   {
     id: "l44",
     text: "Where does Antimatter Nemo live? In a NNnNeMI-NNnNe.",
-    get unlocked() { return player.records.totalAntimatter.log10().gte(3e6); }
+    get unlocked() { return player.records.totalAntimatter.max(1).log10().gte(3e6); }
   },
   {
     id: "l45",

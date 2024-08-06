@@ -73,7 +73,7 @@ export default {
         this.hasPrevTier;
     },
     showCostTitle() {
-      return this.cost.log10().lte(1e6);
+      return this.cost.max(1).log10().lte(1e6);
     }
   },
   watch: {

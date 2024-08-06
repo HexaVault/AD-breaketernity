@@ -17,7 +17,7 @@ export const MachineHandler = {
   },
 
   get uncappedRM() {
-    let log10FinalEP = player.records.thisReality.maxEP.plus(gainedEternityPoints()).log10();
+    let log10FinalEP = player.records.thisReality.maxEP.plus(gainedEternityPoints()).max(1).log10();
     if (!PlayerProgress.realityUnlocked()) {
       if (log10FinalEP.gt(8000)) log10FinalEP = new Decimal(8000);
       if (log10FinalEP.gt(6000)) log10FinalEP = log10FinalEP.sub((log10FinalEP.sub(6000)).times(0.75));

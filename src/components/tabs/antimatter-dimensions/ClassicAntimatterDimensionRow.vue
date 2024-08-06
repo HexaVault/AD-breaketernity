@@ -125,7 +125,7 @@ export default {
       buyManyDimension(this.tier);
     },
     showCostTitle(value) {
-      return value.log10().lte(1e6);
+      return value.max(1).log10().lte(1e6);
     },
     isLongText(str) {
       return str.length > 20;

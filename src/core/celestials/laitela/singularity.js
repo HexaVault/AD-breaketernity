@@ -135,7 +135,7 @@ export const SingularityMilestones = {
           // For never-completed repeatable milestones, this is zero and will cause NaN bugs if we don't set it to 1
           const prev = Decimal.clampMin(m.previousGoal, 1);
           // eslint-disable-next-line max-len
-          const part = Decimal.clamp(Currency.singularities.value.div(prev).log10().div(m.nextGoal.div(prev).log10()), 0, 1);
+          const part = Decimal.clamp(Currency.singularities.value.div(prev).max(1).log10().div(m.nextGoal.div(prev).max(1).log10()), 0, 1);
           return (m.completions.add(part)).div(20);
         };
         break;
@@ -144,7 +144,7 @@ export const SingularityMilestones = {
         // they're completed
         sortFn = m => {
           const limit = Number.isFinite(m.limit) ? m.limit : 100;
-          const currComp = Currency.singularities.value.div(m.previousGoal).log10().div(
+          const currComp = Currency.singularities.value.div(m.previousGoal).max(1).log10().div(
             Decimal.log10(m.nextGoal.div(m.previousGoal)));
           return Decimal.clampMax(currComp.add(m.completions).div(limit), 1).add(Number.isFinite(m.limit) ? 0 : 1);
         };
@@ -154,7 +154,7 @@ export const SingularityMilestones = {
         // treats infinite milestones with larger steps as if they complete at a higher value
         sortFn = m => {
           const limit = Number.isFinite(m.limit) ? m.limit : 50;
-          return Decimal.mul(m.config.start, Decimal.pow(m.config.repeat, limit - 1)).log10().div(100);
+          return Decimal.mul(m.config.start, Decimal.pow(m.config.repeat, limit - 1)).max(1).log10().div(100);
         };
         break;
       case SINGULARITY_MILESTONE_SORT.MOST_RECENT:

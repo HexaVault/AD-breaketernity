@@ -50,7 +50,7 @@ export default {
         ],
         [0, 255, 0]
       ];
-      const ratio = this.gainedIP.log10().div(this.currentIP.log10());
+      const ratio = this.gainedIP.max(1).log10().div(this.currentIP.max(1).log10());
       const interFn = index => {
         if (ratio.lt(0.9)) return stepRGB[0][index];
         if (ratio.lt(1)) {

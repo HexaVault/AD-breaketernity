@@ -145,7 +145,7 @@ dev.setCompanionGlyphEP = function(eternityPoints) {
   const glyph = player.reality.glyphs.active
     .concat(player.reality.glyphs.inventory)
     .filter(g => g.type === "companion")[0];
-  glyph.strength = rarityToStrength(eternityPoints.log10() / 1e6);
+  glyph.strength = rarityToStrength(eternityPoints.max(1).log10() / 1e6);
 };
 
 dev.decriminalize = function() {

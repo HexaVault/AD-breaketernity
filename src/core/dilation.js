@@ -205,7 +205,7 @@ export function getBaseTP(antimatter, requireEternity) {
   const am = (isInCelestialReality() || Pelle.isDoomed)
     ? antimatter
     : Ra.unlocks.unlockDilationStartingTP.effectOrDefault(antimatter);
-  let baseTP = am.log10().div(400).pow(1.5);
+  let baseTP = am.max(1).log10().div(400).pow(1.5);
   if (Enslaved.isRunning) baseTP = baseTP.pow(Enslaved.tachyonNerf);
   return baseTP;
 }
@@ -250,7 +250,7 @@ export function getDilationTimeEstimate(goal) {
 }
 
 export function dilatedValueOf(value) {
-  const log10 = value.clampMin(1).log10();
+  const log10 = value.eq(0) ? 0 : value.log10();
   const dilationPenalty = Effects.product(DilationUpgrade.dilationPenalty).times(0.75);
   return Decimal.pow10(log10.abs().pow(dilationPenalty).times(Decimal.sign(log10)));
 }

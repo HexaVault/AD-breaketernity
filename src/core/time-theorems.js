@@ -1,4 +1,5 @@
 import { DC } from "./constants";
+import { Currency } from "./currency";
 
 /**
  * @abstract
@@ -35,7 +36,7 @@ export class TimeTheoremPurchaseType {
 
   get bulkPossible() {
     if (Perk.ttFree.canBeApplied) {
-      return this.currency.value.divide(this.cost).log10().div(this.costIncrement.log10()).add(1).floor();
+      return this.currency.value.divide(this.cost).max(1).log10().div(this.costIncrement.max(1).log10()).add(1).floor();
     }
     return Decimal.affordGeometricSeries(this.currency.value, this.cost, this.costIncrement, 0);
   }
@@ -47,6 +48,7 @@ export class TimeTheoremPurchaseType {
   }
 
   purchase(bulk = false) {
+    if (Currency.timeTheorems.gte(115)) PelleStrikes.eternity.trigger();
     if (!this.canAfford) return false;
 
     if(TimeTheorems.totalPurchased().gt(144) && Pelle.isDoomed) PelleStrikes.ECs.trigger();
@@ -56,6 +58,7 @@ export class TimeTheoremPurchaseType {
       Currency.timeTheorems.add(1);
       this.add(1);
       player.requirementChecks.reality.noPurchasedTT = false;
+      if (Currency.timeTheorems.gte(115)) PelleStrikes.eternity.trigger();
       return true;
     }
     const canBuy = this.currency.value.sub(this.costBase)
@@ -72,6 +75,7 @@ export class TimeTheoremPurchaseType {
     if (!Perk.ttFree.canBeApplied && this.currency.layer <= 1) this.currency.subtract(this.cost);
     this.add(1);
     player.requirementChecks.reality.noPurchasedTT = false;
+    if (Currency.timeTheorems.gte(115)) PelleStrikes.eternity.trigger();
     return true;
   }
 

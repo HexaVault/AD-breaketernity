@@ -31,7 +31,7 @@ export const breakInfinityUpgrades = {
     id: "totalMult",
     cost: DC.E4,
     description: "Antimatter Dimensions gain a multiplier based on total antimatter produced",
-    effect: () => Decimal.pow(player.records.totalAntimatter.log10().add(1), 0.5),
+    effect: () => Decimal.pow(player.records.totalAntimatter.max(1).log10().add(1), 0.5),
     formatEffect: value => formatX(value, 2, 2)
   },
   currentAMMult: {

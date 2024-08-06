@@ -49,8 +49,8 @@ export function toggleAllTimeDims() {
 }
 
 export function calcHighestPurchaseableTD(tier, currency) {
-  const logC = currency.log10();
-  const logBase = TimeDimension(tier)._baseCost.log10();
+  const logC = currency.max(1).log10();
+  const logBase = TimeDimension(tier)._baseCost.max(1).log10();
   let logMult = Decimal.log10(TimeDimension(tier)._costMultiplier);
 
   if (tier > 4 && currency.lt(DC.E6000)) {
@@ -58,7 +58,7 @@ export function calcHighestPurchaseableTD(tier, currency) {
   }
 
   if (currency.gte(DC.E6000)) {
-    logMult = TimeDimension(tier)._costMultiplier.mul(tier <= 4 ? 2.2 : 1).log10();
+    logMult = TimeDimension(tier)._costMultiplier.mul(tier <= 4 ? 2.2 : 1).max(1).log10();
     const preInc = Decimal.log10(DC.E6000).sub(logBase).div(logMult);
     const postInc = logC.sub(logBase).sub(6000).div(logMult).div(TimeDimensions.scalingPast1e6000).clampMin(0);
     return postInc.add(preInc).floor();
@@ -70,16 +70,16 @@ export function calcHighestPurchaseableTD(tier, currency) {
 
   if (currency.lt(DC.E1300)) {
     const preInc = Decimal.log10(DC.NUMMAX).sub(logBase).div(logMult).floor();
-    logMult = TimeDimension(tier)._costMultiplier.mul(1.5).log10();
+    logMult = TimeDimension(tier)._costMultiplier.mul(1.5).max(1).log10();
     const decCur = logC.sub(preInc.mul(logMult));
     const postInc = decCur.div(logMult).clampMin(0).floor();
     return Decimal.add(preInc, postInc);
   }
 
   if (currency.lt(DC.E6000)) {
-    logMult = TimeDimension(tier)._costMultiplier.mul(1.5).log10();
+    logMult = TimeDimension(tier)._costMultiplier.mul(1.5).max(1).log10();
     const preInc = Decimal.log10(DC.E1300).sub(logBase).div(logMult).floor();
-    logMult = TimeDimension(tier)._costMultiplier.mul(2.2).log10();
+    logMult = TimeDimension(tier)._costMultiplier.mul(2.2).max(1).log10();
     const decCur = logC.sub(preInc.mul(logMult));
     const postInc = decCur.div(logMult).clampMin(0).floor();
     return Decimal.add(preInc, postInc);

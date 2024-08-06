@@ -21,7 +21,7 @@ export default {
   },
   methods: {
     update() {
-      this.glyphSet = Glyphs.copyForRecords(player.reality.glyphs.sets[this.glyphSetId].glyphs);
+      this.glyphSet = cloneDeep(Glyphs.copyForRecords(player.reality.glyphs.sets[this.glyphSetId].glyphs));
     },
     handleYesClick() {
       player.reality.glyphs.sets[this.glyphSetId].glyphs = [];

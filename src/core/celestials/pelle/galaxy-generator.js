@@ -67,7 +67,7 @@ export const GalaxyGenerator = {
       Pelle.quotes.galaxyGeneratorRifts.show();
     }
     if (this.sacrificeActive) {
-      this.capRift.reducedTo = Decimal.max(Decimal.sub(this.capRift.reducedTo, diff.div(1e5).mul(3)), 0).toNumber();
+      this.capRift.reducedTo = Decimal.max(Decimal.sub(this.capRift.reducedTo, (diff.div(1e5).mul(3))), 0).toNumber();
       if (this.capRift.reducedTo === 0) {
         player.celestials.pelle.galaxyGenerator.sacrificeActive = false;
         player.celestials.pelle.galaxyGenerator.phase++;
