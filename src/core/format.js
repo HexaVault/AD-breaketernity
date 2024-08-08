@@ -176,17 +176,6 @@ window.formatWithCommas = function formatWithCommas(value) {
   return decimalPointSplit.join(".");
 };
 
-/**
- * Check if a number or Decimal is equal to 1.
- * @param  {number|Decimal} amount
- * @return {Boolean} - if the {amount} was equal to 1.
- */
-window.isSingular = function isSingular(amount) {
-  if (typeof amount === "number") return amount === 1;
-  if (amount instanceof Decimal) return amount.eq(1);
-  throw `Amount must be either a number or Decimal. Instead, amount was ${amount}`;
-};
-
 // Some letters in the english language pluralize in a different manner than simply adding an 's' to the end.
 // As such, the regex match should be placed in the first location, followed by the desired string it
 // should be replaced with. Note that $ refers to the EndOfLine for regex, and should be included if the plural occurs
@@ -216,7 +205,7 @@ const pluralDatabase = new Map([
 window.pluralize = function pluralize(word, amount, plural) {
   if (word === undefined || amount === undefined) throw "Arguments must be defined";
 
-  if (isSingular(amount)) return word;
+  if (Decimal.eq(amount, 1)) return word;
   const existingPlural = plural ?? pluralDatabase.get(word);
   if (existingPlural !== undefined) return existingPlural;
 
