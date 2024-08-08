@@ -268,11 +268,10 @@ function maxBuyDimBoosts() {
   let calcBoosts;
   calcBoosts = ad.sub(amount).div(multiplierPerDB);
 
-
   if (EternityChallenge(5).isRunning) {
-    calcBoosts = decimalCubicSolution(DC.D1, DC.D1.neg(), multiplierPerDB.add(2), ad.add(18).neg());
+    calcBoosts = decimalCubicSolution(DC.D1, DC.D1.neg(), multiplierPerDB.add(2), ad.add(18).neg(), true).mul(1.14);
   }
-
+  
   calcBoosts = calcBoosts.add(NormalChallenge(10).isRunning ? 2 : 4);
   // Dimension boosts 1-4 dont use 8th dims, 1-2 dont use 6th dims, so add those extras afterwards.
 

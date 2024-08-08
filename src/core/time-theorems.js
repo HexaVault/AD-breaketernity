@@ -51,6 +51,8 @@ export class TimeTheoremPurchaseType {
     if (Currency.timeTheorems.gte(115)) PelleStrikes.eternity.trigger();
     if (!this.canAfford) return false;
 
+    if(TimeTheorems.totalPurchased().gt(144) && Pelle.isDoomed) PelleStrikes.ECs.trigger();
+    
     if (!bulk) {
       if (!Perk.ttFree.canBeApplied && this.currency.layer <= 1) this.currency.subtract(this.cost);
       Currency.timeTheorems.add(1);

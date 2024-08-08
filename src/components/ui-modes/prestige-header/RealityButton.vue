@@ -74,10 +74,13 @@ export default {
       this.hasRealityStudy = TimeStudy.reality.isBought;
       this.canReality = isRealityAvailable();
       this.showSpecialEffect = this.hasSpecialReward();
-      if (!this.canReality) {
+
+
+      if(!this.canReality){
         this.shardsGained = new Decimal();
         return;
       }
+
       function EPforRM(rm) {
         const adjusted = Decimal.divide(rm, MachineHandler.realityMachineMultiplier);
         if (adjusted.lte(1)) return Decimal.pow10(4000);
@@ -114,6 +117,7 @@ export default {
         "antimatter");
       this.celestialRunText = [
         [Teresa.isRunning, teresaReward, teresaThreshold]];
+
     },
     handleClick() {
       if (this.canReality) {

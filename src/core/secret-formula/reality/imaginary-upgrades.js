@@ -266,7 +266,7 @@ export const imaginaryUpgrades = [
       Currency.antimatter.value.add(1).log10().gte(1.5e11),
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     description: () => `All Glyph Sacrifice totals are increased to ${format(1e100)}`,
-    effect: 1e100,
+    effect: new Decimal(1e100),
     isDisabledInDoomed: true
   },
   {

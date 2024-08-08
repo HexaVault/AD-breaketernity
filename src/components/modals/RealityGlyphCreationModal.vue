@@ -19,13 +19,9 @@ export default {
   methods: {
     update() {
       this.isDoomed = Pelle.isDoomed;
-      this.realityGlyphLevel.copyFrom(AlchemyResource.reality.effectValue);
-      const realityEffectConfigs = GlyphEffects.all
-        .filter(eff => eff.glyphTypes.includes("reality"))
-        .sort((a, b) => a.intID - b.intID);
-      const minRealityEffectIndex = realityEffectConfigs.map(cfg => cfg.intID).min();
-      this.possibleEffects = realityEffectConfigs
-        .map(cfg => [realityGlyphEffectLevelThresholds[cfg.intID - minRealityEffectIndex], cfg.id]);
+      this.realityGlyphLevel = AlchemyResource.reality.effectValue;
+      const realityEffectConfigs = GlyphEffects.all.filter(eff => eff.id.includes("reality"));
+      this.possibleEffects = realityEffectConfigs.map(cfg => cfg.id);
     },
     createRealityGlyph() {
       if (GameCache.glyphInventorySpace.value === 0) {
@@ -33,14 +29,18 @@ export default {
           { closeEvent: GAME_EVENT.GLYPHS_CHANGED });
         return;
       }
-      Glyphs.addToInventory(GlyphGenerator.realityGlyph(this.realityGlyphLevel));
+      Glyphs.addToInventoryReality(this.realityGlyphLevel);
       AlchemyResource.reality.amount = new Decimal();
       player.reality.glyphs.createdRealityGlyph = true;
       this.emitClose();
     },
     formatGlyphEffect(effect) {
-      if (this.realityGlyphLevel.lt(effect[0])) return `(Requires Glyph level ${formatInt(effect[0])})`;
-      const config = GlyphEffects[effect[1]];
+
+      const eff = GlyphEffects.all.filter(eff => eff.id.includes(effect));
+      const efflevel = realityGlyphEffectLevelThresholds[eff[0].intID - 32];
+      
+      if (this.realityGlyphLevel.lt(efflevel)) return `(Requires Glyph level ${formatInt(efflevel)})`;
+      const config = GlyphEffects[effect];
       const value = config.effect(this.realityGlyphLevel, rarityToStrength(100));
       const effectTemplate = config.singleDesc;
       return effectTemplate.replace("{value}", config.formatEffect(value));

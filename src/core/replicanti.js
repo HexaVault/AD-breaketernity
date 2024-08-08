@@ -484,9 +484,10 @@ export const ReplicantiUpgrade = {
         // eslint-disable-next-line consistent-return
         return decimalQuadraticSolution(a, b, c).floor().add(1);
       }
-      a = logRemoteScaling.div(3);
 
-      b = logCostScaling.add(logDistantScaling).div(2).sub(logRemoteScaling.mul(remoteReplicatedGalaxyStart))
+       a = logRemoteScaling.div(3);
+      
+       b = logCostScaling.add(logDistantScaling).div(2).sub(logRemoteScaling.mul(remoteReplicatedGalaxyStart))
         .add(logRemoteScaling.div(2));
 
       c = logBaseIncrease.sub(logCostScaling.div(2)).sub(distantReplicatedGalaxyStart.times(logDistantScaling))
@@ -500,7 +501,7 @@ export const ReplicantiUpgrade = {
         .sub(remoteReplicatedGalaxyStart.mul(logRemoteScaling).div(6));
 
       // eslint-disable-next-line consistent-return
-      return decimalCubicSolution(a, b, c, d, false).floor().add(1);
+      return decimalCubicSolution(a, b, c, d, true).floor().add(1);
     }
 
     autobuyerTick() {
