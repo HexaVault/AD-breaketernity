@@ -127,8 +127,8 @@ export const realityUpgrades = [
     checkEvent: GAME_EVENT.ETERNITY_RESET_AFTER,
     canLock: true,
     // There are two locking events - equipping a glyph with too low a level, and equipping a second glyph
-    description: "Gain 2 Glyph slots",
-    effect: () => DC.D2
+    description: "Gain another Glyph slot",
+    effect: () => DC.D1
   },
   {
     name: "Existentially Prolong",
@@ -348,8 +348,8 @@ export const realityUpgrades = [
     canLock: true,
     lockEvent: "equip a non-Companion Glyph",
     checkEvent: GAME_EVENT.REALITY_RESET_BEFORE,
-    description: "Gain 3 Glyph slots",
-    effect: () => DC.D3
+    description: "Gain another Glyph slot",
+    effect: () => DC.D1
   },
   {
     name: "Effortless Existence",
