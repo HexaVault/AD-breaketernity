@@ -1073,7 +1073,7 @@ export function guardFromNaNValues(obj) {
           if (typeof newValue !== "number" && !(newValue instanceof Decimal)) {
             throw new Error("Non-Number assignment to Number player property");
           }
-          if (!isFinite(newValue)) {
+          if (!Decimal.isFinite(newValue)) {
             throw new Error("NaN player property assignment");
           }
           value = newValue;
