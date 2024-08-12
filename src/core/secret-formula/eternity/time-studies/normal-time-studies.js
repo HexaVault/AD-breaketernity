@@ -70,8 +70,8 @@ export const normalTimeStudies = [
     cost: DC.D2,
     requirement: [11],
     reqType: TS_REQUIREMENT_TYPE.AT_LEAST_ONE,
-    description: () => `Base Replicanti interval limit ${formatInt(50)}ms ➜ ${formatInt(1)}ms`,
-    effect: 1
+    description: () => `Base Replicanti interval limit ${formatInt(50)}ms ➜ ${formatInt(100)}μs`,
+    effect: 0.1
   },
   {
     id: 31,
@@ -261,9 +261,9 @@ export const normalTimeStudies = [
     requirement: [101, 102, 103],
     reqType: TS_REQUIREMENT_TYPE.AT_LEAST_ONE,
     description: () => (Achievement(103).canBeApplied
-      ? `Make the Infinity Point formula better log(x)/${formatFloat(307.8, 1)} ➜ log(x)/${formatInt(285)}`
-      : `Make the Infinity Point formula better log(x)/${formatInt(308)} ➜ log(x)/${formatInt(285)}`),
-    effect: 285
+      ? `Make the Infinity Point formula better log(x)/${formatFloat(307.8, 1)} ➜ log(x)/${formatInt(250)}`
+      : `Make the Infinity Point formula better log(x)/${formatInt(308)} ➜ log(x)/${formatInt(250)}`),
+    effect: 250
   },
   {
     id: 121,
@@ -329,10 +329,10 @@ export const normalTimeStudies = [
     reqType: TS_REQUIREMENT_TYPE.AT_LEAST_ONE,
     requiresST: [131, 133],
     description: () => (Pelle.isDoomed
-      ? `Replicanti Galaxies are ${formatPercents(0.4)} stronger`
-      : `Replicanti Galaxies are ${formatPercents(0.4)} stronger and Replicanti are 
+      ? `Replicanti Galaxies are ${formatPercents(0.55)} stronger`
+      : `Replicanti Galaxies are ${formatPercents(0.55)} stronger and Replicanti are 
         ${Perk.studyPassive.isBought ? formatX(3) : formatX(1.5, 1, 1)} faster`),
-    effect: 0.4
+    effect: 0.55
   },
   {
     id: 133,
@@ -492,8 +492,8 @@ export const normalTimeStudies = [
     cost: new Decimal(200),
     requirement: [193],
     reqType: TS_REQUIREMENT_TYPE.AT_LEAST_ONE,
-    description: () => `You gain Replicanti ${formatInt(20)} times faster`,
-    effect: 20
+    description: () => `You gain Replicanti ${formatInt(200)} times faster`,
+    effect: 200
   },
   {
     id: 214,
