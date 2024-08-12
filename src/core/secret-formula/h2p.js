@@ -44,6 +44,10 @@ List of buffs in NG+:
 <ul>
 <li> Infinity Upgrade IPMult: ×2→×5
 <li> Infinity is permanently broken
+<li> Time Study 22: 1 ms→100 μs
+<li> Time Study 111: log(x)/285→log(x)/250
+<li> Time Study 132: 40%→55%
+<li> Time Study 213: ×20→×200
 <li> Reality Upgrade Linguistically Expand: 1 Glyph Slot→2 Glyph Slots
 <li> Reality Upgrade Synthetic Symbolism: 1 Glyph Slot→3 Glyph Slots
 </ul>
