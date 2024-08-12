@@ -309,8 +309,8 @@ export const realityUpgrades = [
     checkRequirement: () =>
       player.dilation.totalTachyonGalaxies.add(Replicanti.galaxies.total).add(player.galaxies).gte(2800),
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
-    description: () => `Remote Antimatter Galaxy scaling is moved to ${formatInt(1e5)} galaxies`,
-    effect: DC.E5
+    description: () => `Remote Antimatter Galaxy scaling is moved to ${formatInt(2e5)} galaxies`,
+    effect: DC.D2E5
   },
   {
     name: "Temporal Transcendence",
