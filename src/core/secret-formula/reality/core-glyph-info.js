@@ -75,7 +75,8 @@ export const GlyphInfo = {
     "time",
     "dilation",
     "effarig",
-    "reality"
+    "reality",
+    "companion"
   ],
 
   generatedGlyphTypes: [
@@ -84,7 +85,8 @@ export const GlyphInfo = {
     "replication",
     "time",
     "dilation",
-    "effarig"
+    "effarig",
+    "reality"
   ],
 
   rarities: [
