@@ -173,9 +173,9 @@ export const eternityChallenges = [
     id: 11,
     description: () => `all Dimension multipliers and powers are disabled except for the multipliers from
       Infinity Power and Dimension Boosts (to Antimatter Dimensions). ${specialInfinityGlyphDisabledEffectText()}`,
-    goal: DC.E450,
+    goal: DC.E400,
     pelleGoal: DC.E11200,
-    goalIncrease: DC.E200,
+    goalIncrease: DC.E150,
     pelleGoalIncrease: DC.E1400,
     reward: {
       description: "Further reduce Tickspeed cost multiplier growth",
