@@ -6,7 +6,7 @@ export const eternityMilestones = {
   },
   keepAutobuyers: {
     eternities: 2,
-    reward: "You start Eternity with all Normal Challenges complete, all normal autobuyers, and infinity broken"
+    reward: "You start Eternity with all Normal Challenges complete and all normal autobuyers"
   },
   autobuyerReplicantiGalaxy: {
     eternities: 3,
