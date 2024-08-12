@@ -101,10 +101,7 @@ export function eternity(force, auto, specialConditions = {}) {
   initializeChallengeCompletions();
   initializeResourcesAfterEternity();
 
-  if (!EternityMilestone.keepAutobuyers.isReached && !(Pelle.isDoomed && PelleUpgrade.keepAutobuyers.canBeApplied)) {
-    // Fix infinity because it can only break after big crunch autobuyer interval is maxed
-    player.break = false;
-  }
+  player.break = true;
 
   player.challenge.eternity.current = 0;
   if (!specialConditions.enteringEC && !Pelle.isDoomed) {
