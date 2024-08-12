@@ -48,6 +48,7 @@ List of buffs in NG+:
 <li> Time Study 111: log(x)/285→log(x)/250
 <li> Time Study 132: 40%→55%
 <li> Time Study 213: ×20→×200
+<li> Eternity Challenge 11 Goal ÷50 (Permanent, won't affected by Pelle)
 <li> Reality Upgrade Linguistically Expand: 1 Glyph Slot→2 Glyph Slots
 <li> Reality Upgrade Synthetic Symbolism: 1 Glyph Slot→3 Glyph Slots
 </ul>
