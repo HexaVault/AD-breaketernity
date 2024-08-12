@@ -9,6 +9,17 @@ export const changelog = [
    * }
    */
   {
+    date: [2024, 8, "???"],
+    name: "NG+ First Release",
+    info: `
+<b>Major things:</b><br>
+<ul>
+<li>Added Quantum Layer</li>
+<li>Buffed many mechanics(See "NG+ Buffs" in H2P for details)</li>
+</ul>
+`
+  },
+  {
     date: [2024, 5, 2],
     name: "Celebrate Android Reality Update",
     info: `
