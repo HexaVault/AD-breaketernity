@@ -38,6 +38,19 @@ visible tab and subtab, if such an entry exists.
       tab: ""
     },
     {
+      name: "NG+ Buffs",
+      info: () => `
+List of buffs in NG+:
+<ul>
+<li> Reality Upgrade Linguistically Expand: 1 Glyph Slot→2 Glyph Slots
+<li> Reality Upgrade Synthetic Symbolism: 1 Glyph Slot→3 Glyph Slots
+</ul>
+`,
+      isUnlocked: () => true,
+      tags: ["ngp", "ng-plus", "buffs"],
+      tab: ""
+    },
+    {
       name: "Your savefile",
       info: () => `
 Your game's save data is stored on your computer's browser data if you are playing on a web browser, or in your Steam
