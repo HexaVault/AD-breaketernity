@@ -42,6 +42,8 @@ visible tab and subtab, if such an entry exists.
       info: () => `
 List of buffs in NG+:
 <ul>
+<li> Infinity Upgrade IPMult: ×2→×5
+<li> Infinity is permanently broken
 <li> Reality Upgrade Linguistically Expand: 1 Glyph Slot→2 Glyph Slots
 <li> Reality Upgrade Synthetic Symbolism: 1 Glyph Slot→3 Glyph Slots
 </ul>
