@@ -49,8 +49,11 @@ List of buffs in NG+:
 <li> Time Study 132: 40%→55%
 <li> Time Study 213: ×20→×200
 <li> Eternity Challenge 11 Goal ÷1.00e50 (Permanent, won't affected by Pelle)
+<li> You can get Reality/Companion Glyphs in Glyph Selection
 <li> Reality Upgrade Linguistically Expand: 1 Glyph Slot→2 Glyph Slots
+<li> Reality Upgrade Cosmic Conglomerate: 100000 Galaxies→200000 Galaxies
 <li> Reality Upgrade Synthetic Symbolism: 1 Glyph Slot→3 Glyph Slots
+<li> Galaxy Generator Requirement: 100% [Recursion/Dispersion/Destruction]→1% [Recursion/Dispersion/Destruction]
 </ul>
 `,
       isUnlocked: () => true,
