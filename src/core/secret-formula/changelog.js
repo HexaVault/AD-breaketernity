@@ -14,8 +14,9 @@ export const changelog = [
     info: `
 <b>Major things:</b><br>
 <ul>
+<li>Migrated to <a href="https://github.com/HexaVault/AD-breaketernity">break_eternity.js</a> (Thanks to HexaVault)</li>
 <li>Added Quantum Layer</li>
-<li>Buffed many mechanics(See "NG+ Buffs" in H2P for details)</li>
+<li>Buffed many mechanics (See "NG+ Buffs" in H2P for details)</li>
 </ul>
 `
   },
