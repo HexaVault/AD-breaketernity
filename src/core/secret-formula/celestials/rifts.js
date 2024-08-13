@@ -160,6 +160,11 @@ export const pelleRifts = {
     milestones: [
       {
         resource: "recursion",
+        requirement: 0.01,
+        description: "Permanently unlock the Galaxy Generator",
+      },
+      {
+        resource: "recursion",
         requirement: 0.10,
         description: "Dimensional Boosts are more powerful based on EC completions",
         effect: () => Math.max(100 * EternityChallenges.completions ** 2, 1) *
@@ -172,11 +177,6 @@ export const pelleRifts = {
         description: "Infinity Dimensions are stronger based on EC completions",
         effect: () => Decimal.pow("1e1500", (Math.max(EternityChallenges.completions - 25, 0) / 20) ** 1.7),
         formatEffect: x => `Infinity Dimensions ${formatX(x)}`
-      },
-      {
-        resource: "recursion",
-        requirement: 1,
-        description: "Permanently unlock the Galaxy Generator",
       },
     ],
     galaxyGeneratorText: "Creating more Galaxies is unsustainable, you must focus the $value to allow more"
