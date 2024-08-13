@@ -103,7 +103,7 @@ export function gainedInfinityPoints() {
   }
   ip = ip.times(GameCache.totalIPMult.value);
   if (Teresa.isRunning) {
-    ip = ip.pow(0.55);
+    ip = ip.pow(0.65);
   } else if (V.isRunning) {
     ip = ip.pow(0.5);
   } else if (Laitela.isRunning) {
@@ -137,7 +137,7 @@ export function gainedEternityPoints() {
     .times(totalEPMult());
 
   if (Teresa.isRunning) {
-    ep = ep.pow(0.55);
+    ep = ep.pow(0.65);
   } else if (V.isRunning) {
     ep = ep.pow(0.5);
   } else if (Laitela.isRunning) {
