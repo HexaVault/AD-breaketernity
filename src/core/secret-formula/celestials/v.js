@@ -211,7 +211,7 @@ export const v = {
       id: 2,
       reward: "Antimatter Dimension power based on total Space Theorems.",
       description: () => `Have ${formatInt(5)} V-Achievements`,
-      effect: () => 1 + Math.sqrt(V.spaceTheorems) / 100,
+      effect: () => ((1 + Math.sqrt(V.spaceTheorems) / 100) ** 1.35),
       format: x => formatPow(x, 3, 3),
       requirement: () => V.spaceTheorems >= 5
     },
