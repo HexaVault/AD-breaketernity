@@ -107,23 +107,18 @@ export class AntimatterDimensionAutobuyerState extends UpgradeableAutobuyerState
     // From AutobuyerState.canTick (ignores this.constructor.isActive because that's accounted for in thisSetting)
     const autoTick = player.auto.autobuyersOn && this.isActive && (this.isUnlocked || this.isBought);
 
-    // console.log(this.tier, thisSetting, intervalTick, this.data.lastTick, this.timeSinceLastTick, this.interval, autoTick, dim.isAvailableForPurchase, dim.isAffordable)
-    // return thisSetting && hasAutobuyer && intervalTick && autoTick;
-    return true;
+    return thisSetting && hasAutobuyer && intervalTick && autoTick;
   }
 
   tick() {
     super.tick();
     const tier = this.tier;
-    // console.log(`does the autobuyer for ad ${tier} even trigger??? oh btw it has a cool mode "${this.mode}"`)
     switch (this.mode) {
-      case AUTOBUYER_MODE.BUY_SINGLE: // 1
+      case AUTOBUYER_MODE.BUY_SINGLE:
         buyOneDimension(tier);
         break;
-      case AUTOBUYER_MODE.BUY_10: // 10
-        // console.log(`hi from ad ${tier} auto`)
+      case AUTOBUYER_MODE.BUY_10:
         buyMaxDimension(tier, this.bulk);
-        // console.log(`did it purchase???`)
         break;
     }
   }
