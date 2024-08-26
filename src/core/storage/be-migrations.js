@@ -252,6 +252,7 @@ export function beMigration(player) {
   player.replicanti.timer = D(player.replicanti.timer);
   player.requirementChecks.reality.slowestBH = D(player.requirementChecks.reality.slowestBH);
   player.requirementChecks.reality.maxID1 = D(player.requirementChecks.reality.maxID1);
+  player.requirementChecks.permanent.emojiGalaxies = D(player.requirementChecks.permanent.emojiGalaxies);
   player.totalTickGained = D(player.totalTickGained);
   player.totalTickBought = D(player.totalTickBought);
 }
