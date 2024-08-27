@@ -22,9 +22,7 @@ class GalaxyRequirement {
 
 export class Galaxy {
   static get remoteStart() {
-    let amnt = new Decimal(800);
-    if (RealityUpgrade(21).isBought) amnt = DC.E5;
-    return amnt;
+    return Decimal.max(800, RealityUpgrade(21).effectOrDefault(0));
   }
 
   static get requirement() {
