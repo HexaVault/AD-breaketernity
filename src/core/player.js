@@ -1065,14 +1065,15 @@ export function guardFromNaNValues(obj) {
         enumerable: true,
         configurable: true,
         get: () => value,
+        // eslint-disable-next-line no-loop-func
         set: function guardedSetter(newValue) {
           if (newValue === null || newValue === undefined) {
             throw new Error("null/undefined player property assignment");
           }
-          if (typeof newValue !== "number") {
+          if (typeof newValue !== "number" && !(newValue instanceof Decimal)) {
             throw new Error("Non-Number assignment to Number player property");
           }
-          if (!isFinite(newValue)) {
+          if (!Decimal.isFinite(newValue)) {
             throw new Error("NaN player property assignment");
           }
           value = newValue;
