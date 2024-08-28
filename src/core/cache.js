@@ -96,7 +96,7 @@ export const GameCache = {
   cheapestAntimatterAutobuyer: new Lazy(() => Autobuyer.antimatterDimension.zeroIndexed.concat(Autobuyer.tickspeed)
     .filter(ab => !(ab.isBought || ab.isUnlocked))
     .map(ab => ab.antimatterCost.toNumber())
-    .min()
+    .nMin()
   ),
 
   // The effect is defined in antimatter_dimensions.js because that's where the non-cached
