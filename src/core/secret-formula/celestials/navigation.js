@@ -1636,7 +1636,7 @@ export const celestialNavigation = {
           return [
             dmdText,
             `Automatically Condense ${format(20)} Singularities at once`,
-            `${format(Math.clampMax(Singularity.singularitiesGained, 20))} / ${format(20)}`
+            `${format(Math.clampMax(Singularity.singularitiesGained.toNumber(), 20))} / ${format(20)}`
           ];
         },
         angle: 15,
