@@ -35,7 +35,7 @@ export default {
     },
     handleAutoAnnihilationInputChange() {
       const float = new Decimal(this.autoAnnihilationInput);
-      if (isNaN(float)) {
+      if (float.isNan()) {
         this.autoAnnihilationInput.copyFrom(player.auto.annihilation.multiplier);
       } else {
         player.auto.annihilation.multiplier = float;
