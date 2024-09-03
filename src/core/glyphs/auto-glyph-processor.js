@@ -51,7 +51,7 @@ export const AutoGlyphProcessor = {
           : player.reality.glyphs.sac[glyph.type].mul(-1);
       case AUTO_GLYPH_SCORE.EFFECT_COUNT:
         // Effect count, plus a very small rarity term to break ties in favor of rarer glyphs
-        return strengthToRarity(glyph.strength).div(1e3).add(getGlyphEffectsFromBitmask(glyph.effects, 0, 0).length);
+        return strengthToRarity(glyph.strength).div(1e3).add(getGlyphEffectsFromArray(glyph.effects).length);
       case AUTO_GLYPH_SCORE.RARITY_THRESHOLD:
         return strengthToRarity(glyph.strength);
       case AUTO_GLYPH_SCORE.SPECIFIED_EFFECT: {
@@ -84,7 +84,7 @@ export const AutoGlyphProcessor = {
         const resource = AlchemyResource[glyph.type];
         const refinementGain = GlyphSacrificeHandler.glyphRefinementGain(glyph);
         return resource.isUnlocked && refinementGain.gt(0)
-          ? -resource.amount
+          ? resource.amount.neg()
           : new Decimal(-Infinity);
       }
       case AUTO_GLYPH_SCORE.ALCHEMY_VALUE:

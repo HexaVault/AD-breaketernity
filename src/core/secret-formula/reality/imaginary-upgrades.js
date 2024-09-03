@@ -136,7 +136,7 @@ export const imaginaryUpgrades = [
     hasFailed: () => !Enslaved.isRunning,
     // This is for consistency with the UI, which displays an amplified "projected RM" value on the reality button
     checkRequirement: () => Enslaved.isRunning &&
-      MachineHandler.uncappedRM.times(simulatedRealityCount(false) + 1).gte(Number.MAX_VALUE),
+      MachineHandler.uncappedRM.times(simulatedRealityCount(false).add(1)).gte(Number.MAX_VALUE),
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     description: "Increase Imaginary Machine Cap based on Imaginary Upgrades purchased",
     effect: () => ImaginaryUpgrades.totalRebuyables.div(20).add(1).add(ImaginaryUpgrades.totalSinglePurchase / 2),
@@ -192,8 +192,8 @@ export const imaginaryUpgrades = [
     cost: 6e9,
     requirement: () => `Automatically condense at least ${formatInt(20)} Singularities at once`,
     hasFailed: () => false,
-    checkRequirement: () => Singularity.singularitiesGained >= 20 &&
-      Currency.darkEnergy.gte(Singularity.cap * SingularityMilestone.autoCondense.effectOrDefault(Infinity)),
+    checkRequirement: () => Singularity.singularitiesGained.gte(20) &&
+      Currency.darkEnergy.gte(Singularity.cap.mul(SingularityMilestone.autoCondense.effectOrDefault(Infinity))),
     checkEvent: GAME_EVENT.SINGULARITY_RESET_BEFORE,
     description: "Unlock the 3rd Dark Matter Dimension",
   },
@@ -266,7 +266,7 @@ export const imaginaryUpgrades = [
       Currency.antimatter.value.add(1).log10().gte(1.5e11),
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     description: () => `All Glyph Sacrifice totals are increased to ${format(1e100)}`,
-    effect: 1e100,
+    effect: DC.E100,
     isDisabledInDoomed: true
   },
   {

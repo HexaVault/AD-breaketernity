@@ -158,9 +158,9 @@ export const Achievements = {
   },
 
   get timeToNextAutoAchieve() {
-    if (!PlayerProgress.realityUnlocked()) return new Decimal();
-    if (GameCache.achievementPeriod.value.eq(0)) return new Decimal();
-    if (Achievements.preReality.countWhere(a => !a.isUnlocked) === 0) return new Decimal();
+    if (!PlayerProgress.realityUnlocked()) return DC.D0;
+    if (GameCache.achievementPeriod.value.eq(0)) return DC.D0;
+    if (Achievements.preReality.countWhere(a => !a.isUnlocked) === 0) return DC.D0;
     return this.period.sub(player.reality.achTimer);
   },
 

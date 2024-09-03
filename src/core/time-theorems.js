@@ -48,7 +48,7 @@ export class TimeTheoremPurchaseType {
   }
 
   purchase(bulk = false) {
-    if (Currency.timeTheorems.gte(115)) PelleStrikes.eternity.trigger();
+    if (Currency.timeTheorems.gte(115) && Pelle.isDoomed) PelleStrikes.ECs.trigger();
     if (!this.canAfford) return false;
 
     if (!bulk) {
@@ -56,7 +56,7 @@ export class TimeTheoremPurchaseType {
       Currency.timeTheorems.add(1);
       this.add(1);
       player.requirementChecks.reality.noPurchasedTT = false;
-      if (Currency.timeTheorems.gte(115)) PelleStrikes.eternity.trigger();
+      if (Currency.timeTheorems.gte(115) && Pelle.isDoomed) PelleStrikes.ECs.trigger();
       return true;
     }
     const canBuy = this.currency.value.sub(this.costBase)
@@ -73,7 +73,7 @@ export class TimeTheoremPurchaseType {
     if (!Perk.ttFree.canBeApplied && this.currency.layer <= 1) this.currency.subtract(this.cost);
     this.add(1);
     player.requirementChecks.reality.noPurchasedTT = false;
-    if (Currency.timeTheorems.gte(115)) PelleStrikes.eternity.trigger();
+    if (Currency.timeTheorems.gte(115) && Pelle.isDoomed) PelleStrikes.ECs.trigger();
     return true;
   }
 

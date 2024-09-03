@@ -147,7 +147,7 @@ export const GlyphGenerator = {
 
   cursedGlyph() {
     const str = rarityToStrength(100);
-    const effects = GlyphInfo.cursed.effects();
+    const effects = GlyphInfo.cursed.effects().map(n => n.id);
     return {
       id: undefined,
       idx: null,
@@ -194,7 +194,7 @@ export const GlyphGenerator = {
   musicGlyph() {
     const rng = new GlyphGenerator.MusicGlyphRNG();
     const glyph =
-      this.randomGlyph({ actualLevel: player.records.bestReality.glyphLevel.mul(0.8).floor(), rawLevel: 1 }, rng);
+      this.randomGlyph({ actualLevel: player.records.bestReality.glyphLevel.mul(0.8).floor(), rawLevel: DC.D1 }, rng);
     rng.finalize();
     glyph.cosmetic = "music";
     glyph.fixedCosmetic = "music";

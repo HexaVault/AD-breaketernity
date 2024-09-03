@@ -40,7 +40,7 @@ export const Glyphs = {
   active: [],
   unseen: [],
   unequipped: [],
-  levelBoost: 0,
+  levelBoost: DC.D0,
   factorsOpen: false,
   bestUndoGlyphCount: 0,
   get inventoryList() {
@@ -389,7 +389,7 @@ export const Glyphs = {
     // There should only be one reality glyph; this picks one pseudo-randomly if multiple are cheated/glitched in
     const realityGlyph = player.reality.glyphs.active.filter(g => g.type === "reality")[0];
     if (realityGlyph === undefined) {
-      this.levelBoost = 0;
+      this.levelBoost = DC.D0;
       return;
     }
     // The cache at this point may not be correct yet (if we're importing a save),

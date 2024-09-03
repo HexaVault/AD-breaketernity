@@ -1496,10 +1496,10 @@ export const celestialNavigation = {
     complete: () => {
       const upgrade = DarkMatterDimension(2).unlockUpgrade;
       if (upgrade.canBeBought || upgrade.isBought) return 1;
-      if (upgrade.isAvailableForPurchase) return upgrade.currency.value / upgrade.cost;
+      if (upgrade.isAvailableForPurchase) return upgrade.currency.value.div(upgrade.cost).clampMax(1).toNumber();
       return Laitela.difficultyTier < 1
         ? 0
-        : 30 / player.celestials.laitela.fastestCompletion;
+        : player.celestials.laitela.fastestCompletion.recip().mul(30).clampMin(1).toNumber();
     },
     node: {
       clickAction: () => Tab.celestials.laitela.show(true),
@@ -1556,7 +1556,7 @@ export const celestialNavigation = {
     visible: () => Laitela.isUnlocked,
     complete: () => (Currency.singularities.gte(1)
       ? 1
-      : Decimal.clampMax(0.999, Currency.darkEnergy.value.div(Singularity.cap))).toNumber(),
+      : Decimal.clampMax(0.999, Currency.darkEnergy.value.div(Singularity.cap)).toNumber()),
     node: {
       clickAction: () => Tab.celestials.laitela.show(true),
       incompleteClass: "c-celestial-nav__test-incomplete",
@@ -1616,14 +1616,14 @@ export const celestialNavigation = {
           const goal = dim.adjustedStartingCost;
           if (complete >= 1) return [
             dmdText,
-            `Dark Matter ${format(Currency.darkMatter.max.min(goal), dim.isUnlocked ? 0 : 2)} / ${format(goal)}`
+            `Dark Matter ${format(Currency.darkMatter.max.clampMax(goal), dim.isUnlocked ? 0 : 2)} / ${format(goal)}`
           ];
 
           const upgrade = dim.unlockUpgrade;
           if (upgrade.isAvailableForPurchase) return [
             dmdText,
             `Imaginary Machines
-            ${format(Math.min(upgrade.currency.value, upgrade.cost), upgrade.canBeBought ? 0 : 2)}
+            ${format(Decimal.min(upgrade.currency.value, upgrade.cost), upgrade.canBeBought ? 0 : 2)}
             / ${format(upgrade.cost)}`
           ];
 
@@ -1636,7 +1636,7 @@ export const celestialNavigation = {
           return [
             dmdText,
             `Automatically Condense ${format(20)} Singularities at once`,
-            `${format(Math.clampMax(Singularity.singularitiesGained, 20))} / ${format(20)}`
+            `${format(Decimal.clampMax(Singularity.singularitiesGained, 20))} / ${format(20)}`
           ];
         },
         angle: 15,
@@ -1689,7 +1689,7 @@ export const celestialNavigation = {
           const goal = dim.adjustedStartingCost;
           if (complete >= 1) return [
             dmdText,
-            `Dark Matter ${format(Currency.darkMatter.max.min(goal), dim.isUnlocked ? 0 : 2)} / ${format(goal)}`
+            `Dark Matter ${format(Currency.darkMatter.max.clampMax(goal), dim.isUnlocked ? 0 : 2)} / ${format(goal)}`
           ];
 
           const upgrade = dim.unlockUpgrade;
@@ -1978,7 +1978,7 @@ export const celestialNavigation = {
 
   // The path BG is invisible, but we want to make sure it extends far enough that it expands out "forever"
   "pelle-galaxy-generator-infinite": {
-    visible: () => Pelle.hasGalaxyGenerator && !Number.isFinite(GalaxyGenerator.generationCap),
+    visible: () => Pelle.hasGalaxyGenerator && !Decimal.gt(GalaxyGenerator.generationCap, 1e100),
     complete: () => Decimal.clamp((GalaxyGenerator.generatedGalaxies.sub(1e10)).div(2e11), 1e-6, 1).toNumber(),
     connector: (function() {
       const pathStart = 0.5 * Math.PI;
