@@ -131,7 +131,9 @@ export const GlyphGenerator = {
     };
   },
 
-  realityGlyph(level) {
+  realityGlyph(level = undefined) {
+    // eslint-disable-next-line no-param-reassign
+    level = level ?? AlchemyResource.reality.effectValue;
     const str = rarityToStrength(100);
     const effects = this.generateRealityEffects(level);
     return {

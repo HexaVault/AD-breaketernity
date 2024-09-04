@@ -67,7 +67,7 @@ export const Teresa = {
     player.celestials.teresa.run = false;
     player.celestials.teresa.bestRunAM = DC.D1;
     player.celestials.teresa.bestAMSet = [];
-    player.celestials.teresa.perkShop = [DC.D0, DC.D0, DC.D0, DC.D0, DC.D0];
+    player.celestials.teresa.perkShop = [DC.D0, DC.D0, DC.D0, DC.D0, DC.D0, DC.D0];
     player.celestials.teresa.lastRepeatedMachines = DC.D0;
     player.celestials.teresa.lastRepeatediM = DC.D0;
   },

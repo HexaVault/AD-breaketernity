@@ -138,7 +138,7 @@ dev.giveGlyph = function(level, rawLevel = level) {
 
 dev.giveRealityGlyph = function(level) {
   if (GameCache.glyphInventorySpace.value === 0) return;
-  Glyphs.addToInventory(GlyphGenerator.realityGlyph(level));
+  Glyphs.addToInventory(GlyphGenerator.realityGlyph());
 };
 
 dev.setCompanionGlyphEP = function(eternityPoints) {
