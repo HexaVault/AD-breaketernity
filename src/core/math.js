@@ -603,7 +603,7 @@ window.ExponentialCostScaling = class ExponentialCostScaling {
     purchaseAmount = purchaseAmount.sub(currentPurchases);
     if (roundDown) purchaseAmount = purchaseAmount.floor();
 
-    purchaseAmount = purchaseAmount.times(purchasesPerIncrease);
+    purchaseAmount = purchaseAmount.add(1).times(purchasesPerIncrease);//I just added 1 to this, dont know if other issues exists
     return { quantity: purchaseAmount, logPrice: purchaseCost };
   }
 
