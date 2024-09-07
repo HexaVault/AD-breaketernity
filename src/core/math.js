@@ -597,7 +597,7 @@ window.ExponentialCostScaling = class ExponentialCostScaling {
     // Technically this only buys up to the nearest set, but post exponential thats a minor flaw at most (and correct?)
     if (roundDown) purchaseAmount = purchaseAmount.floor();
 
-    if (purchaseAmount.lte(currentPurchases)) return null;
+    if (purchaseAmount.add(1).lte(currentPurchases)) return null;
 
     const purchaseCost = this.calculateCost(purchaseAmount).log10().add(ppIlog);
     purchaseAmount = purchaseAmount.sub(currentPurchases);
