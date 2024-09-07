@@ -91,7 +91,7 @@ function applyNDMultipliers(mult, tier) {
 
   let buy10Value;
   if (Laitela.continuumActive) {
-    buy10Value = AntimatterDimension(tier).continuumValue;
+    buy10Value = AntimatterDimension(tier).continuumValue.div(10);
   } else {
     buy10Value = Decimal.floor(AntimatterDimension(tier).bought.div(10));
   }
