@@ -563,14 +563,14 @@ window.ExponentialCostScaling = class ExponentialCostScaling {
     // A console.log(logMoney);
     // First, is the currency before the cost of Exponential? If so we solve it here and return
     if (logMoney.lte(base.add(inc.times(purchases.floor())))) {
-      let purchaseAmount = logMoney.sub(base).div(inc);
+      let purchaseAmount = logMoney.sub(base).div(inc).add(1);
       // A console.log(purchaseAmount);
       // Round value DOWN
       if (roundDown) purchaseAmount = purchaseAmount.floor();
       // Return null if its less than the purchases we already have
-      if (purchaseAmount.add(1).lte(currentPurchases)) return null;
+      if (purchaseAmount.lte(currentPurchases)) return null;
       const cost = this.calculateCost(purchaseAmount).log10().add(ppIlog);
-      purchaseAmount = purchaseAmount.sub(currentPurchases).add(1);
+      purchaseAmount = purchaseAmount.sub(currentPurchases);
       purchaseAmount = purchaseAmount.times(purchasesPerIncrease);
       return { quantity: purchaseAmount,
         logPrice: cost };
