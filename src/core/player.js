@@ -6,14 +6,6 @@ import { AUTOMATOR_MODE, AUTOMATOR_TYPE } from "./automator/automator-backend";
 import { DC } from "./constants";
 import { deepmergeAll } from "@/utility/deepmerge";
 
-function getGlyphTypes() {
-  const v = { ...GlyphInfo };
-  for (const item in GlyphInfo) {
-    if (!GlyphInfo.glyphTypes.includes(item)) delete v[item];
-  }
-  return v;
-}
-
 // This is actually reassigned when importing saves
 // eslint-disable-next-line prefer-const
 window.player = {
@@ -458,14 +450,13 @@ window.player = {
         select: AUTO_GLYPH_SCORE.LOWEST_SACRIFICE,
         trash: AUTO_GLYPH_REJECT.SACRIFICE,
         simple: 0,
-        types: Object.keys(getGlyphTypes())
-          .filter(t => GlyphInfo.generatedGlyphTypes.includes(t))
+        types: GlyphInfo.generatedGlyphTypes
           .mapToObject(t => t, t => ({
             rarity: new Decimal(),
             score: 0,
             effectCount: 0,
             specifiedMask: [],
-            effectScores: [...Array(GlyphInfo[t].effectIDs.length).keys()].mapToObject(e => GlyphInfo[t].effectIDs[e], () => 0),
+            effectScores: GlyphInfo[t].effectIDs.mapToObject(e => e, () => 0),
           })),
       },
       createdRealityGlyph: false,

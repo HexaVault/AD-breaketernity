@@ -392,7 +392,7 @@ export const migrations = {
     23: player => {
       // We missed presets in effarig format migration
       const updateBitmask = bitmask => {
-        const modifiedBits = [20, 21, 22].map(b => 1 << b).sum();
+        const modifiedBits = [20, 21, 22].map(b => 1 << b).nSum();
         const foundBits = [20, 21, 22].map(b => (bitmask & (1 << b)) !== 0);
         foundBits.push(foundBits.shift());
         let newSubmask = 0;
@@ -1233,7 +1233,7 @@ export const migrations = {
     this.prePatch(saveData);
     // This adds all the undefined properties to the save which are in player.js
     const player = deepmergeAll([Player.defaultStart, saveData]);
-    const versions = Object.keys(this.patches).map(parseFloat).sort();
+    const versions = Object.keys(this.patches).map(parseFloat).sort((a, b) => a - b);
     let version;
     while ((version = versions.find(v => player.version < v && v < maxVersion)) !== undefined) {
       const patch = this.patches[version];
