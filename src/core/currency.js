@@ -417,6 +417,10 @@ Currency.perkPoints = new class extends DecimalCurrency {
 Currency.relicShards = new class extends DecimalCurrency {
   get value() { return player.celestials.effarig.relicShards; }
   set value(value) { player.celestials.effarig.relicShards = value; }
+  get gain() {
+    return Decimal.floor(Decimal.pow(Currency.eternityPoints.value.add(1).log10().div(7500),
+      getActiveGlyphEffects().length)).times(AlchemyResource.effarig.effectValue);
+  }
 }();
 
 Currency.imaginaryMachines = new class extends DecimalCurrency {

@@ -1,0 +1,2 @@
+this file purely exists so vsc doesnt bunch the two folders as one
+feel free to actually add the i18n here, im just adding support for it
