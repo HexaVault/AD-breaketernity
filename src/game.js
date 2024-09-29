@@ -43,8 +43,8 @@ export function playerInfinityUpgradesOnReset() {
 
   if (PelleUpgrade.keepInfinityUpgrades.canBeApplied) {
     player.infinityUpgrades = new Set([...player.infinityUpgrades].filter(u => infinityUpgrades.has(u)));
-    player.infinityRebuyables = [0, 0, 0];
-    GameCache.tickSpeedMultDecrease.invalidate();
+    player.infinityRebuyables = [new Decimal(), new Decimal(), new Decimal()];
+    GameCache.tickSpeedMultDecreae.invalidate();
     GameCache.dimensionMultDecrease.invalidate();
     return;
   }

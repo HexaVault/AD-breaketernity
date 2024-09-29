@@ -1233,7 +1233,7 @@ export const migrations = {
     this.prePatch(saveData);
     // This adds all the undefined properties to the save which are in player.js
     const player = deepmergeAll([Player.defaultStart, saveData]);
-    const versions = Object.keys(this.patches).map(parseFloat).sort();
+    const versions = Object.keys(this.patches).map(parseFloat).sort((a, b) => a - b);
     let version;
     while ((version = versions.find(v => player.version < v && v < maxVersion)) !== undefined) {
       const patch = this.patches[version];
