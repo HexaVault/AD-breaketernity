@@ -53,7 +53,7 @@ export default {
       immediate: true,
       handler(config) {
         this.updateFunction = () => { };
-        const description = config?.description;
+        const description = config.description ?? config;
         // Descriptions in config entries are occasionally used both as standalone statements and mid-sentence,
         // so we explicitly capitalize them here because this only shows up in standalone places
         const capitalize = str => str.charAt(0).toUpperCase() + str.slice(1);

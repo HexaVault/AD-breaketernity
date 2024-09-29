@@ -3,9 +3,11 @@
 
 // All challenge info (includes celestials), i18n support
 export const ENchall_i18n = {
+  lockednc: "Infinity $1aX times to unlock.",
+  nc1noeter: "Reach Infinity for the first time",
   nc1: "Reach Infinity for the first time outside of a challenge.",
   nc1rew: "Reward: Upgradeable 1st Antimatter Dimension Autobuyer",
-  nc2: "Buying Antimatter Dimensions or Tickspeed upgrades halts production of all Antimatter Dimensions. Production gradually returns over 3 minutes.",
+  nc2: "Buying Antimatter Dimensions or Tickspeed upgrades halts production of all Antimatter Dimensions. Production gradually returns over $1aX minutes.",
   nc2rew: "Reward: Upgradeable 2nd Antimatter Dimension Autobuyer",
   nc3: "The 1st Antimatter Dimension is heavily weakened, but gains an uncapped exponentially increasing multiplier. This multiplier is reset after Dimension Boosts or Antimatter Galaxies.",
   nc3rew: "Reward: Upgradeable 3rd Antimatter Dimension Autobuyer",

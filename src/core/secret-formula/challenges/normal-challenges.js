@@ -12,125 +12,110 @@ export const normalChallenges = [
     isQuickResettable: false,
     description() {
       return PlayerProgress.eternityUnlocked()
-        ? "reach Infinity for the first time outside of a challenge."
-        : "reach Infinity for the first time.";
+        ? i18n("chall", "nc1")
+        : i18n("chall", "nc1noeter");
     },
     name: "1st Antimatter Dimension Autobuyer",
-    reward: "Upgradeable 1st Antimatter Dimension Autobuyer",
+    reward: () => i18n("chall", "nc1rew"),
     lockedAt: DC.D0,
   },
   {
     id: 2,
     legacyId: 2,
     isQuickResettable: false,
-    description:
-      () => "buying Antimatter Dimensions or Tickspeed upgrades halts production of all Antimatter Dimensions. " +
-      `Production gradually returns to normal over ${formatInt(3)} minutes.`,
+    description: () => i18n("chall", "nc2", [() => formatInt(3)]),
     name: "2nd Antimatter Dimension Autobuyer",
-    reward: "Upgradeable 2nd Antimatter Dimension Autobuyer",
+    reward: () => i18n("chall", "nc2rew"),
     lockedAt: DC.D0,
   },
   {
     id: 3,
     legacyId: 3,
     isQuickResettable: false,
-    description:
-      `the 1st Antimatter Dimension is heavily weakened, but gets an uncapped exponentially increasing multiplier.
-        This multiplier resets after Dimension Boosts and Antimatter Galaxies.`,
+    description: () => i18n("chall", "nc3"),
     name: "3rd Antimatter Dimension",
-    reward: "Upgradeable 3rd Antimatter Dimension Autobuyer",
+    reward: () => i18n("chall", "nc3rew"),
     lockedAt: DC.D0,
   },
   {
     id: 4,
     legacyId: 8,
     isQuickResettable: false,
-    description: "buying an Antimatter Dimension automatically erases all lower tier Antimatter Dimensions, " +
-      "like a sacrifice without the boost.",
+    description: () => i18n("chall", "nc4"),
     name: "4th Antimatter Dimension Autobuyer",
-    reward: "Upgradeable 4th Antimatter Dimension Autobuyer",
+    reward: () => i18n("chall", "nc4rew"),
     lockedAt: DC.D0,
   },
   {
     id: 5,
     legacyId: 6,
     isQuickResettable: false,
-    description:
-      () => `the Tickspeed purchase multiplier starts at ${formatX(1.080, 0, 3)} instead of ${formatX(1.1245, 0, 3)}.`,
+    description: () => i18n("chall", "nc5", [() => formatX(1.080, 0, 3), () => formatX(1.1245, 0, 3)]),
     name: "5th Antimatter Dimension Autobuyer",
-    reward: "Upgradeable 5th Antimatter Dimension Autobuyer",
+    reward: () => i18n("chall", "nc5rew"),
     lockedAt: DC.D0,
   },
   {
     id: 6,
     legacyId: 10,
     isQuickResettable: false,
-    description: () => `upgrading each Antimatter Dimension costs the Antimatter Dimension ${formatInt(2)} tiers ` +
-      "below it instead of antimatter. Antimatter Dimension prices are modified.",
+    description: () => i18n("chall", "nc6", [() => formatInt(2)]),
     name: "6th Antimatter Dimension Autobuyer",
-    reward: "Upgradeable 6th Antimatter Dimension Autobuyer",
+    reward: () => i18n("chall", "nc6rew"),
     lockedAt: DC.D0,
   },
   {
     id: 7,
     legacyId: 9,
     isQuickResettable: false,
-    description: () =>
-      `the multiplier from buying ${formatInt(10)} Antimatter Dimensions is reduced to ${formatX(1)}. This increases by
-        ${formatX(0.2, 1, 1)} per Dimension Boost, to a maximum of ${formatX(2)}, and is unaffected by any upgrades.`,
+    description: () => i18n("chall", "nc7", [() => formatInt(10), () => formatX(1),
+      () => formatX(0.2, 1, 1), () => formatX(2)]),
     name: "7th Antimatter Dimension Autobuyer",
-    reward: "Upgradeable 7th Antimatter Dimension Autobuyer",
+    reward: () => i18n("chall", "nc7rew"),
     lockedAt: DC.D0,
   },
   {
     id: 8,
     legacyId: 11,
     isQuickResettable: false,
-    description: `Dimension Boosts provide no multiplier and Antimatter Galaxies cannot be bought. Dimensional
-      Sacrifice resets antimatter and all Antimatter Dimensions, but also gives a significantly stronger multiplier.`,
-    name: "8th Antimatter Dimension Autobuyer",
-    reward: "Upgradeable 8th Antimatter Dimension Autobuyer",
+    description: () => i18n("chall", "nc8"),
+    reward: () => i18n("chall", "nc8rew"),
     lockedAt: DC.D0,
   },
   {
     id: 9,
     legacyId: 5,
     isQuickResettable: true,
-    description: () => `whenever you buy Tickspeed upgrades or ${formatInt(10)} of an Antimatter Dimension, ` +
-      "everything else of equal cost will increase to its next cost step.",
+    description: () => i18n("chall", "nc9", [() => formatInt(10)]),
     name: "Tickspeed Autobuyer",
-    reward: "Upgradeable Tickspeed Autobuyer",
+    reward: () => i18n("chall", "nc9rew"),
     lockedAt: DC.D0,
   },
   {
     id: 10,
     legacyId: 4,
     isQuickResettable: false,
-    description: () => `there are only ${formatInt(6)} Antimatter Dimensions. Dimension Boost ` +
-      "and Antimatter Galaxy costs are modified.",
+    description: () => i18n("chall", "nc10", [() => formatInt(6)]),
     name: "Automated Dimension Boosts",
-    reward: "Dimension Boosts Autobuyer",
+    reward: () => i18n("chall", "nc10rew"),
     lockedAt: DC.D16,
   },
   {
     id: 11,
     legacyId: 12,
     isQuickResettable: true,
-    description: () => `there is normal matter which rises once you have at least ${formatInt(1)} 2nd Antimatter ` +
-      "Dimension. If it exceeds your antimatter, it will Dimension Boost without giving the bonus.",
+    description: () => i18n("chall", "nc11", [() => formatInt(1)]),
     name: "Automated Antimatter Galaxies",
-    reward: "Antimatter Galaxies Autobuyer",
+    reward: () => i18n("chall", "nc11rew"),
     lockedAt: DC.D16,
   },
   {
     id: 12,
     legacyId: 7,
     isQuickResettable: false,
-    description: () => `each Antimatter Dimension produces the Dimension ${formatInt(2)} tiers below it
-      instead of ${formatInt(1)}. Both 1st and 2nd Dimensions produce antimatter.
-      The 2nd, 4th, and 6th Dimensions are made stronger to compensate.`,
+    description: () => i18n("chall", "nc12", [() => formatInt(2), () => formatInt(2)]),
     name: "Automated Big Crunches",
-    reward: "Big Crunches Autobuyer",
+    reward: () => i18n("chall", "nc12rew"),
     lockedAt: DC.D16,
   }
 ];

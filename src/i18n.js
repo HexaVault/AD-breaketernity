@@ -6,13 +6,17 @@ export function i18nLanguage(language) {
   lang = language;
 }
 
-export function i18n(type, id) {
-  switch (type) {
-    case "ach":
-      return i18nText[`${lang}ach_i18n`][id];
-    case "chall":
-      return i18nText[`${lang}chall_i18n`][id];
-    default:
-      return type;
+export function i18n(type, id, mods = []) {
+  let text = "";
+  text = i18nText[`${lang}${type}_i18n`][id];
+  if (text === undefined || text === "") {
+    text = i18nText[`EN${type}_i18n`][id];
   }
+  if (text === undefined || text === "") {
+    text = "Placeholder";
+  }
+  for (let i = 1; i <= mods.length; i ++) {
+    text = text.replace(`$${i}aX`, typeof mods[i - 1] === "function" ? mods[i - 1]() : mods[i - 1]);
+  }
+  return text;
 }
