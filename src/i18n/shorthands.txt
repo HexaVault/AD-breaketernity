@@ -1,0 +1,3 @@
+https://www.loc.gov/standards/iso639-2/php/code_list.php
+
+Use ISO 639-1 where possible, ISO 639-2 otherwise, else use whatever is reasonable and NOT already on that list
