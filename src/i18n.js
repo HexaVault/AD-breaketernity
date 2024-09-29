@@ -10,6 +10,8 @@ export function i18n(type, id) {
   switch (type) {
     case "ach":
       return i18nText[`${lang}ach_i18n`][id];
+    case "chall":
+      return i18nText[`${lang}chall_i18n`][id];
     default:
       return type;
   }

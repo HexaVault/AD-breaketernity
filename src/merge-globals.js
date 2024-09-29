@@ -47,5 +47,5 @@ mergeIntoGlobal(core);
 import * as game from "./game";
 mergeIntoGlobal(game);
 
-import * as prestigeValues from "./prestigeValues";
-mergeIntoGlobal(prestigeValues);
+//import * as prestigeValues from "./prestigeValues";
+//mergeIntoGlobal(prestigeValues);
