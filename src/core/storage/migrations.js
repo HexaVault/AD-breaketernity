@@ -392,7 +392,7 @@ export const migrations = {
     23: player => {
       // We missed presets in effarig format migration
       const updateBitmask = bitmask => {
-        const modifiedBits = [20, 21, 22].map(b => 1 << b).sum();
+        const modifiedBits = [20, 21, 22].map(b => 1 << b).nSum();
         const foundBits = [20, 21, 22].map(b => (bitmask & (1 << b)) !== 0);
         foundBits.push(foundBits.shift());
         let newSubmask = 0;
