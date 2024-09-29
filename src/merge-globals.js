@@ -15,6 +15,9 @@ function mergeIntoGlobal(object) {
   }
 }
 
+import * as i18n from "./i18n";
+mergeIntoGlobal(i18n);
+
 import * as Utils from "./core/utils";
 mergeIntoGlobal(Utils);
 
