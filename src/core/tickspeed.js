@@ -1,5 +1,5 @@
 import { DC } from "./constants";
-
+// Yes we need to import DC here, idk why dont ask me
 export function effectiveBaseGalaxies() {
   // Note that this already includes the "50% more" active path effect
   let replicantiGalaxies = Replicanti.galaxies.bought;

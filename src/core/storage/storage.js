@@ -463,6 +463,35 @@ export const GameStorage = {
 
       // Post-reality migrations are separated from pre-reality because they need to happen after any dev migrations,
       // which themselves must happen after the deepmerge
+
+      // DO NOT REMOVE
+      // The below code is critical to making sure imported saves from the be port redecimalise glyphs,
+      // since they are not handled by deepmerge.
+      if (player.version >= 83) {
+        const fixGlyph = glyph => {
+          glyph.level = new Decimal(glyph.level);
+          glyph.rawLevel = new Decimal(glyph.rawLevel);
+          glyph.strength = new Decimal(glyph.strength);
+          // eslint-disable-next-line consistent-return
+          return glyph;
+        };
+        player.celestials.teresa.bestAMSet = player.celestials.teresa.bestAMSet.map(n => fixGlyph(n));
+        player.celestials.v.runGlyphs = player.celestials.v.runGlyphs.map(n => n.map(g => fixGlyph(g)));
+        player.reality.glyphs.active = player.reality.glyphs.active.map(n => fixGlyph(n));
+        player.reality.glyphs.inventory = player.reality.glyphs.inventory.map(n => fixGlyph(n));
+        for (let i = 0; i < 7; i++) {
+          player.reality.glyphs.sets[i].glyphs = player.reality.glyphs.sets[i].glyphs.map(n => fixGlyph(n));
+        }
+        player.records.bestReality.RMSet = player.records.bestReality.RMSet?.map(n => fixGlyph(n));
+        player.records.bestReality.RMminSet = player.records.bestReality.RMminSet?.map(n => fixGlyph(n));
+        player.records.bestReality.glyphLevelSet = player.records.bestReality.glyphLevelSet?.map(n => fixGlyph(n));
+        player.records.bestReality.imCapSet = player.records.bestReality.imCapSet?.map(n => fixGlyph(n));
+        player.records.bestReality.laitelaSet = player.records.bestReality.laitelaSet?.map(n => fixGlyph(n));
+        player.records.bestReality.speedSet = player.records.bestReality.speedSet?.map(n => fixGlyph(n));
+      }
+      for (const item in player.reality.glyphs.filter.types) {
+        player.reality.glyphs.filter.types[item].rarity = new Decimal(player.reality.glyphs.filter.types[item].rarity);
+      }
       player = migrations.patchPostReality(player);
     }
 

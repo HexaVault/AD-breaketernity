@@ -1,4 +1,3 @@
-import { DC } from "./constants";
 import { GameMechanicState } from "./game-mechanics";
 
 export function updateNormalAndInfinityChallenges(diff) {

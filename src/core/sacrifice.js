@@ -1,5 +1,3 @@
-import { DC } from "./constants";
-
 export class Sacrifice {
   // This is tied to the "buying an 8th dimension" achievement in order to hide it from new players before they reach
   // sacrifice for the first time.

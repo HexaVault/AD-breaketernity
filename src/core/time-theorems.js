@@ -1,4 +1,3 @@
-import { DC } from "./constants";
 import { Currency } from "./currency";
 
 /**

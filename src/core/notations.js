@@ -1,8 +1,6 @@
 import * as ADLNotations from "adnot-beport-large";
 import * as ADNotations from "adnot-beport-small";
 
-import { DC } from "./constants";
-
 export const Notation = (function() {
   const N = ADNotations;
   const notation = type => {

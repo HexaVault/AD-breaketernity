@@ -1,4 +1,3 @@
-import { DC } from "./constants";
 import { EternityChallenge } from "./eternity-challenge";
 
 class DimBoostRequirement {

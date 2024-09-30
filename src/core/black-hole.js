@@ -1,7 +1,7 @@
 import { isDecimal } from "../utility/type-check";
 
 import { DC } from "./constants";
-
+// Yes we need to import DC here, idk why dont ask me
 class BlackHoleUpgradeState {
   constructor(config) {
     const { getAmount, setAmount, calculateValue, initialCost, costMult } = config;

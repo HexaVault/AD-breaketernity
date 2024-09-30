@@ -15,6 +15,9 @@ function mergeIntoGlobal(object) {
   }
 }
 
+import * as DC from "./core/constants";
+mergeIntoGlobal(DC);
+
 import * as i18n from "./i18n";
 mergeIntoGlobal(i18n);
 
@@ -47,5 +50,5 @@ mergeIntoGlobal(core);
 import * as game from "./game";
 mergeIntoGlobal(game);
 
-//import * as prestigeValues from "./prestigeValues";
-//mergeIntoGlobal(prestigeValues);
+// Import * as prestigeValues from "./prestigeValues";
+// mergeIntoGlobal(prestigeValues);

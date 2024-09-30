@@ -1,4 +1,3 @@
-import { DC } from "./constants";
 import FullScreenAnimationHandler from "./full-screen-animation-handler";
 
 export function bigCrunchAnimation() {

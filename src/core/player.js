@@ -4,6 +4,7 @@ import { GlyphInfoVue } from "@/components/modals/options/SelectGlyphInfoDropdow
 
 import { AUTOMATOR_MODE, AUTOMATOR_TYPE } from "./automator/automator-backend";
 import { DC } from "./constants";
+// Yes we need to import DC here, idk why dont ask me
 import { deepmergeAll } from "@/utility/deepmerge";
 
 // This is actually reassigned when importing saves

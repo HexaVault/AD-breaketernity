@@ -1,7 +1,5 @@
 /* eslint-disable line-comment-position */
 /* eslint-disable no-inline-comments */
-import { DC } from "./constants";
-
 export const GALAXY_TYPE = {
   NORMAL: 0,
   DISTANT: 1,

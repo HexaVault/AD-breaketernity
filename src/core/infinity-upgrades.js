@@ -1,5 +1,4 @@
 import { GameMechanicState, SetPurchasableMechanicState } from "./game-mechanics";
-import { DC } from "./constants";
 
 class ChargedInfinityUpgradeState extends GameMechanicState {
   constructor(config, upgrade) {
