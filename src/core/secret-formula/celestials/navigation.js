@@ -1,4 +1,3 @@
-import { DC } from "../../constants";
 import wordShift from "../../word-shift";
 
 export function emphasizeEnd(fraction) {

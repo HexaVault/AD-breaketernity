@@ -1,22 +1,10 @@
 /* eslint-disable max-len */
-import { DC } from "../../constants";
-
-const GE = {
-  other: GAME_EVENT.ACHIEVEMENT_EVENT_OTHER,
-  precrunch: GAME_EVENT.ACHIEVEMENT_EVENT_OTHER,
-  3: GAME_EVENT.ACHIEVEMENT_EVENT_OTHER,
-  4: GAME_EVENT.ACHIEVEMENT_EVENT_OTHER,
-  5: GAME_EVENT.ACHIEVEMENT_EVENT_OTHER,
-  6: GAME_EVENT.ACHIEVEMENT_EVENT_OTHER,
-  7: GAME_EVENT.ACHIEVEMENT_EVENT_OTHER,
-  8: GAME_EVENT.ACHIEVEMENT_EVENT_OTHER,
-}
 export const normalAchievements = [
   {
     id: 11,
     name: "You gotta start somewhere",
     description: "Buy a 1st Antimatter Dimension.",
-    checkEvent: GE.other,
+    checkEvent: GAME_EVENT.ACHIEVEMENT_EVENT_OTHER,
   },
   {
     id: 12,

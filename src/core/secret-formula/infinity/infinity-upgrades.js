@@ -1,5 +1,3 @@
-import { DC } from "../../constants";
-
 function dimInfinityMult() {
   return Currency.infinitiesTotal.value.times(0.2).plus(1);
 }

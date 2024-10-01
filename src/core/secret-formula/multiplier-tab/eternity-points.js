@@ -1,4 +1,3 @@
-import { DC } from "../../constants";
 import { PlayerProgress } from "../../player-progress";
 
 import { MultiplierTabIcons } from "./icons";

@@ -1,5 +1,3 @@
-import { DC } from "../../constants";
-
 const rebuyable = props => {
   props.cost = () => getHybridCostScaling(
     player.reality.rebuyables[props.id],

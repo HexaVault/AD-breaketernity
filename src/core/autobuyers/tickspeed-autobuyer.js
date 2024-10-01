@@ -1,5 +1,3 @@
-import { DC } from "../constants";
-
 import { UpgradeableAutobuyerState } from "./autobuyer";
 
 export class TickspeedAutobuyerState extends UpgradeableAutobuyerState {

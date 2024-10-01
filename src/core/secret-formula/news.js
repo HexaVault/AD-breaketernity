@@ -1,5 +1,3 @@
-import { DC } from "../constants";
-
 // A = always there
 // L = locked
 // R = random chance condition
@@ -9,7 +7,6 @@ import { DC } from "../constants";
 function newsAnimSpd(seconds) {
   return seconds / player.options.news.speed;
 }
-
 
 export const news = [
   {

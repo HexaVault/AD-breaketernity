@@ -42,6 +42,7 @@ export * from "./player-progress";
 export * from "./modal";
 export * from "./themes";
 export * from "./options";
+export * from "../i18n";
 export * from "./ui";
 
 export * from "./achievements/normal-achievement";
@@ -90,3 +91,4 @@ export * from "./tab-notifications";
 export * from "./speedrun";
 
 export * from "./automator/script-templates";
+export * from "./prestigeValues";

@@ -1,5 +1,3 @@
-import { DC } from "../../constants";
-
 export const eternityUpgrades = {
   idMultEP: {
     id: 1,

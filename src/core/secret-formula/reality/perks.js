@@ -1,5 +1,3 @@
-import { DC } from "../../constants";
-
 export const PERK_FAMILY = {
   ANTIMATTER: "ANTIMATTER",
   INFINITY: "INFINITY",

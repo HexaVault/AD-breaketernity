@@ -1,5 +1,3 @@
-import { DC } from "../../constants";
-
 import { MultiplierTabIcons } from "./icons";
 
 // See index.js for documentation

@@ -1,5 +1,3 @@
-import { DC } from "../constants";
-
 class AchievementTimer {
   constructor(isRealTime) {
     this.time = DC.D0;

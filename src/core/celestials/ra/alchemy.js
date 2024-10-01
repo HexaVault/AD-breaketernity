@@ -1,4 +1,3 @@
-import { DC } from "../../constants";
 import { GameMechanicState } from "../../game-mechanics";
 
 /**
@@ -142,8 +141,7 @@ class AlchemyReaction {
   // product. This allows resources to be created quickly when its reaction is initially turned on with saved reagents.
   get reactionYield() {
     if (!this._product.isUnlocked || this._reagents.some(r => !r.resource.isUnlocked)) return new Decimal();
-    let forcingFactor = (this._reagents
-      .map(r => r.resource.amount))
+    let forcingFactor = this._reagents.map(r => r.resource.amount);
     while (forcingFactor.length > 1) {
       if (forcingFactor[0].gt(forcingFactor[1])) forcingFactor.splice(1, 1);
       else forcingFactor.splice(0, 1);
@@ -151,13 +149,12 @@ class AlchemyReaction {
     forcingFactor = forcingFactor[0];
     forcingFactor = forcingFactor.sub(this._product.amount);
     forcingFactor = forcingFactor.div(100);
-    const totalYield = this._reagents
-      .map(r => r.resource.amount.div(r.cost));
+    const totalYield = this._reagents.map(r => r.resource.amount.div(r.cost));
     while (totalYield.length > 1) {
       if (totalYield[0].gt(totalYield[1])) totalYield.splice(1, 1);
       else totalYield.splice(0, 1);
     }
-    return Decimal.min(totalYield[0], Decimal.max(forcingFactor, 1));
+    return totalYield[0].min(forcingFactor.max(1));
   }
 
   // Check each reagent for if a full reaction would drop it below the product amount.  If so, reduce reaction yield

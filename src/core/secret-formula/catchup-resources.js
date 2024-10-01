@@ -1,5 +1,3 @@
-import { DC } from "../constants";
-
 export const catchupResources = [
   {
     name: "Antimatter Dimensions",

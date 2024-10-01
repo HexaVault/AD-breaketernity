@@ -1,5 +1,3 @@
-import { DC } from "./constants";
-// Yes we need to import DC here, idk why dont ask me
 export function effectiveBaseGalaxies() {
   // Note that this already includes the "50% more" active path effect
   let replicantiGalaxies = Replicanti.galaxies.bought;
@@ -155,7 +153,9 @@ export const Tickspeed = {
     const tickspeed = Effarig.isRunning
       ? Effarig.tickspeed
       : this.baseValue.powEffectOf(DilationUpgrade.tickspeedPower);
-    return player.dilation.active || PelleStrikes.dilation.hasStrike ? dilatedValueOf(tickspeed.recip()).recip() : tickspeed;
+    return player.dilation.active || PelleStrikes.dilation.hasStrike
+      ? dilatedValueOf(tickspeed.recip()).recip()
+      : tickspeed;
   },
 
   get cost() {

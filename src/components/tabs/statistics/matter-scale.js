@@ -1,5 +1,3 @@
-import { DC } from "@/core/constants";
-
 function roundAndStr(decimal, amnt = 4) {
   return decimal.toString().substring(0, amnt + Math.ceil(decimal.log10().toNumber()));
 }

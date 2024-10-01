@@ -1,5 +1,3 @@
-import { DC } from "../../../constants";
-
 const thisInfinityMult = thisInfinity => {
   // All "this inf time" or "best inf time" mults are * 10
   const scaledInfinity = thisInfinity.times(10).add(1);

@@ -1,5 +1,3 @@
-/* eslint-disable line-comment-position */
-/* eslint-disable no-inline-comments */
 export const GALAXY_TYPE = {
   NORMAL: 0,
   DISTANT: 1,
@@ -38,10 +36,11 @@ export class Galaxy {
     const scale = Galaxy.costMult;
     let base = Galaxy.baseCost.sub(Effects.sum(InfinityUpgrade.resetBoost));
     if (InfinityChallenge(5).isCompleted) base = base.sub(1);
-    // eslint-disable-next-line max-len
-    // Plz no ask how exponential math work i dont know i just code, see https://discord.com/channels/351476683016241162/439241762603663370/1210707188964659230m
-    const minV = Galaxy.costScalingStart.min(Galaxy.remoteStart); // Take the smallest of the two values
-    if (currency.lt(Galaxy.requirementAt(minV).amount /* Pre exponential/quadratic? */)) {
+    // See https://discord.com/channels/351476683016241162/439241762603663370/1210707188964659230m
+    // Take the smallest of the two values
+    const minV = Galaxy.costScalingStart.min(Galaxy.remoteStart);
+    // Pre exponential/quadratic?
+    if (currency.lt(Galaxy.requirementAt(minV).amount)) {
       return Decimal.max(currency.sub(base).div(scale).floor().add(1), minVal);
     }
 

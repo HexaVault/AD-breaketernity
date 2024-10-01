@@ -3,8 +3,6 @@
 /* eslint-disable camelcase */
 import { createToken, Lexer } from "chevrotain";
 
-import { DC } from "../constants";
-
 const createCategory = name => createToken({ name, pattern: Lexer.NA, longer_alt: Identifier });
 
 // Shorthand for creating tokens and adding them to a list

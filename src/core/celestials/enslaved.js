@@ -1,8 +1,6 @@
 import { BitUpgradeState } from "../game-mechanics";
 import { GameDatabase } from "../secret-formula/game-database";
 
-import { DC } from "../constants";
-
 import { Quotes } from "./quotes";
 
 export const ENSLAVED_UNLOCKS = {
@@ -24,7 +22,7 @@ export const ENSLAVED_UNLOCKS = {
       const hasLevelRequirement = player.records.bestReality.glyphLevel.gte(5000);
       const hasRarityRequirement = strengthToRarity(player.records.bestReality.glyphStrength).gte(100);
       return `Unlock The Nameless Ones' Reality (requires ${hasLevelRequirement ? "[✓]" : "[✗]"} a level
-      ${formatInt(5000)} Glyph and ${hasRarityRequirement ? "[✓]" : "[✗]"} a ${formatRarity(new Decimal(100))} rarity Glyph)`;
+      ${formatInt(5000)} Glyph and ${hasRarityRequirement ? "[✓]" : "[✗]"} a ${formatRarity(100)} rarity Glyph)`;
     }
   }
 };

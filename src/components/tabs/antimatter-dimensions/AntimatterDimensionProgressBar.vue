@@ -1,6 +1,4 @@
 <script>
-import { DC } from "@/core/constants";
-
 export default {
   name: "AntimatterDimensionProgressBar",
   data() {

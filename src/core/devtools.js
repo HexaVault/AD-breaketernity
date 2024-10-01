@@ -1,14 +1,15 @@
-/* eslint-disable */
-// Disabling eslint here is fine, this is developer tools and this file does really matter.
-
-
 import { sha512_256 } from "js-sha512";
+
 import { Player } from "./player";
+
 import FullScreenAnimationHandler from "./full-screen-animation-handler";
+
+/* eslint-disable no-console */
+// Disabling no-console here seems reasonable, since these are the devtools after all
 
 export const dev = {};
 
-dev.speedUp = 1
+dev.speedUp = 1;
 
 dev.hardReset = function() {
   GameStorage.hardReset();
@@ -19,35 +20,28 @@ dev.giveAllAchievements = function() {
   for (const achievement of allAchievements) achievement.unlock();
 };
 
-// Know that both dev.doubleEverything and dev.tripleEverything are both broken
-// with this error https://i.imgur.com/ZMEBNTv.png
-
-dev.doubleEverything = function() {
+dev.multiplyEverythingBy = function(amount) {
+  // eslint-disable-next-line no-param-reassign
+  amount = new Decimal(amount);
+  const numAmnt = amount.min(Number.MAX_VALUE).toNumber();
   Object.keys(player).forEach(key => {
-    if (typeof player[key] === "number") player[key] *= 2;
-    if (typeof player[key] === "object" && player[key].constructor !== Object) player[key] = player[key].times(2);
-    if (typeof player[key] === "object" && !isFinite(player[key])) {
+    if (typeof player[key] === "number") player[key] *= numAmnt;
+    if (player[key] instanceof Decimal && Decimal.isFinite(player[key])) player[key] = player[key].times(amount);
+    if (typeof player[key] === "object" && !(player[key] instanceof Decimal)) {
       Object.keys(player[key]).forEach(key2 => {
-        if (typeof player[key][key2] === "number") player[key][key2] *= 2;
-        if (typeof player[key][key2] === "object" && player[key][key2].constructor !== Object)
-          player[key][key2] = player[key][key2].times(2);
+        if (typeof player[key][key2] === "number") player[key][key2] *= numAmnt;
+        if (player[key][key2] instanceof Decimal) player[key][key2] = player[key][key2].times(amount);
       });
     }
   });
 };
 
+dev.doubleEverything = function() {
+  dev.multiplyEverythingBy(2);
+};
+
 dev.tripleEverything = function() {
-  Object.keys(player).forEach(key => {
-    if (typeof player[key] === "number") player[key] *= 3;
-    if (typeof player[key] === "object" && player[key].constructor !== Object) player[key] = player[key].times(3);
-    if (typeof player[key] === "object" && !isFinite(player[key])) {
-      Object.keys(player[key]).forEach(key3 => {
-        if (typeof player[key][key3] === "number") player[key][key3] *= 3;
-        if (typeof player[key][key3] === "object" && player[key][key3].constructor !== Object)
-          player[key][key3] = player[key][key3].times(3);
-      });
-    }
-  });
+  dev.multiplyEverythingBy(3);
 };
 
 dev.barrelRoll = function() {
@@ -137,7 +131,7 @@ dev.giveGlyph = function(level, rawLevel = level) {
 
 dev.giveRealityGlyph = function(level) {
   if (GameCache.glyphInventorySpace.value === 0) return;
-  Glyphs.addToInventory(GlyphGenerator.realityGlyph());
+  Glyphs.addToInventory(GlyphGenerator.realityGlyph(level));
 };
 
 dev.setCompanionGlyphEP = function(eternityPoints) {
@@ -253,6 +247,7 @@ dev.printResourceTotals = function() {
     TDmults = TDmults.times(TimeDimension(i).multiplier);
   }
   console.log(`TD mults: e${TDmults.log10().toPrecision(3)}`);
+  // eslint-disable-next-line max-len
   console.log(`Tickspeed from TD: ${formatWithCommas(Decimal.floor(player.totalTickGained.div(1000).add(0.5)).mul(1000))}`);
 
   console.log(`Infinities: e${Math.round(player.infinities.log10())}`);
@@ -532,81 +527,77 @@ dev.unlockAllCosmeticSets = function() {
 };
 
 // You would never guess what these are for
-dev.beTests = {}
+dev.beTests = {};
 
 dev.beTests.speed = function() {
-  dev.speedUp = 1e24
-}
+  dev.speedUp = 1e24;
+};
 
 dev.beTests.consecutiveInfinities = function(amnt) {
-  player.infinityPoints = player.infinityPoints.add(gainedInfinityPoints().times(amnt))
-  player.infinities = player.infinities.add(gainedInfinities().round())
-}
+  player.infinityPoints = player.infinityPoints.add(gainedInfinityPoints().times(amnt));
+  player.infinities = player.infinities.add(gainedInfinities().round());
+};
 
-dev.beTests.completeChalleges = {}
+dev.beTests.completeChalleges = {};
 
 dev.beTests.completeChalleges.normal = function() {
-  for (let i = 1; i < 13; i++) NormalChallenge(i).complete()
-}
+  for (let i = 1; i < 13; i++) NormalChallenge(i).complete();
+};
 
 dev.beTests.completeChalleges.infinity = function() {
-  for (let i = 1; i < 9; i++) InfinityChallenge(i).complete()
-}
+  for (let i = 1; i < 9; i++) InfinityChallenge(i).complete();
+};
 
-dev.beTests.completeChalleges.eternity = function () {
-  for (let i = 1; i < 13; i++) EternityChallenge(i).completions = 5
-}
+dev.beTests.completeChalleges.eternity = function() {
+  for (let i = 1; i < 13; i++) EternityChallenge(i).completions = 5;
+};
 
-dev.beTests.completeChalleges.all = function () {
-  dev.beTests.completeChalleges.normal()
-  dev.beTests.completeChalleges.infinity()
-  dev.beTests.completeChalleges.eternity()
-}
+dev.beTests.completeChalleges.all = function() {
+  dev.beTests.completeChalleges.normal();
+  dev.beTests.completeChalleges.infinity();
+  dev.beTests.completeChalleges.eternity();
+};
 
-dev.beTests.nanFuckIteration = function (value, value2) {
+dev.beTests.nanFuckIteration = function(value, value2) {
   for (const item in value) {
-    console.log(value[item])
-    console.log(value2[item])
-    if (value[item] instanceof Decimal && value2[item] != undefined) {
+    console.log(value[item]);
+    console.log(value2[item]);
+    if (value[item] instanceof Decimal && value2[item] !== undefined) {
       if (value2[item].neq(0)) {
         if (value[item].lt(0) || value[item].layer > 8e15)
-          value[item] = value2[item]
-      } else {
-        if (value[item].layer > 8e15)
-          value[item] = value2[item]
-      }
+          value[item] = value2[item];
+      } else if (value[item].layer > 8e15)
+        value[item] = value2[item];
     }
-    if (value[item] instanceof Number && value2[item] != undefined) {
-      if (value2[item] == 0) {
+    if (value[item] instanceof Number && value2[item] !== undefined) {
+      if (value2[item] === 0) {
         if (value[item] > 1e300) {
-          value[item] = value2[item]
+          value[item] = value2[item];
         }
-      } else {
-        if (value[item] > 1e300 || value[item] < 0) {
-          value[item] = value2[item]
-        }
-      }
+      } else if (value[item] > 1e300 || value[item] < 0);
+      value[item] = value2[item];
     }
-    if ((value[item] instanceof Object || value[item] instanceof Array) && !(value[item] instanceof Decimal) && value2[item] != undefined)
-      value[item] = dev.beTests.nanFuckIteration(value[item], value2[item])
-    if (value[item] == undefined  && value2[item] != undefined)
-      value[item] = value2[item]
+    if ((value[item] instanceof Object || value[item] instanceof Array) &&
+      !(value[item] instanceof Decimal) && value2[item] !== undefined)
+      value[item] = dev.beTests.nanFuckIteration(value[item], value2[item]);
+    if (value[item] === undefined && value2[item] !== undefined)
+      value[item] = value2[item];
   }
-  return value
-}
+  return value;
+};
 
-dev.beTests.nanFuck = function () {
-  player = dev.beTests.nanFuckIteration(player, Player.defaultStart)
-  GameStorage.save()
-}
+dev.beTests.nanFuck = function() {
+  player = dev.beTests.nanFuckIteration(player, Player.defaultStart);
+  GameStorage.save();
+};
 
-dev.beTests.prepare = function (completeAllChallenges = false) {
-  if(completeAllChallenges) dev.beTests.completeChalleges.all()
-  else dev.beTests.completeChalleges.normal()
+dev.beTests.prepare = function(completeAllChallenges = false) {
+  if (completeAllChallenges) dev.beTests.completeChalleges.all();
+  else dev.beTests.completeChalleges.normal();
 
-  dev.beTests.consecutiveInfinities(new Decimal("1e350"))
-  dev.beTests.speed()
-  GameStorage.import("blob")
-  Notation.scientific.setAsCurrent()
-  Achievement(61).unlock()
-}
+  dev.beTests.consecutiveInfinities(new Decimal("1e350"));
+  dev.beTests.speed();
+  GameStorage.import("blob");
+  Notation.scientific.setAsCurrent();
+  Achievement(61).unlock();
+};

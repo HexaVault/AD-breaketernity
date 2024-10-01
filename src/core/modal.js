@@ -79,6 +79,8 @@ import UpgradeMechanicLockModal from "@/components/modals/UpgradeMechanicLockMod
 
 import S12GamesModal from "@/components/modals/secret-themes/S12GamesModal";
 
+import SwitchLangugeModal from "@/components/modals/switch-language/SwitchLangugeModal";
+
 let nextModalID = 0;
 export class Modal {
   constructor(component, priority = 0, closeEvent) {
@@ -268,6 +270,8 @@ Modal.sacrifice = new Modal(SacrificeModal, 1, GAME_EVENT.DIMBOOST_AFTER);
 Modal.breakInfinity = new Modal(BreakInfinityModal, 1, GAME_EVENT.ETERNITY_RESET_AFTER);
 
 Modal.s12Games = new Modal(S12GamesModal);
+
+Modal.switchLanguage = new Modal(SwitchLangugeModal);
 
 function getSaveInfo(save) {
   const resources = {

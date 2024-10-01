@@ -1,5 +1,3 @@
-import { DC } from "../constants";
-
 import { DimensionState } from "./dimension";
 
 // Multiplier applied to all Antimatter Dimensions, regardless of tier. This is cached using a Lazy
@@ -231,7 +229,7 @@ export function buyManyDimension(tier) {
 
   dimension.currencyAmount = dimension.currencyAmount.minus(cost).max(0);
   dimension.challengeCostBump();
-  dimension.amount = dimension.amount.plus(dimension.remainingUntil10);
+  dimension.amount = dimension.amount.add(dimension.remainingUntil10);
   dimension.bought = dimension.bought.add(dimension.remainingUntil10);
 
   onBuyDimension(tier);
@@ -390,8 +388,8 @@ class AntimatterDimensionState extends DimensionState {
   }
 
   get howManyCanBuy() {
-    const ratio = this.currencyAmount.dividedBy(this.cost);
-    return Decimal.floor(Decimal.max(Decimal.min(ratio, DC.E1.sub(this.boughtBefore10)), 0));
+    const ratio = this.currencyAmount.div(this.cost);
+    return ratio.clamp(0, DC.E1.sub(this.boughtBefore10)).floor();
   }
 
   /**

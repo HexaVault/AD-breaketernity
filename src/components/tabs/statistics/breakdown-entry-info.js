@@ -1,7 +1,5 @@
 import Vue from "vue";
 
-import { DC } from "@/core/constants";
-
 export class BreakdownEntryInfo {
   constructor(key) {
     this.key = key;

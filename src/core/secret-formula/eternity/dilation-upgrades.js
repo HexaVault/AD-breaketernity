@@ -1,5 +1,3 @@
-import { DC } from "../../constants";
-
 function rebuyableCost(initialCost, increment, id) {
   return Decimal.multiply(initialCost, Decimal.pow(increment, player.dilation.rebuyables[id]));
 }
@@ -190,7 +188,7 @@ export const dilationUpgrades = {
     cost: 1e55,
     pelleOnly: true,
     description: () => `Gain more Dilated Time based on current EP`,
-    effect: () => DC.E9.pow((Decimal.max(player.eternityPoints.max(1).log10().sub(1500), 0).div(2500)).pow(1.2).clampMax(1)),
+    effect: () => DC.E9.pow(player.eternityPoints.max(1).log10().sub(1500).max(0).div(2500).pow(1.2).clampMax(1)),
     formatEffect: value => formatX(value, 2, 2)
   },
 };

@@ -1,4 +1,3 @@
-import { DC } from "../constants";
 import { GlyphInfo } from "../secret-formula/reality/core-glyph-info";
 
 export const orderedEffectList = ["powerpow", "infinitypow", "replicationpow", "timepow",
@@ -562,7 +561,7 @@ export const Glyphs = {
         (g.level.gte(glyph.level) || g.strength.gte(glyph.strength)) &&
         // eslint-disable-next-line eqeqeq
         (glyph.effects.every(el => g.effects.includes(el)))
-      )
+      );
     let compareThreshold = ["effarig", "reality"].includes(glyph.type) ? 1 : 5;
     compareThreshold = Math.clampMax(compareThreshold, threshold);
     if (toCompare.length < compareThreshold) return false;

@@ -1,5 +1,3 @@
-import { DC } from "../constants";
-
 import { DimensionState } from "./dimension";
 
 export function buySingleTimeDimension(tier, auto = false) {

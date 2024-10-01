@@ -1,5 +1,3 @@
-import { DC } from "../../../constants";
-
 export const dilationTimeStudies = [
   {
     id: 1,

@@ -1,5 +1,3 @@
-import { DC } from "../constants";
-
 export const AutoGlyphProcessor = {
   get scoreMode() {
     return player.reality.glyphs.filter.select;

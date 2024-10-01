@@ -1,11 +1,8 @@
+import { AUTOMATOR_MODE, AUTOMATOR_TYPE } from "./automator/automator-backend";
 import { AutomatorPanels } from "@/components/tabs/automator/AutomatorDocs";
+import { deepmergeAll } from "@/utility/deepmerge";
 import { GlyphInfo } from "./secret-formula/reality/core-glyph-info";
 import { GlyphInfoVue } from "@/components/modals/options/SelectGlyphInfoDropdown";
-
-import { AUTOMATOR_MODE, AUTOMATOR_TYPE } from "./automator/automator-backend";
-import { DC } from "./constants";
-// Yes we need to import DC here, idk why dont ask me
-import { deepmergeAll } from "@/utility/deepmerge";
 
 // This is actually reassigned when importing saves
 // eslint-disable-next-line prefer-const
@@ -913,6 +910,8 @@ window.player = {
     },
     invertTTgenDisplay: false,
     autoRealityForFilter: false,
+    language: "EN",
+    englishLangNames: true,
   },
   IAP: {
     enabled: false,

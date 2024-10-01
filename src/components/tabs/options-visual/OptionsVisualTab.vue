@@ -47,6 +47,9 @@ export default {
     },
     UILabel() {
       return `UI: ${this.$viewModel.newUI ? "Modern" : "Classic"}`;
+    },
+    languageLabel() {
+      return i18n("options", "language", [() => Lang.current.nameInLang]);
     }
   },
   watch: {
@@ -166,6 +169,12 @@ export default {
             <SelectLargeNotationDropdown />
           </template>
         </ExpandingControlBox>
+        <OptionsButton
+          class="o-primary-btn--option"
+          onclick="Modal.switchLanguage.show()"
+        >
+          {{ languageLabel }}
+        </OptionsButton>
       </div>
       <OpenModalHotkeysButton />
     </div>

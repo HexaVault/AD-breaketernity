@@ -16,7 +16,7 @@ function deepFreeze(obj) {
   return Object.freeze(obj);
 }
 
-export const DC = deepFreeze({
+window.DC = deepFreeze({
   // Naming Scheme:
   // D[0-9]: Decimal mantissa variable
   // _: decimal (.) part of the mantissa
@@ -30,9 +30,7 @@ export const DC = deepFreeze({
 
   D0_01:                new Decimal("0.01"),
   D0_1:                 new Decimal("0.1"),
-  D0_4:                 new Decimal("0.4"),
   D0_5:                 new Decimal("0.5"),
-  D0_55:                new Decimal("0.55"),
   D0_8446303389034288:  new Decimal("0.8446303389034288"),
   D0_95:                new Decimal("0.95"),
   D0_965:               new Decimal("0.965"),
@@ -44,19 +42,15 @@ export const DC = deepFreeze({
   D1_005:               new Decimal("1.005"),
   D1_007:               new Decimal("1.007"),
   D1_02:                new Decimal("1.02"),
-  D1_0285:              new Decimal("1.0285"),
   D1_2:                 new Decimal("1.2"),
-  D1_3:                 new Decimal("1.3"),
   D2:                   new Decimal("2"),
   D3:                   new Decimal("3"),
   D4:                   new Decimal("4"),
   D5:                   new Decimal("5"),
   D6:                   new Decimal("6"),
-  D6_66:                new Decimal("6.66"),
   D7:                   new Decimal("7"),
   D8:                   new Decimal("8"),
   D9:                   new Decimal("9"),
-  D10:                  new Decimal("10"),
   D11:                  new Decimal("11"),
   D12:                  new Decimal("12"),
   D13:                  new Decimal("13"),
@@ -72,14 +66,11 @@ export const DC = deepFreeze({
   D99:                  new Decimal("99"),
   D11111:               new Decimal("11111"),
   D3E4:                 new Decimal("30000"),
-  D2E5:                 new Decimal("2e5"),
   D2E6:                 new Decimal("2e6"),
-  D5E7:                 new Decimal("5e7"),
   D2E9:                 new Decimal("2e9"),
-  D2E25:                new Decimal("2e25"),
-  D2E22222:             new Decimal("2e22222"),
   D9_99999E999:         new Decimal("9.99999e999"),
   D9_9999E9999:         new Decimal("9.9999e9999"),
+  D2E22222:             new Decimal("2e22222"),
 
   // Calculations for precise numbers.
   C1D1_1245:                Decimal.div(1, 1.1245),

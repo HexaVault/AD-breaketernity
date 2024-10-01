@@ -1,8 +1,6 @@
 import TWEEN from "tween.js";
 
 import { ElectronRuntime, SteamRuntime } from "@/steam";
-
-import { DC } from "./core/constants";
 import { deepmergeAll } from "@/utility/deepmerge";
 import { DEV } from "@/env";
 import { SpeedrunMilestones } from "./core/speedrun";
@@ -14,7 +12,6 @@ if (GlobalErrorHandler.handled) {
 GlobalErrorHandler.cleanStart = true;
 
 export function playerInfinityUpgradesOnReset() {
-
   const infinityUpgrades = new Set(
     ["timeMult", "dimMult", "timeMult2",
       "skipReset1", "skipReset2", "unspentBonus",
@@ -83,78 +80,6 @@ export function breakInfinity() {
   GameUI.update();
 }
 
-export function gainedInfinityPoints() {
-  const div = new Decimal(Effects.min(
-    308,
-    Achievement(103),
-    TimeStudy(111)
-  )).toNumber();
-  if (Pelle.isDisabled("IPMults")) {
-    return Decimal.pow10(player.records.thisInfinity.maxAM.max(1).log10().div(div).sub(0.75))
-      .timesEffectsOf(PelleRifts.vacuum)
-      .times(Pelle.specialGlyphEffect.infinity)
-      .floor();
-  }
-  let ip = player.break
-    ? Decimal.pow10(player.records.thisInfinity.maxAM.max(1).log10().div(div).sub(0.75))
-    : new Decimal(308 / div);
-  if (Effarig.isRunning && Effarig.currentStage === EFFARIG_STAGES.ETERNITY) {
-    ip = ip.min(DC.E200);
-  }
-  ip = ip.times(GameCache.totalIPMult.value);
-  if (Teresa.isRunning) {
-    ip = ip.pow(0.55);
-  } else if (V.isRunning) {
-    ip = ip.pow(0.5);
-  } else if (Laitela.isRunning) {
-    ip = dilatedValueOf(ip);
-  }
-  if (GlyphAlteration.isAdded("infinity")) {
-    ip = ip.pow(getSecondaryGlyphEffect("infinityIP"));
-  }
-
-  return ip.floor();
-}
-
-function totalEPMult() {
-  return Pelle.isDisabled("EPMults")
-    ? Pelle.specialGlyphEffect.time.timesEffectOf(PelleRifts.vacuum.milestones[2])
-    : getAdjustedGlyphEffect("cursedEP")
-      .timesEffectsOf(
-        EternityUpgrade.epMult,
-        TimeStudy(61),
-        TimeStudy(122),
-        TimeStudy(121),
-        TimeStudy(123),
-        RealityUpgrade(12),
-        GlyphEffect.epMult
-      );
-}
-
-export function gainedEternityPoints() {
-  let ep = DC.D5.pow(player.records.thisEternity.maxIP.plus(
-    gainedInfinityPoints()).max(1).log10().div(new Decimal(308).sub(PelleRifts.recursion.effectValue)).sub(0.7))
-    .times(totalEPMult());
-
-  if (Teresa.isRunning) {
-    ep = ep.pow(0.55);
-  } else if (V.isRunning) {
-    ep = ep.pow(0.5);
-  } else if (Laitela.isRunning) {
-    ep = dilatedValueOf(ep);
-  }
-  if (GlyphAlteration.isAdded("time")) {
-    ep = ep.pow(getSecondaryGlyphEffect("timeEP"));
-  }
-
-  return ep.floor();
-}
-
-export function requiredIPForEP(epAmount) {
-  return Decimal.pow10((Decimal.log10(Decimal.divide(epAmount, totalEPMult()), 5).times(308).plus(0.7)))
-    .clampMin(Number.MAX_VALUE);
-}
-
 export function gainedGlyphLevel() {
   const glyphState = getGlyphLevelInputs();
   const rawLevel = glyphState.rawLevel.floor();
@@ -174,7 +99,7 @@ export function resetChallengeStuff() {
 }
 
 export function ratePerMinute(amount, time) {
-  return Decimal.divide(amount, time.div(60 * 1000));
+  return Decimal.div(amount, time.div(60 * 1000));
 }
 
 // eslint-disable-next-line max-params
@@ -655,19 +580,19 @@ export function gameLoop(passedDiff, options = {}) {
 }
 
 function updatePrestigeRates() {
-  const currentIPmin = gainedInfinityPoints().div(Decimal.max(0.0005, Time.thisInfinityRealTime.totalMinutes));
+  const currentIPmin = gainedInfinityPoints().div(Time.thisInfinityRealTime.totalMinutes.max(0.0005));
   if (currentIPmin.gt(player.records.thisInfinity.bestIPmin) && Player.canCrunch) {
     player.records.thisInfinity.bestIPmin = currentIPmin;
     player.records.thisInfinity.bestIPminVal = gainedInfinityPoints();
   }
 
-  const currentEPmin = gainedEternityPoints().dividedBy(Decimal.max(0.0005, Time.thisEternityRealTime.totalMinutes));
+  const currentEPmin = gainedEternityPoints().div(Time.thisEternityRealTime.totalMinutes.max(0.0005));
   if (currentEPmin.gt(player.records.thisEternity.bestEPmin) && Player.canEternity) {
     player.records.thisEternity.bestEPmin = currentEPmin;
     player.records.thisEternity.bestEPminVal = gainedEternityPoints();
   }
 
-  const currentRSmin = Effarig.shardsGained.div(Decimal.max(0.0005, Time.thisRealityRealTime.totalMinutes));
+  const currentRSmin = Effarig.shardsGained.div(Time.thisRealityRealTime.totalMinutes.max(0.0005));
   if (currentRSmin.gt(player.records.thisReality.bestRSmin && isRealityAvailable())) {
     player.records.thisReality.bestRSmin = currentRSmin;
     player.records.thisReality.bestRSminVal = Effarig.shardsGained;

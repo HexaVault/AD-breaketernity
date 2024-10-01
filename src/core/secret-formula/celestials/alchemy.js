@@ -1,5 +1,3 @@
-import { DC } from "../../constants";
-
 export const alchemyResources = {
   // T1 resources (Non-Effarig "base" resources)
   "power": {
@@ -123,7 +121,7 @@ export const alchemyResources = {
     reagents: [
       {
         resource: ALCHEMY_RESOURCE.POWER,
-        amount: DC.D10
+        amount: DC.E1
       },
       {
         resource: ALCHEMY_RESOURCE.INFINITY,
@@ -173,7 +171,7 @@ export const alchemyResources = {
       },
       {
         resource: ALCHEMY_RESOURCE.DILATION,
-        amount: DC.D10
+        amount: DC.E1
       }
     ]
   },
@@ -415,7 +413,7 @@ export const alchemyResources = {
       },
       {
         resource: ALCHEMY_RESOURCE.SYNERGISM,
-        amount: DC.D10
+        amount: DC.E1
       }
     ]
   },

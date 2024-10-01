@@ -1,6 +1,4 @@
 <script>
-import { DC } from "../../../core/constants";
-
 import { MatterScale } from "./matter-scale";
 
 import PrimaryButton from "@/components/PrimaryButton";

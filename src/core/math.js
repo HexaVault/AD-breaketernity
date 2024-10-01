@@ -1,6 +1,5 @@
 import { log as lngamma } from "gamma";
 
-/* eslint-disable no-use-before-define */
 /* eslint-disable max-params */
 
 window.LOG10_MAX_VALUE = Math.log10(Number.MAX_VALUE);

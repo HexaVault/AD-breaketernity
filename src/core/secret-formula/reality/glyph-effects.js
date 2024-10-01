@@ -1,5 +1,3 @@
-import { DC } from "../../constants";
-
 export const GlyphCombiner = Object.freeze({
   /**
    * @param {Decimal[]} x

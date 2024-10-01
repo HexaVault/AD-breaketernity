@@ -1,4 +1,3 @@
-import { DC } from "../../constants";
 /* eslint-disable max-len */
 
 // To help adding new glyphs to the game, we can concentrate a ton of information to this file.
