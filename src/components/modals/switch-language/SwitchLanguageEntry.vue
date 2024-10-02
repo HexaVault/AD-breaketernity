@@ -17,7 +17,7 @@ export default {
   },
   methods: {
     setLanguage(lang) {
-      player.options.language = lang;
+      Lang[lang].setAsCurrent(false);
     },
   },
 };

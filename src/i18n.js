@@ -3,10 +3,10 @@ import * as i18nText from "./i18n/exports";
 window.i18n = function(type, id, mods = []) {
   let text = "";
   // eslint-disable-next-line import/namespace
-  text = i18nText[player.options.language][type][id];
+  text = Lang.current.allText[type][id];
   // If it's not defined for that language, default to English
   if (text === undefined || text === "") {
-    text = i18nText.EN[type][id];
+    text = Lang.EN.allText[type][id];
   }
   // If it's not defined for English, default to "Placeholder"
   if (text === undefined || text === "") {
@@ -18,7 +18,7 @@ window.i18n = function(type, id, mods = []) {
   return text;
 };
 
-export class LanguageState {
+class LanguageState {
   constructor(allText) {
     this.allText = allText;
   }
@@ -39,8 +39,9 @@ export class LanguageState {
     return this.allText.shortName;
   }
 
-  setAsCurrent() {
+  setAsCurrent(silent) {
     player.options.language = this.shortName;
+    if (!silent) GameUI.notify.success(`Set language to ${this.name}`);
   }
 }
 
