@@ -319,3 +319,8 @@ Array.fromBitmask = function(mask) {
 String.isWhiteSpace = function(value) {
   return value && !value.trim();
 };
+
+Decimal.isFinite = function(value) {
+  if (!isDecimal(value)) return isFinite(value);
+  return (isFinite(value.m) || isFinite(value.e)) && !(value.e >= 9e15);
+};

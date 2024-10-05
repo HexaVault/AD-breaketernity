@@ -2,7 +2,10 @@ import { GameMechanicState } from "../../utils";
 
 class RiftMilestoneState extends GameMechanicState {
 
-  lastChecked = false;
+  constructor(config) {
+    super(config);
+    this.lastChecked = false;
+  }
 
   get requirement() {
     return this.config.requirement;

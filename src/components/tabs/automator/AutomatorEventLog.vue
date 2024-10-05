@@ -14,8 +14,8 @@ export default {
   },
   computed: {
     events() {
-      // eslint-disable-next-line vue/no-side-effects-in-computed-properties, no-nested-ternary
-      const sorted = this.unsortedEvents.sort((a, b) => (a.timestamp === b.timestamp
+      // eslint-disable-next-line no-nested-ternary
+      const sorted = this.unsortedEvents.slice(0).sort((a, b) => (a.timestamp === b.timestamp
         ? (a.thisReality === b.thisReality
           ? a.line - b.line
           : a.thisReality - b.thisReality)

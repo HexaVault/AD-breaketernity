@@ -22,6 +22,7 @@ export default {
       rarityThresholds: GlyphInfo.glyphTypes.mapToObject(e => e, () => new Decimal()),
       scaledRarityThresholds: GlyphInfo.glyphTypes.mapToObject(e => e, () => 0),
       autoRealityForFilter: player.options.autoRealityForFilter,
+      isRefining: false,
     };
   },
   computed: {
@@ -59,8 +60,8 @@ export default {
     },
     questionmarkTooltip() {
       return `All Glyph choices are given a score and compared to a threshold based on the chosen mode. 
-        The Glyph with the highest score is picked, but will still be Sacrificed if below the threshold.
-        (click for more detail)`;
+        The Glyph with the highest score is picked, but will still be ${this.isRefining ? "Refined" : "Sacrificed"}
+        if below the threshold. (click for more detail)`;
     },
     autoRealityTooltip() {
       return `If Auto-Reality is on, ignore all other settings and immediately Reality if no upcoming
@@ -87,6 +88,7 @@ export default {
       }
 
       this.alchemyUnlocked = Ra.unlocks.unlockGlyphAlchemy.canBeApplied;
+      this.isRefining = GlyphSacrificeHandler.isRefining;
     },
     optionClass(idx) {
       const icon = this.modeIcon(idx);

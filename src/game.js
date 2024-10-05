@@ -959,9 +959,7 @@ export function simulateTime(seconds, real, fast) {
           // .postLoadStuff will restart GameIntervals
           GameStorage.postLoadStuff();
         },
-        then: () => {
-          afterSimulation(seconds, playerStart);
-        },
+        then: () => afterSimulation(seconds, playerStart),
         progress
       });
   }
