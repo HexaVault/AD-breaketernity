@@ -232,9 +232,10 @@ window.TimeSpan = class TimeSpan {
    * Note: For speedruns, we give 3 digits of hours on HMS formatting, a decimal point on seconds, and
    *  suppress END formatting on the speedrun record tabs
    * @param {boolean} useHMS If true, will display times as HH:MM:SS in between a minute and 100 hours.
+   * @param {boolean} bypassEND Supress END formatting
    * @returns {String}
    */
-  toStringShort(useHMS = true, bypassEND = false) {
+  toStringShort(useHMS = true, isSpeedrun = false, bypassEND = false) {
     // Probably not worth the trouble of importing the isEND function from formatting since this accomplishes the same
     // thing; we do however need this to prevent strings like "02:32" from showing up though
     if (format(0) === "END" && !bypassEND) return "END";
@@ -261,7 +262,7 @@ window.TimeSpan = class TimeSpan {
     if (totalSeconds.lt(60)) {
       return `${format(totalSeconds, 0, 2, bypassEND)} seconds`;
     }
-    if (this.totalHours.lt(100) || (bypassEND && this.totalHours.lt(1000))) {
+    if (this.totalHours.lt(100) || (isSpeedrun && this.totalHours.lt(1000))) {
       if (useHMS && !Notations.current.isPainful) {
         const sec = seconds(this.seconds, this.milliseconds);
         if (Decimal.floor(this.totalHours).eq(0)) return `${formatHMS(this.minutes)}:${sec}`;
@@ -275,9 +276,9 @@ window.TimeSpan = class TimeSpan {
       }
     }
     if (this.totalDays.lt(500)) {
-      return `${bypassEND ? this.totalDays.toFixed(2) : format(this.totalDays, 0, 2, bypassEND)} days`;
+      return `${isSpeedrun ? this.totalDays.toFixed(2) : format(this.totalDays, 0, 2, bypassEND)} days`;
     }
-    return `${bypassEND ? this.totalYears.toFixed(3) : format(this.totalYears, 3, 2, bypassEND)} years`;
+    return `${isSpeedrun ? this.totalYears.toFixed(3) : format(this.totalYears, 3, 2, bypassEND)} years`;
 
     function formatHMS(value) {
       const s = value.toString();
@@ -286,7 +287,7 @@ window.TimeSpan = class TimeSpan {
 
     function seconds(s, ms) {
       const sec = formatHMS(s);
-      return bypassEND ? `${sec}.${Math.floor(ms.div(100))}` : sec;
+      return isSpeedrun ? `${sec}.${Math.floor(ms.div(100))}` : sec;
     }
   }
 
