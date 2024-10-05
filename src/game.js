@@ -1,4 +1,4 @@
-import TWEEN from "tween.js";
+import TWEEN from "@tweenjs/tween.js";
 
 import { ElectronRuntime, SteamRuntime } from "@/steam";
 import { deepmergeAll } from "@/utility/deepmerge";
