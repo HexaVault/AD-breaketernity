@@ -16,8 +16,8 @@ export default {
     },
     label: {
       type: String,
-      default: "Currently",
-      required: false
+      required: false,
+      default: "Currently"
     },
     ignoreCapped: {
       type: Boolean,
@@ -72,8 +72,7 @@ export default {
         }
 
         if (!isFunction(effect)) {
-          throw new Error(`EffectDisplay config.effect has ` +
-            ` unsupported type "${typeof effect}"`);
+          throw new Error(`EffectDisplay config.effect has unsupported type "${typeof effect}"`);
         }
 
         const value = effect();
