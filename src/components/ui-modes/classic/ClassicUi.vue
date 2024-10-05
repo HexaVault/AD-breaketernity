@@ -54,7 +54,7 @@ export default {
     <link
       rel="stylesheet"
       type="text/css"
-      href="stylesheets/old-ui.css"
+      href="/stylesheets/old-ui.css"
     >
     <BigCrunchButton />
     <template v-if="!bigCrunch">
