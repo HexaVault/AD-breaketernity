@@ -40,7 +40,7 @@ export default {
       return subtab.config.component;
     },
     themeCss() {
-      return `stylesheets/theme-${this.view.theme}.css`;
+      return `/stylesheets/theme-${this.view.theme}.css`;
     }
   }
 };

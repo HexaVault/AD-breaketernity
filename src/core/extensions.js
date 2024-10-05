@@ -1,3 +1,5 @@
+import { isDecimal } from "@/utility";
+
 Array.prototype.distinct = function() {
   return this.filter((value, index, self) => self.indexOf(value) === index);
 };
