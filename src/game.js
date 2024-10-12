@@ -1,8 +1,8 @@
 import TWEEN from "@tweenjs/tween.js";
 
-import { ElectronRuntime, SteamRuntime } from "@/steam";
 import { deepmergeAll } from "@/utility/deepmerge";
 import { DEV } from "@/env";
+import { ElectronRuntime } from "@/steam";
 import { SpeedrunMilestones } from "./core/speedrun";
 import { supportedBrowsers } from "./supported-browsers";
 
@@ -91,10 +91,10 @@ export function gainedGlyphLevel() {
 }
 
 export function resetChallengeStuff() {
-  player.chall2Pow = DC.D1;
-  player.chall3Pow = DC.D0_01;
+  player.challengeData.nc2percent = DC.D1;
+  player.challengeData.nc3pow = DC.D0_01;
   Currency.matter.reset();
-  player.chall8TotalSacrifice = DC.D1;
+  player.challengeData.nc8sacrifice = DC.D1;
   player.postC4Tier = 1;
 }
 
@@ -501,8 +501,8 @@ export function gameLoop(passedDiff, options = {}) {
   AntimatterDimensions.tick(diff);
 
   const gain = Decimal.clampMin(FreeTickspeed.fromShards(Currency.timeShards.value).newAmount
-    .sub(player.totalTickGained), 0);
-  player.totalTickGained = player.totalTickGained.add(gain);
+    .sub(player.tickspeed.gained), 0);
+  player.tickspeed.gained = player.tickspeed.gained.add(gain);
 
   updatePrestigeRates();
   tryCompleteInfinityChallenges();
@@ -756,8 +756,6 @@ function updateTachyonGalaxies() {
   const thresholdMult = getTachyonGalaxyMult();
   player.dilation.baseTachyonGalaxies = Decimal.max(player.dilation.baseTachyonGalaxies,
     DC.D1.plus(Decimal.floor(Decimal.log(Currency.dilatedTime.value.dividedBy(1000), thresholdMult))));
-  player.dilation.nextThreshold = DC.E3.times(thresholdMult
-    .pow(player.dilation.baseTachyonGalaxies));
   player.dilation.totalTachyonGalaxies =
     Decimal.min(player.dilation.baseTachyonGalaxies.times(tachyonGalaxyMult), tachyonGalaxyThreshold)
       .add(Decimal.max(player.dilation.baseTachyonGalaxies.times(tachyonGalaxyMult).sub(tachyonGalaxyThreshold), 0)
@@ -1008,8 +1006,6 @@ export function init() {
     console.log("👨‍💻 Development Mode 👩‍💻");
   }
   ElectronRuntime.initialize();
-  SteamRuntime.initialize();
-  Cloud.init();
   GameStorage.load();
   Tabs.all.find(t => t.config.id === player.options.lastOpenTab).show(true);
 }

@@ -1,8 +1,3 @@
-import { ProgressChecker } from "./storage/progress-checker";
-
-import CloudInvalidDataModal from "@/components/modals/cloud/CloudInvalidDataModal";
-import CloudLoadConflictModal from "@/components/modals/cloud/CloudLoadConflictModal";
-import CloudSaveConflictModal from "@/components/modals/cloud/CloudSaveConflictModal";
 import EternityChallengeStartModal from "@/components/modals/challenges/EternityChallengeStartModal";
 import InfinityChallengeStartModal from "@/components/modals/challenges/InfinityChallengeStartModal";
 import MessageModal from "@/components/modals/MessageModal";
@@ -159,7 +154,6 @@ export class Modal {
     ui.view.modal.queue.shift();
     if (ui.view.modal.queue.length === 0) ui.view.modal.current = undefined;
     else ui.view.modal.current = ui.view.modal.queue[0];
-    ui.view.modal.cloudConflict = [];
   }
 
   static hideAll() {
@@ -272,75 +266,6 @@ Modal.breakInfinity = new Modal(BreakInfinityModal, 1, GAME_EVENT.ETERNITY_RESET
 Modal.s12Games = new Modal(S12GamesModal);
 
 Modal.switchLanguage = new Modal(SwitchLangugeModal);
-
-function getSaveInfo(save) {
-  const resources = {
-    realTimePlayed: 0,
-    totalAntimatter: new Decimal(0),
-    infinities: new Decimal(0),
-    eternities: new Decimal(0),
-    realities: 0,
-    infinityPoints: new Decimal(0),
-    eternityPoints: new Decimal(0),
-    realityMachines: new Decimal(0),
-    imaginaryMachines: new Decimal(0),
-    dilatedTime: new Decimal(0),
-    bestLevel: 0,
-    pelleAM: new Decimal(0),
-    remnants: 0,
-    realityShards: new Decimal(0),
-    // This is a slight workaround to hide DT/level once Doomed
-    pelleLore: 0,
-    saveName: "",
-    compositeProgress: 0,
-  };
-  // This code ends up getting run on raw save data before any migrations are applied, so we need to default to props
-  // which only exist on the pre-reality version when applicable. Note that new Decimal(undefined) gives zero.
-  resources.realTimePlayed = save.records?.realTimePlayed ?? 100 * save.totalTimePlayed;
-  resources.totalAntimatter.copyFrom(new Decimal(save.records?.totalAntimatter));
-  resources.infinities.copyFrom(new Decimal(save.infinities));
-  resources.eternities.copyFrom(new Decimal(save.eternities));
-  resources.realities = save.realities ?? 0;
-  resources.infinityPoints.copyFrom(new Decimal(save.infinityPoints));
-  resources.eternityPoints.copyFrom(new Decimal(save.eternityPoints));
-  resources.realityMachines.copyFrom(new Decimal(save.reality?.realityMachines));
-  resources.imaginaryMachines.copyFrom(new Decimal(save.reality?.imaginaryMachines));
-  // Use max DT instead of current DT because spending it can cause it to drop and trigger the conflict modal
-  // unnecessarily. We only use current DT as a fallback (eg. loading a save from pre-reality versions)
-  resources.dilatedTime.copyFrom(new Decimal(save.records?.thisReality.maxDT ?? (save.dilation?.dilatedTime ?? 0)));
-  resources.bestLevel = save.records?.bestReality.glyphLevel ?? 0;
-  resources.pelleAM.copyFrom(new Decimal(save.celestials?.pelle.records.totalAntimatter));
-  resources.remnants = save.celestials?.pelle.remnants ?? 0;
-  resources.realityShards.copyFrom(new Decimal(save.celestials?.pelle.realityShards));
-  resources.pelleLore = save.celestials?.pelle.quoteBits ?? 0;
-  resources.saveName = save.options?.saveFileName ?? "";
-  resources.compositeProgress = ProgressChecker.getCompositeProgress(save);
-
-  return resources;
-}
-
-Modal.cloudSaveConflict = new Modal(CloudSaveConflictModal);
-Modal.cloudLoadConflict = new Modal(CloudLoadConflictModal);
-Modal.cloudInvalidData = new Modal(CloudInvalidDataModal);
-// eslint-disable-next-line max-params
-Modal.addCloudConflict = function(saveId, saveComparison, cloudSave, localSave, onAccept) {
-  Modal.hide();
-  ui.view.modal.cloudConflict = {
-    saveId,
-    saveComparison,
-    cloud: getSaveInfo(cloudSave),
-    local: getSaveInfo(localSave),
-    onAccept
-  };
-};
-
-Modal.addImportConflict = function(importingSave, currentSave) {
-  Modal.hide();
-  ui.view.modal.cloudConflict = {
-    importingSave: getSaveInfo(importingSave),
-    currentSave: getSaveInfo(currentSave)
-  };
-};
 
 Modal.message = new class extends Modal {
   show(text, props = {}, messagePriority = 0) {

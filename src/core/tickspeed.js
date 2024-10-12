@@ -72,10 +72,10 @@ export function buyTickSpeed() {
   }
   Tutorial.turnOffEffect(TUTORIAL_STATE.TICKSPEED);
   Currency.antimatter.subtract(Tickspeed.cost);
-  player.totalTickBought = player.totalTickBought.add(1);
+  player.tickspeed.bought = player.tickspeed.bought.add(1);
   player.records.thisInfinity.lastBuyTime = player.records.thisInfinity.time;
   player.requirementChecks.permanent.singleTickspeed++;
-  if (NormalChallenge(2).isRunning) player.chall2Pow = DC.D0;
+  if (NormalChallenge(2).isRunning) player.challengeData.nc2percent = DC.D0;
   GameUI.update();
   return true;
 }
@@ -91,19 +91,19 @@ export function buyMaxTickSpeed() {
     while (Currency.antimatter.gt(cost) && cost.lt(goal)) {
       Tickspeed.multiplySameCosts();
       Currency.antimatter.subtract(cost);
-      player.totalTickBought = player.totalTickBought.add(1);
+      player.tickspeed.bought = player.tickspeed.bought.add(1);
       boughtTickspeed = true;
       cost = Tickspeed.cost;
     }
   } else {
-    const purchases = Tickspeed.costScale.getMaxBought(player.totalTickBought, Currency.antimatter.value, DC.D1, true);
+    const purchases = Tickspeed.costScale.getMaxBought(player.tickspeed.bought, Currency.antimatter.value, DC.D1, true);
     if (purchases !== null) {
       if (purchases.logPrice.eq(player.antimatter.max(1).log10()) && player.dimensions.antimatter[0].amount.eq(0)) {
         purchases.logPrice = Tickspeed.costScale.calculateCost(purchases.quantity.sub(1));
         purchases.quantity = purchases.quantity.sub(1);
       }
       Currency.antimatter.subtract(Decimal.pow10(purchases.logPrice));
-      player.totalTickBought = player.totalTickBought.add(purchases.quantity);
+      player.tickspeed.bought = player.tickspeed.bought.add(purchases.quantity);
     }
 
     // eslint-disable-next-line max-len
@@ -116,15 +116,15 @@ export function buyMaxTickSpeed() {
 
   if (boughtTickspeed) {
     player.records.thisInfinity.lastBuyTime = player.records.thisInfinity.time;
-    if (NormalChallenge(2).isRunning) player.chall2Pow = DC.D0;
+    if (NormalChallenge(2).isRunning) player.challengeData.nc2percent = DC.D0;
   }
   // eslint-disable-next-line max-statements-per-line
   if (player.dimensions.antimatter[0].amount.eq(0)) { Currency.antimatter.bumpTo(100); }
 }
 
 export function resetTickspeed() {
-  player.totalTickBought = DC.D0;
-  player.chall9TickspeedCostBumps = DC.D0;
+  player.tickspeed.bought = DC.D0;
+  player.challengeData.nc9tickspeedCostIncreases = DC.D0;
 }
 
 export const Tickspeed = {
@@ -159,7 +159,7 @@ export const Tickspeed = {
   },
 
   get cost() {
-    return this.costScale.calculateCost(player.totalTickBought.add(player.chall9TickspeedCostBumps));
+    return this.costScale.calculateCost(player.tickspeed.bought.add(player.challengeData.nc9tickspeedCostIncreases));
   },
 
   get costScale() {
@@ -190,8 +190,8 @@ export const Tickspeed = {
   get totalUpgrades() {
     let boughtTickspeed;
     if (Laitela.continuumActive) boughtTickspeed = new Decimal(this.continuumValue);
-    else boughtTickspeed = new Decimal(player.totalTickBought);
-    return boughtTickspeed.plus(player.totalTickGained);
+    else boughtTickspeed = new Decimal(player.tickspeed.bought);
+    return boughtTickspeed.plus(player.tickspeed.gained);
   },
 
   get perSecond() {
@@ -214,7 +214,7 @@ export const FreeTickspeed = {
     Decimal.max(getAdjustedGlyphEffect("cursedtickspeed"), 1)),
 
   get amount() {
-    return player.totalTickGained;
+    return player.tickspeed.gained;
   },
 
   get softcap() {

@@ -27,7 +27,7 @@ export default {
   methods: {
     update() {
       this.showLockedDimCostNote = !TimeDimension(8).isUnlocked && player.realities.gte(1);
-      this.totalUpgrades.copyFrom(player.totalTickGained);
+      this.totalUpgrades.copyFrom(player.tickspeed.gained);
       this.multPerTickspeed.copyFrom(FreeTickspeed.multToNext);
       this.tickspeedSoftcap.copyFrom(FreeTickspeed.softcap);
       this.timeShards.copyFrom(Currency.timeShards);

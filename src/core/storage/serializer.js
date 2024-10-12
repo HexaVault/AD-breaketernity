@@ -57,8 +57,6 @@ export const GameSaveSerializer = {
   // shouldn't be a problem).
   version: "AAB",
   // Steps are given in encoding order.
-  // Export and cloud save use the same steps because the maximum ~15% saving
-  // from having them be different seems not to be worth it.
   // It's important that `this` is what it should be in these function calls
   // (encoder/decoded for the first element, window for the fourth)
   // which is why we shouldn't do e.g. { encode: encoder.encode, decode: encoder.decode }

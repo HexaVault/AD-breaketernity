@@ -24,18 +24,6 @@ export class GameOptions {
     GameStorage.save();
   }
 
-  static cloudSave() {
-    Cloud.saveCheck(true);
-  }
-
-  static cloudLoad() {
-    Cloud.loadCheck();
-  }
-
-  static logout() {
-    Cloud.logout();
-  }
-
   static refreshUpdateRate() {
     if (player.options.updateRate === 200) {
       SecretAchievement(31).unlock();

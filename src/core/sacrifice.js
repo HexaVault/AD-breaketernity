@@ -82,7 +82,8 @@ export class Sacrifice {
     } else if (InfinityChallenge(2).isCompleted) {
       prePowerSacrificeMult = nd1Amount.dividedBy(sacrificed);
     } else {
-      prePowerSacrificeMult = new Decimal((nd1Amount.max(1).log10().div(10)).div(Decimal.max(sacrificed.max(1).log10().div(10), 1)));
+      prePowerSacrificeMult = new Decimal((nd1Amount.max(1).log10().div(10))
+        .div(Decimal.max(sacrificed.max(1).log10().div(10), 1)));
     }
 
     return prePowerSacrificeMult.clampMin(1).pow(this.sacrificeExponent);
@@ -93,7 +94,7 @@ export class Sacrifice {
     // C8 uses a variable that keeps track of a sacrifice boost that persists across sacrifice-resets and isn't
     // used anywhere else, which also naturally takes account of the exponent from achievements and time studies.
     if (NormalChallenge(8).isRunning) {
-      return player.chall8TotalSacrifice;
+      return player.challengeData.nc8sacrifice;
     }
 
     let prePowerBoost;
@@ -120,7 +121,7 @@ export function sacrificeReset() {
   }
   EventHub.dispatch(GAME_EVENT.SACRIFICE_RESET_BEFORE);
   const nextBoost = Sacrifice.nextBoost;
-  player.chall8TotalSacrifice = player.chall8TotalSacrifice.times(nextBoost);
+  player.challengeData.nc8sacrifice = player.challengeData.nc8sacrifice.times(nextBoost);
   player.sacrificed = player.sacrificed.plus(AntimatterDimension(1).amount);
   const isAch118Unlocked = Achievement(118).canBeApplied;
   if (NormalChallenge(8).isRunning) {

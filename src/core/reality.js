@@ -653,7 +653,7 @@ export function finishProcessReality(realityProps) {
   player.records.bestEternity.time = DC.BEMAX;
   player.records.bestEternity.realTime = DC.BEMAX;
   if (!PelleUpgrade.keepEternityUpgrades.canBeApplied) player.eternityUpgrades.clear();
-  player.totalTickGained = DC.D0;
+  player.tickspeed.gained = DC.D0;
   if (!PelleUpgrade.keepEternityChallenges.canBeApplied) player.eternityChalls = {};
   player.reality.unlockedEC = 0;
   player.reality.lastAutoEC = DC.D0;
@@ -692,7 +692,6 @@ export function finishProcessReality(realityProps) {
   if (!PelleUpgrade.tachyonParticlesNoReset.canBeApplied) {
     Currency.tachyonParticles.reset();
   }
-  player.dilation.nextThreshold = DC.E3;
   player.dilation.baseTachyonGalaxies = DC.D0;
   player.dilation.totalTachyonGalaxies = DC.D0;
   Currency.dilatedTime.reset();

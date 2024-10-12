@@ -5,8 +5,6 @@ import OptionsButton from "@/components/OptionsButton";
 import PrimaryToggleButton from "@/components/PrimaryToggleButton";
 import SaveFileName from "./SaveFileName";
 
-import { STEAM } from "@/env";
-
 export default {
   name: "OptionsSavingTab",
   components: {
@@ -18,14 +16,8 @@ export default {
   },
   data() {
     return {
-      cloudAvailable: false,
-      cloudEnabled: false,
-      forceCloudOverwrite: false,
-      showCloudModal: false,
       syncSaveIntervals: false,
       showTimeSinceSave: false,
-      hideGoogleName: false,
-      loggedIn: false,
       userName: "",
       canSpeedrun: false,
       inSpeedrun: false,
@@ -33,58 +25,23 @@ export default {
       canModifySeed: false,
     };
   },
-  computed: {
-    modalTooltip() {
-      return `The game will detect certain situations where you might not want to overwrite your cloud save, and show
-        you a modal with more information if this is ON.`;
-    },
-    overwriteTooltip() {
-      if (this.showCloudModal) return "This setting does nothing since the modal is being shown.";
-      return this.forceCloudOverwrite
-        ? `Your local save will always overwrite your cloud save no matter what.`
-        : `Save conflicts will prevent your local save from being saved to the cloud.`;
-    },
-    STEAM() {
-      return STEAM;
-    }
-  },
   watch: {
-    cloudEnabled(newValue) {
-      player.options.cloudEnabled = newValue;
-    },
-    forceCloudOverwrite(newValue) {
-      player.options.forceCloudOverwrite = newValue;
-    },
-    showCloudModal(newValue) {
-      player.options.showCloudModal = newValue;
-    },
     syncSaveIntervals(newValue) {
       player.options.syncSaveIntervals = newValue;
     },
     showTimeSinceSave(newValue) {
       player.options.showTimeSinceSave = newValue;
     },
-    hideGoogleName(newValue) {
-      player.options.hideGoogleName = newValue;
-    }
   },
   methods: {
     update() {
       const options = player.options;
-      this.cloudAvailable = Cloud.isAvailable;
-      this.cloudEnabled = options.cloudEnabled;
-      this.forceCloudOverwrite = options.forceCloudOverwrite;
-      this.showCloudModal = options.showCloudModal;
       this.syncSaveIntervals = options.syncSaveIntervals;
       this.showTimeSinceSave = options.showTimeSinceSave;
-      this.hideGoogleName = options.hideGoogleName;
-      this.loggedIn = Cloud.loggedIn;
       this.canSpeedrun = player.speedrun.isUnlocked;
       this.inSpeedrun = player.speedrun.isActive;
       this.canModifySeed = Speedrun.canModifySeed();
       this.creditsClosed = GameEnd.creditsEverClosed;
-      if (!this.loggedIn) return;
-      this.userName = Cloud.user.displayName;
     },
     importAsFile(event) {
       // This happens if the file dialog is canceled instead of a file being selected
@@ -218,97 +175,6 @@ export default {
         </OptionsButton>
       </div>
       <OpenModalHotkeysButton />
-    </div>
-    <h2
-      v-if="cloudAvailable"
-      class="c-cloud-options-header"
-    >
-      <span v-if="hideGoogleName">Logged in to Google <i>(name hidden)</i></span>
-      <span v-else-if="loggedIn">Logged in as {{ userName }}</span>
-      <span v-else>Not logged in</span>
-    </h2>
-    <div v-if="loggedIn">
-      <span v-if="cloudEnabled">Cloud Saving will occur automatically every 10 minutes.</span>
-      <span v-else>Cloud Saving has been disabled on this save.</span>
-    </div>
-    <div
-      v-if="cloudAvailable"
-      class="l-options-grid"
-    >
-      <div
-        v-if="!STEAM"
-        class="l-options-grid__row"
-      >
-        <OptionsButton
-          v-if="loggedIn"
-          onclick="GameOptions.logout()"
-        >
-          Disconnect Google Account and disable Cloud Saving
-        </OptionsButton>
-        <OptionsButton
-          v-else
-          v-tooltip="'This will connect your Google Account to your Antimatter Dimensions savefiles'"
-          :class="{ 'o-pelle-disabled-pointer': creditsClosed }"
-        >
-          Login with Google to enable Cloud Saving
-        </OptionsButton>
-        <PrimaryToggleButton
-          v-if="loggedIn"
-          v-model="hideGoogleName"
-          v-tooltip="'This will hide your Google Account name from the UI for privacy. Saving/loading is unaffected.'"
-          class="o-primary-btn--option l-options-grid__button"
-          :class="{ 'o-pelle-disabled-pointer': creditsClosed }"
-          label="Hide Google Account name:"
-        />
-      </div>
-      <div
-        v-if="loggedIn"
-        class="l-options-grid__row"
-      >
-        <OptionsButton
-          onclick="GameOptions.cloudSave()"
-          :class="{ 'o-pelle-disabled-pointer': creditsClosed }"
-        >
-          Cloud save
-        </OptionsButton>
-        <OptionsButton
-          onclick="GameOptions.cloudLoad()"
-          :class="{ 'o-pelle-disabled-pointer': creditsClosed }"
-        >
-          Cloud load
-        </OptionsButton>
-        <PrimaryToggleButton
-          v-model="syncSaveIntervals"
-          class="o-primary-btn--option l-options-grid__button"
-          :class="{ 'o-pelle-disabled-pointer': creditsClosed }"
-          label="Force local save before cloud saving:"
-        />
-      </div>
-      <div
-        v-if="loggedIn"
-        class="l-options-grid__row"
-      >
-        <PrimaryToggleButton
-          v-model="cloudEnabled"
-          class="o-primary-btn--option l-options-grid__button"
-          :class="{ 'o-pelle-disabled-pointer': creditsClosed }"
-          label="Automatic cloud saving/loading:"
-        />
-        <PrimaryToggleButton
-          v-model="showCloudModal"
-          v-tooltip="modalTooltip"
-          class="o-primary-btn--option l-options-grid__button"
-          :class="{ 'o-pelle-disabled-pointer': creditsClosed }"
-          label="Show modal if possible saving conflict:"
-        />
-        <PrimaryToggleButton
-          v-model="forceCloudOverwrite"
-          v-tooltip="overwriteTooltip"
-          class="o-primary-btn--option l-options-grid__button"
-          :class="{ 'o-pelle-disabled-pointer': creditsClosed }"
-          label="Force cloud saving despite conflicts:"
-        />
-      </div>
     </div>
   </div>
 </template>

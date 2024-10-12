@@ -138,7 +138,6 @@ export const migrations = {
       migrations.setTutorialState(player);
       migrations.migrateLastTenRuns(player);
       migrations.migrateIPGen(player);
-      migrations.renameCloudVariable(player);
       migrations.standardizeUncompletedTimes(player);
       migrations.makeRecords(player);
       migrations.deleteOldRecords(player);
@@ -1038,11 +1037,6 @@ export const migrations = {
     player.infinityRebuyables[2] = player.offlineProd / 5;
     delete player.offlineProd;
     delete player.offlineProdCost;
-  },
-
-  renameCloudVariable(player) {
-    player.options.cloudEnabled = player.options.cloud;
-    delete player.options.cloud;
   },
 
   standardizeUncompletedTimes(player) {

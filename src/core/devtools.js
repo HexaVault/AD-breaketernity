@@ -248,7 +248,7 @@ dev.printResourceTotals = function() {
   }
   console.log(`TD mults: e${TDmults.log10().toPrecision(3)}`);
   // eslint-disable-next-line max-len
-  console.log(`Tickspeed from TD: ${formatWithCommas(Decimal.floor(player.totalTickGained.div(1000).add(0.5)).mul(1000))}`);
+  console.log(`Tickspeed from TD: ${formatWithCommas(Decimal.floor(player.tickspeed.gained.div(1000).add(0.5)).mul(1000))}`);
 
   console.log(`Infinities: e${Math.round(player.infinities.log10())}`);
   console.log(`Eternities: e${Math.round(player.eternities.log10())}`);
@@ -507,20 +507,6 @@ dev.unlockAutomator = function() {
   player.reality.automator.forceUnlock = true;
 };
 
-// This bypasses any conflict checking and forces the current save to overwrite the cloud save. This largely exists
-// because normal cloud saving checks for a conflict and then always shows a modal if a conflict is found, only actually
-// saving if the player says to in the modal. The check can fail if the cloud save is somehow malformed and missing
-// props. This can lead to the check always failing, the modal never showing up, and cloud saving never occurring. That
-// should in principle only show up in dev, as migrations aren't run on cloud saves, but this allows fixing in case.
-dev.forceCloudSave = async function() {
-  const save = await Cloud.load();
-  const root = GameSaveSerializer.deserialize(save);
-  const saveId = GameStorage.currentSlot;
-  if (!root.saves) root.saves = [];
-  root.saves[saveId] = GameStorage.saves[saveId];
-  Cloud.save(saveId);
-};
-
 // TODO Figure out if we want to remove this before release
 dev.unlockAllCosmeticSets = function() {
   player.reality.glyphs.cosmetics.unlockedFromNG = Object.keys(GameDatabase.reality.glyphCosmeticSets);
@@ -558,7 +544,7 @@ dev.beTests.completeChalleges.all = function() {
   dev.beTests.completeChalleges.eternity();
 };
 
-dev.beTests.nanFuckIteration = function(value, value2) {
+nanFuckIteration = function(value, value2) {
   for (const item in value) {
     console.log(value[item]);
     console.log(value2[item]);
@@ -587,7 +573,7 @@ dev.beTests.nanFuckIteration = function(value, value2) {
 };
 
 dev.beTests.nanFuck = function() {
-  player = dev.beTests.nanFuckIteration(player, Player.defaultStart);
+  player = nanFuckIteration(player, Player.defaultStart);
   GameStorage.save();
 };
 

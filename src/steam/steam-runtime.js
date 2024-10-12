@@ -1,20 +1,10 @@
 /* eslint-disable no-console */
-import { RichPresenceInfo } from "@/core/discord-parser";
 
-import {
-  hasPendingPurchaseConfirmations,
-  loginPlayFabWithSteam,
-  purchaseShopItem,
-  validatePurchases
-} from "./steam-purchases";
-
-import * as Greenworks from "./bindings/greenworks";
 
 import { MAC, STEAM } from "@/env";
 
 let isInitialized = false;
 let isActive = false;
-let achievementNames = [];
 
 export const SteamRuntime = {
   initialize() {
@@ -24,23 +14,11 @@ export const SteamRuntime = {
 
     isInitialized = true;
 
-    if (!STEAM || !Greenworks.isModuleLoaded() || !Greenworks.initAPI()) {
+    if (!STEAM) {
       return;
     }
 
     isActive = true;
-
-    const steamId = Greenworks.getSteamId();
-    loginPlayFab(steamId);
-    loginFirebase(steamId);
-
-    achievementNames = Greenworks.getAchievementNames();
-
-    Greenworks.on("micro-txn-authorization-response", (data, ordered, orderState) => {
-      if (orderState === true) {
-        validatePurchases();
-      }
-    });
 
     if (!MAC) {
       initializeDiscord();
@@ -57,91 +35,27 @@ export const SteamRuntime = {
   },
 
   get screenName() {
-    if (!this.isActive) {
-      return "Non-Steam user";
-    }
-
-    return Greenworks.getSteamId()?.screenName ?? "Steam user";
+    return "user";
   },
-
-  activateAchievement(id) {
-    if (!this.isActive) {
-      return;
-    }
-
-    const name = `Achievement${id}`;
-    if (!achievementNames.includes(name)) {
-      return;
-    }
-
-    Greenworks.activateAchievement(name);
-  },
-
-  validatePurchases() {
-    if (!this.isActive) {
-      return;
-    }
-
-    validatePurchases();
-  },
-
-  async purchaseShopItem(key, cost, cosmeticId) {
-    if (!this.isActive) {
-      GameUI.notify.error("Shop purchases are not available.");
-      return false;
-    }
-
-    try {
-      await purchaseShopItem(key, cost, cosmeticId);
-      return true;
-    } catch (e) {
-      GameUI.notify.error(e.errorMessage ?? e);
-      return false;
-    }
-  },
-
-  get hasPendingPurchaseConfirmations() {
-    if (!this.isActive) {
-      return false;
-    }
-
-    return hasPendingPurchaseConfirmations();
-  }
 };
 
-async function loginPlayFab(steamId) {
-  try {
-    const screenName = steamId.screenName;
-    const ticket = await Greenworks.getAuthSessionTicket();
-    await loginPlayFabWithSteam(ticket.ticket.toString("hex"), screenName);
-    GameUI.notify.info("Logged in to PlayFab Cloud");
-  } catch (error) {
-    GameUI.notify.error("Couldn't log in to PlayFab Cloud.");
-    throw error;
-  }
-}
-
-async function loginFirebase(steamId) {
-  const accountId = steamId.accountId;
-  const staticAccountId = steamId.staticAccountId;
-  const screenName = steamId.screenName;
-  await Cloud.loginWithSteam(accountId, staticAccountId, screenName);
-}
-
 function initializeDiscord() {
-  Greenworks.initDiscordAPI("1057439416819396689", 1399720);
-  setDiscordActivity();
-  Greenworks.runDiscordCallbacks();
-  setInterval(setDiscordActivity, 8000);
-  setInterval(Greenworks.runDiscordCallbacks, 4000);
+  // If you plan to have discord activities set, youll need to manually code it in
+  // This is commented to exist for the time being
+  // Greenworks.initDiscordAPI("1057439416819396689", 1399720);
+  // setDiscordActivity();
+  // Greenworks.runDiscordCallbacks();
+  // setInterval(setDiscordActivity, 8000);
+  // setInterval(Greenworks.runDiscordCallbacks, 4000);
 }
 
+// eslint-disable-next-line no-unused-vars
 function setDiscordActivity() {
-  Greenworks.setDiscordActivity(RichPresenceInfo.state, RichPresenceInfo.details);
+  // Greenworks.setDiscordActivity(RichPresenceInfo.state, RichPresenceInfo.details);
 }
 
 function createForceRefreshCanvas() {
-  // This canvas is required for Steam overlay to properly work in Electron.
+  // This canvas is required for Overlay to properly work in Electron.
   // Makopaz:
   // "essentially it makes the overlay have a refresh rate, otherwise it only
   // updates based on parts of the screen which change, so without it the small

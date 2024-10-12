@@ -193,7 +193,7 @@ export const normalTimeStudies = [
     requirement: [73],
     reqType: TS_REQUIREMENT_TYPE.AT_LEAST_ONE,
     description: "Dimension Boost multiplier based on tick upgrades gained from TDs",
-    effect: () => DC.D1_0004.pow(player.totalTickGained),
+    effect: () => DC.D1_0004.pow(player.tickspeed.gained),
     cap: DC.E30,
     formatEffect: value => formatX(value, 2, 1)
   },
@@ -223,7 +223,7 @@ export const normalTimeStudies = [
     requirement: [83],
     reqType: TS_REQUIREMENT_TYPE.AT_LEAST_ONE,
     description: "Time Dimension multiplier based on tick upgrades gained",
-    effect: () => Decimal.pow(player.totalTickGained, 0.25).clampMin(1),
+    effect: () => Decimal.pow(player.tickspeed.gained, 0.25).clampMin(1),
     formatEffect: value => formatX(value, 2, 1)
   },
   {

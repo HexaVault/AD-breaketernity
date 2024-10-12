@@ -70,15 +70,15 @@ export const tickspeedUpgrades = {
     name: "Purchased Tickspeed Upgrades",
     displayOverride: () => (Laitela.continuumActive
       ? formatFloat(Tickspeed.continuumValue, 2, 2)
-      : formatInt(player.totalTickBought)),
-    multValue: () => Decimal.pow10(Laitela.continuumActive ? Tickspeed.continuumValue : player.totalTickBought),
+      : formatInt(player.tickspeed.bought)),
+    multValue: () => Decimal.pow10(Laitela.continuumActive ? Tickspeed.continuumValue : player.tickspeed.bought),
     isActive: () => true,
     icon: MultiplierTabIcons.PURCHASE("AD"),
   },
   free: {
     name: "Tickspeed Upgrades from TD",
-    displayOverride: () => formatInt(player.totalTickGained),
-    multValue: () => Decimal.pow10(player.totalTickGained),
+    displayOverride: () => formatInt(player.tickspeed.gained),
+    multValue: () => Decimal.pow10(player.tickspeed.gained),
     isActive: () => Currency.timeShards.gt(0),
     icon: MultiplierTabIcons.SPECIFIC_GLYPH("time"),
   }

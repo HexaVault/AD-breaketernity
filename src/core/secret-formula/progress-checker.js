@@ -1,9 +1,6 @@
 export const progressStages = [
   /**
-   * This is used in both the catchup modal and for cloud save comparisons. Due to the fact that it's used for
-   * cloud comparisons, there's a lot of processing that needs to be done on raw player-like objects that aren't
-   * actually the player object itself. This means we can't take advantage of a lot of accessors and whatnot, and
-   * that many props which are normally Decimals are actually Strings at this point.
+   * This is used in both the catchup modal.
    * @template
    * {
    *  @property {Number} id         Value corresponding to entry in PROGRESS_STAGE enum
@@ -12,8 +9,7 @@ export const progressStages = [
    *    reached; all checks are run in descending order, starting at the end of the list and moving upward. The
    *    last one checked (first entry) always returns true as a catch-all condition
    *  @property {String | function: @return Number} suggestedResource     A resource or multiple resources which may be
-   *    useful for the player to aim for at this stage. It's okay to reference the player object in this prop because
-   *    it's only ever used in the catchup modal and not in the cloud save conflict checker.
+   *    useful for the player to aim for at this stage.
    *  @property {function: @return Number} subProgressValue   A value between 0 and 1 corresponding approximately
    *    to the progress within a stage. Values near 0 correspond to near the end of the previous stage and values
    *    near 1 correspond to near the start of the next stage; however in-between values are not an indicator of

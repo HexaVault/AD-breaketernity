@@ -181,7 +181,7 @@ function onBuyDimension(tier) {
 
   if (player.speedrun.isActive && !player.speedrun.hasStarted) Speedrun.startTimer();
 
-  if (NormalChallenge(2).isRunning) player.chall2Pow = DC.D0;
+  if (NormalChallenge(2).isRunning) player.challengeData.nc2percent = DC.D0;
   if (NormalChallenge(4).isRunning || InfinityChallenge(1).isRunning) {
     AntimatterDimensions.resetAmountUpToTier(tier - 1);
   }
@@ -551,7 +551,9 @@ class AntimatterDimensionState extends DimensionState {
         dimension.costBumps = dimension.costBumps.add(1);
       }
     }
-    if (Tickspeed.cost.e === this.cost.e) chall9TickspeedCostBumps = chall9TickspeedCostBumps.add(1);
+    if (Tickspeed.cost.e === this.cost.e) {
+      challengeData.nc9tickspeedCostIncreases = challengeData.nc9tickspeedCostIncreases.add(1);
+    }
   }
 
   multiplyIC5Costs() {
@@ -588,11 +590,11 @@ class AntimatterDimensionState extends DimensionState {
     }
     let production = amount.times(this.multiplier).times(Tickspeed.perSecond);
     if (NormalChallenge(2).isRunning) {
-      production = production.times(player.chall2Pow);
+      production = production.times(player.challengeData.nc2percent);
     }
     if (tier === 1) {
       if (NormalChallenge(3).isRunning) {
-        production = production.times(player.chall3Pow);
+        production = production.times(player.challengeData.nc3pow);
       }
       if (production.gt(10)) {
         const log10 = production.max(1).log10();

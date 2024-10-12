@@ -133,8 +133,7 @@ export const news = [
   },
   {
     id: "a29",
-    text: `If you are not playing on Kongregate, Steam, or https://ivark.github.io/AntimatterDimensions/,
-      the site is bootleg.`
+    text: `If you are not playing on Github, this is bootleg gem.`
   },
   {
     id: "a30",

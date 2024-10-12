@@ -30,7 +30,7 @@ export default {
       this.mult.copyFrom(Tickspeed.multiplier);
       this.tickspeed.copyFrom(Tickspeed.perSecond);
       this.galaxyCount.copyFrom(player.galaxies);
-      this.purchasedTickspeed.copyFrom(player.totalTickBought);
+      this.purchasedTickspeed.copyFrom(player.tickspeed.bought);
       this.freeTickspeed.copyFrom(FreeTickspeed.amount);
     },
   },

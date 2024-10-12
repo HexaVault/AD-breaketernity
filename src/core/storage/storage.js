@@ -72,7 +72,6 @@ export const GameStorage = {
   },
   saved: 0,
   lastSaveTime: Date.now(),
-  lastCloudSave: Date.now(),
   offlineEnabled: undefined,
   offlineTicks: undefined,
   lastUpdateOnLoad: 0,
@@ -105,7 +104,6 @@ export const GameStorage = {
     const root = GameSaveSerializer.deserialize(save);
 
     this.loadRoot(root);
-    Achievements.updateSteamStatus();
   },
 
   loadRoot(root) {
@@ -146,7 +144,6 @@ export const GameStorage = {
     this.backupOfflineSlots();
     Tabs.all.find(t => t.id === player.options.lastOpenTab).show(false);
     Modal.hideAll();
-    Cloud.resetTempState();
     GameUI.notify.info("Game loaded");
     Achievements.updateSteamStatus();
   },
@@ -168,7 +165,6 @@ export const GameStorage = {
     GlyphAppearanceHandler.clearInvalidCosmetics();
     if (player.speedrun?.isActive) Speedrun.setSegmented(true);
     this.save(true);
-    Cloud.resetTempState();
     this.resetBackupTimer();
 
     // This is to fix a very specific exploit: When the game is ending, some tabs get hidden
@@ -303,11 +299,6 @@ export const GameStorage = {
     }
   },
 
-  backupOnlineSlots(slotsToBackup) {
-    const currentTime = player.backupTimer;
-    for (const slot of slotsToBackup) this.saveToBackup(slot, currentTime);
-  },
-
   // Loads in all the data from previous backup times in localStorage
   loadBackupTimes() {
     this.lastBackupTimes = GameSaveSerializer.deserialize(localStorage.getItem(this.backupTimeKey(this.currentSlot)));
@@ -321,19 +312,6 @@ export const GameStorage = {
         };
       }
     }
-  },
-
-  // This is checked in the checkEverySecond game interval. Determining which slots to save has a 800ms grace time to
-  // account for delays occurring from the saving operation itself; without this, the timer slips backwards by a second
-  // every time it saves
-  tryOnlineBackups() {
-    const toBackup = [];
-    for (const backupInfo of AutoBackupSlots.filter(slot => slot.type === BACKUP_SLOT_TYPE.ONLINE)) {
-      const id = backupInfo.id;
-      const timeSinceLast = player.backupTimer - (this.lastBackupTimes[id]?.backupTimer ?? 0);
-      if (1000 * backupInfo.interval - timeSinceLast <= 800) toBackup.push(id);
-    }
-    this.backupOnlineSlots(toBackup);
   },
 
   // Set the next backup time, but make sure to skip forward an appropriate amount if a load or import happened,
@@ -421,7 +399,6 @@ export const GameStorage = {
     this.loadPlayerObject(Player.defaultStart);
     this.save(true);
     Tab.dimensions.antimatter.show();
-    Cloud.resetTempState();
   },
 
   // eslint-disable-next-line complexity

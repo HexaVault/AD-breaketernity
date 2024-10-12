@@ -484,7 +484,7 @@ export const tabs = [
     name: "Shop",
     newUIClass: "shop",
     hideAt: 1.5,
-    condition: () => Cloud.isAvailable,
+    condition: () => false,
     id: 10,
     hidable: true,
     subtabs: [

@@ -91,7 +91,7 @@ to fill out in order to make sure you intentionally wanted to reset. Going throu
 your current save; the other save slots will be unaffected. <b>Resetting your game in this way is completely
 irreversible and gives you no permanent benefits, secret or otherwise.</b>
 `,
-      isUnlocked: () => true,
+      isUnlocked: () => false,
       tags: ["choose", "cloud", "google", "save", "import", "export", "reset"],
       tab: "options/saving"
     },

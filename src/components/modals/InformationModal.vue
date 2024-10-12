@@ -26,12 +26,17 @@ export default {
       <br>
       The game has unfolding gameplay and multiple prestige layers. The "How to Play" button contains useful
       information about progressing.
+      <br>
+      <br>
+      The Break Eternity port is a port intended to allow modders to extend the vanilla game beyond e9e15 by using a new
+      library aswell as other changes, such as better glyph handing. The repository link here has been changed
+      appropriately.
     </div>
     <div class="l-socials">
       <InformationModalButton
         name="GitHub repository"
         icon="fa-brands fa-github"
-        link="https://github.com/IvarK/AntimatterDimensionsSourceCode"
+        link="https://github.com/HexaVault/AD-breaketernity"
       />
       <InformationModalButton
         name="r/AntimatterDimensions"

@@ -728,7 +728,7 @@ export const normalAchievements = [
     id: 105,
     name: "Infinite Time",
     get description() { return `Have ${formatInt(308)} Tickspeed upgrades from Time Dimensions.`; },
-    checkRequirement: () => player.totalTickGained.gte(308),
+    checkRequirement: () => player.tickspeed.gained.gte(308),
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     reward: "Time Dimensions gain a multiplier based on tickspeed.",
     effect: () => Tickspeed.perSecond.pow(0.000005),

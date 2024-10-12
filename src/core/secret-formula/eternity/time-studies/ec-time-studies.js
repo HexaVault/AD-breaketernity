@@ -18,7 +18,7 @@ export const ecTimeStudies = [
     reqType: TS_REQUIREMENT_TYPE.AT_LEAST_ONE,
     secondary: {
       resource: "Tickspeed upgrades from Time Dimensions",
-      current: () => player.totalTickGained,
+      current: () => player.tickspeed.gained,
       required: completions => new Decimal(1300 + Math.min(completions, 4) * 150),
       formatValue: formatInt
     }

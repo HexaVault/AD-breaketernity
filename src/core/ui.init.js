@@ -3,7 +3,6 @@ export const state = {
     modal: {
       queue: [],
       current: undefined,
-      cloudConflict: [],
       progressBar: undefined,
     },
     quotes: {

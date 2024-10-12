@@ -14,7 +14,7 @@ import { GameKeyboard } from "./keyboard";
 // https://craig.is/killing/mice
 
 // Note: mod is a function key helper by Mousetap for both ctrl and command,
-// and should be used to provide support for both Windows and Max
+// and should be used to provide support for both Windows and Mac
 
 // Note: DON'T add repeatables with modifier keys other than shift
 // because Mousetrap is crap, and we needed to plug it up to work

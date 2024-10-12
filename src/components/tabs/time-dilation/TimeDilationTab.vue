@@ -106,7 +106,7 @@ export default {
       } else {
         this.dilatedTimeIncome = rawDTGain;
       }
-      this.galaxyThreshold.copyFrom(player.dilation.nextThreshold);
+      this.galaxyThreshold = getTachyonGalaxyMult().pow(player.dilation.baseTachyonGalaxies).mul(1000);
       this.baseGalaxies.copyFrom(player.dilation.baseTachyonGalaxies);
       this.totalGalaxies.copyFrom(player.dilation.totalTachyonGalaxies);
       this.hasPelleDilationUpgrades = PelleRifts.paradox.milestones[0].canBeApplied;

@@ -37,6 +37,7 @@ function raFix(player) {
 
 // eslint-disable-next-line complexity
 export function beMigration(player) {
+  player.challengeData = {};
   player.auto.annihilation.multiplier = D(player.auto.annihilation.multiplier);
   player.auto.dimBoost.galaxies = D(player.auto.dimBoost.galaxies);
   player.auto.dimBoost.maxDimboosts = D(player.auto.dimBoost.maxDimboosts);
@@ -115,14 +116,18 @@ export function beMigration(player) {
   player.celestials.v.runRecords[5] = D(player.celestials.v.runRecords[5]);
   player.celestials.v.runRecords[7] = D(player.celestials.v.runRecords[7]);
   player.celestials.v.runRecords[8] = D(player.celestials.v.runRecords[8]);
-  player.chall2Pow = D(player.chall2Pow);
-  player.chall3Pow = D(player.chall3Pow);
-  player.chall8TotalSacrifice = D(player.chall8TotalSacrifice);
-  player.chall9TickspeedCostBumps = D(player.chall9TickspeedCostBumps);
+  player.challengeData.nc2percent = D(player.chall2Pow);
+  delete player.chall2Pow;
+  player.challengeData.nc3pow = D(player.chall3Pow);
+  delete player.chall3Pow;
+  player.challengeData.nc8sacrifice = D(player.chall8TotalSacrifice);
+  delete player.chall8TotalSacrifice;
+  player.challengeData.nc9tickspeedCostIncreases = D(player.chall9TickspeedCostBumps);
+  delete player.chall9TickspeedCostBumps;
   player.challenge.infinity.bestTimes = player.challenge.infinity.bestTimes.map(n => ((!(n instanceof Decimal) && n > 1.6e308) ? BEMAX : D(n)));
   player.challenge.normal.bestTimes = player.challenge.normal.bestTimes.map(n => ((!(n instanceof Decimal) && n > 1.6e308) ? BEMAX : D(n)));
   player.dilation.baseTachyonGalaxies = D(player.dilation.baseTachyonGalaxies);
-  player.dilation.nextThreshold = D(player.dilation.nextThreshold);
+  delete player.dilation.nextThreshold;
   player.dilation.totalTachyonGalaxies = D(player.dilation.totalTachyonGalaxies);
   // eslint-disable-next-line no-negated-condition
   for (let i = 1; i < 14; i !== 3 ? i++ : i = 11) {
@@ -138,6 +143,8 @@ export function beMigration(player) {
   }
   player.epmultUpgrades = D(player.epmultUpgrades);
   player.galaxies = D(player.galaxies);
+  player.challengeData.ic2timer = player.ic2count;
+  delete player.ic2count;
   player.infinityRebuyables[0] = D(player.infinityRebuyables[0]);
   player.infinityRebuyables[1] = D(player.infinityRebuyables[1]);
   player.infinityRebuyables[2] = D(player.infinityRebuyables[2]);
@@ -253,6 +260,6 @@ export function beMigration(player) {
   player.requirementChecks.reality.slowestBH = D(player.requirementChecks.reality.slowestBH);
   player.requirementChecks.reality.maxID1 = D(player.requirementChecks.reality.maxID1);
   player.requirementChecks.permanent.emojiGalaxies = D(player.requirementChecks.permanent.emojiGalaxies);
-  player.totalTickGained = D(player.totalTickGained);
-  player.totalTickBought = D(player.totalTickBought);
+  player.tickspeeed.gained = D(player.totalTickGained);
+  player.tickspeed.bought = D(player.totalTickBought);
 }

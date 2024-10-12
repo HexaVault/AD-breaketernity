@@ -685,7 +685,6 @@ export const devMigrations = {
     player => {
       player.options.showHintText.glyphEffectDots = player.options.showGlyphEffectDots;
       delete player.options.showGlyphEffectDots;
-      migrations.renameCloudVariable(player);
     },
     player => {
       const newPerks = new Set([...player.reality.perks].filter(x => x < 20 || x > 25));

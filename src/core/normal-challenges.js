@@ -18,22 +18,22 @@ export function updateNormalAndInfinityChallenges(diff) {
   }
 
   if (NormalChallenge(3).isRunning) {
-    player.chall3Pow = player.chall3Pow.times(DC.D1_00038.pow(diff.div(100))).clampMax(DC.NUMMAX);
+    player.challengeData.nc3pow = player.challengeData.nc3pow.times(DC.D1_00038.pow(diff.div(100))).clampMax(DC.NUMMAX);
   }
 
   if (NormalChallenge(2).isRunning) {
-    player.chall2Pow = Decimal.min(player.chall2Pow.add(diff.div(100).div(1800)), 1);
+    player.challengeData.nc2percent = Decimal.min(player.challengeData.nc2percent.add(diff.div(100).div(1800)), 1);
   }
 
   if (InfinityChallenge(2).isRunning) {
-    if (player.ic2Count >= 400) {
+    if (player.challengeData.ic2timer >= 400) {
       if (AntimatterDimension(8).amount.gt(0)) {
         sacrificeReset();
       }
-      player.ic2Count %= 400;
+      player.challengeData.ic2timer %= 400;
     } else {
       // Do not change to diff, as this may lead to a sacrifice softlock with high gamespeed
-      player.ic2Count += Math.clamp(Date.now() - player.lastUpdate, 1, 21600000);
+      player.challengeData.ic2timer += Math.clamp(Date.now() - player.lastUpdate, 1, 21600000);
     }
   }
 }

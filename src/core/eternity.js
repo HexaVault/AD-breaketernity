@@ -202,7 +202,7 @@ export function initializeResourcesAfterEternity() {
   Currency.timeShards.reset();
   player.records.thisEternity.time = DC.D0;
   player.records.thisEternity.realTime = DC.D0;
-  player.totalTickGained = DC.D0;
+  player.tickspeed.gained = DC.D0;
   player.eterc8ids = 50;
   player.eterc8repl = 40;
   Player.resetRequirements("eternity");
