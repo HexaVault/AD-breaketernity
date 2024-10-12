@@ -544,7 +544,7 @@ dev.beTests.completeChalleges.all = function() {
   dev.beTests.completeChalleges.eternity();
 };
 
-nanFuckIteration = function(value, value2) {
+function nanFuckIteration(value, value2) {
   for (const item in value) {
     console.log(value[item]);
     console.log(value2[item]);
