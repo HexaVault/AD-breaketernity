@@ -589,7 +589,7 @@ window.ExponentialCostScaling = class ExponentialCostScaling {
     const b = a.sub(inc);
     const c = logMoney;
 
-    purchaseAmount = purchaseAmount.add(decimalQuadraticSolution(a, b, c, true)).add(1);
+    purchaseAmount = purchaseAmount.add(decimalQuadraticSolution(a, b, c, true));
 
     // Technically this only buys up to the nearest set, but post exponential thats a minor flaw at most (and correct?)
     if (roundDown) purchaseAmount = purchaseAmount.floor();

@@ -97,6 +97,9 @@ export class IntervaledAutobuyerState extends AutobuyerState {
   }
 
   get timeSinceLastTick() {
+    if (this.data.lastTick > (player.records.trueTimePlayed * this.interval * 100)) {
+      this.data.lastTick = player.records.trueTimePlayed;
+    }
     return player.records.trueTimePlayed - this.data.lastTick;
   }
 
