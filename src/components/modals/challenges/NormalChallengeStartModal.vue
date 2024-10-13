@@ -20,24 +20,24 @@ export default {
       return this.challenge.isCompleted;
     },
     message() {
-      return `You will Big Crunch (if possible) and start a new Infinity within the Challenge with all the
-        Challenge-specific restrictions and modifiers active.
-        To complete the Challenge${this.challengeIsCompleted ? "" : " and gain its reward"},
-        you must reach Infinity again.
-        You do not start with any Dimension Boosts or Galaxies, regardless of upgrades.`;
+      return i18n("modal", "normalChallengeModalMessage", [this.challengeIsCompleted ? "" : () =>
+        i18n("modal", "ncModalMsgPlaceholder")]);
     },
     entranceLabel() {
-      return `You are about to enter Challenge ${this.id}`;
+      return i18n("modal", "ncModalEterLabel");
     },
     reward() {
-      return `The reward for completing this challenge is: ${this.challenge._config.reward}`;
+      return i18n("modal", "ncModalRewardText", [rewardDescription]);
     },
     condition() {
       let conditionOfChallenge = this.challenge._config.description;
       if (typeof conditionOfChallenge === "function") {
         conditionOfChallenge = conditionOfChallenge();
       }
-      return `Inside this Challenge, ${conditionOfChallenge}`;
+      return i18n("modal", "ncModalConditionText", [conditionOfChallenge]);
+    },
+    begin() {
+      return i18n("modal", "begin");
     }
   },
   created() {
@@ -73,7 +73,7 @@ export default {
       {{ reward }}
     </div>
     <template #confirm-text>
-      Begin
+      {{ begin }}
     </template>
   </ModalWrapperChoice>
 </template>

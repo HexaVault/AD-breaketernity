@@ -20,29 +20,28 @@ export default {
       return this.challenge.isCompleted;
     },
     message() {
-      return `You will Big Crunch (if possible) and start a new Infinity within the Challenge with all the
-        Challenge-specific restrictions and modifiers active.
-        To complete the Challenge${this.challengeIsCompleted ? "" : " and gain its reward"},
-        you must reach the Challenge goal of
-        ${format(InfinityChallenge(this.id).goal)} Antimatter.
-        You do not start with any Dimension Boosts or Galaxies, regardless of upgrades.`;
+      return i18n("modal", "infinityChallengeModalMessage", [this.challengeIsCompleted ? "" : () =>
+        i18n("modal", "icModalMsgPlaceholder"), () => format(InfinityChallenge(this.id).goal)]);
     },
     entranceLabel() {
-      return `You are about to enter Infinity Challenge ${this.id}`;
+      return i18n("modal", "icModalEterLabel");
     },
     reward() {
       let rewardDescription = this.challenge._config.reward.description;
       if (typeof rewardDescription === "function") {
         rewardDescription = rewardDescription();
       }
-      return `The reward for completing this challenge is: ${rewardDescription}`;
+      return i18n("modal", "icModalRewardText", [rewardDescription]);
     },
     condition() {
       let conditionOfChallenge = this.challenge._config.description;
       if (typeof conditionOfChallenge === "function") {
         conditionOfChallenge = conditionOfChallenge();
       }
-      return `Inside this Infinity Challenge, ${conditionOfChallenge}`;
+      return i18n("modal", "icModalConditionText", [conditionOfChallenge]);
+    },
+    begin() {
+      return i18n("modal", "begin");
     }
   },
   created() {
@@ -78,7 +77,7 @@ export default {
       {{ reward }}
     </div>
     <template #confirm-text>
-      Begin
+      {{ begin }}
     </template>
   </ModalWrapperChoice>
 </template>

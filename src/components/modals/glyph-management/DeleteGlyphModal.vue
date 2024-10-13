@@ -21,6 +21,15 @@ export default {
     glyph() {
       return Glyphs.findByInventoryIndex(this.idx);
     },
+    msg1() {
+      return i18n("modal", "deletionModalMsg1");
+    },
+    msg2() {
+      return i18n("modal", "deletionModalMsg2");
+    },
+    msg3() {
+      return i18n("modal", "deletionModalMsg3");
+    }
   },
   methods: {
     update() {
@@ -30,7 +39,7 @@ export default {
         // Why is confirmedDelete here: refer to SacrificeGlyphModal.vue
 
         this.emitClose();
-        Modal.message.show("The selected Glyph changed position or was otherwise changed!");
+        Modal.message.show(i18n("modal", "glyphMoveModal"));
       }
     },
     handleYesClick() {
@@ -44,12 +53,12 @@ export default {
 <template>
   <ModalWrapperChoice @confirm="handleYesClick">
     <template #header>
-      You are about to delete a Glyph
+      {{ msg1 }}
     </template>
     <div class="c-modal-message__text">
-      Deleting a Glyph will remove the Glyph from your inventory!
+      {{ msg2 }}
       <div class="c-modal-hard-reset-danger">
-        There is no benefit in deleting a Glyph before you have unlocked Glyph Sacrifice!
+        {{ msg3 }}
       </div>
     </div>
   </ModalWrapperChoice>

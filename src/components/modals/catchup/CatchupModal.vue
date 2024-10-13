@@ -28,7 +28,13 @@ export default {
       return `It has been ${string} since you last loaded up the game.`;
     },
     titleText() {
-      return this.diff ? "Content Catch-up" : "Content Summary";
+      return this.diff ? i18n("modal", "catchupModalTitleA") : i18n("modal", "catchupModalTitleB");
+    },
+    modalDescA() {
+      return i18n("modal", "catchupModalDescA").split("$1ax");
+    },
+    modalDescB() {
+      return i18n("modal", "catchupModalDescA", [""]);
     }
   },
   methods: {
@@ -46,10 +52,7 @@ export default {
     </div>
     <div>
       {{ timeString }}
-      If you need a refresher, here is a quick summary of all the content you have unlocked so far from the beginning of
-      the game, separated into different stages of progression. These are only very brief descriptions; you can check
-      the related How To Play entries by clicking the contents title or <i class="fas fa-question-circle" /> icons
-      to view more detailed information.
+      {{ modalDescA[0] }} <i class="fas fa-question-circle" /> {{ modalDescA[1] }}
     </div>
     <div
       class="l-catchup-group-container"
@@ -63,7 +66,7 @@ export default {
       />
     </div>
     <span class="c-suggestion-text">
-      Based on your current progression, it will probably be useful to try to increase your {{ suggestedResource }}.
+      {{ modalDescB }} {{ suggestedResource }}.
     </span>
     <div class="l-confirm-padding">
       <PrimaryButton

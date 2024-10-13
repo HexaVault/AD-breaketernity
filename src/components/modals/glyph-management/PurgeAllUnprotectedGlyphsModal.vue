@@ -19,19 +19,18 @@ export default {
       return `delete`;
     },
     topLabel() {
-      return `You are about to ${this.refiningSacrificingOrDeleting} all unprotected Glyphs`;
+      return i18n("modal", "unprotGlyphPurgeLabel", [this.refiningSacrificingOrDeleting]);
     },
     message() {
-      return `Are you sure you want to ${this.refiningSacrificingOrDeleting} all unprotected Glyphs
-        in your inventory?`;
+      return i18n("modal", "unprotGlyphPergeMsg", [this.refiningSacrificingOrDeleting]);
     },
     extraMessage() {
-      if (this.glyphsDeleted === 0) return `This will ${this.refiningSacrificingOrDeleting} no Glyphs.`;
+      if (this.glyphsDeleted === 0) return i18n("modal", "noGlyphRemovesRSD", [this.refiningSacrificingOrDeleting]);
       if (this.glyphsDeleted === this.glyphsTotal) {
-        return `This will ${this.refiningSacrificingOrDeleting} all your Glyphs.`;
+        return i18n("modal", "allGlyphRemovesRSD", [this.refiningSacrificingOrDeleting]);
       }
-      return `This will ${this.refiningSacrificingOrDeleting} 
-        ${formatInt(this.glyphsDeleted)}/${formatInt(this.glyphsTotal)} of your Glyphs.`;
+      return i18n("modal", "someGlyphRemovesRSD", [this.refiningSacrificingOrDeleting,
+        `${formatInt(this.glyphsDeleted)}/${formatInt(this.glyphsTotal)}`]);
     },
 
     // These two don't need to be reactive since the modal force-closes itself whenever glyphs change

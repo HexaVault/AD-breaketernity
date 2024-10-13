@@ -17,20 +17,18 @@ export default {
       return `Sacrifice`;
     },
     topLabel() {
-      return `You are about to ${this.refiningOrSacrificing} all rejected Glyphs`;
+      return i18n("modal", "allGlyphPurgeLabel", [`${this.refiningOrSacrificing}`]);
     },
     message() {
       const negativeWarning = AutoGlyphProcessor.hasNegativeEffectScore()
-        ? ` Note that some of your Effect Filter scores are negative, which may cause you to lose some Glyphs
-          you normally want to keep.`
+        ? i18n("modal", "allGlyphPurgeNegWarning")
         : "";
-      return `Are you sure you want to ${this.refiningOrSacrificing} all rejected Glyphs? This will remove
-        all Glyphs that would be rejected by your current Glyph Filter settings.${negativeWarning}`;
+      return i18n("modal", "allGlyphPergeMsg", [`${this.refiningOrSacrificing}`, `${negativeWarning}`]);
     },
     extraMessage() {
-      if (this.glyphsDeleted === 0) return `This will remove no Glyphs.`;
-      if (this.glyphsDeleted === this.glyphsTotal) return `This will remove all your Glyphs.`;
-      return `This process will remove ${this.glyphsDeleted}/${this.glyphsTotal} Glyphs.`;
+      if (this.glyphsDeleted === 0) return i18n("modal", "noGlyphRemoves");
+      if (this.glyphsDeleted === this.glyphsTotal) return i18n("modal", "allGlyphRemoves");
+      return i18n("modal", "someGlyphRemoves", [`${this.glyphsDeleted}/${this.glyphsTotal}`]);
     },
 
     // These two don't need to be reactive since the modal force-closes itself whenever glyphs change

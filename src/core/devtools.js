@@ -53,8 +53,8 @@ dev.spin3d = function() {
   else document.body.style.animation = "";
 };
 
-dev.spin4d = function() {
-  if (document.body.style.animation === "") document.body.style.animation = "a-spin4d 3s infinite";
+dev.spin4d = function(len = 3) {
+  if (document.body.style.animation === "") document.body.style.animation = `a-spin4d ${len}s infinite`;
   else document.body.style.animation = "";
 };
 

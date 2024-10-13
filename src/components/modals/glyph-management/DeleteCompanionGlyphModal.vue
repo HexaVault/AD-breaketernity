@@ -14,11 +14,10 @@ export default {
   computed: {
     message() {
       switch (this.messageIndex) {
-        case 0: return "Are you sure you want to get rid of your Companion Glyph?";
-        case 1: return "You will not receive any cake.";
-        case 2: return "This is permanent! You will not get another Companion Glyph!";
-        case 3: return `You deleted your faithful Companion Glyph more quickly than any
-                        other test subject on record. Congratulations.`;
+        case 0: return i18n("modal", "companionDeletion0");
+        case 1: return i18n("modal", "companionDeletion1");
+        case 2: return i18n("modal", "companionDeletion2");
+        case 3: return i18n("modal", "companionDeletion3");
         default: return "Invalid message index";
       }
     }
@@ -51,6 +50,9 @@ export default {
       // Passing information into modals seems to require a bunch of refactoring that's not worth it for this one case.
       const toDelete = player.reality.glyphs.inventory.filter(g => g.type === "companion")[0];
       Glyphs.removeFromInventory(toDelete);
+    },
+    ty() {
+      return i18n("modal", "ty");
     }
   },
 };
@@ -80,7 +82,7 @@ export default {
         class="o-primary-btn--width-medium c-modal-message__okay-btn"
         @click="handleNoClick"
       >
-        Thank you
+        {{ ty }}
       </PrimaryButton>
     </div>
   </div>

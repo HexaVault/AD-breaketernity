@@ -17,22 +17,16 @@ export default {
       return this.harsh ? 1 : 5;
     },
     extraMessage() {
-      if (this.glyphsDeleted === 0) return `This will Purge no Glyphs.`;
-      if (this.glyphsDeleted === this.glyphsTotal) return `This will Purge all your Glyphs.`;
-      return `${this.harsh ? `Harsh Purging` : `Purging`} will delete
-        ${formatInt(this.glyphsDeleted)}/${formatInt(this.glyphsTotal)}
-      of your Glyphs.`;
+      if (this.glyphsDeleted === 0) return i18n("modal", "noGlyphPurged");
+      if (this.glyphsDeleted === this.glyphsTotal) return i18n("modal", "allGlyphPurged");
+      return i18n("modal", "allGlyphPurged", [this.harsh ? `Harsh` : ``,
+        `${formatInt(this.glyphsDeleted)}/${formatInt(this.glyphsTotal)}`]);
     },
     explanation() {
-      if (this.harsh) return `Harsh Purging deletes Glyphs that are strictly worse than any other Glyph in your
-        inventory. For example, if a Glyph has all the same effects as another Glyph, but the values
-        of ALL of the effects are worse, then it will be deleted.`;
-      return `Purging deletes Glyphs that are strictly worse than other Glyphs, while keeping enough to equip a full
-        set with those effects. This behaves like Harsh Purge, except that regular Purge will not delete any given
-        Glyph unless it finds five Glyphs which are better (instead of only one).`;
+      return i18n("modal", this.harsh ? "harshPurgeExplanation" : "purgeExplanation");
     },
     topLabel() {
-      return `You are about to ${this.harsh ? `Harsh Purge` : `Purge`} your Glyphs`;
+      return i18n("modal", "aboutToPurge", [this.harsh ? `Harsh` : ``]);
     },
 
     // These two don't need to be reactive since the modal force-closes itself whenever glyphs change
@@ -42,6 +36,11 @@ export default {
     glyphsDeleted() {
       return Glyphs.autoClean(this.threshold, false);
     },
+
+    message() {
+      const msg = i18n("modal", "purgeMessage").split("$1aX");
+      return this.harsh ? msg[0] + msg[1] : msg[1];
+    }
   },
   methods: {
     handleYesClick() {
@@ -60,8 +59,7 @@ export default {
       {{ topLabel }}
     </template>
     <div class="c-modal-message__text">
-      This could delete Glyphs in your inventory that are good enough that you might want to use them
-      later. Purging will Purge Glyphs based on your Purge mode. Are you sure you want to do this?
+      {{ message }}
       <br>
       <br>
       {{ explanation }}
