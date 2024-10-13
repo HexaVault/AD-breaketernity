@@ -366,7 +366,7 @@ export const tabs = [
         name: "Imaginary Upgrades",
         symbol: "<i class='fas fa-level-up-alt'></i>",
         component: "ImaginaryUpgradesTab",
-        condition: () => MachineHandler.isIMUnlocked,
+        condition: () => Currency.imaginaryMachines.isUnlocked,
         id: 2,
         hidable: true,
       },

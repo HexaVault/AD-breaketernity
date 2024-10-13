@@ -84,7 +84,7 @@ export const sidebarResources = [
   {
     id: 11,
     optionName: "Imaginary Machines",
-    isAvailable: () => MachineHandler.isIMUnlocked,
+    isAvailable: () => Currency.imaginaryMachines.isUnlocked,
     value: () => new Decimal(Currency.imaginaryMachines.value),
     formatValue: x => format(x, 2),
     formatClass: "o-sidebar-currency--reality",
@@ -93,7 +93,7 @@ export const sidebarResources = [
     id: 12,
     optionName: "All Machines",
     resourceName: "Machines",
-    isAvailable: () => MachineHandler.isIMUnlocked,
+    isAvailable: () => Currency.imaginaryMachines.isUnlocked,
     // This is a dummy value to prevent vue errors
     value: () => Currency.realityMachines.value,
     formatValue: () => formatMachines(Currency.realityMachines.value, Currency.imaginaryMachines.value),

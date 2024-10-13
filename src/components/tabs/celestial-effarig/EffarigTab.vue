@@ -72,7 +72,7 @@ export default {
       this.relicShards.copyFrom(Currency.relicShards.value);
       this.shardRarityBoost.copyFrom(Effarig.maxRarityBoost.div(100));
       this.shardPower = Ra.unlocks.maxGlyphRarityAndShardSacrificeBoost.effectOrDefault(new Decimal(1));
-      this.shardsGained.copyFrom(Effarig.shardsGained);
+      this.shardsGained.copyFrom(Currency.relicShards.gain);
       this.currentShardsRate = (this.shardsGained.div(Time.thisRealityRealTime.totalMinutes));
       this.amplification.copyFrom(simulatedRealityCount(false));
       this.amplifiedShards = this.shardsGained.mul(this.amplification.add(1));

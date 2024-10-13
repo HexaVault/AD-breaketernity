@@ -82,7 +82,6 @@ export * from "./imaginary-upgrades";
 export * from "./perks";
 export * from "./dilation";
 export * from "./black-hole";
-export * from "./machines";
 export * from "./devtools";
 export * from "./news-ticker";
 export * from "./shop";
@@ -91,4 +90,3 @@ export * from "./tab-notifications";
 export * from "./speedrun";
 
 export * from "./automator/script-templates";
-export * from "./prestigeValues";

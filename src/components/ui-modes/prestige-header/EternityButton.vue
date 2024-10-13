@@ -134,7 +134,7 @@ export default {
         return;
       }
 
-      const gainedEP = gainedEternityPoints();
+      const gainedEP = Currency.eternityPoints.gain;
       this.currentEP.copyFrom(Currency.eternityPoints);
       this.gainedEP.copyFrom(gainedEP);
       const hasNewContent = !PlayerProgress.realityUnlocked() &&

@@ -126,11 +126,11 @@ createInCategory(AutomatorCurrency, "realities", /realities/i, { $getter: () => 
 
 createInCategory(AutomatorCurrency, "PendingIP", /pending[ \t]+ip/i, {
   $autocomplete: "pending IP",
-  $getter: () => (Player.canCrunch ? gainedInfinityPoints() : DC.D0)
+  $getter: () => (Player.canCrunch ? Currency.infinityPoints.gain : DC.D0)
 });
 createInCategory(AutomatorCurrency, "PendingEP", /pending[ \t]+ep/i, {
   $autocomplete: "pending EP",
-  $getter: () => (Player.canEternity ? gainedEternityPoints() : DC.D0)
+  $getter: () => (Player.canEternity ? Currency.eternityPoints.gain : DC.D0)
 });
 createInCategory(AutomatorCurrency, "PendingTP", /pending[ \t]+tp/i, {
   $autocomplete: "pending TP",
@@ -138,7 +138,7 @@ createInCategory(AutomatorCurrency, "PendingTP", /pending[ \t]+tp/i, {
 });
 createInCategory(AutomatorCurrency, "PendingRM", /pending[ \t]+rm/i, {
   $autocomplete: "pending RM",
-  $getter: () => (isRealityAvailable() ? MachineHandler.gainedRealityMachines : DC.D0)
+  $getter: () => (isRealityAvailable() ? Currency.realityMachines.cappedGain : DC.D0)
 });
 createInCategory(AutomatorCurrency, "PendingGlyphLevel", /pending[ \t]+glyph[ \t]+level/i, {
   $autocomplete: "pending Glyph level",

@@ -983,7 +983,7 @@ export const Player = {
   get eternityGoal() {
     return EternityChallenge.isRunning
       ? EternityChallenge.current.currentGoal
-      : requiredIPForEP(1);
+      : Currency.eternityPoints.requiredIPforEP(1);
   },
 
   get automatorUnlocked() {

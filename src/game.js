@@ -180,7 +180,7 @@ export function addRealityTime(trueTime, time, realTime, rm, level, realities, a
   for (const cel of celestials) {
     if (cel.isRunning) reality = cel.displayName;
   }
-  const shards = Effarig.shardsGained;
+  const shards = Currency.relicShards.gain;
   player.records.recentRealities.pop();
   player.records.recentRealities.unshift([trueTime, time, realTime, rm.times(ampFactor),
     realities, reality, level, shards.mul(ampFactor), projIM]);
@@ -580,22 +580,22 @@ export function gameLoop(passedDiff, options = {}) {
 }
 
 function updatePrestigeRates() {
-  const currentIPmin = gainedInfinityPoints().div(Time.thisInfinityRealTime.totalMinutes.max(0.0005));
+  const currentIPmin = Currency.infinityPoints.gain.div(Time.thisInfinityRealTime.totalMinutes.max(0.0005));
   if (currentIPmin.gt(player.records.thisInfinity.bestIPmin) && Player.canCrunch) {
     player.records.thisInfinity.bestIPmin = currentIPmin;
-    player.records.thisInfinity.bestIPminVal = gainedInfinityPoints();
+    player.records.thisInfinity.bestIPminVal = Currency.infinityPoints.gain;
   }
 
-  const currentEPmin = gainedEternityPoints().div(Time.thisEternityRealTime.totalMinutes.max(0.0005));
+  const currentEPmin = Currency.eternityPoints.gain.div(Time.thisEternityRealTime.totalMinutes.max(0.0005));
   if (currentEPmin.gt(player.records.thisEternity.bestEPmin) && Player.canEternity) {
     player.records.thisEternity.bestEPmin = currentEPmin;
-    player.records.thisEternity.bestEPminVal = gainedEternityPoints();
+    player.records.thisEternity.bestEPminVal = Currency.eternityPoints.gain;
   }
 
-  const currentRSmin = Effarig.shardsGained.div(Time.thisRealityRealTime.totalMinutes.max(0.0005));
+  const currentRSmin = Currency.relicShards.gain.div(Time.thisRealityRealTime.totalMinutes.max(0.0005));
   if (currentRSmin.gt(player.records.thisReality.bestRSmin && isRealityAvailable())) {
     player.records.thisReality.bestRSmin = currentRSmin;
-    player.records.thisReality.bestRSminVal = Effarig.shardsGained;
+    player.records.thisReality.bestRSminVal = Currency.relicShards.gain;
   }
 }
 
@@ -734,20 +734,26 @@ function applyAutoprestige(diff) {
   }
 
   if (InfinityUpgrade.ipGen.isCharged) {
-    const addedRM = MachineHandler.gainedRealityMachines
+    const addedRM = Currency.realityMachines.cappedGain
       .timesEffectsOf(InfinityUpgrade.ipGen.chargedEffect)
       .times(diff.div(1000));
     Currency.realityMachines.add(addedRM);
   }
 
   if (PelleRifts.chaos.milestones[2].canBeApplied) {
-    Currency.eternityPoints.add(gainedEternityPoints().times(DC.D0_1).times(diff.div(1000)));
+    Currency.eternityPoints.add(Currency.eternityPoints.gain.times(DC.D0_1).times(diff.div(1000)));
   }
 }
 
 function updateImaginaryMachines(diff) {
-  MachineHandler.updateIMCap();
-  Currency.imaginaryMachines.add(MachineHandler.gainedImaginaryMachines(diff));
+  // Use iMCap to store the base cap; applying multipliers separately avoids some design issues the 3xTP upgrade has
+  if (Currency.realityMachines.gain.gte(Currency.realityMachines.baseHardcap)) {
+    if (Currency.imaginaryMachines.projCapBase.gt(player.reality.iMCap)) {
+      player.records.bestReality.iMCapSet = Glyphs.copyForRecords(Glyphs.active.filter(g => g !== null));
+      player.reality.iMCap = Currency.imaginaryMachines.projCapBase;
+    }
+  }
+  Currency.imaginaryMachines.add(Currency.imaginaryMachines.gain(diff));
 }
 
 function updateTachyonGalaxies() {

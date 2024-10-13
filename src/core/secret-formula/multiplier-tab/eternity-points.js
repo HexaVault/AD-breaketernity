@@ -7,10 +7,10 @@ export const EP = {
   total: {
     name: "Total EP Gained on Eternity",
     displayOverride: () => (Player.canEternity
-      ? format(gainedEternityPoints(), 2, 2)
+      ? format(Currency.eternityPoints.gain, 2, 2)
       : "Cannot Eternity"),
     // This effectively hides everything if the player can't actually gain any
-    multValue: () => (Player.canEternity ? gainedEternityPoints() : 1),
+    multValue: () => (Player.canEternity ? Currency.eternityPoints.gain : 1),
     isActive: () => PlayerProgress.eternityUnlocked() || Player.canEternity,
     dilationEffect: () => (Laitela.isRunning ? 0.75 * Effects.product(DilationUpgrade.dilationPenalty) : 1),
     isDilated: true,
@@ -21,13 +21,13 @@ export const EP = {
     isBase: true,
     fakeValue: DC.D5,
     multValue: () => DC.D5.pow(player.records.thisEternity.maxIP.plus(
-      gainedInfinityPoints()).log10() / (308 - PelleRifts.recursion.effectValue.toNumber()) - 0.7),
+      Currency.infinityPoints.gain).log10() / (308 - PelleRifts.recursion.effectValue.toNumber()) - 0.7),
     isActive: () => PlayerProgress.eternityUnlocked(),
     icon: MultiplierTabIcons.CONVERT_FROM("IP"),
   },
   IP: {
     name: "Eternity Points from Infinity Points",
-    displayOverride: () => `${format(player.records.thisEternity.maxIP.plus(gainedInfinityPoints()), 2, 2)} IP`,
+    displayOverride: () => `${format(player.records.thisEternity.maxIP.plus(Currency.infinityPoints.gain), 2, 2)} IP`,
     // Just needs to match the value in base and be larger than 1
     multValue: DC.D5,
     isActive: () => PlayerProgress.eternityUnlocked(),

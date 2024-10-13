@@ -222,7 +222,7 @@ export const discordRichPresence = {
     {
       // Imaginary Machines unlocked
       name: () => Ra.displayName,
-      hasReached: () => MachineHandler.isIMUnlocked,
+      hasReached: () => Currency.imaginaryMachines.isUnlocked,
       mainResource: () => `${formatMachines(player.reality.realityMachines, player.reality.imaginaryMachines)} RM`,
       resourceList: [
         () => `Best GL: ${formatInt(player.records.bestReality.glyphLevel)}`,

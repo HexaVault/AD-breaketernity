@@ -133,7 +133,7 @@ export default {
         this.rows = 6;
       }
       this.factors = glyphFactors;
-      this.shardsGained = Effarig.shardsGained;
+      this.shardsGained = Currency.relicShards.gain;
       let same = true;
       this.glyphWeightFields.forEach(e => {
         if (this.weights[e] !== player.celestials.effarig.glyphWeights[e]) same = false;

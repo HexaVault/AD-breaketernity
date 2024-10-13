@@ -3,7 +3,7 @@ import FullScreenAnimationHandler from "./full-screen-animation-handler";
 
 function giveEternityRewards(auto) {
   player.records.bestEternity.time = Decimal.min(player.records.thisEternity.time, player.records.bestEternity.time);
-  Currency.eternityPoints.add(gainedEternityPoints());
+  Currency.eternityPoints.add(Currency.eternityPoints.gain);
 
   const newEternities = gainedEternities();
 
@@ -33,7 +33,7 @@ function giveEternityRewards(auto) {
     player.records.thisEternity.trueTime,
     player.records.thisEternity.time,
     player.records.thisEternity.realTime,
-    gainedEternityPoints(),
+    Currency.eternityPoints.gain,
     newEternities
   );
 

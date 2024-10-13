@@ -64,7 +64,7 @@ export function bigCrunchReset(
 function bigCrunchGiveRewards() {
   bigCrunchUpdateStatistics();
 
-  const infinityPoints = gainedInfinityPoints();
+  const infinityPoints = Currency.infinityPoints.gain;
   Currency.infinityPoints.add(infinityPoints);
   Currency.infinities.add(gainedInfinities().round());
 
@@ -76,13 +76,14 @@ function bigCrunchUpdateStatistics() {
   player.records.bestInfinity.bestIPminEternity =
     player.records.bestInfinity.bestIPminEternity.clampMin(player.records.thisInfinity.bestIPmin);
   player.records.thisInfinity.bestIPmin = DC.D0;
-  player.records.bestInfinity.trueTime = Math.min(player.records.bestInfinity.trueTime, player.records.thisInfinity.trueTime)
+  player.records.bestInfinity.trueTime = Math.min(player.records.bestInfinity.trueTime,
+    player.records.thisInfinity.trueTime);
 
   player.records.thisEternity.bestInfinitiesPerMs = player.records.thisEternity.bestInfinitiesPerMs.clampMin(
     gainedInfinities().round().dividedBy(Decimal.clampMin(33, player.records.thisInfinity.realTime))
   );
 
-  const infinityPoints = gainedInfinityPoints();
+  const infinityPoints = Currency.infinityPoints.gain;
 
   addInfinityTime(
     player.records.thisInfinity.trueTime,

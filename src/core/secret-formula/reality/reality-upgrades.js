@@ -341,7 +341,7 @@ export const realityUpgrades = [
     cost: 100000,
     requirement: () => `Reality for ${formatInt(5000)} Reality Machines without equipped Glyphs`,
     hasFailed: () => Glyphs.activeWithoutCompanion.length > 0,
-    checkRequirement: () => MachineHandler.gainedRealityMachines.gte(5000) &&
+    checkRequirement: () => Currency.realityMachines.cappedGain.gte(5000) &&
       Glyphs.activeWithoutCompanion.length === 0,
     canLock: true,
     lockEvent: "equip a non-Companion Glyph",

@@ -43,7 +43,7 @@ export default {
   methods: {
     update() {
       this.gainedInfinities = gainedInfinities().round();
-      this.gainedInfinityPoints = gainedInfinityPoints().round();
+      this.gainedInfinityPoints = Currency.infinityPoints.gain.round();
       this.startingBoosts = DimBoost.startingDimensionBoosts;
       this.startingAM = Currency.antimatter.startingValue;
       this.willStartWithGalaxy = InfinityUpgrade.skipResetGalaxy.isBought;

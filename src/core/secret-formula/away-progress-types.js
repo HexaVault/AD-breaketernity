@@ -113,7 +113,7 @@ export const awayProgressTypes = [
   }, {
     name: "imaginaryMachines",
     reference: ["reality", "imaginaryMachines"],
-    isUnlocked: () => MachineHandler.isIMUnlocked,
+    isUnlocked: () => Currency.imaginaryMachines.isUnlocked,
   }, {
     name: "darkMatter",
     reference: ["celestials", "laitela", "darkMatter"],

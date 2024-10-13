@@ -134,7 +134,7 @@ export const imaginaryUpgrades = [
     hasFailed: () => !Enslaved.isRunning,
     // This is for consistency with the UI, which displays an amplified "projected RM" value on the reality button
     checkRequirement: () => Enslaved.isRunning &&
-      MachineHandler.uncappedRM.times(simulatedRealityCount(false).add(1)).gte(Number.MAX_VALUE),
+      Currency.realityMachines.gain.times(simulatedRealityCount(false).add(1)).gte(Number.MAX_VALUE),
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     description: "Increase Imaginary Machine Cap based on Imaginary Upgrades purchased",
     effect: () => ImaginaryUpgrades.totalRebuyables.div(20).add(1).add(ImaginaryUpgrades.totalSinglePurchase / 2),

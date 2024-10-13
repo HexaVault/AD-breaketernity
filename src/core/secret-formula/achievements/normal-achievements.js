@@ -567,7 +567,7 @@ export const normalAchievements = [
     id: 85,
     name: "ALL YOUR IP ARE BELONG TO US",
     get description() { return `Big Crunch for ${format(DC.E150)} Infinity Points.`; },
-    checkRequirement: () => gainedInfinityPoints().gte(DC.E150),
+    checkRequirement: () => Currency.infinityPoints.gain.gte(DC.E150),
     checkEvent: GAME_EVENT.BIG_CRUNCH_BEFORE,
     get reward() { return `Additional ${formatX(4)} multiplier to Infinity Points.`; },
     effect: 4
@@ -615,7 +615,7 @@ export const normalAchievements = [
     get description() {
       return `Big Crunch for ${format(DC.E200)} Infinity Points in ${formatInt(2)} seconds or less.`;
     },
-    checkRequirement: () => gainedInfinityPoints().gte(DC.E200) && Time.thisInfinityRealTime.totalSeconds.lte(2),
+    checkRequirement: () => Currency.infinityPoints.gain.gte(DC.E200) && Time.thisInfinityRealTime.totalSeconds.lte(2),
     checkEvent: GAME_EVENT.BIG_CRUNCH_BEFORE,
     get reward() {
       return `All Antimatter Dimensions are significantly stronger in the
@@ -631,7 +631,7 @@ export const normalAchievements = [
     get description() {
       return `Big Crunch for ${format(DC.E250)} Infinity Points in ${formatInt(20)} seconds or less.`;
     },
-    checkRequirement: () => gainedInfinityPoints().gte(DC.E250) && Time.thisInfinityRealTime.totalSeconds.lte(20),
+    checkRequirement: () => Currency.infinityPoints.gain.gte(DC.E250) && Time.thisInfinityRealTime.totalSeconds.lte(20),
     checkEvent: GAME_EVENT.BIG_CRUNCH_BEFORE,
     get reward() {
       return `All Antimatter Dimensions are significantly stronger in the
@@ -645,7 +645,7 @@ export const normalAchievements = [
     id: 93,
     name: "MAXIMUM OVERDRIVE",
     get description() { return `Big Crunch for ${format(DC.E300)} Infinity Points.`; },
-    checkRequirement: () => gainedInfinityPoints().gte(DC.E300),
+    checkRequirement: () => Currency.infinityPoints.gain.gte(DC.E300),
     checkEvent: GAME_EVENT.BIG_CRUNCH_BEFORE,
     get reward() { return `Additional ${formatX(4)} multiplier to Infinity Points.`; },
     effect: 4
@@ -1260,7 +1260,7 @@ export const normalAchievements = [
       return `Reality for ${format(DC.NUMMAX, 1)} Reality Machines without having
       any Charged Infinity Upgrades, having any equipped Glyphs, or buying any Triad Studies.`;
     },
-    checkRequirement: () => MachineHandler.gainedRealityMachines.gte(DC.NUMMAX) &&
+    checkRequirement: () => Currency.realityMachines.cappedGain.gte(DC.NUMMAX) &&
       player.celestials.ra.charged.size === 0 && Glyphs.activeWithoutCompanion.length === 0 &&
       player.requirementChecks.reality.noTriads,
     checkEvent: GAME_EVENT.REALITY_RESET_BEFORE,

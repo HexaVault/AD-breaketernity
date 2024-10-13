@@ -31,7 +31,7 @@ export default {
           `${format(player.celestials.teresa.bestRunAM, 2, 2)} Antimatter`],
         [Currency.imaginaryMachines.gt(0), cloneDeep(Glyphs.copyForRecords(bestReality.iMCapSet)),
           "Highest Imaginary Machine cap",
-          `${format(MachineHandler.currentIMCap, 2, 2)} iM`],
+          `${format(Currency.imaginaryMachines.cap, 2, 2)} iM`],
         [Laitela.isUnlocked, cloneDeep(Glyphs.copyForRecords(bestReality.laitelaSet)),
           `Best ${Laitela.displayName} Destabilization`,
           `${TimeSpan.fromSeconds(new Decimal(player.celestials.laitela.fastestCompletion)).toStringShort()},

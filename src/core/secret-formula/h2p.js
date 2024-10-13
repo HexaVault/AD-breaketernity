@@ -243,7 +243,7 @@ ${PlayerProgress.dilationUnlocked() ? "- <b>TG</b>: Tachyon Galaxy<br>" : ""}
 ${PlayerProgress.realityUnlocked() ? "- <b>RM</b>: Reality Machine<br>" : ""}
 ${PlayerProgress.realityUnlocked() ? "- <b>AP</b>: Automator Point<br>" : ""}
 ${PlayerProgress.realityUnlocked() ? "- <b>BH</b>: Black Hole<br>" : ""}
-${MachineHandler.isIMUnlocked ? "- <b>iM</b>: Imaginary Machine<br>" : ""}
+${Currency.imaginaryMachines.isUnlocked ? "- <b>iM</b>: Imaginary Machine<br>" : ""}
 ${Laitela.isUnlocked ? "- <b>DM</b>: Dark Matter<br>" : ""}
 ${Laitela.isUnlocked ? "- <b>DE</b>: Dark Energy<br>" : ""}
 `,
@@ -1612,9 +1612,9 @@ that the reaction cannot proceed due to not having enough of that reagent to get
     }, {
       name: "Imaginary Machines",
       info: () => `
-Once you are able to gain at least ${format(MachineHandler.baseRMCap)} Reality Machines in a single Reality, you
+Once you are able to gain at least ${format(Currency.realityMachines.baseHardcap)} Reality Machines in a single Reality, you
 unlock the ability to gain a new resource called Imaginary Machines. Reality Machines will also become hardcapped
-at ${format(MachineHandler.baseRMCap)}; you will be unable to gain any more past this limit.
+at ${format(Currency.realityMachines.baseHardcap)}; you will be unable to gain any more past this limit.
 <br>
 <br>
 Additionally you unlock the Imaginary Upgrades tab, which contains a set of upgrades similar to the Reality Upgrades -
@@ -1636,7 +1636,7 @@ modifiers to game speed.
 <br>
 Imaginary Machine upgrades will unlock the final two Celestials.
 `,
-      isUnlocked: () => MachineHandler.isIMUnlocked,
+      isUnlocked: () => Currency.imaginaryMachines.isUnlocked,
       tags: ["imaginary", "machines", "reality", "lategame", "endgame"],
       tab: "reality/imag_upgrades"
     }, {

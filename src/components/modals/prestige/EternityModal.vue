@@ -47,7 +47,7 @@ export default {
     update() {
       this.exitingEC = EternityChallenge.isRunning;
       this.startingIP = Currency.infinityPoints.startingValue;
-      this.gainedEternityPoints = gainedEternityPoints();
+      this.gainedEternityPoints = Currency.eternityPoints.gain;
       this.gainedEternities = gainedEternities();
     },
     handleYesClick() {

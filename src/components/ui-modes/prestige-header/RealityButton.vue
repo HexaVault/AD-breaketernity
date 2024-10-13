@@ -79,7 +79,7 @@ export default {
         return;
       }
       function EPforRM(rm) {
-        const adjusted = Decimal.divide(rm, MachineHandler.realityMachineMultiplier);
+        const adjusted = Decimal.divide(rm, Currency.realityMachines.mult);
         if (adjusted.lte(1)) return Decimal.pow10(4000);
         if (adjusted.lte(10)) return Decimal.pow10(adjusted.add(26).mul(4000).div(27));
         let result = Decimal.pow10(adjusted.max(1).log10().div(3).add(1).mul(4e3));
@@ -90,16 +90,17 @@ export default {
       }
 
       const multiplier = simulatedRealityCount(false).add(1);
-      this.projectedRM = MachineHandler.gainedRealityMachines.times(multiplier)
-        .clampMax(MachineHandler.hardcapRM);
-      this.newIMCap = MachineHandler.projectedIMCap;
-      this.machinesGained = this.projectedRM.clampMax(MachineHandler.distanceToRMCap);
+      this.projectedRM = Currency.realityMachines.cappedGain.times(multiplier)
+        .clampMax(Currency.realityMachines.hardcap);
+      this.newIMCap = Currency.imaginaryMachines.projCap;
+      this.machinesGained = this.projectedRM.clampMax(Currency.realityMachines.hardcap
+        .sub(Currency.realityMachines.cappedGain));
       this.realityTime.copyFrom(Time.thisRealityRealTime.totalMinutes);
       this.glyphLevel.copyFrom(gainedGlyphLevel().actualLevel);
       this.nextGlyphPercent = this.percentToNextGlyphLevelText();
       this.nextMachineEP.copyFrom(EPforRM(this.machinesGained.plus(1)));
       this.ppGained.copyFrom(multiplier);
-      this.shardsGained.copyFrom(Effarig.shardsGained.mul(multiplier));
+      this.shardsGained.copyFrom(Currency.relicShards.gain.mul(multiplier));
       this.currentShardsRate.copyFrom(this.shardsGained.div(Time.thisRealityRealTime.totalMinutes));
       this.bestShardRate.copyFrom(multiplier.mul(player.records.thisReality.bestRSmin));
       this.bestShardRateVal.copyFrom(multiplier.mul(player.records.thisReality.bestRSminVal));

@@ -178,7 +178,7 @@ export const tabNotifications = {
         tab: "imag_upgrades"
       }
     ],
-    condition: () => MachineHandler.isIMUnlocked,
+    condition: () => Currency.imaginaryMachines.isUnlocked,
     events: [GAME_EVENT.GAME_TICK_AFTER]
   },
   laitelaUnlock: {

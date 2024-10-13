@@ -1427,12 +1427,12 @@ export const celestialNavigation = {
     visible: () => Ra.unlocks.vUnlock.isUnlocked,
     complete: () => {
       if (DarkMatterDimension(1).unlockUpgrade.canBeBought || Laitela.isUnlocked) return 1;
-      if (MachineHandler.isIMUnlocked) {
+      if (Currency.imaginaryMachines.isUnlocked) {
         if (player.requirementChecks.reality.maxID1.neq(0)) return 0.5;
         return 0.5 + 0.5 * Math.clampMax(0.999, player.antimatter.add(1).log10().div(1.5e12).min(100).toNumber());
       }
       return Math.clampMax(0.5, Currency.realityMachines.value.add(1).log10()
-        .div(MachineHandler.baseRMCap.log10()).min(2).toNumber());
+        .div(Currency.realityMachines.baseHardcap.log10()).min(2).toNumber());
     },
     drawOrder: -1,
     node: {
@@ -1452,9 +1452,9 @@ export const celestialNavigation = {
           const realityName = "Lai'tela's Reality";
           if (complete >= 1) return [realityName];
 
-          if (!MachineHandler.isIMUnlocked) {
+          if (!Currency.imaginaryMachines.isUnlocked) {
             const realityMachines = Currency.realityMachines.value;
-            const realityMachineCap = MachineHandler.baseRMCap;
+            const realityMachineCap = Currency.realityMachines.baseHardcap;
             return [
               realityName,
               "The limits of Reality Machines bind you",

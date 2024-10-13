@@ -270,9 +270,9 @@ export function getRealityProps(isReset, alreadyGotGlyph = false) {
   });
   return Object.assign(defaults, {
     reset: false,
-    gainedRM: MachineHandler.gainedRealityMachines,
+    gainedRM: Currency.realityMachines.cappedGain,
     gainedGlyphLevel: gainedGlyphLevel(),
-    gainedShards: Effarig.shardsGained,
+    gainedShards: Currency.relicShards.gain,
     simulatedRealities: simulatedRealityCount(true),
     alreadyGotGlyph,
   });
@@ -298,13 +298,14 @@ function updateRealityRecords(realityProps) {
     player.records.bestReality.realTime = player.records.thisReality.realTime;
     player.records.bestReality.speedSet = Glyphs.copyForRecords(Glyphs.active.filter(g => g !== null));
   }
-  player.records.bestReality.trueTime = Math.min(player.records.bestReality.trueTime, player.records.thisReality.trueTime)
+  player.records.bestReality.trueTime = Math.min(player.records.bestReality.trueTime,
+    player.records.thisReality.trueTime);
 }
 
 function giveRealityRewards(realityProps) {
   const multiplier = realityProps.simulatedRealities.add(1);
   const realityAndPPMultiplier = multiplier.add(binomialDistribution(multiplier, Achievement(154).effectOrDefault(0)));
-  const gainedRM = Currency.realityMachines.gte(MachineHandler.hardcapRM) ? DC.D0 : realityProps.gainedRM;
+  const gainedRM = Currency.realityMachines.gte(Currency.realityMachines.hardcap) ? DC.D0 : realityProps.gainedRM;
   Currency.realityMachines.add(gainedRM.times(multiplier));
   updateRealityRecords(realityProps);
   addRealityTime(
@@ -315,7 +316,7 @@ function giveRealityRewards(realityProps) {
     realityProps.gainedGlyphLevel.actualLevel,
     realityAndPPMultiplier,
     multiplier,
-    MachineHandler.projectedIMCap);
+    Currency.imaginaryMachines.projCap);
   Currency.realities.add(realityAndPPMultiplier);
   Currency.perkPoints.add(realityAndPPMultiplier);
   if (TeresaUnlocks.effarig.canBeApplied) {
@@ -590,7 +591,7 @@ export function beginProcessReality(realityProps) {
 
 // eslint-disable-next-line complexity
 export function finishProcessReality(realityProps) {
-  const finalEP = Currency.eternityPoints.value.plus(gainedEternityPoints());
+  const finalEP = Currency.eternityPoints.value.plus(Currency.eternityPoints.gain);
   if (player.records.bestReality.bestEP.lt(finalEP)) {
     player.records.bestReality.bestEP = new Decimal(finalEP);
     player.records.bestReality.bestEPSet = Glyphs.copyForRecords(Glyphs.active.filter(g => g !== null));

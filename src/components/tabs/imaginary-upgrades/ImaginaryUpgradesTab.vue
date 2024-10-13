@@ -21,10 +21,10 @@ export default {
   },
   methods: {
     update() {
-      this.baseRMCap.copyFrom(MachineHandler.baseRMCap);
-      this.capRM.copyFrom(MachineHandler.hardcapRM);
-      this.scaleTime.copyFrom(MachineHandler.scaleTimeForIM);
-      this.capStr = formatMachines(MachineHandler.hardcapRM, MachineHandler.currentIMCap);
+      this.baseRMCap.copyFrom(Currency.realityMachines.baseHardcap);
+      this.capRM.copyFrom(Currency.realityMachines.hardcap);
+      this.scaleTime.copyFrom(Currency.imaginaryMachines.scaleTime);
+      this.capStr = formatMachines(Currency.realityMachines.hardcap, Currency.imaginaryMachines.cap);
     },
     id(row, column) {
       return (row - 1) * 5 + column - 1;

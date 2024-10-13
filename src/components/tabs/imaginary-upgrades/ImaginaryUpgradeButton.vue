@@ -78,7 +78,7 @@ export default {
     },
     getETAText() {
       if (this.canBeBought || !this.isAvailableForPurchase || this.isBought || Pelle.isDoomed) return "";
-      const time = MachineHandler.estimateIMTimer(this.upgrade.cost);
+      const time = Currency.imaginaryMachines.iMTimerEstimate(this.upgrade.cost);
       if (time.lt("10^8000000000000")) return TimeSpan.fromSeconds(time).toString();
       return "Never affordable";
     },

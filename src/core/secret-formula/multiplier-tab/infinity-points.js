@@ -7,10 +7,10 @@ export const IP = {
   total: {
     name: "Total IP Gained on Infinity",
     displayOverride: () => (Player.canCrunch
-      ? format(gainedInfinityPoints(), 2, 2)
+      ? format(Currency.infinityPoints.gain, 2, 2)
       : "Cannot Crunch"),
     // This effectively hides everything if the player can't actually gain any
-    multValue: () => (Player.canCrunch ? gainedInfinityPoints() : 1),
+    multValue: () => (Player.canCrunch ? Currency.infinityPoints.gain : 1),
     isActive: () => PlayerProgress.infinityUnlocked() || Player.canCrunch,
     dilationEffect: () => (Laitela.isRunning ? 0.75 * Effects.product(DilationUpgrade.dilationPenalty) : 1),
     isDilated: true,

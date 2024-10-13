@@ -81,7 +81,7 @@ export default {
       this.headerTextColored = player.options.headerTextColored;
       this.creditsClosed = GameEnd.creditsEverClosed;
 
-      const gainedIP = gainedInfinityPoints();
+      const gainedIP = Currency.infinityPoints.gain;
       this.currentIP.copyFrom(Currency.infinityPoints);
       this.gainedIP.copyFrom(gainedIP);
       this.currentIPRate.copyFrom(gainedIP.div(Decimal.max(0.0005, Time.thisInfinityRealTime.totalMinutes)));

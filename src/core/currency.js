@@ -172,6 +172,30 @@ export class Currency {
   reset() {
     this.value = this.startingValue;
   }
+
+  // These need to use a default of 0 so the game does not shit itself
+
+  /**
+   * @abstract
+   */
+  get mult() { return new Decimal(0); }
+
+  /**
+   * @abstract
+   * The gain before you include multipliers or nerfs
+   */
+  get pureGain() { return new Decimal(0); }
+
+  /**
+   * @abstract
+   * The gain before you include nerfs
+   */
+  get rawGain() { return new Decimal(0); }
+
+  /**
+   * @abstract
+   */
+  get gain() { return new Decimal(0); }
 }
 
 /**
@@ -293,6 +317,47 @@ Currency.infinityPoints = new class extends DecimalCurrency {
     super.reset();
     player.records.thisEternity.maxIP = this.startingValue;
   }
+
+  get mult() {
+    return GameCache.totalIPMult.value;
+  }
+
+  get pureGain() {
+    const div = Effects.min(
+      308,
+      Achievement(103),
+      TimeStudy(111)
+    );
+    const ip = player.break
+      ? Decimal.pow10(player.records.thisInfinity.maxAM.max(1).log10().div(div).sub(0.75))
+      : Decimal.div(308, div);
+    return (Effarig.isRunning && Effarig.currentStage === EFFARIG_STAGES.ETERNITY) ? ip.max(1e200) : ip;
+  }
+
+  get rawGain() {
+    let ip = this.pureGain;
+    ip = ip.times(GameCache.totalIPMult.value);
+    if (GlyphAlteration.isAdded("infinity")) {
+      ip = ip.pow(getSecondaryGlyphEffect("infinityIP"));
+    }
+    return ip;
+  }
+
+  get gain() {
+    let ip = this.pureGain;
+    if (Teresa.isRunning) {
+      ip = ip.pow(0.55);
+    } else if (V.isRunning) {
+      ip = ip.pow(0.5);
+    } else if (Laitela.isRunning) {
+      ip = dilatedValueOf(ip);
+    }
+    ip = ip.times(GameCache.totalIPMult.value);
+    if (GlyphAlteration.isAdded("infinity")) {
+      ip = ip.pow(getSecondaryGlyphEffect("infinityIP"));
+    }
+    return ip.floor();
+  }
 }();
 
 Currency.infinityPower = new class extends DecimalCurrency {
@@ -342,6 +407,59 @@ Currency.eternityPoints = new class extends DecimalCurrency {
   reset() {
     super.reset();
     player.records.thisReality.maxEP = this.startingValue;
+  }
+
+  requiredIPforEP(epAmount) {
+    return Decimal.pow10(Decimal.log10(Decimal.div(epAmount, Currency.eternityPoints.mult), 5).times(308).plus(0.7))
+      .clampMin(Number.MAX_VALUE);
+  }
+
+  get mult() {
+    return Pelle.isDisabled("EPMults")
+      ? Pelle.specialGlyphEffect.time.timesEffectOf(PelleRifts.vacuum.milestones[2])
+      : getAdjustedGlyphEffect("cursedEP")
+        .timesEffectsOf(
+          EternityUpgrade.epMult,
+          TimeStudy(61),
+          TimeStudy(122),
+          TimeStudy(121),
+          TimeStudy(123),
+          RealityUpgrade(12),
+          GlyphEffect.epMult
+        );
+  }
+
+  get pureGain() {
+    const div = Decimal.sub(308, PelleRifts.recursion.effectValue);
+    const ep = DC.D5.pow(player.records.thisEternity.maxIP.plus(Currency.infinityPoints.gain)
+      .max(1).log10().div(div).sub(0.7));
+
+    return ep;
+  }
+
+  get rawGain() {
+    let ep = this.pureGain();
+    ep = ep.times(this.mult);
+    if (GlyphAlteration.isAdded("time")) {
+      ep = ep.pow(getSecondaryGlyphEffect("timeEP"));
+    }
+    return ep.floor();
+  }
+
+  get pureGain() {
+    let ep = this.pureGain();
+    ep = ep.times(this.mult);
+    if (Teresa.isRunning) {
+      ep = ep.pow(0.55);
+    } else if (V.isRunning) {
+      ep = ep.pow(0.5);
+    } else if (Laitela.isRunning) {
+      ep = dilatedValueOf(ep);
+    }
+    if (GlyphAlteration.isAdded("time")) {
+      ep = ep.pow(getSecondaryGlyphEffect("timeEP"));
+    }
+    return ep.floor();
   }
 }();
 
@@ -395,7 +513,7 @@ Currency.realities = new class extends DecimalCurrency {
 Currency.realityMachines = new class extends DecimalCurrency {
   get value() { return player.reality.realityMachines; }
   set value(value) {
-    const newValue = Decimal.min(value, MachineHandler.hardcapRM);
+    const newValue = Decimal.min(value, Currency.realityMachines.hardcap);
     const addedThisReality = newValue.minus(player.reality.realityMachines);
     player.reality.realityMachines = newValue;
     player.reality.maxRM = Decimal.max(player.reality.maxRM, newValue);
@@ -403,6 +521,47 @@ Currency.realityMachines = new class extends DecimalCurrency {
       player.records.bestReality.RM = addedThisReality;
       player.records.bestReality.RMSet = Glyphs.copyForRecords(Glyphs.active.filter(g => g !== null));
     }
+  }
+
+  get mult() {
+    return Teresa.rmMultiplier.times(PerkShopUpgrade.rmMult.effectOrDefault(DC.D1))
+      .times(getAdjustedGlyphEffect("effarigrm")).times(Achievement(167).effectOrDefault(1));
+  }
+
+  get pureGain() {
+    const ep = () => Currency.eternityPoints.gain;
+    let log10FinalEP = player.records.thisReality.maxEP.plus(ep()).max(1).log10();
+    if (!PlayerProgress.realityUnlocked()) {
+      if (log10FinalEP.gt(8000)) log10FinalEP = new Decimal(8000);
+      if (log10FinalEP.gt(6000)) log10FinalEP = log10FinalEP.sub((log10FinalEP.sub(6000)).times(0.75));
+    }
+    let rmGain = DC.E3.pow(log10FinalEP.div(4000).sub(1));
+    // Increase base RM gain if <10 RM
+    if (rmGain.gte(1) && rmGain.lt(10)) rmGain = (log10FinalEP).minus(26).mul(27).div(4000);
+    return rmGain;
+  }
+
+  get gain() {
+    let rmGain = this.pureGain;
+    rmGain = rmGain.mul(this.mult);
+    return rmGain;
+  }
+
+  get cappedGain() {
+    return max(this.gain, this.hardcap);
+  }
+
+  get hardcapMult() {
+    return ImaginaryUpgrade(6).effectOrDefault(1);
+  }
+
+  get baseHardcap() {
+    return DC.E1000;
+  }
+
+  get hardcap() {
+    const base = this.baseHardcap;
+    return base.mul(this.hardcapMult);
   }
 }();
 
@@ -415,7 +574,8 @@ Currency.relicShards = new class extends DecimalCurrency {
   get value() { return player.celestials.effarig.relicShards; }
   set value(value) { player.celestials.effarig.relicShards = value; }
   get gain() {
-    return Decimal.floor(Decimal.pow(Currency.eternityPoints.value.add(1).log10().div(7500),
+    if (!TeresaUnlocks.effarig.canBeApplied) return DC.D0;
+    return Decimal.floor(Decimal.pow(Currency.eternityPoints.value.max(1).log10().div(7500),
       getActiveGlyphEffects().length)).times(AlchemyResource.effarig.effectValue);
   }
 }();
@@ -423,7 +583,52 @@ Currency.relicShards = new class extends DecimalCurrency {
 Currency.imaginaryMachines = new class extends DecimalCurrency {
   get value() { return player.reality.imaginaryMachines; }
   set value(value) {
-    player.reality.imaginaryMachines = Decimal.clampMax(value, MachineHandler.currentIMCap);
+    player.reality.imaginaryMachines = Decimal.clampMax(value, Currency.imaginaryMachines.cap);
+  }
+
+  get capMults() {
+    return ImaginaryUpgrade(13).effectOrDefault(1);
+  }
+
+  get cap() {
+    return player.reality.iMCap.times(this.capMults);
+  }
+
+  get isUnlocked() {
+    return Currency.realityMachines.value.gte(Currency.realityMachines.hardcap)
+  }
+
+  get projCapBase() {
+    return (Decimal.pow(Decimal.clampMin(Currency.realityMachines.gain.max(1).log10().sub(1000), 0), 2))
+      .times((Decimal.pow(Decimal.clampMin(Currency.realityMachines.gain.max(1).log10().sub(100000), 1), 0.2)));
+  }
+
+  get projCap() {
+    return this.projCapBase.mul(this.capMults);
+  }
+
+  get baseCap() {
+    return player.reality.iMCap;
+  }
+
+  get scaleTime() {
+    return DC.D60.div(ImaginaryUpgrade(20).effectOrDefault(1));
+  }
+
+  iMTimerEstimate(cost) {
+    const imCap = Currency.imaginaryMachines.cap;
+    if (imCap.lte(cost)) return DC.BEMAX;
+    const currentIM = Currency.imaginaryMachines.value;
+    // This is doing log(a, 1/2) - log(b, 1/2) where a is % left to imCap of cost and b is % left to imCap of current
+    // iM. log(1 - x, 1/2) should be able to estimate the time taken for iM to increase from 0 to imCap * x since every
+    // fixed interval the difference between current iM to max iM should decrease by a factor of 1/2.
+    return Decimal.max(0, Decimal.log(imCap.div(imCap.sub(cost)), 2).sub(Decimal.log(
+      imCap.div(imCap.sub(currentIM)), 2))).times(Currency.imaginaryMachines.scaleTime);
+  }
+
+  gain(diff) {
+    return (Currency.imaginaryMachines.cap.sub(Currency.imaginaryMachines.value)).times(DC.D1
+      .sub(Decimal.pow(2, (new Decimal(0).sub(diff).div(1000).div(Currency.imaginaryMachines.scaleTime)))));
   }
 }();
 

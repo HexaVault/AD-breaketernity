@@ -230,7 +230,7 @@ function getGlyphLevelSources() {
   // Once Effarig is unlocked, these contributions can be adjusted; the math is described in detail
   // in getGlyphLevelInputs. These *Base values are the nominal inputs, as they would be multiplied without Effarig
   let eternityPoints = Player.canEternity
-    ? Currency.eternityPoints.value.plus(gainedEternityPoints())
+    ? Currency.eternityPoints.value.plus(Currency.eternityPoints.gain)
     : Currency.eternityPoints.value;
   eternityPoints = Decimal.max(player.records.thisReality.maxEP, eternityPoints);
   const epCoeff = 0.016;
