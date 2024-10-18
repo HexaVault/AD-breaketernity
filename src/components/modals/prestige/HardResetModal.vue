@@ -13,7 +13,7 @@ export default {
   },
   computed: {
     willHardReset() {
-      return this.input === "Shrek is love, Shrek is life";
+      return this.input === i18n("modal", "shrek");
     },
     hasExtraNG() {
       return player.records.fullGameCompletions > 0;
@@ -42,21 +42,21 @@ export default {
     @confirm="hardReset"
   >
     <template #header>
-      HARD RESET
+      {{ i18n("modal", "hardResetHeader") }}
     </template>
     <div class="c-modal-message__text">
-      Please confirm your desire to hard reset this save slot.
-      <span class="c-modal-hard-reset-danger">Deleting your save will not unlock anything secret.</span>
-      Type in "Shrek is love, Shrek is life" to confirm.
+      {{ i18n("modal", "resetConfirmText") }}
+      <span class="c-modal-hard-reset-danger">{{ i18n("modal", "resetNoSecret") }}</span>
+      {{ i18n("modal", "resetTypeIn", [i18n("modal", "shrek")]) }}
       <div class="c-modal-hard-reset-danger">
-        THIS WILL WIPE YOUR SAVE.
+        {{ i18n("modal", "resetWipe") }}
         <span v-if="hasExtraNG">
           <br>
-          This will also remove any Glyph cosmetics you have unlocked from completing the game!
+          {{ i18n("modal", "resetRemoveNG") }}
         </span>
         <span v-if="hasSpeedrun">
           <br>
-          You will lose the ability to do a Speedrun. To restart your run, use the "Start Speedrun" button instead.
+          {{ i18n("modal", "resetLoseSpeedrun") }}
         </span>
       </div>
     </div>
@@ -73,14 +73,14 @@ export default {
         v-if="willHardReset"
         class="c-modal-hard-reset-danger"
       >
-        Phrase confirmed - continuing will irreversibly delete your save!
+        {{ i18n("modal", "resetPhraseConfirmed") }}
       </div>
       <div v-else>
-        Type in the correct phrase to hard reset.
+        {{ i18n("modal", "resetTypeIn") }}
       </div>
     </div>
     <template #confirm-text>
-      HARD RESET
+      {{ i18n("modal", "hardResetHeader") }}
     </template>
   </ModalWrapperChoice>
 </template>

@@ -29,6 +29,15 @@ export default {
   computed: {
     fullCompletion() {
       return player.records.fullGameCompletions > 0;
+    },
+    topLabel() {
+      return i18n("modal", "infoDisplayHeader");
+    },
+    text() {
+      return i18n("modal", "infoDisplayTexts").split("$");
+    },
+    note() {
+      return i18n("modal", "infoDisplayNote");
     }
   },
   watch: {
@@ -86,52 +95,52 @@ export default {
 <template>
   <ModalWrapperOptions class="c-modal-options__large">
     <template #header>
-      Info Display Options
+      {{ topLabel }}
     </template>
     <div class="c-modal-options__button-container">
       <ModalOptionsToggleButton
         v-model="showPercentage"
-        text="Show % gain:"
+        :text="text[0]"
       />
       <ModalOptionsToggleButton
         v-model="achievements"
-        text="Achievement IDs:"
+        :text="text[1]"
       />
       <ModalOptionsToggleButton
         v-model="achievementUnlockStates"
-        text="Achievement unlock state indicators:"
+        :text="text[2]"
       />
       <ModalOptionsToggleButton
         v-if="infinityUnlocked"
         v-model="challenges"
-        text="Challenge IDs:"
+        :text="text[3]"
       />
       <ModalOptionsToggleButton
         v-if="eternityUnlocked"
         v-model="studies"
-        text="Time Study IDs:"
+        :text="text[4]"
       />
       <ModalOptionsToggleButton
         v-if="realityUnlocked"
         v-model="glyphEffectDots"
-        text="Glyph effect dots:"
+        :text="text[5]"
       />
       <ModalOptionsToggleButton
         v-if="realityUnlocked"
         v-model="realityUpgrades"
-        text="Reality Upgrade names:"
+        :text="text[6]"
       />
       <ModalOptionsToggleButton
         v-if="realityUnlocked"
         v-model="perks"
-        text="Perk IDs:"
+        :text="text[7]"
       />
       <ModalOptionsToggleButton
         v-if="alchemyUnlocked"
         v-model="alchemy"
-        text="Alchemy resource amounts:"
+        :text="text[8]"
       />
     </div>
-    Note: All types of additional info above will always display when holding shift.
+    {{ note }}
   </ModalWrapperOptions>
 </template>

@@ -11,7 +11,9 @@ export default {
   computed: {
     all() {
       return AwayProgressTypes.showOption;
-    }
+    },
+    topLabel: () => i18n("modal", "AwayHeader"),
+    note: () => i18n("modal", "AwayNote")
   },
 };
 </script>
@@ -19,7 +21,7 @@ export default {
 <template>
   <ModalWrapperOptions class="l-wrapper">
     <template #header>
-      Away Progress Options
+      {{ topLabel }}
     </template>
     <div class="c-modal-options__button-container">
       <AwayProgressOptionsEntry
@@ -28,7 +30,7 @@ export default {
         :name="name"
       />
     </div>
-    Note: Selected resources will only show if they've increased.
+    {{ note }}
   </ModalWrapperOptions>
 </template>
 

@@ -35,7 +35,7 @@ export default {
       return this.glyphId !== -1;
     },
     attrString() {
-      return this.isSymbol ? "symbol" : "color";
+      return this.isSymbol ? i18n("modal", "symbol") : i18n("modal", "col");
     },
     typeObject() {
       return CosmeticGlyphTypes;
@@ -54,6 +54,9 @@ export default {
     // Maximum number of options visible at one time, used to determine scrolling bounds
     windowSize() {
       return 17;
+    },
+    text() {
+      return i18n("modal", "noCustomCosmeticOptions", [this.attrString]);
     }
   },
   created() {

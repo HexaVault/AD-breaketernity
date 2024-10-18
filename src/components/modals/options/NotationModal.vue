@@ -32,6 +32,24 @@ export default {
         tooltip: false
       };
     },
+    topLabel() {
+      return i18n("modal", "notationModalHeader");
+    },
+    msgA() {
+      return i18n("modal", "notationModalMsgA");
+    },
+    msgB() {
+      return i18n("modal", "notationModalMsgB", [formatInt(this.commaDigits)]);
+    },
+    msgC() {
+      return i18n("modal", "notationModalMsgC", [formatInt(this.notationDigits)]);
+    },
+    sampleText() {
+      return i18n("modal", "sample");
+    },
+    msgD() {
+      return i18n("modal", "notationModalMsgD", [formatInt(5), formatInt(9)]);
+    }
   },
   watch: {
     commaDigits(newValue) {
@@ -74,16 +92,13 @@ export default {
 <template>
   <ModalWrapper>
     <template #header>
-      Exponent Notation Settings
+      {{ i18n("modal", "notationModalHeader") }}
     </template>
-    You can adjust what your numbers look like when very large. With small values, the exponent will
-    be directly displayed with no additional formatting. Larger values will have commas inserted into the exponent
-    for clarity, and the largest values will apply notation formatting to the exponent in order to shorten it. You can
-    adjust the two thresholds between these regions below:
+    {{ msgA }}
     <br>
     <br>
     <div class="c-single-slider">
-      <b class="o-digit-text">Minimum for commas in exponent: {{ formatInt(commaDigits) }} digits</b>
+      <b class="o-digit-text">{{ msgB }}</b>
       <SliderComponent
         class="o-primary-btn--slider__slider o-slider"
         v-bind="sliderProps"
@@ -92,7 +107,7 @@ export default {
       />
     </div>
     <div class="c-single-slider">
-      <b class="o-digit-text">Minimum for notation in exponent: {{ formatInt(notationDigits) }} digits</b>
+      <b class="o-digit-text">{{ msgC }}</b>
       <SliderComponent
         class="o-primary-btn--slider__slider o-slider"
         v-bind="sliderProps"
@@ -101,7 +116,7 @@ export default {
       />
     </div>
     <br>
-    Sample numbers for exponent formatting:
+    {{ sampleText }}
     <div class="c-sample-numbers">
       <span
         v-for="(num, id) in sampleNums"
@@ -112,10 +127,7 @@ export default {
       </span>
     </div>
     <br>
-    Note: The interface is generally optimized for Scientific notation with settings of {{ formatInt(5) }}
-    and {{ formatInt(9) }} digits. Some text may look odd or overflow out of boxes if you
-    differ significantly from these values. Additionally, these settings might not cause any visual changes
-    when using certain notations.
+    {{ msgD }}
   </ModalWrapper>
 </template>
 

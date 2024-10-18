@@ -13,7 +13,7 @@ export default {
     };
   },
   computed: {
-    resetTerm() { return this.isDoomed ? "Armageddon" : "Reality"; },
+    resetTerm() { return i18n("modal", this.isDoomed ? "arma" : "real"); },
   },
   methods: {
     update() {
@@ -34,21 +34,19 @@ export default {
     @confirm="handleYesClick"
   >
     <template #header>
-      You are about to reset your {{ resetTerm }}
+      {{ i18n("modal", "aboutToReset", [resetTerm]) }}
     </template>
     <div class="c-modal-message__text">
-      This will reset you to the start of your {{ resetTerm }},
-      giving you no rewards from your progress in your current {{ resetTerm }}.
+      {{ i18n("modal", "aboutToResetMessage", [resetTerm]) }}
       <br>
       <br>
-      Are you sure you want to do this?
+      {{ i18n("modal", "areYouSure") }}
       <div
         v-if="canReality"
         class="c-has-rewards"
       >
         <br>
-        You can currently complete a Reality for all its normal rewards, which you will not receive if you
-        Reset here. To get rewards, use the "Make a new Reality" button.
+        {{ i18n("modal", "canNormalReal") }}
       </div>
       <br>
     </div>

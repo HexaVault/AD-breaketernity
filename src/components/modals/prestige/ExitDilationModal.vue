@@ -16,14 +16,14 @@ export default {
   },
   computed: {
     gainText() {
-      if (this.tachyonGain.lte(0)) return `not gain anything`;
-      return `gain ${quantify("Tachyon Particle", this.tachyonGain, 2, 1)}`;
+      if (this.tachyonGain.lte(0)) return i18n("modal", "noGain");
+      return i18n("modal", "dilGain", [quantify(i18n("modal", "tp"), this.tachyonGain, 2, 1)]);
     },
     isInEC() {
       return Player.anyChallenge instanceof EternityChallengeState;
     },
     confirmText() {
-      return this.isDoomed ? "Okay" : "Exit";
+      return i18n("modal", this.isDoomed ? "okay" : "exit");
     }
   },
   methods: {
@@ -54,24 +54,24 @@ export default {
   >
     <template #header>
       <span v-if="isDoomed">
-        You cannot exit Dilation while Doomed
+        {{ i18n("modal", "noDoomExit") }}
       </span>
       <span v-else>
-        You are about to exit Dilation
+        {{ i18n("modal", "aboutToExitDilation") }}
       </span>
     </template>
     <div class="c-modal-message__text">
       <span v-if="isDoomed">
-        Dilation is permanent. You will {{ gainText }} and reset your current eternity.
+        {{ i18n("modal", "doomedInfo", [gainText]) }}
       </span>
       <span v-else>
-        If you exit Dilation now, you will {{ gainText }}.
+        {{ i18n("modal", "notDoomedInfo", [gainText]) }}
       </span>
       <div v-if="isInEC">
-        You will also exit your current Eternity Challenge as well.
+        {{ i18n("modal", "ECandDilation") }}
       </div>
       <br>
-      Are you sure you want to proceed?
+      {{ i18n("modal", "areYouSureProceed") }}
     </div>
     <template #confirm-text>
       {{ confirmText }}

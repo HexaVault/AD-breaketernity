@@ -26,7 +26,7 @@ export default {
   },
   computed: {
     isCelestial() {
-      return this.challengeName.match("Reality");
+      return this.challengeName.match(i18n("modal", "real"));
     },
     isRestarting() {
       return this.isCelestial ? player.options.retryCelestial : player.options.retryChallenge;
@@ -47,22 +47,23 @@ export default {
     @confirm="handleYesClick"
   >
     <template #header>
-      You are about to {{ isRestarting ? "restart" : "exit" }} {{ challengeName }}
+      {{ i18n("modal", "aboutTo") }} {{ isRestarting ? i18n("modal", "restartLowercase") :
+        i18n("modal", "restartLowercase") }} {{ challengeName }}
     </template>
 
     <div class="c-modal-message__text">
       <span v-if="isRestarting">
-        You will immediately re-enter {{ challengeName }} again after confirming this modal.
+        {{ i18n("modal", "restartingChall", [challengeName]) }}
       </span>
       <span v-else>
-        This will place you back into a regular {{ normalName }} without any restrictions.
+        {{ i18n("modal", "exitingChall", [challengeName]) }}
       </span>
       <span v-if="hasHigherLayers">
-        Other effects coming from higher-layer restrictions will still continue to apply.
+        {{ i18n("modal", "hasHigherLayers") }}
       </span>
     </div>
     <template #confirm-text>
-      {{ isRestarting ? "Restart" : "Exit" }}
+      {{ isRestarting ? i18n("modal", "restart") : i18n("modal", "exit") }}
     </template>
   </ModalWrapperChoice>
 </template>

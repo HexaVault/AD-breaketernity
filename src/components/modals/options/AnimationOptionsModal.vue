@@ -43,7 +43,9 @@ export default {
     },
     fullCompletion() {
       return player.records.fullGameCompletions > 0;
-    }
+    },
+    topLabel: () => i18n("modal", "AnimationOpt"),
+    list: () => i18n("modal", "AOlist").split("$"),
   },
   watch: {
     bigCrunch(newValue) {
@@ -106,45 +108,45 @@ export default {
 <template>
   <ModalWrapperOptions class="c-modal-options__large">
     <template #header>
-      Animation Options
+      {{ topLabel }}
     </template>
     <div class="c-modal-options__button-container">
       <ModalOptionsToggleButton
         v-if="infinityUnlocked"
         v-model="bigCrunch"
-        text="Big Crunch:"
+        :text="list[0]"
       />
       <ModalOptionsToggleButton
         v-if="eternityUnlocked"
         v-model="eternity"
-        text="Eternity:"
+        :text="list[1]"
       />
       <ModalOptionsToggleButton
         v-if="dilationUnlocked"
         v-model="dilation"
-        text="Dilation:"
+        :text="liat[2]"
       />
       <ModalOptionsToggleButton
         v-if="tachyonsUnlocked"
         v-model="tachyonParticles"
-        text="Tachyon particles:"
+        :text="list[3]"
       />
       <ModalOptionsToggleButton
         v-if="realityUnlocked"
         v-model="reality"
-        text="Reality:"
+        :text="list[4]"
       />
       <ModalOptionsToggleButton
         v-if="isS11Unlocked && isBlackHoleUnlocked"
         v-model="blobHole"
-        text="Always use Blobhole:"
+        :text="list[5]"
       />
       <div v-if="!isS11Active">
         <ModalOptionsToggleButton
           v-if="animatedThemeUnlocked"
           v-model="background"
           onclick="Themes.find(Theme.currentName()).set();"
-          text="Background:"
+          :text="list[6]"
         />
       </div>
       <div v-else>
@@ -152,7 +154,7 @@ export default {
           v-if="animatedThemeUnlocked"
           v-model="background"
           onclick="Themes.find(Theme.currentName()).set();"
-          text="Blobsnow:"
+          :text="list[7]"
         />
       </div>
       <div

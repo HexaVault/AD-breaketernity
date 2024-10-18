@@ -25,7 +25,7 @@ export default {
       // If diff is zero, that means we opened it up via the button and don't need the text for last opening
       if (!this.diff) return null;
       const string = TimeSpan.fromMilliseconds(new Decimal(this.diff)).toString();
-      return `It has been ${string} since you last loaded up the game.`;
+      return i18n("modal", "timeStr", [string]);
     },
     titleText() {
       return this.diff ? i18n("modal", "catchupModalTitleA") : i18n("modal", "catchupModalTitleB");
@@ -72,7 +72,7 @@ export default {
       <PrimaryButton
         @click="emitClose"
       >
-        Confirm
+        {{ i18n("modal", "confirm") }}
       </PrimaryButton>
     </div>
   </div>

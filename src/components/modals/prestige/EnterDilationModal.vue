@@ -10,23 +10,22 @@ export default {
   },
   computed: {
     message() {
-      return `Dilating time will start a new Eternity, and all Dimension multiplier's exponents and
-        tickspeed multiplier's exponent will be reduced to ${formatPow(0.75, 2, 2)}. If you can Eternity while Dilated,
-        your Tachyon Particles will be increased to a value based on your highest antimatter and any Tachyon Particle
-        multipliers you have.`;
+      return i18n("modal", "dilationInfo", [formatPow(0.75, 2, 2)]);
     },
     entranceLabel() {
-      return `You are about to enter Dilation`;
+      return i18n("modal", "dilEnterHeader");
     },
     EPSinceLabel() {
       if (player.dilation.lastEP.eq(-1)) {
-        return "This is your first Dilation";
+        return i18n("modal", "thisFirstDilation");
       }
       if (!isInCelestialReality() && Ra.unlocks.unlockDilationStartingTP.canBeApplied) {
-        return `You already have the maximum feasible amount of Tachyon Particles you can attain due to
-          Teresa's Level ${formatInt(25)} reward.`;
+        return i18n("modal", "maxFeasible", [formatInt(25)]);
       }
-      return `You last completed Dilation at ${format(player.dilation.lastEP, 2, 2)} Eternity Points.`;
+      return i18n("modal", "lastDiltionAt", [format(player.dilation.lastEP, 2, 2)]);
+    },
+    enter() {
+      return i18n("modal", "enter");
     }
   },
   methods: {

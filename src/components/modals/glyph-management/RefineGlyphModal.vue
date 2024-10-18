@@ -37,12 +37,12 @@ export default {
     },
     isUnlockedMessage() {
       return i18n("modal", "refineMsgA", [
-        resourceName, format(resourceAmount, 2, 2), format(after, 2, 2),
-        resourceName, format(cap, 2, 2)
+        resourceName, format(this.resourceAmount, 2, 2), format(this.after, 2, 2),
+        resourceName, format(this.cap, 2, 2)
       ]);
     },
     isntUnlockedMessage() {
-      return i18n("modal", "refineMsgA", [resourceName]);
+      return i18n("modal", "refineMsgA", [this.resourceName]);
     }
   },
   methods: {

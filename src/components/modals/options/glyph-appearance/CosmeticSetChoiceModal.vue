@@ -32,8 +32,8 @@ export default {
       const contents = [];
       // We explicitly pass in x => x as the formatting function in order to override END formatting; if we don't,
       // this modal will show END symbols/colors when opened at game completion
-      if (this.symbols) contents.push(quantify("symbol", this.symbols.length, 0, 0, x => x));
-      if (this.colors) contents.push(quantify("color scheme", this.colors.length, 0, 0, x => x));
+      if (this.symbols) contents.push(quantify(i18n("modal", "symbol"), this.symbols.length, 0, 0, x => x));
+      if (this.colors) contents.push(quantify(i18n("modal", "colScheme"), this.colors.length, 0, 0, x => x));
       return contents.join(" and ");
     },
     symbols() {
@@ -54,6 +54,15 @@ export default {
   created() {
     this.initialSet = GlyphAppearanceHandler.chosenFromModal;
     GlyphAppearanceHandler.setInModal = this.initialSet;
+  },
+  topLabel() {
+    return i18n("modal", "glyphCosmeticChoose");
+  },
+  dropdown() {
+    return i18n("modal", "glyphCosmeticChooseDropdown");
+  },
+  contains() {
+    return i18n("modal", "setContains", [this.currentSet.name, this.setContents]);
   },
   methods: {
     update() {
@@ -83,7 +92,7 @@ export default {
     @confirm="chooseSet"
   >
     <template #header>
-      Choose a Glyph Cosmetic Set
+      {{ topLabel }}
     </template>
     <div class="c-center">
       <ExpandingControlBox
@@ -91,7 +100,7 @@ export default {
       >
         <template #header>
           <div class="c-dropdown-header">
-            ▼ Available Sets ▼
+            {{ dropdown }}
             <br>
             {{ setName }}
           </div>
@@ -101,7 +110,7 @@ export default {
         </template>
       </ExpandingControlBox>
       <div v-if="currentSet">
-        The "{{ currentSet.name }}" Set contains the following {{ setContents }}:
+        {{ contains }}
         <br>
         <span
           v-for="symbol of symbols"

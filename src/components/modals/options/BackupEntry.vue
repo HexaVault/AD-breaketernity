@@ -24,7 +24,7 @@ export default {
       return GameStorage.loadFromBackup(this.slotData.id);
     },
     progressStr() {
-      if (!this.save) return "(Empty)";
+      if (!this.save) return i18n("modal", "emptyInBrack");
 
       // These will be checked in order; the first nonzero resource will be returned
       const resources = [this.save.celestials.pelle.realityShards,
@@ -34,12 +34,7 @@ export default {
         this.save.infinityPoints,
         this.save.antimatter
       ];
-      const names = ["Reality Shards",
-        "Imaginary Machine Cap",
-        "Reality Machines",
-        "Eternity Points",
-        "Infinity Points",
-        "Antimatter"];
+      const names = i18n("modal", "resourceNames").split("$");
 
       for (let index = 0; index < resources.length; index++) {
         const val = new Decimal(resources[index]);
@@ -47,17 +42,17 @@ export default {
       }
 
       // In practice this should never happen, unless a save triggers on the same tick the very first AD1 is bought
-      return "No resources";
+      return i18n("modal", "noResources");
     },
     slotType() {
       const formattedTime = this.slotData.intervalStr?.();
       switch (this.slotData.type) {
         case BACKUP_SLOT_TYPE.ONLINE:
-          return `Saves every ${formattedTime} online`;
+          return i18n("modal", "savesEveryOn", [formattedTime]);
         case BACKUP_SLOT_TYPE.OFFLINE:
-          return `Saves after ${formattedTime} offline`;
+          return i18n("modal", "savesEveryOff", [formattedTime]);
         case BACKUP_SLOT_TYPE.RESERVE:
-          return "Pre-loading save";
+          return i18n("modal", "savesPre");
         default:
           throw new Error("Unrecognized backup save type");
       }
@@ -65,9 +60,13 @@ export default {
     lastSaved() {
       const lastSave = GameStorage.lastBackupTimes[this.slotData.id]?.date ?? 0;
       return lastSave
-        ? `Last saved: ${TimeSpan.fromMilliseconds(new Decimal(this.currTime - lastSave))} ago`
-        : "Slot not currently in use";
+        ? i18n("modal", "lastSave", [TimeSpan.fromMilliseconds(new Decimal(this.currTime - lastSave))])
+        : i18n("modal", "slotNotUsed");
     },
+    slotX() {
+      return i18n("modal", "slotX", [this.slotData.id]);
+    },
+    loadTxt: () => i18n("modal", "load")
   },
   methods: {
     update() {
@@ -88,7 +87,7 @@ export default {
       GameStorage.offlineEnabled = player.options.loadBackupWithoutOffline ? false : undefined;
       GameStorage.oldBackupTimer = player.backupTimer;
       GameStorage.loadPlayerObject(toLoad);
-      GameUI.notify.info(`Game loaded from backup slot #${this.slotData.id}`);
+      GameUI.notify.info(i18n("modal", "notifyBackupLoad", [this.slotData.id]));
       GameStorage.loadBackupTimes();
       GameStorage.ignoreBackupTimer = false;
       GameStorage.offlineEnabled = undefined;
@@ -101,7 +100,7 @@ export default {
 
 <template>
   <div class="c-bordered-entry">
-    <h3>Slot #{{ slotData.id }}:</h3>
+    <h3>{{ slotX }}</h3>
     <span>{{ progressStr }}</span>
     <span>
       {{ slotType }}
@@ -112,7 +111,7 @@ export default {
       :class="{ 'o-primary-btn--disabled' : !save }"
       @click="load()"
     >
-      Load
+      {{ loadTxt }}
     </PrimaryButton>
   </div>
 </template>

@@ -56,9 +56,9 @@ export default {
       };
     },
     rowVisibleIndicatorTooltip() {
-      if (this.isHidden) return "Click to unhide tab";
-      if (!this.alwaysVisible) return "Click to hide tab";
-      return "This tab cannot be hidden";
+      if (this.isHidden) return i18n("modal", "clickUnhide");
+      if (!this.alwaysVisible) return i18n("modal", "clickHide");
+      return i18n("modal", "");
     },
   },
   methods: {

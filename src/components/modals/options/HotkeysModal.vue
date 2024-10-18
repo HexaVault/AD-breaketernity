@@ -18,17 +18,18 @@ export default {
   computed: {
     moreShiftKeyInfo() {
       const shiftKeyFunctions = [];
+      const text = i18n("modal", "moreShiftInfo").split(" $ ");
       if (this.timeStudyUnlocked) {
-        shiftKeyFunctions.push("while buying Time Studies to buy all up until that point");
-        shiftKeyFunctions.push("to save Time Study Trees");
+        shiftKeyFunctions.push(text[1]);
+        shiftKeyFunctions.push(text[2]);
       }
       if (this.glyphSacUnlocked) {
-        shiftKeyFunctions.push("to purge Glyphs");
+        shiftKeyFunctions.push(text[3]);
       }
       const shiftKeyInfo = makeEnumeration(shiftKeyFunctions);
       return (shiftKeyInfo === "")
         ? ""
-        : `You can hold Shift ${shiftKeyInfo}.`;
+        : i18n("modal", "moreShiftInfo", [shiftKeyInfo]).split(" $ ")[0];
     },
     hotkeyCount() {
       return shortcuts.length;
@@ -38,6 +39,45 @@ export default {
     },
     shortcutKeys() {
       return shortcuts.map(x => x.keys.map(key => this.format(key)));
+    },
+    topLabel() {
+      return i18n("modal", "hotkeyHeader");
+    },
+    buyNdims() {
+      return i18n("modal", "buyNdims").split("$");
+    },
+    modKeysLabel() {
+      return i18n("modal", "modKeysHeader");
+    },
+    shiftInfo() {
+      return i18n("modal", "shiftInfo");
+    },
+    altInfoA() {
+      return i18n("modal", "altInfoA");
+    },
+    altInfoB() {
+      return i18n("modal", "altInfoB");
+    },
+    arrowKeyInfo() {
+      return i18n("modal", "arrowKeyInfo");
+    },
+    numpadLimit() {
+      return i18n("modal", "numpadLimit").split("$");
+    },
+    zoomAdj() {
+      return i18n("modal", "zoomAdj").split("$");
+    },
+    fullscreen() {
+      return i18n("modal", "fullscreen");
+    },
+    fullscreenInfo() {
+      return i18n("modal", "fullscreenInfo").split("$");
+    },
+    windowZoom() {
+      return i18n("modal", "windowZoom");
+    },
+    otherHeaders() {
+      return i18n("modal", "otherHotkeyHeaders").split("$");
     }
   },
   created() {
@@ -81,16 +121,16 @@ export default {
 <template>
   <ModalWrapper>
     <template #header>
-      Hotkey List
+      {{ topLabel }}
     </template>
     <span class="c-modal-hotkeys l-modal-hotkeys">
       <div class="l-modal-hotkeys__column">
         <div class="l-modal-hotkeys-row">
-          <span class="c-modal-hotkeys-row__name l-modal-hotkeys-row__name">Buy 1 Dimension</span>
+          <span class="c-modal-hotkeys-row__name l-modal-hotkeys-row__name">{{ buyNdims[0] }}</span>
           <kbd>SHIFT</kbd><kbd>1</kbd>-<kbd>SHIFT</kbd><kbd>8</kbd>
         </div>
         <div class="l-modal-hotkeys-row">
-          <span class="c-modal-hotkeys-row__name l-modal-hotkeys-row__name">Buy 10 Dimensions</span>
+          <span class="c-modal-hotkeys-row__name l-modal-hotkeys-row__name">{{ buyNdims[1] }}</span>
           <kbd>1</kbd>-<kbd>8</kbd>
         </div>
         <div
@@ -113,65 +153,58 @@ export default {
       </div>
       <div class="l-modal-hotkeys__column l-modal-hotkeys__column--right">
         <div class="l-modal-hotkeys-row">
-          <span class="c-modal-hotkeys-row__name l-modal-hotkeys-row__name">Modifier Key</span>
+          <span class="c-modal-hotkeys-row__name l-modal-hotkeys-row__name">{{ otherHeaders[0] }}</span>
           <kbd>SHIFT</kbd>
         </div>
         <span class="c-modal-hotkeys__shift-description">
-          Shift is a modifier key that shows additional information on certain things
-          and adjusts the function of certain buttons.
+          {{ shiftInfo }}
           <br>
           {{ moreShiftKeyInfo }}
         </span>
         <br>
         <div class="l-modal-hotkeys-row">
-          <span class="c-modal-hotkeys-row__name l-modal-hotkeys-row__name">Autobuyer Controls</span>
+          <span class="c-modal-hotkeys-row__name l-modal-hotkeys-row__name">{{ otherHeaders[1] }}</span>
           <kbd>ALT</kbd>
         </div>
         <span class="c-modal-hotkeys__shift-description">
-          Alt is a modifier key that, when pressed in conjunction with any key that has a corresponding autobuyer,
-          will toggle said autobuyer.
+          {{ altInfoA }}
           <br>
-          When pressing both Alt and Shift, you can toggle buying singles or buying max for the Antimatter Dimension
-          and Tickspeed Autobuyers instead.
+          {{ altInfoB }}
         </span>
         <br>
         <div class="l-modal-hotkeys-row">
-          <span class="c-modal-hotkeys-row__name l-modal-hotkeys-row__name">Tab Movement</span>
+          <span class="c-modal-hotkeys-row__name l-modal-hotkeys-row__name">{{ otherHeaders[2] }}</span>
           <div>
             <kbd>←</kbd><kbd>↓</kbd><kbd>↑</kbd><kbd>→</kbd>
           </div>
         </div>
         <span class="c-modal-hotkeys__shift-description">
-          Using the Arrow Keys will cycle you through the game's pages.
-          The Up and Down arrows cycle you through tabs,
-          and the Left and Right arrows cycle you through that tab's subtabs.
+          {{ arrowKeyInfo }}
         </span>
         <br>
         <div class="l-modal-hotkeys-row">
-          <span class="c-modal-hotkeys-row__name l-modal-hotkeys-row__name">Numpad Support</span>
+          <span class="c-modal-hotkeys-row__name l-modal-hotkeys-row__name">{{ otherHeaders[3] }}</span>
         </div>
         <span class="c-modal-hotkeys__shift-description">
-          Due to technical reasons, pressing a numpad key will purchase 10 of a Dimension if possible, but pressing
-          a numpad key with <kbd>SHIFT</kbd> will not buy a single Dimension. It may instead, depending on your device,
-          cause the page to scroll or change game tabs. <kbd>ALT</kbd> will still work as expected.
+          {{ numpadLimit[0] }}<kbd>SHIFT</kbd>{{ numpadLimit[1] }}<kbd>ALT</kbd>{{ numpadLimit[2] }}
         </span>
         <template v-if="isElectron">
           <br>
           <div class="l-modal-hotkeys-row">
-            <span class="c-modal-hotkeys-row__name l-modal-hotkeys-row__name">Window Zoom</span>
+            <span class="c-modal-hotkeys-row__name l-modal-hotkeys-row__name">{{ windowZoom }}</span>
             <kbd>-</kbd><kbd>0</kbd><kbd>+</kbd>
           </div>
           <span class="c-modal-hotkeys__shift-description">
-            To adjust zoom level, hold <kbd>ctrl</kbd> and press either <kbd>-</kbd> or <kbd>+</kbd> to decrease or
-            increase zoom. <kbd>ctrl</kbd><kbd>0</kbd> will reset zoom to 100%.
+            {{ zoomAdj[0] }}<kbd>ctrl</kbd>{{ zoomAdj[1] }}<kbd>-</kbd>{{ zoomAdj[2] }}<kbd>+</kbd>
+            {{ zoomAdj[3] }}<kbd>ctrl</kbd><kbd>0</kbd>{{ zoomAdj[4] }}
           </span>
           <br>
           <div class="l-modal-hotkeys-row">
-            <span class="c-modal-hotkeys-row__name l-modal-hotkeys-row__name">Fullscreen</span>
+            <span class="c-modal-hotkeys-row__name l-modal-hotkeys-row__name">{{ fullscreen }}</span>
             <kbd>F10</kbd>
           </div>
           <span class="c-modal-hotkeys__shift-description">
-            To enter or exit fullscreen, press <kbd>F10</kbd>.
+            {{ fullscreenInfo[0] }}<kbd>F10</kbd>{{ fullscreenInfo[1] }}
           </span>
         </template>
       </div>

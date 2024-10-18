@@ -21,23 +21,26 @@ export default {
     },
     message() {
       const info = this.isFirstInfinity ? this.firstInfinityInfo : ``;
-      return `Upon Infinity, all Dimensions, Dimension Boosts, and Antimatter Galaxies are reset. ${info}`;
+      return i18n("modal", "uponInfinity", [info]);
     },
     firstInfinityInfo() {
-      return `In return, you gain an Infinity Point (IP). This allows you to buy multiple upgrades that you can
-        find in the Infinity tab. You will also gain one Infinity, which is the stat shown in the Statistics tab.`;
+      return i18n("modal", "firstInfinityInfo");
     },
     ipGainInfo() {
-      return `You will gain ${quantify("Infinity", this.gainedInfinities, 2, 0)}
-        and ${quantify("Infinity Point", this.gainedInfinityPoints, 2, 0)}.`;
+      return i18n("modal", "infGainInfo", [quantify(i18n("modal", "inf"), this.gainedInfinities, 2, 0),
+        quantify(i18n("modal", "ip"), this.gainedInfinityPoints, 2, 0)
+      ]);
     },
     startingResources() {
       const gainedResources = [];
-      if (this.startingAM.gte(10)) gainedResources.push(`${quantify("Antimatter", this.startingAM, 2, 1)}`);
-      if (this.startingBoosts.gte(0)) gainedResources.push(`${quantify("Dimension Boost", this.startingBoosts)}`);
-      if (this.willStartWithGalaxy) gainedResources.push(`${quantify("Galaxy", 1)}`);
+      if (this.startingAM.gte(10)) gainedResources.push(`${quantify(i18n("modal", "am"), this.startingAM, 2, 1)}`);
+      if (this.startingBoosts.gte(0)) gainedResources.push(`${quantify(i18n("modal", "db"), this.startingBoosts)}`);
+      if (this.willStartWithGalaxy) gainedResources.push(`${quantify(i18n("modal", "gal"), 1)}`);
 
-      return `You will start your next Infinity with ${makeEnumeration(gainedResources)}.`;
+      return i18n("modal", "willStartNextInf", [makeEnumeration(gainedResources)]);
+    },
+    aboutToInf() {
+      return i18n("modal", "aboutToInf");
     }
   },
   methods: {
@@ -52,9 +55,7 @@ export default {
       bigCrunchResetRequest();
       EventHub.ui.offAll(this);
       if (this.isFirstInfinity) {
-        setTimeout(() => Modal.message.show(`This animation will occur after every manually-triggered Infinity. If
-          you would like to disable it, there is a setting to do so in the Options tab. This can be done for any
-          visual animation effect in the game after seeing it for the first time.`, {}, 3), 2000);
+        setTimeout(() => Modal.message.show(i18n("modal", "infAnimationModal"), {}, 3), 2000);
       }
     }
   },

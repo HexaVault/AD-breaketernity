@@ -22,32 +22,34 @@ export default {
   },
   computed: {
     topLabel() {
-      if (this.bulk) return `You are about to purchase ${quantifyInt("Antimatter Galaxy", this.newGalaxies)}`;
-      return `You are about to purchase an Antimatter Galaxy`;
+      if (this.bulk) return i18n("modal", "aboutToPurchase", [quantifyInt(i18n("modal", "ags"), this.newGalaxies)]);
+      return i18n("modal", "atpOneAG");
     },
     message() {
       const resetResouces = [];
-      if (Pelle.isDoomed) resetResouces.push("Antimatter", "Antimatter Dimensions", "Tickspeed");
-      if (!this.perkANRBought) resetResouces.push("Antimatter Dimensions", "Tickspeed");
-      if (!this.keepDimBoost) resetResouces.push("Dimension Boosts");
-      if (!this.keepAntimatter && !this.perkANRBought) resetResouces.push("Antimatter");
+      const rrTrans = i18n("modal", "resetResourcesAG");
+      if (Pelle.isDoomed) resetResouces.push(rrTrans[0], rrTrans[1], rrTrans[2]);
+      if (!this.perkANRBought) resetResouces.push(rrTrans[1], rrTrans[2]);
+      if (!this.keepDimBoost) resetResouces.push(rrTrans[3]);
+      if (!this.keepAntimatter && !this.perkANRBought) resetResouces.push(rrTrans[0]);
       const resetList = makeEnumeration(resetResouces);
       let tickspeedFixed = "";
       if (InfinityChallenge(3).isRunning) {
-        tickspeedFixed = `Infinity Challenge ${InfinityChallenge(3).id}`;
+        tickspeedFixed = i18n("modal", "icN", [InfinityChallenge(3).id]);
       } else if (Ra.isRunning) {
-        tickspeedFixed = `${Ra.displayName}'s Reality`;
+        tickspeedFixed = i18n("modal", "cel5Reality", [Ra.displayName]);
       }
       const tickspeedInfo = (tickspeedFixed === "")
-        ? "you will receive a small boost to Tickspeed Upgrades."
-        : `you will not receive a boost to Tickspeed Upgrades, because you are in ${tickspeedFixed}.`;
+        ? i18n("modal", "agTSboost")
+        : i18n("modal", "agNoTSboost", [tickspeedFixed]);
       const message = (resetList === "")
-        ? `This will reset nothing, and ${tickspeedInfo}`
-        : `This will reset your ${resetList}. However, ${tickspeedInfo}`;
+        ? i18n("modal", "resetNothing", [tickspeedInfo])
+        : i18n("modal", "resetSome", [resetList, tickspeedInfo]);
 
-      if (this.bulk) return `Are you sure you want to purchase
-      ${quantifyInt("Antimatter Galaxy", this.newGalaxies)}? ${message}`;
-      return `Are you sure you want to purchase an Antimatter Galaxy? ${message}`;
+      if (this.bulk) {
+        return i18n("modal", "surePurchase", [quantifyInt("Antimatter Galaxy", this.newGalaxies), message]);
+      }
+      return i18n("modal", "surePurAG", [message]);
     }
   },
   created() {

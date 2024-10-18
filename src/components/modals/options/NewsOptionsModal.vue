@@ -1,3 +1,4 @@
+<!-- eslint-disable radix -->
 <script>
 import ModalOptionsToggleButton from "@/components/ModalOptionsToggleButton";
 import ModalWrapperOptions from "@/components/modals/options/ModalWrapperOptions";
@@ -23,7 +24,7 @@ export default {
   },
   computed: {
     newsOnOffLabel() {
-      return `News: ${this.enabled ? "On" : "Off"}`;
+      return i18n("modal", "news", [i18n("modal", this.enabled ? "on" : "off")]);
     },
     sliderPropsRepeatBuffer() {
       return {
@@ -52,6 +53,21 @@ export default {
         tooltip: false
       };
     },
+    topLabel() {
+      return i18n("modal", "newsModalHeader");
+    },
+    repeat() {
+      return i18n("modal", "msgRepeat", [formatInt(parseInt(this.repeatBuffer))]);
+    },
+    ai() {
+      return i18n("modal", "aiMsg", [formatPercents(parseInt(this.AIChance))]);
+    },
+    sped() {
+      return i18n("modal", "scrollSpeed", [formatPercents(parseInt(this.speed))]);
+    },
+    aniEff() {
+      return i18n("modal", "aniEff");
+    }
   },
   watch: {
     type(newValue) {
@@ -98,7 +114,7 @@ export default {
 <template>
   <ModalWrapperOptions>
     <template #header>
-      News Options
+      {{ topLabel }}
     </template>
     <PrimaryButton
       class="o-primary-btn o-primary-btn--option-wide"
@@ -107,7 +123,7 @@ export default {
       {{ newsOnOffLabel }}
     </PrimaryButton>
     <div class="o-primary-btn o-primary-btn--option-wide o-primary-btn--slider">
-      <b>{{ formatInt(parseInt(repeatBuffer)) }} message repeat buffer</b>
+      <b>{{ repeat }}</b>
       <SliderComponent
         class="o-primary-btn--slider__slider"
         v-bind="sliderPropsRepeatBuffer"
@@ -116,7 +132,7 @@ export default {
       />
     </div>
     <div class="o-primary-btn o-primary-btn--option-wide o-primary-btn--slider">
-      <b>{{ formatPercents(parseFloat(AIChance)) }} AI messages</b>
+      <b>{{ ai }}</b>
       <SliderComponent
         class="o-primary-btn--slider__slider"
         v-bind="sliderPropsAIChance"
@@ -125,7 +141,7 @@ export default {
       />
     </div>
     <div class="o-primary-btn o-primary-btn--option-wide o-primary-btn--slider">
-      <b>{{ formatPercents(parseFloat(speed)) }} scroll speed</b>
+      <b>{{ sped }}</b>
       <SliderComponent
         class="o-primary-btn--slider__slider"
         v-bind="sliderPropsSpeed"
@@ -136,7 +152,7 @@ export default {
     <ModalOptionsToggleButton
       v-model="includeAnimated"
       class="o-primary-btn o-primary-btn--option-wide"
-      text="Animation Effects:"
+      @text="aniEff"
     />
   </ModalWrapperOptions>
 </template>

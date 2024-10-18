@@ -38,31 +38,28 @@ export default {
       return description ? description() : "";
     },
     topLabel() {
-      return `${this.name} Reality`;
+      return i18n("modal", "celsReality", [this.name]);
     },
     message() {
-      return `Perform a Reality reset and enter ${this.name} Reality, in which:`;
+      return i18n("modal", "celsRealityMessageBase", [this.name]);
     },
     extraLine() {
       switch (this.number) {
         case 0:
           return this.teresaBestAM.eq(1)
-            ? `You have not unlocked the reward for Teresa's Reality yet. Unlocking the reward requires
-              purchasing the Reality study and completing the Reality for the first time.`
-            : `Your highest Teresa completion was for ${format(this.teresaBestAM, 2, 2)} antimatter,
-              gaining you a ${formatX(this.teresaRunMult, 2)} multiplier to Glyph Sacrifice power.`;
+            ? i18n("modal", "teresaNotDone")
+            : i18n("modal", "teresaDone", [format(this.teresaBestAM, 2, 2), formatX(this.teresaRunMult, 2)]);
         case 1: return this.effarigDone
-          ? "Effarig is completed!"
-          : `You are currently on the ${this.effarigLayer} Layer.`;
+          ? i18n("modal", "effarigDone")
+          : i18n("modal", "effarigOnLayer", [this.effarigLayer]);
         case 2: return this.enslavedDone
-          ? "Have... we... not helped enough..."
-          : "We... can help... Let us... help...";
+          ? i18n("modal", "namelessDone")
+          : i18n("modal", "namelessNotDone");
         case 3: return "";
-        case 4: return `Within Ra's Reality, some resources will generate Memory Chunks
-          for Celestial Memories based on their amounts:`;
+        case 4: return i18n("modal", "raMessage");
         case 5: return this.laitelaFastest.gte(300)
-          ? "You have not completed Lai'tela at this tier."
-          : `Your fastest completion on this tier is ${this.laitelaTime}.`;
+          ? i18n("modal", "laiNotThisTier")
+          : i18n("modal", "laiThisTier", [this.laitelaTime]);
         case 6: return "";
         default: throw new Error(`Attempted to start an Unknown Celestial in Celestial Modal Confirmation.`);
       }

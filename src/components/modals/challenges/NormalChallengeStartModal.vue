@@ -27,14 +27,14 @@ export default {
       return i18n("modal", "ncModalEterLabel");
     },
     reward() {
-      return i18n("modal", "ncModalRewardText", [rewardDescription]);
+      return i18n("modal", "ncModalRewardText", [this.rewardDescription]);
     },
     condition() {
       let conditionOfChallenge = this.challenge._config.description;
       if (typeof conditionOfChallenge === "function") {
         conditionOfChallenge = conditionOfChallenge();
       }
-      return i18n("modal", "ncModalConditionText", [conditionOfChallenge]);
+      return i18n("modal", "ncModalConditionText", [this.conditionOfChallenge]);
     },
     begin() {
       return i18n("modal", "begin");

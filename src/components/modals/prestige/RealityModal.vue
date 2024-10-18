@@ -32,46 +32,41 @@ export default {
   computed: {
     firstRealityText() {
       const time = timeDisplayNoDecimals(new Decimal(30 * 60000));
-      return `Reality will reset everything except Challenge records and anything under the General header on the
-        Statistics tab. The first ${formatInt(13)} rows of Achievements are also reset,
-        but you will automatically get one Achievement back every
-        ${time} You will also gain Reality Machines based on your Eternity Points, a
-        Glyph with a level based on your Eternity Points, Replicanti, and Dilated Time, a Perk Point to spend
-        on quality of life upgrades, and unlock various upgrades.`;
+      return i18n("modal", "firstRealityText", [formatInt(13), time]);
     },
     canSacrifice() {
       return RealityUpgrade(19).isEffectActive;
     },
     warnText() {
       if (!this.hasChoice) {
-        return `You currently only have a single option for new Glyphs every
-          Reality. You can unlock the ability to choose from multiple Glyphs by canceling out of this modal and
-          purchasing the START Perk.`;
+        return i18n("modal", "noSTARTwarning");
       }
 
       if (this.hasFilter && this.selectedGlyph === undefined) {
-        return `If you do not choose a Glyph, one will be automatically selected using your Glyph filter.`;
+        return i18n("modal", "noChosenPostFilter");
       }
       return this.selectedGlyph === undefined
-        ? `You must select a Glyph in order to continue.`
+        ? i18n("modal", "noChosenPreFilter")
         : null;
     },
     gained() {
       const gainedResources = [];
-      gainedResources.push(`${quantify("Reality", this.simRealities)}`);
-      gainedResources.push(`${quantify("Perk Point", this.simRealities)}`);
-      gainedResources.push(`${quantify("Reality Machine", this.realityMachines, 2)}`);
+      gainedResources.push(`${quantify(i18n("modal", "real"), this.simRealities)}`);
+      gainedResources.push(`${quantify(i18n("modal", "pp"), this.simRealities)}`);
+      gainedResources.push(`${quantify(i18n("modal", "rm"), this.realityMachines, 2)}`);
       if (this.effarigUnlocked) {
-        gainedResources.push(`${quantify("Relic Shard", this.shardsGained, 2)}`);
+        gainedResources.push(`${quantify(i18n("modal", "rs"), this.shardsGained, 2)}`);
       }
-      return `You will gain ${makeEnumeration(gainedResources)}`;
+      return i18n("modal", "willGainX", [makeEnumeration(gainedResources)]);
     },
     levelStats() {
       // Bit annoying to read due to needing >, <, and =, with = needing a different format.
-      return `You will get a level ${formatInt(this.level)} Glyph on Reality, which is
-        ${this.level.eq(this.bestLevel) ? "equal to" : `
-        ${quantifyInt("level", this.levelDifference)}
-        ${this.level.gt(this.bestLevel) ? "higher" : "lower"} than`} your best.`;
+      let str = "";
+      str = i18n("modal", this.level.gt(this.bestLevel) ? "higherThanBest" : "lowerThanBest");
+      if (this.level.eq(this.bestLevel)) {
+        str = i18n("modal", "equalToBest");
+      }
+      return i18n("modal", "levelStat", [formatInt(this.level), str]);
     },
     confirmationToDisable() {
       return ConfirmationTypes.glyphSelection.isUnlocked() ? "glyphSelection" : undefined;
@@ -143,7 +138,7 @@ export default {
     @confirm="confirmModal(false)"
   >
     <template #header>
-      You are about to Reality
+      {{ i18n("modal", "realityModalHeader") }}
     </template>
     <div
       v-if="firstReality"
@@ -179,33 +174,30 @@ export default {
     </div>
     <div v-if="simRealities.gt(1)">
       <br>
-      After choosing this Glyph the game will simulate the rest of your Realities,
+      {{ i18n("modal", "simRealityTextA") }}
       <br>
-      automatically choosing another {{ quantify("Glyph", simRealities.sub(1)) }}
-      based on your Glyph filter settings.
+      {{ i18n("modal", "simRealityTextB", [quantify(i18n("modal", "glyph"), simRealities.sub(1))]) }}
     </div>
     <div v-if="willAutoPurge">
       <br>
-      Auto-purge is currently enabled; your selected Glyph
+      {{ i18n("modal", "autoPurgeTextA") }}
       <br>
-      may not appear in your inventory after it triggers.
+      {{ i18n("modal", "autoPurgeTextB") }}
     </div>
     <div
       v-if="!hasSpace"
       class="o-warning"
     >
       <span v-if="simRealities.gt(1)">
-        You will be simulating more Realities than you have open inventory space for;
-        this may result in some Glyphs being Sacrificed.
+        {{ i18n("modal", "simRealityWarning") }}
       </span>
       <span v-else>
-        You do not have any free inventory space - your selected Glyph will be automatically
-        {{ canSacrifice ? "Sacrificed" : "deleted" }}!
+        {{ i18n("modal", "noInvSpace", [i18n("modal", sacrificeDelete).split(" $ ")[canSacrifice ? 1 : 0]]) }}
       </span>
     </div>
     <div v-if="confirmationToDisable">
       <br>
-      You can force this modal to appear (even if disabled) by Shift-clicking the Reality button.
+      {{ i18n("modal", "disablingRealityModal") }}
     </div>
     <template
       v-if="canSacrifice && canConfirm"
@@ -215,7 +207,7 @@ export default {
         class="o-primary-btn--width-medium c-modal-message__okay-btn"
         @click="confirmModal(true)"
       >
-        Sacrifice
+        {{ i18n("modal", "sacrifice") }}
       </PrimaryButton>
     </template>
   </ModalWrapperChoice>

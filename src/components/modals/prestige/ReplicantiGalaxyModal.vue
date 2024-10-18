@@ -15,17 +15,15 @@ export default {
   },
   computed: {
     topLabel() {
-      return `You are about to purchase ${quantifyInt("Replicanti Galaxy", this.canBeBought)}`;
+      return i18n("modal", "rgHeader", [quantifyInt(i18n("modal", "rg"), this.canBeBought)]);
     },
     message() {
       const reductionString = this.divideReplicanti
-        ? `divide your Replicanti by ${format(Number.MAX_VALUE, 2, 2)} for each Replicanti Galaxy purchased
-          (${format(this.replicanti, 2, 2)} to
-          ${format(this.replicanti.divide(Decimal.pow(Number.MAX_VALUE, this.canBeBought)), 2, 2)})`
-        : `reset your Replicanti to ${formatInt(1)}`;
-      return `A Replicanti Galaxy boosts Tickspeed the same way an Antimatter Galaxy does. However, it does not
-        increase the cost of Antimatter Galaxies, nor is it affected by multipliers to Antimatter Galaxies specifically.
-        It will ${reductionString}.`;
+        ? i18n("modal", "rgDevideRep", [format(Number.MAX_VALUE, 2, 2), format(this.replicanti, 2, 2),
+          format(this.replicanti.divide(Decimal.pow(Number.MAX_VALUE, this.canBeBought)), 2, 2)
+        ])
+        : i18n("modal", "rgResetRep", [formatInt(1)]);
+      return i18n("modal", "rgMessage", [reductionString]);
     }
   },
   methods: {

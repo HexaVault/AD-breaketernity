@@ -29,6 +29,12 @@ export default {
     },
     usePriority() {
       return TimeStudy.preferredPaths.dimension.usePriority;
+    },
+    dimText() {
+      return i18n("modal", "dimSplit");
+    },
+    paceText() {
+      return i18n("modal", "paceSplit");
     }
   },
   created() {
@@ -73,7 +79,7 @@ export default {
 
 <template>
   <ModalWrapperChoice @confirm="confirmPrefs">
-    <h2>Dimension Split Preference</h2>
+    <h2>{{ dimText }}</h2>
     <div class="l-modal-split-preferences">
       <button
         v-for="(id, name) in dimensionOptions"
@@ -93,7 +99,7 @@ export default {
       </button>
     </div>
     <br>
-    <h2>Pace Split Preference</h2>
+    <h2>{{ paceText }}</h2>
     <div class="l-modal-split-preferences">
       <button
         v-for="(id, name) in paceOptions"

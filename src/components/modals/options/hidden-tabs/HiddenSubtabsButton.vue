@@ -38,6 +38,12 @@ export default {
     isModernUI() {
       return this.$viewModel.newUI;
     },
+    current() {
+      return i18n("modal", "cannotHideCurrent");
+    },
+    option() {
+      return i18n("modal", "cannotHideOption");
+    }
   },
   methods: {
     update() {
@@ -54,7 +60,7 @@ export default {
 
 <template>
   <div
-    v-tooltip="hidable ? isCurrentSubtab ? 'You cannot hide the tab you are on' : '' : 'Options tabs cannot be hidden'"
+    v-tooltip="hidable ? isCurrentSubtab ? current : '' : option"
     :class="classObject"
     @click="toggleVisibility"
   >

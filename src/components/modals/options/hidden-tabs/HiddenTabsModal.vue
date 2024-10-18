@@ -18,6 +18,12 @@ export default {
   },
   computed: {
     tabs: () => Tabs.currentUIFormat,
+    topLabel: () => i18n("modal", "modifyVisibleHeader"),
+    message: () => i18n("modal", "modifyVisibleMessage").split("$"),
+    cantHideNearEnd: () => i18n("modal", "modifyVisibleHeader"),
+    namelessA: () => i18n("modal", "modifyVisibleHeader"),
+    namelessB: () => i18n("modal", "modifyVisibleHeader"),
+    showAll: () => i18n("modal", "modifyVisibleHeader"),
   },
   methods: {
     update() {
@@ -38,29 +44,28 @@ export default {
 <template>
   <ModalWrapperOptions class="l-wrapper">
     <template #header>
-      Modify Visible Tabs
+      {{ topLabel }}
     </template>
     <div class="c-modal--short">
-      Click a button to toggle showing a tab on/off.
+      {{ message[0] }}
       <br>
-      Some tabs cannot be hidden, and you cannot hide your current tab.
+      {{ message[1] }}
       <br>
-      Unhiding a tab in which all subtabs are hidden will also unhide all subtabs,
-      and hiding all subtabs will also hide the tab.
+      {{ message[2] }}
       <br>
       <div v-if="isAlmostEnd">
-        You cannot hide your tabs after unlocking the Galaxy Generator.
+        {{ cantHideNearEnd }}
       </div>
       <div v-if="isEnslaved">
         <br>
-        <i>You must... see everywhere...</i>
+        <i>{{ namelessA }}</i>
         <br>
-        (You cannot hide your tabs within this Reality)
+        {{ namelessB }}
       </div>
       <PrimaryButton
         @click="showAllTabs"
       >
-        Show all tabs
+        {{ showAll }}
       </PrimaryButton>
       <HiddenTabGroup
         v-for="(tab, index) in tabs"

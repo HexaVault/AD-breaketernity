@@ -17,17 +17,22 @@ export default {
   },
   computed: {
     topLabel() {
-      if (!this.isDoomed) return `You are about to Doom your Reality`;
-      return `You are about to perform an Armageddon reset`;
+      if (!this.isDoomed) return i18n("modal", "aboutToDoom");
+      return i18n("modal", "armaResetHeader");
     },
     message() {
       const isFirstReset = (Currency.remnants.eq(0))
-        ? `which will produce ${format(this.nextRealityShardGain, 2, 2)} Reality Shards/s`
-        : `which will increase your Reality Shards gain from ${format(this.realityShardGain, 2, 2)}/s
-          to ${format(this.nextRealityShardGain, 2, 2)}/s`;
+        ? i18n("modal", "ArmaFirstReset", [format(this.nextRealityShardGain, 2, 2)])
+        : i18n("modal", "ArmaNotFirstReset", [format(this.realityShardGain, 2, 2),
+          format(this.nextRealityShardGain, 2, 2)]);
 
-      return `Armageddon will start a new Doomed Reality. You will gain
-      ${quantify("Remnant", this.remnantsGain, 2, 0)} ${isFirstReset}`;
+      return i18n("modal", "ArmaReset", [quantify("Remnant", this.remnantsGain, 2, 0), isFirstReset]);
+    },
+    doomingText() {
+      return i18n("modal", "doomInfo");
+    },
+    isSure() {
+      return i18n("modal", "areYouSure");
     }
   },
   methods: {
@@ -57,13 +62,10 @@ export default {
       v-if="!isDoomed"
       class="c-modal-message__text"
     >
-      Dooming your Reality will reset everything except Challenge records, Celestial progress and anything under
-      the General and Reality header on the Statistics tab. You will not gain any rewards from your progress
-      in your current Reality. Dooming your Reality will also purge most of your unprotected Glyphs and disable
-      certain game mechanics.
+      {{ doomingText }}
       <br>
       <br>
-      Are you sure you want to do this?
+      {{ isSure }}
     </div>
     <div
       v-else

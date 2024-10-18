@@ -14,6 +14,12 @@ export default {
     },
     noConfirmations() {
       return ConfirmationTypes.index.every(x => !x.isUnlocked());
+    },
+    text() {
+      return i18n("modal", "noConfirmations");
+    },
+    topLabel() {
+      return i18n("modal", "confirmationHeader");
     }
   }
 };
@@ -22,12 +28,11 @@ export default {
 <template>
   <ModalWrapperOptions class="c-modal-options__large">
     <template #header>
-      Confirmation Options
+      {{ topLabel }}
     </template>
     <div class="c-modal-options__button-container">
       <span v-if="noConfirmations">
-        You do not have anything that requires confirmation,
-        but if you did it would appear here.
+        {{ text }}
       </span>
       <ConfirmationOptionsEntry
         v-for="entryNumber in count"

@@ -28,6 +28,12 @@ export default {
     colors() {
       return GlyphAppearanceHandler.availableColors;
     },
+    textA() {
+      return i18n("modal", "perGlyphCos", this.name);
+    },
+    textB() {
+      return i18n("modal", "noModCompanion");
+    }
   },
 };
 </script>
@@ -38,10 +44,10 @@ export default {
       v-if="glyphId === -1"
       class="c-name"
     >
-      Appearance Options for {{ name }} Glyphs
+      {{ textA }}
     </span>
     <div v-if="type === 'companion'">
-      Companion Glyphs cannot have their symbol modified.
+      {{ textB }}
     </div>
     <GlyphCustomizationSlidingWindow
       v-else

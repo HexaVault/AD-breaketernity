@@ -41,6 +41,21 @@ export default {
     },
     hasSpecialTypes() {
       return GlyphAppearanceHandler.availableTypes.length > 0;
+    },
+    topLabel() {
+      return i18n("modal", "glyphModTitle");
+    },
+    resetText() {
+      return i18n("modal", "hasCustomSets");
+    },
+    message() {
+      return i18n("modal", "glyphModMessage").split("$");
+    },
+    notes() {
+      return i18n("modal", "glyphModNotes").split("$");
+    },
+    resetCosmetics() {
+      return i18n("modal", "resetCos");
     }
   },
   watch: {
@@ -105,7 +120,7 @@ export default {
 
 <template>
   <div class="c-glyph-customization-group">
-    <b>Custom Glyph Appearance</b>
+    <b>{{ topLabel }}</b>
     <PrimaryToggleButton
       v-model="enabled"
       class="o-primary-btn--subtab-option"
@@ -114,26 +129,26 @@ export default {
     />
     <br>
     <div v-if="hasCustomSets">
-      Reset Appearances to Default:
+      {{ resetText }}
       <PrimaryButton
         class="o-primary-btn--subtab-option"
         :class="{ 'o-primary-btn--disabled' : !enabled }"
         @click="resetAll"
       >
-        All Types
+        {{ message[0] }}
       </PrimaryButton>
       <PrimaryButton
         class="o-primary-btn--subtab-option"
         :class="{ 'o-primary-btn--disabled' : !enabled }"
         @click="resetSingle"
       >
-        This Type
+        {{ message[1] }}
       </PrimaryButton>
       <br>
-      <i>This will not reset any individually-modified Glyphs.</i>
+      <i>{{ message[2] }}</i>
       <br>
       <br>
-      Glyph Type:
+      {{ message[3] }}
       <br>
       <div class="c-type-selection">
         <div
@@ -153,25 +168,24 @@ export default {
         :key="selectedIndex + enabled + defaultKeySwap"
         :type="cosmeticTypes[selectedIndex]"
       />
-      Note: Some options may cause very poor color contrast or readability on certain themes with certain Glyph types.
+      {{ notes[0] }}
     </div>
     <div v-else>
-      You currently have no available options for changing the default appearance of your Glyphs. To unlock some, visit
-      the Shop Tab or beat the game.
+      {{ notes[1] }}
       <br>
       <br>
       <span v-if="hasSpecialTypes">
-        Enabling this setting will allow you to change individual Glyphs to special cosmetic types you have unlocked.
+        {{ notes[2] }}
       </span>
       <span v-else>
-        Enabling or disabling this option will currently do nothing.
+        {{ notes[3] }}
       </span>
     </div>
     <PrimaryButton
       class="o-primary-btn--subtab-option"
       @click="resetIndividual"
     >
-      Reset all individual Glyph cosmetics
+      {{ resetCosmetics }}
     </PrimaryButton>
   </div>
 </template>

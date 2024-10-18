@@ -9,11 +9,8 @@ export const GlyphInfoVue = {
     CURRENT_REFINE: 5,
     MAX_REFINE: 6,
   },
-  labels: ["None", "Level", "Rarity", "Sacrifice Value", "Glyph Filter Score",
-    "Current Refinement Value", "Maximum Refinement Value"]
+  labels: () => i18n("modal", "selectGlyphLabels").split("$")
 };
-
-
 export default {
   name: "SelectGlyphInfoDropdown",
   computed: {
@@ -35,7 +32,7 @@ export default {
       EventHub.dispatch(GAME_EVENT.GLYPH_VISUAL_CHANGE);
     },
     getType(type) {
-      return GlyphInfoVue.labels[type];
+      return GlyphInfoVue.labels()[type];
     }
   }
 };

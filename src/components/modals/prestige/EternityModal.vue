@@ -17,30 +17,35 @@ export default {
   computed: {
     message() {
       return PlayerProgress.eternityUnlocked()
-        ? `Eternity will reset everything except Achievements, Challenge records, and anything under the General header
-          on the Statistics tab.`
-        : `Eternity will reset everything except Achievements, Challenge records, and anything under the General header
-          on the Statistics tab. You will also gain an Eternity Point and unlock various upgrades.`;
+        ? i18n("modal", "eterText")
+        : i18n("modal", "firstEterText");
     },
     gainedEPOnEternity() {
-      return `You will gain ${quantify("Eternity", this.gainedEternities, 2)} 
-      and ${quantify("Eternity Point", this.gainedEternityPoints, 2)} on Eternity.`;
+      return i18n("modal", "gainedOnEter", [quantify(i18n("modal", "eter"), this.gainedEternities, 2),
+        quantify(i18n("modal", "ep"), this.gainedEternityPoints, 2)
+      ]);
     },
     startWithIP() {
       return this.startingIP.gt(0)
-        ? `You will start your next Eternity with ${quantify("Infinity Point", this.startingIP, 2)}.`
+        ? i18n("modal", "startNextEter", [quantify(i18n("modal", "ip"), this.startingIP, 2)])
         : ``;
     },
     eternityChallenge() {
       const ec = EternityChallenge.current;
       if (ec.isFullyCompleted) {
-        return `Eternity Challenge ${ec.id} is already fully completed.`;
+        return i18n("modal", "ecXalreadyMaxed", [ec.id]);
       }
       if (!Perk.studyECBulk.isBought) {
-        return `You will gain one completion of Eternity Challenge ${ec.id}.`;
+        return i18n("modal", "noBulkECcompletion", [ec.id]);
       }
       const gainedCompletions = ec.gainedCompletionStatus.gainedCompletions;
-      return `You will gain ${quantifyInt("completion", gainedCompletions)} for Eternity Challenge ${ec.id}.`;
+      return i18n("modal", "bulkECcompletion", [quantifyInt(i18n("modal", "completion"), gainedCompletions), ec.id]);
+    },
+    topLabelRegular() {
+      return i18n("modal", "eterHeader");
+    },
+    topLabelEC() {
+      return i18n("modal", "completingECheader");
     }
   },
   methods: {
@@ -60,7 +65,7 @@ export default {
 
 <template>
   <ResetModal
-    :header="exitingEC ? 'Complete Eternity Challenge' : 'You are about to Eternity'"
+    :header="exitingEC ? topLabelRegular : topLabelEC"
     :message="message"
     :gained-resources="gainedEPOnEternity"
     :starting-resources="startWithIP"

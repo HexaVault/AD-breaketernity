@@ -31,14 +31,14 @@ export default {
       if (typeof rewardDescription === "function") {
         rewardDescription = rewardDescription();
       }
-      return i18n("modal", "ecModalRewardText", [rewardDescription]);
+      return i18n("modal", "ecModalRewardText", [this.rewardDescription]);
     },
     condition() {
       let conditionOfChallenge = this.challenge._config.description;
       if (typeof conditionOfChallenge === "function") {
         conditionOfChallenge = conditionOfChallenge();
       }
-      return i18n("modal", "ecModalConditionText", [conditionOfChallenge]);
+      return i18n("modal", "ecModalConditionText", [this.conditionOfChallenge]);
     },
     begin() {
       return i18n("modal", "begin");
