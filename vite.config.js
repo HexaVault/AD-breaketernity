@@ -15,9 +15,6 @@ export default defineConfig(({ mode }) => {
         "@": path.resolve(import.meta.dirname, "./src"),
       },
       extensions: [".js", ".vue"]
-    },
-    server: {
-      port: 8080
     }
   };
 });
