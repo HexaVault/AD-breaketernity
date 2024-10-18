@@ -98,7 +98,6 @@ export default {
         AutomatorBackend.pause();
         return;
       }
-      if (player.reality.automator.type === AUTOMATOR_TYPE.BLOCK) this.$emit("automatorplay");
       if (AutomatorBackend.isOn) AutomatorBackend.mode = AUTOMATOR_MODE.RUN;
       else AutomatorBackend.start(this.currentScriptID);
     },

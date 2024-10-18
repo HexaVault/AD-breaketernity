@@ -1031,14 +1031,6 @@ Automator to expand it to fullscreen. You can also drag the boundary between the
 panes if you want more room to write your script or read documentation.
 <br>
 <br>
-By pressing the top-right button on the script pane, you can switch between the Automator's block and text editor
-modes; the block mode may be more approachable if you are unfamiliar with programming. To enter commands in block mode,
-select the command block pane on the right and drag the box for the relevant command into the script pane and drop it
-where you want the command to go. Commands can be freely rearranged by dragging the blocks around if needed. Switching
-between block and text mode will attempt to automatically translate your script as well, although you may lose part of
-your converted script if it contains errors.
-<br>
-<br>
 Just like your entire savefile, individual Automator scripts can be imported and exported from the game.
 Properly-formatted script strings will begin with <b>${GameSaveSerializer.startingString["automator script"]}</b> and
 end with <b>${GameSaveSerializer.endingString["automator script"]}</b>. If this is not the case then part of your script

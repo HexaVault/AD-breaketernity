@@ -5,7 +5,6 @@ export {
 } from "./lexer";
 
 export {
-  blockifyTextAutomator,
   hasCompilationErrors,
   validateLine
 } from "./compiler";

@@ -3,7 +3,6 @@ export default {
   name: "AutomatorScriptDropdownEntryList",
   data() {
     return {
-      isBlock: false,
       currentScriptID: 0,
       runningScriptID: 0,
       isRunning: false,
@@ -40,7 +39,6 @@ export default {
   },
   methods: {
     update() {
-      this.isBlock = player.reality.automator.type === AUTOMATOR_TYPE.BLOCK;
       this.runningScriptID = AutomatorBackend.state.topLevelScript;
       this.isRunning = AutomatorBackend.isRunning;
       this.isPaused = AutomatorBackend.isOn && !AutomatorBackend.isRunning;
@@ -65,7 +63,6 @@ export default {
         this.currentScriptID = Number(Object.keys(storedScripts)[0]);
         player.reality.automator.state.editorScript = this.currentScriptID;
       }
-      if (this.isBlock) this.$nextTick(() => BlockAutomator.updateEditor(this.currentScript));
       this.$parent.openRequest = false;
       AutomatorData.clearUndoData();
     },

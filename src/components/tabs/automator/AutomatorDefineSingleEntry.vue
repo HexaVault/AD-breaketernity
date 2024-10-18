@@ -87,7 +87,6 @@ export default {
       // This makes scripts respond immediately to newly-defined constants if the player types them into the
       // script before defining them here
       AutomatorData.recalculateErrors();
-      if (player.reality.automator.type === AUTOMATOR_TYPE.BLOCK) BlockAutomator.parseTextFromBlocks();
     },
     deleteConstant() {
       AutomatorBackend.deleteConstant(this.aliasString);

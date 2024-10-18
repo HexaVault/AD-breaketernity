@@ -25,12 +25,6 @@ export default {
     to take up the whole browser page for easier editing.
     <br>
     <br>
-    <b>Editor Modes:</b> There are two different editors you can use to write your automator scripts - a block-based
-    editor (default) and a text-based editor. You can swap between the two editor types with the switch in the
-    top-right corner of the left half. Note that scripts with errors may not properly convert between the two modes,
-    which can cause part of your script to be deleted.
-    <br>
-    <br>
     <b>Making Scripts:</b> You can switch between multiple scripts or make new scripts using the dropdown on the
     second row of buttons. The current script can be renamed or deleted with the
     <div class="fas fa-edit c-automator-button-icon" /> and
@@ -38,12 +32,11 @@ export default {
     least one script for you to edit; deleting your last one will automatically create a new blank one.
     <br>
     <br>
-    <b>Writing Scripts:</b> Scripts in the block editor are made by going to the block tab
-    <div class="fas fa-cubes c-automator-button-icon" />, while scripts in the text editor are made by typing into
-    the left half as a text box. In either editor mode, you can also use some smaller premade scripts from the
-    template generator <div class="fas fa-file-code c-automator-button-icon" />. You can undo or redo a limited
-    number of edits using <div class="fas fa-arrow-rotate-left c-automator-button-icon" /> or
-    <div class="fas fa-arrow-rotate-right c-automator-button-icon" />, or by using the respective hotkeys. Edit history
+    <b>Writing Scripts:</b> Scripts in the text editor are made by typing into the left half as a text box. In either
+    editor mode, you can also use some smaller premade scripts from the template generator
+    <div class="fas fa-file-code c-automator-button-icon" />.You can undo or redo a limited number of edits using
+    <div class="fas fa-arrow-rotate-left c-automator-button-icon" /> or
+<div class="fas fa-arrow-rotate-right c-automator-button-icon" />, or by using the respective hotkeys. Edit history
     is cleared upon switching, converting, or deleting scripts.
     <br>
     <br>

@@ -1,4 +1,4 @@
-import { AUTOMATOR_MODE, AUTOMATOR_TYPE } from "./automator/automator-backend";
+import { AUTOMATOR_MODE } from "./automator/automator-backend";
 import { AutomatorPanels } from "@/components/tabs/automator/AutomatorDocs";
 import { deepmergeAll } from "@/utility/deepmerge";
 import { GlyphInfo } from "./secret-formula/reality/core-glyph-info";
@@ -534,7 +534,6 @@ window.player = {
       constants: {},
       constantSortOrder: [],
       execTimer: 0,
-      type: AUTOMATOR_TYPE.TEXT,
       forceUnlock: false,
       currentInfoPane: AutomatorPanels.INTRO_PAGE,
     },

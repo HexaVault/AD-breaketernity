@@ -599,12 +599,10 @@ export const automator = {
         purchasing), or to skip them entirely (eg. not entering an EC if it already has full completions). These blocks
         can be nested if desired, with inner blocks being placed within one another.
         <br><br>
-        In the text editor mode: Specify the inner block with curly braces, with the opening brace { on the same line as
+        Specify the inner block with curly braces, with the opening brace { on the same line as
         the comparison and the closing brace } on its own line after the last line you want inside the block. Inner
         commands do not need to be indented, although it may be visually helpful to do so.
         <br><br>
-        In the block editor mode: These commands come with an empty dotted rectangle which indicates which commands are
-        within the inner block. Subsequent blocks can then be dragged inside the dotted rectangle.
         `,
       examples: [
         `if ec10 completions < 5 {<br>

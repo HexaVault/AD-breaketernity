@@ -25,11 +25,6 @@ export const AUTOMATOR_VAR_TYPES = {
   UNKNOWN: { id: -1, name: "unknown" },
 };
 
-export const AUTOMATOR_TYPE = Object.freeze({
-  TEXT: 0,
-  BLOCK: 1
-});
-
 /**
  * This object represents a single entry on the execution stack. It's a combination
  * of transient and persistent values -- we don't store the compiled script or indices
@@ -162,8 +157,6 @@ export const AutomatorData = {
   isEditorFullscreen: false,
   needsRecompile: true,
   cachedErrors: 0,
-  // This is to hold finished script templates as text in order to make the custom blocks for blockmato
-  blockTemplates: [],
   undoBuffer: [],
   redoBuffer: [],
   charsSinceLastUndoState: 0,
@@ -230,9 +223,7 @@ export const AutomatorData = {
   // any changes made after getting above either limit will never be saved. Note that if the player is on the automator
   // subtab before the automator is unlocked, editor is undefined
   singleScriptCharacters() {
-    return player.reality.automator.type === AUTOMATOR_TYPE.TEXT
-      ? AutomatorTextUI.editor?.getDoc().getValue().length ?? 0
-      : BlockAutomator.parseLines(BlockAutomator.lines).join("\n").length;
+    return AutomatorTextUI.editor?.getDoc().getValue().length ?? 0;
   },
   totalScriptCharacters() {
     return Object.values(player.reality.automator.scripts)
@@ -281,8 +272,7 @@ export const AutomatorData = {
     player.reality.automator.scripts[this.scriptIndex()].content = undoContent;
 
     AutomatorBackend.saveScript(this.scriptIndex(), undoContent);
-    if (player.reality.automator.type === AUTOMATOR_TYPE.TEXT) AutomatorTextUI.editor.setValue(undoContent);
-    else BlockAutomator.updateEditor(undoContent);
+    AutomatorTextUI.editor.setValue(undoContent);
   },
   redoScriptEdit() {
     if (this.redoBuffer.length === 0 || Tabs.current._currentSubtab.name !== "Automator") return;
@@ -293,17 +283,14 @@ export const AutomatorData = {
     player.reality.automator.scripts[this.scriptIndex()].content = redoContent;
 
     AutomatorBackend.saveScript(this.scriptIndex(), redoContent);
-    if (player.reality.automator.type === AUTOMATOR_TYPE.TEXT) AutomatorTextUI.editor.setValue(redoContent);
-    else BlockAutomator.updateEditor(redoContent);
+    AutomatorTextUI.editor.setValue(redoContent);
   }
 };
 
 export const LineEnum = { Active: "active", Event: "event", Error: "error" };
 
-// Manages line highlighting in a way which is agnostic to the current editor mode (line or block). Ironically this is
-// actually easier to manage in block mode as the Vue components render each line individually and we can just
-// conditionally add classes in the template. The highlighting in text mode needs to be spliced and removed inline
-// within the CodeMirror editor
+// Manages line highlighting in a way which is agnostic to the current editor mode.
+// The highlighting in text mode needs to be spliced and removed inline within the CodeMirror editor
 export const AutomatorHighlighter = {
   lines: {
     active: -1,
@@ -312,7 +299,8 @@ export const AutomatorHighlighter = {
   },
 
   updateHighlightedLine(line, key) {
-    if (player.reality.automator.type === AUTOMATOR_TYPE.TEXT && line !== -1) {
+    // eslint-disable-next-line no-negated-condition
+    if (line !== -1) {
       if (!AutomatorTextUI.editor) return;
       this.removeHighlightedTextLine(key);
       this.addHighlightedTextLine(line, key);
@@ -336,7 +324,7 @@ export const AutomatorHighlighter = {
 
   clearAllHighlightedLines() {
     for (const lineType of Object.values(LineEnum)) {
-      if (player.reality.automator.type === AUTOMATOR_TYPE.TEXT && AutomatorTextUI.editor) {
+      if (AutomatorTextUI.editor) {
         for (let line = 0; line < AutomatorTextUI.editor.doc.size; line++) {
           AutomatorTextUI.editor.removeLineClass(line, "background", `c-automator-editor__${lineType}-line`);
           AutomatorTextUI.editor.removeLineClass(line, "gutter", `c-automator-editor__${lineType}-line-gutter`);
@@ -347,29 +335,18 @@ export const AutomatorHighlighter = {
   }
 };
 
-// Manages line highlighting in a way which is agnostic to the current editor mode (line or block)
+// Manages line highlighting in a way which is agnostic to the current editor mode (line)
 export const AutomatorScroller = {
-  // Block editor counts lines differently due to modified loop structure; this method handles that internally
   scrollToRawLine(line) {
-    const targetLine = player.reality.automator.type === AUTOMATOR_TYPE.TEXT
-      ? line
-      : AutomatorBackend.translateLineNumber(line);
-    this.scrollToLine(targetLine);
+    this.scrollToLine(line);
   },
 
   scrollToLine(line) {
-    let editor, textHeight, lineToScroll;
-    if (player.reality.automator.type === AUTOMATOR_TYPE.TEXT) {
-      // We can't use CodeMirror's scrollIntoView() method as that forces the entire viewport to keep the line in view.
-      // This can potentially cause a softlock with "follow execution" enabled on sufficiently short screens.
-      editor = document.querySelector(".CodeMirror-scroll");
-      textHeight = AutomatorTextUI.editor.defaultTextHeight();
-      lineToScroll = line + 1;
-    } else {
-      editor = BlockAutomator.editor;
-      textHeight = 34.5;
-      lineToScroll = line;
-    }
+    // We can't use CodeMirror's scrollIntoView() method as that forces the entire viewport to keep the line in view.
+    // This can potentially cause a softlock with "follow execution" enabled on sufficiently short screens.
+    const editor = document.querySelector(".CodeMirror-scroll");
+    const textHeight = AutomatorTextUI.editor.defaultTextHeight();
+    const lineToScroll = line + 1;
 
     // In both cases we might potentially try to scroll before the editor has properly initialized (ie. the automator
     // itself ends up loading up faster than the editor UI element)
@@ -379,9 +356,6 @@ export const AutomatorScroller = {
     const newScrollPos = textHeight * (lineToScroll - 1);
     if (newScrollPos > editor.scrollTop + paddedHeight) editor.scrollTo(0, newScrollPos - paddedHeight);
     if (newScrollPos < editor.scrollTop) editor.scrollTo(0, newScrollPos);
-    if (player.reality.automator.type === AUTOMATOR_TYPE.BLOCK) {
-      BlockAutomator.gutter.style.bottom = `${editor.scrollTop}px`;
-    }
   }
 };
 
@@ -437,12 +411,8 @@ export const AutomatorBackend = {
     return nameArray.filter(n => n === name).length > 1;
   },
 
-  // Scripts are internally stored and run as text, but block mode has a different layout for loops that
-  // shifts a lot of commands around. Therefore we need to conditionally change it based on mode in order
-  // to make sure the player is presented with the correct line number
   translateLineNumber(num) {
-    if (player.reality.automator.type === AUTOMATOR_TYPE.TEXT) return num;
-    return BlockAutomator.lineNumber(num);
+    return num;
   },
 
   get currentLineNumber() {
@@ -989,29 +959,8 @@ export const AutomatorBackend = {
     this.reset(this.stack._data[0].commands);
   },
 
-  changeModes(scriptID) {
-    Tutorial.moveOn(TUTORIAL_STATE.AUTOMATOR);
-    if (player.reality.automator.type === AUTOMATOR_TYPE.BLOCK) {
-      // This saves the script after converting it.
-      BlockAutomator.parseTextFromBlocks();
-      player.reality.automator.type = AUTOMATOR_TYPE.TEXT;
-    } else {
-      const toConvert = AutomatorTextUI.editor.getDoc().getValue();
-      // Needs to be called to update the lines prop in the BlockAutomator object
-      BlockAutomator.updateEditor(toConvert);
-      AutomatorBackend.saveScript(scriptID, toConvert);
-      player.reality.automator.type = AUTOMATOR_TYPE.BLOCK;
-    }
-    AutomatorHighlighter.clearAllHighlightedLines();
-    EventHub.ui.dispatch(GAME_EVENT.AUTOMATOR_TYPE_CHANGED);
-  },
-
   clearEditor() {
-    if (player.reality.automator.type === AUTOMATOR_TYPE.BLOCK) {
-      BlockAutomator.clearEditor();
-    } else {
-      AutomatorTextUI.clearEditor();
-    }
+    AutomatorTextUI.clearEditor();
   },
 
   stack: {

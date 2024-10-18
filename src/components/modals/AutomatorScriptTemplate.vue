@@ -1,5 +1,4 @@
 <script>
-import { blockifyTextAutomator } from "@/core/automator";
 import ModalWrapper from "@/components/modals/ModalWrapper";
 
 export default {
@@ -32,7 +31,6 @@ export default {
       invalidInputCount: 0,
       templateProps: null,
       currentPreset: "",
-      isBlock: false,
     };
   },
   computed: {
@@ -65,9 +63,6 @@ export default {
     }
   },
   methods: {
-    update() {
-      this.isBlock = player.reality.automator.type === AUTOMATOR_TYPE.BLOCK;
-    },
     paramTypeObject(name) {
       return this.params.find(p => p.name === name);
     },
@@ -122,17 +117,8 @@ export default {
       this.updateTemplateProps();
     },
     copyAndClose() {
-      if (this.isBlock) {
-        const newTemplateBlock = {
-          name: `Template: ${this.name}`,
-          blocks: blockifyTextAutomator(this.templateScript.script).blocks
-        };
-        AutomatorData.blockTemplates.push(newTemplateBlock);
-        GameUI.notify.info("Custom template block created");
-      } else {
-        copyToClipboard(this.templateScript.script);
-        GameUI.notify.info("Template copied to clipboard");
-      }
+      copyToClipboard(this.templateScript.script);
+      GameUI.notify.info("Template copied to clipboard");
       this.emitClose();
     }
   }
@@ -213,7 +199,7 @@ export default {
       class="o-primary-btn"
       @click="copyAndClose"
     >
-      {{ isBlock ? "Create custom template block" : "Copy this template to your clipboard" }} and close this modal
+      Copy this template to your clipboard and close this modal
     </button>
     <button
       v-else

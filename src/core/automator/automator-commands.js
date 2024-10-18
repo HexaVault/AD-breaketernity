@@ -1,4 +1,4 @@
-import { standardizeAutomatorValues, tokenMap as T } from "./lexer";
+import { tokenMap as T } from "./lexer";
 
 /**
  * Note: the $ shorthand for the parser object is required by Chevrotain. Don't mess with it.
@@ -37,7 +37,6 @@ function compileConditionLoop(evalComparison, commands, ctx, isUntil) {
         (start of ${loopStr} loop)`, ctx.startLine);
       return AUTOMATOR_COMMAND_STATUS.SAME_INSTRUCTION;
     },
-    blockCommands: commands,
   };
 }
 
@@ -189,29 +188,6 @@ export const AutomatorCommands = [
         return AUTOMATOR_COMMAND_STATUS.NEXT_INSTRUCTION;
       };
     },
-    blockify: ctx => {
-      const duration = ctx.duration
-        ? `${ctx.duration[0].children.NumberLiteral[0].image} ${ctx.duration[0].children.TimeUnit[0].image}`
-        : undefined;
-      const xHighest = ctx.xHighest ? ctx.xHighest[0].children.$value : undefined;
-      const fixedAmount = ctx.currencyAmount
-        ? `${ctx.currencyAmount[0].children.NumberLiteral[0].image}` +
-          ` ${ctx.currencyAmount[0].children.AutomatorCurrency[0].image.toUpperCase()}`
-        : undefined;
-      const on = Boolean(ctx.On);
-      let input = "";
-
-      if (duration) input = duration;
-      else if (xHighest) input = `${xHighest} x highest`;
-      else if (fixedAmount) input = `${fixedAmount}`;
-      else input = (on ? "ON" : "OFF");
-
-      return {
-        singleSelectionInput: ctx.PrestigeEvent[0].tokenType.name.toUpperCase(),
-        singleTextInput: input,
-        ...automatorBlocksMap.AUTO
-      };
-    }
   },
   {
     id: "blackHole",
@@ -242,10 +218,6 @@ export const AutomatorCommands = [
         return AUTOMATOR_COMMAND_STATUS.NEXT_INSTRUCTION;
       };
     },
-    blockify: ctx => ({
-      singleSelectionInput: ctx.On ? "ON" : "OFF",
-      ...automatorBlocksMap["BLACK HOLE"]
-    })
   },
   {
     id: "blob",
@@ -258,9 +230,6 @@ export const AutomatorCommands = [
     },
     // This is an easter egg, it shouldn't do anything
     compile: () => () => AUTOMATOR_COMMAND_STATUS.SKIP_INSTRUCTION,
-    blockify: () => ({
-      ...automatorBlocksMap.BLOB,
-    })
   },
   {
     id: "comment",
@@ -273,10 +242,6 @@ export const AutomatorCommands = [
     },
     // Comments should be no-ops
     compile: () => () => AUTOMATOR_COMMAND_STATUS.SKIP_INSTRUCTION,
-    blockify: ctx => ({
-      ...automatorBlocksMap.COMMENT,
-      singleTextInput: ctx.Comment[0].image.replace(/(#|\/\/)\s?/u, ""),
-    })
   },
   {
     id: "ifBlock",
@@ -317,18 +282,6 @@ export const AutomatorCommands = [
         blockCommands: commands,
       };
     },
-    blockify: (ctx, B) => {
-      const commands = [];
-      B.visit(ctx.block, commands);
-      const comparison = B.visit(ctx.comparison);
-      return {
-        nest: commands,
-        ...automatorBlocksMap.IF,
-        ...comparison,
-        genericInput1: standardizeAutomatorValues(comparison.genericInput1),
-        genericInput2: standardizeAutomatorValues(comparison.genericInput2)
-      };
-    }
   },
   {
     id: "notify",
@@ -351,10 +304,6 @@ export const AutomatorCommands = [
         return AUTOMATOR_COMMAND_STATUS.NEXT_INSTRUCTION;
       };
     },
-    blockify: ctx => ({
-      ...automatorBlocksMap.NOTIFY,
-      singleTextInput: (ctx.StringLiteral || ctx.StringLiteralSingleQuote)[0].image,
-    })
   },
   {
     // Note: this has to appear before pause
@@ -399,7 +348,8 @@ export const AutomatorCommands = [
           S.commandState = { timeMs: 0 };
           AutomatorData.logCommandEvent(`Pause started (waiting ${timeString})`, ctx.startLine);
         } else {
-          S.commandState.timeMs += Decimal.max(Time.trueDeltaTime.totalMilliseconds, AutomatorBackend.currentInterval).toNumber();
+          S.commandState.timeMs += Decimal.max(Time.trueDeltaTime.totalMilliseconds,
+            AutomatorBackend.currentInterval).toNumber();
         }
         const finishPause = S.commandState.timeMs >= duration;
         if (finishPause) {
@@ -409,19 +359,6 @@ export const AutomatorCommands = [
         return AUTOMATOR_COMMAND_STATUS.NEXT_TICK_SAME_INSTRUCTION;
       };
     },
-    blockify: ctx => {
-      let blockArg;
-      if (ctx.duration) {
-        const c = ctx.duration[0].children;
-        blockArg = `${c.NumberLiteral[0].image} ${c.TimeUnit[0].image}`;
-      } else {
-        blockArg = `${ctx.Identifier[0].image}`;
-      }
-      return {
-        ...automatorBlocksMap.PAUSE,
-        singleTextInput: blockArg
-      };
-    }
   },
   {
     id: "prestige",
@@ -478,13 +415,6 @@ export const AutomatorCommands = [
           : AUTOMATOR_COMMAND_STATUS.NEXT_TICK_NEXT_INSTRUCTION;
       };
     },
-    blockify: ctx => ({
-      ...automatorBlocksMap[
-        ctx.PrestigeEvent[0].tokenType.name.toUpperCase()
-      ],
-      nowait: ctx.Nowait !== undefined,
-      respec: ctx.Respec !== undefined
-    })
   },
   {
     id: "startDilation",
@@ -508,7 +438,6 @@ export const AutomatorCommands = [
       }
       return AUTOMATOR_COMMAND_STATUS.NEXT_TICK_SAME_INSTRUCTION;
     },
-    blockify: () => ({ singleSelectionInput: "DILATION", ...automatorBlocksMap.START })
   },
   {
     id: "startEC",
@@ -541,11 +470,6 @@ export const AutomatorCommands = [
         return AUTOMATOR_COMMAND_STATUS.NEXT_TICK_SAME_INSTRUCTION;
       };
     },
-    blockify: ctx => ({
-      singleSelectionInput: "EC",
-      singleTextInput: ctx.eternityChallenge[0].children.$ecNumber,
-      ...automatorBlocksMap.START
-    })
   },
   {
     id: "storeGameTime",
@@ -584,11 +508,6 @@ export const AutomatorCommands = [
         return AUTOMATOR_COMMAND_STATUS.NEXT_INSTRUCTION;
       };
     },
-    blockify: ctx => ({
-      // eslint-disable-next-line no-nested-ternary
-      singleSelectionInput: ctx.Use ? "USE" : (ctx.On ? "ON" : "OFF"),
-      ...automatorBlocksMap["STORE GAME TIME"]
-    })
   },
   {
     id: "studiesBuy",
@@ -671,11 +590,6 @@ export const AutomatorCommands = [
         return AUTOMATOR_COMMAND_STATUS.NEXT_INSTRUCTION;
       };
     },
-    blockify: ctx => ({
-      singleTextInput: ctx.$studies.image,
-      nowait: ctx.Nowait !== undefined,
-      ...automatorBlocksMap["STUDIES PURCHASE"]
-    })
   },
   {
     id: "studiesLoad",
@@ -756,12 +670,6 @@ export const AutomatorCommands = [
           : AUTOMATOR_COMMAND_STATUS.NEXT_TICK_SAME_INSTRUCTION;
       };
     },
-    blockify: ctx => ({
-      singleSelectionInput: ctx.Name ? "NAME" : "ID",
-      singleTextInput: ctx.Name ? player.timestudy.presets[ctx.$presetIndex - 1].name : ctx.$presetIndex,
-      nowait: ctx.Nowait !== undefined,
-      ...automatorBlocksMap["STUDIES LOAD"]
-    })
   },
   {
     id: "studiesRespec",
@@ -778,7 +686,6 @@ export const AutomatorCommands = [
       AutomatorData.logCommandEvent(`Turned study respec ON`, ctx.startLine);
       return AUTOMATOR_COMMAND_STATUS.NEXT_INSTRUCTION;
     },
-    blockify: () => automatorBlocksMap["STUDIES RESPEC"]
   },
   {
     id: "unlockDilation",
@@ -811,11 +718,6 @@ export const AutomatorCommands = [
         return AUTOMATOR_COMMAND_STATUS.NEXT_TICK_SAME_INSTRUCTION;
       };
     },
-    blockify: ctx => ({
-      singleSelectionInput: "DILATION",
-      nowait: ctx.Nowait !== undefined,
-      ...automatorBlocksMap.UNLOCK
-    })
   },
   {
     id: "unlockEC",
@@ -848,12 +750,6 @@ export const AutomatorCommands = [
         return AUTOMATOR_COMMAND_STATUS.NEXT_TICK_SAME_INSTRUCTION;
       };
     },
-    blockify: ctx => ({
-      singleSelectionInput: "EC",
-      singleTextInput: ctx.eternityChallenge[0].children.$ecNumber,
-      nowait: ctx.Nowait !== undefined,
-      ...automatorBlocksMap.UNLOCK
-    })
   },
   {
     id: "untilLoop",
@@ -912,25 +808,6 @@ export const AutomatorCommands = [
         blockCommands: commands
       };
     },
-    blockify: (ctx, B) => {
-      const commands = [];
-      B.visit(ctx.block, commands);
-      const comparison = B.visit(ctx.comparison);
-      if (ctx.comparison) {
-        return {
-          nest: commands,
-          ...automatorBlocksMap.UNTIL,
-          ...comparison,
-          genericInput1: standardizeAutomatorValues(comparison.genericInput1),
-          genericInput2: standardizeAutomatorValues(comparison.genericInput2)
-        };
-      }
-      return {
-        genericInput1: ctx.PrestigeEvent[0].tokenType.name.toUpperCase(),
-        nest: commands,
-        ...automatorBlocksMap.UNTIL
-      };
-    }
   },
   {
     id: "waitCondition",
@@ -964,18 +841,6 @@ export const AutomatorCommands = [
       AutomatorData.isWaiting = true;
       return AUTOMATOR_COMMAND_STATUS.NEXT_TICK_SAME_INSTRUCTION;
     },
-    blockify: (ctx, B) => {
-      const commands = [];
-      B.visit(ctx.block, commands);
-      const comparison = B.visit(ctx.comparison);
-      return {
-        nest: commands,
-        ...automatorBlocksMap.WAIT,
-        ...comparison,
-        genericInput1: standardizeAutomatorValues(comparison.genericInput1),
-        genericInput2: standardizeAutomatorValues(comparison.genericInput2)
-      };
-    }
   },
   {
     id: "waitEvent",
@@ -1011,10 +876,6 @@ export const AutomatorCommands = [
         return AUTOMATOR_COMMAND_STATUS.NEXT_TICK_SAME_INSTRUCTION;
       };
     },
-    blockify: ctx => ({
-      genericInput1: ctx.PrestigeEvent[0].tokenType.name.toUpperCase(),
-      ...automatorBlocksMap.WAIT
-    })
   },
   {
     id: "waitBlackHole",
@@ -1050,13 +911,6 @@ export const AutomatorCommands = [
       AutomatorData.isWaiting = true;
       return AUTOMATOR_COMMAND_STATUS.NEXT_TICK_SAME_INSTRUCTION;
     },
-    blockify: ctx => ({
-      genericInput1: "BLACK HOLE",
-      // Note: In this particular case we aren't actually storing a comparison operator. This is still okay
-      // because internally this is just the variable for the second slot and has no special treatment beyond that
-      compOperator: ctx.BlackHoleStr ? ctx.BlackHoleStr[0].image.toUpperCase() : "OFF",
-      ...automatorBlocksMap.WAIT
-    })
   },
   {
     id: "whileLoop",
@@ -1073,18 +927,6 @@ export const AutomatorCommands = [
       return V.checkBlock(ctx, ctx.While);
     },
     compile: (ctx, C) => compileConditionLoop(C.visit(ctx.comparison), C.visit(ctx.block), ctx, false),
-    blockify: (ctx, B) => {
-      const commands = [];
-      B.visit(ctx.block, commands);
-      const comparison = B.visit(ctx.comparison);
-      return {
-        nest: commands,
-        ...automatorBlocksMap.WHILE,
-        ...comparison,
-        genericInput1: standardizeAutomatorValues(comparison.genericInput1),
-        genericInput2: standardizeAutomatorValues(comparison.genericInput2)
-      };
-    }
   },
   {
     id: "stop",
@@ -1099,8 +941,5 @@ export const AutomatorCommands = [
       AutomatorData.logCommandEvent(`Automator execution stopped with STOP command`, ctx.startLine);
       return AUTOMATOR_COMMAND_STATUS.HALT;
     },
-    blockify: () => ({
-      ...automatorBlocksMap.STOP,
-    })
   }
 ];

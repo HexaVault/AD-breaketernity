@@ -1,6 +1,4 @@
 <script>
-import { AUTOMATOR_TYPE } from "@/core/automator/automator-backend";
-import AutomatorBlocks from "./AutomatorBlocks";
 import AutomatorButton from "./AutomatorButton";
 import AutomatorDataTransferPage from "./AutomatorDataTransferPage";
 import AutomatorDefinePage from "./AutomatorDefinePage";
@@ -20,7 +18,6 @@ export const AutomatorPanels = {
   DATA_TRANSFER: 4,
   CONSTANTS: 5,
   TEMPLATES: 6,
-  BLOCKS: 7
 };
 
 export default {
@@ -31,7 +28,6 @@ export default {
     AutomatorErrorPage,
     AutomatorEventLog,
     AutomatorDataTransferPage,
-    AutomatorBlocks,
     AutomatorDocsIntroPage,
     AutomatorDocsTemplateList,
     AutomatorDefinePage,
@@ -40,7 +36,6 @@ export default {
   },
   data() {
     return {
-      isBlock: false,
       infoPaneID: 1,
       errorCount: 0,
       editingName: false,
@@ -122,7 +117,6 @@ export default {
   created() {
     this.on$(GAME_EVENT.GAME_LOAD, () => this.onGameLoad());
     this.on$(GAME_EVENT.AUTOMATOR_SAVE_CHANGED, () => this.onGameLoad());
-    this.on$(GAME_EVENT.AUTOMATOR_TYPE_CHANGED, () => this.openMatchingAutomatorTypeDocs());
     this.onGameLoad();
   },
   destroyed() {
@@ -130,7 +124,6 @@ export default {
   },
   methods: {
     update() {
-      this.isBlock = player.reality.automator.type === AUTOMATOR_TYPE.BLOCK;
       this.infoPaneID = player.reality.automator.currentInfoPane;
       this.errorCount = AutomatorData.currentErrors().length;
       this.runningScriptID = AutomatorBackend.state.topLevelScript;
@@ -173,34 +166,10 @@ export default {
         player.reality.automator.state.editorScript = this.currentScriptID;
         AutomatorData.clearUndoData();
       }
-
-      // This gets checked whenever the editor pane is foricibly changed to a different script, which may or may not
-      // have block-parsable commands. It additionally also gets checked on new script creation, where we need to
-      // suppress the error modal instead
-      if (this.isBlock && BlockAutomator.hasUnparsableCommands(this.currentScript) && this.currentScript !== "") {
-        AutomatorBackend.changeModes(this.currentScriptID);
-        Modal.message.show("Some script commands were unrecognizable - defaulting to text editor.");
-      }
-
-      this.$nextTick(() => {
-        BlockAutomator.updateEditor(this.currentScript);
-        if (!this.isBlock && AutomatorTextUI.editor) AutomatorTextUI.editor.performLint();
-      });
-    },
-    fixAutomatorTypeDocs() {
-      const automator = player.reality.automator;
-      if (automator.currentInfoPane === AutomatorPanels.COMMANDS && automator.type === AUTOMATOR_TYPE.BLOCK) {
-        this.openMatchingAutomatorTypeDocs();
-      }
-      if (automator.currentInfoPane === AutomatorPanels.BLOCKS && automator.type === AUTOMATOR_TYPE.TEXT) {
-        this.openMatchingAutomatorTypeDocs();
-      }
     },
     openMatchingAutomatorTypeDocs() {
       const automator = player.reality.automator;
-      automator.currentInfoPane = automator.type === AUTOMATOR_TYPE.BLOCK
-        ? AutomatorPanels.BLOCKS
-        : AutomatorPanels.COMMANDS;
+      automator.currentInfoPane = AutomatorPanels.COMMANDS;
     },
     rename() {
       this.editingName = true;
@@ -284,13 +253,6 @@ export default {
           :class="activePanelClass(panelEnum.TEMPLATES)"
           @click="infoPaneID = panelEnum.TEMPLATES"
         />
-        <AutomatorButton
-          v-if="isBlock"
-          v-tooltip="'Command menu for Block editor mode'"
-          class="fa-cubes"
-          :class="activePanelClass(panelEnum.BLOCKS)"
-          @click="infoPaneID = panelEnum.BLOCKS"
-        />
         <span
           v-if="fullScreen"
           class="c-automator__status-text c-automator__status-text--small"
@@ -363,7 +325,6 @@ export default {
       <AutomatorDataTransferPage v-else-if="infoPaneID === panelEnum.DATA_TRANSFER" />
       <AutomatorDefinePage v-else-if="infoPaneID === panelEnum.CONSTANTS" />
       <AutomatorDocsTemplateList v-else-if="infoPaneID === panelEnum.TEMPLATES" />
-      <AutomatorBlocks v-else-if="infoPaneID === panelEnum.BLOCKS" />
     </div>
   </div>
 </template>
