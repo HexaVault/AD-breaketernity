@@ -993,7 +993,10 @@ export const AutomatorCommands = [
     id: "goto",
     rule: $ => () => {
       $.CONSUME(T.GoTo);
-      $.CONSUME(T.NumberLiteral);
+      $.OR([
+        { ALT: () => $.CONSUME(T.NumberLiteral) },
+        { ALT: () => $.CONSUME(T.Identifier) }
+      ])
     },
     validate: ctx => {
       ctx.startLine = ctx.GoTo[0].startLine;
@@ -1002,7 +1005,8 @@ export const AutomatorCommands = [
     compile: ctx => {
       
       return S => { // if your going to make functions you'll need to copy this
-        const line = Math.abs(Number.parseInt(ctx.NumberLiteral[0].image));
+        const v = ctx?.NumberLiteral?.[0]?.image || ctx?.Identifier?.[0]?.image;
+        const line = v instanceof Decimal ? v.toNumber() : Math.abs(Number.parseInt(v));
         AutomatorBackend.initializeFromSave()
         let depth = 0;
 
@@ -1072,7 +1076,7 @@ export const AutomatorCommands = [
     validate: (ctx, V) => {
       const k = ctx.setValue[0].children;
       const O = k.SetOperator[0].image;
-      const idenValue = k.Identifier ? player.reality.automator.vars[k.Identifier[0].image] || player.reality.automator.constants[k.Identifier[0].image] : undefined;
+      // const idenValue = k.Identifier ? player.reality.automator.vars[k.Identifier[0].image] || player.reality.automator.constants[k.Identifier[0].image] : undefined;
 
       if(O == '+=' && !(k.StringLiteral || k.StringLiteralSingleQuote || k.NumberLiteral || k.Identifier)) {
         V.addError(k, `The "${O}" operation is only useable by Numbers and Strings`, ctx.line);
