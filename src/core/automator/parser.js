@@ -61,15 +61,31 @@ class AutomatorParser extends Parser {
     ]), { resyncEnabled: false, });
 
     $.RULE("comparison", () => {
-      $.SUBRULE($.compareValue);
-      $.CONSUME(T.ComparisonOperator);
-      $.SUBRULE2($.compareValue);
+      $.SUBRULE($.compareValue),
+      $.OPTION(() => {
+        $.CONSUME(T.ComparisonOperator);
+        $.SUBRULE2($.compareValue);
+      })
+    });
+
+    $.RULE("setValue", () => {
+      $.CONSUME(T.Identifier);
+      $.CONSUME(T.SetOperator); 
+      $.OR([
+        { ALT: () => $.CONSUME(T.AutomatorCurrency)},
+        { ALT: () => $.CONSUME(T.NumberLiteral)},
+        { ALT: () => $.CONSUME(T.StringLiteral)},
+        { ALT: () => $.CONSUME(T.StringLiteralSingleQuote)},
+        { ALT: () => $.CONSUME2(T.Bool)},
+        { ALT: () => $.CONSUME2(T.Identifier)},
+      ])
     });
 
     $.RULE("compareValue", () => $.OR([
       { ALT: () => $.CONSUME(T.NumberLiteral) },
-      { ALT: () => $.CONSUME(T.Identifier) },
       { ALT: () => $.CONSUME(T.AutomatorCurrency) },
+      { ALT: () => $.CONSUME(T.Bool) },
+      { ALT: () => $.CONSUME(T.Identifier) },
     ]));
 
     $.RULE("duration", () => {

@@ -1,3 +1,4 @@
+import { AutomatorBackend } from "./automator-backend";
 import { tokenMap as T } from "./lexer";
 
 /**
@@ -37,6 +38,7 @@ function compileConditionLoop(evalComparison, commands, ctx, isUntil) {
         (start of ${loopStr} loop)`, ctx.startLine);
       return AUTOMATOR_COMMAND_STATUS.SAME_INSTRUCTION;
     },
+    blockCommands: commands
   };
 }
 
@@ -46,9 +48,14 @@ function parseConditionalIntoText(ctx) {
   const getters = comp.compareValue.map(cv => {
     if (cv.children.AutomatorCurrency) return () => cv.children.AutomatorCurrency[0].image;
     const val = cv.children.$value;
-    if (typeof val === "string") return () => val;
+    const key = cv?.children?.Identifier?.[0]?.image;
+    if (typeof key == "string" && player.reality.automator.vars[key] != undefined) return () => format(player.reality.automator.vars[key], 2, 2);
+    if (typeof val == "string") return () => new Decimal(val);
     return () => format(val, 2, 2);
   });
+  if(ctx.comparison.length === 1) {
+    return `${getters[0]()}`
+  }
   const compareFn = comp.ComparisonOperator[0].image;
   return `${getters[0]()} ${compareFn} ${getters[1]()}`;
 }
@@ -196,6 +203,7 @@ export const AutomatorCommands = [
       $.OR([
         { ALT: () => $.CONSUME(T.On) },
         { ALT: () => $.CONSUME(T.Off) },
+        { ALT: () => $.CONSUME(T.Toggle) },
       ]);
     },
     validate: ctx => {
@@ -205,10 +213,25 @@ export const AutomatorCommands = [
     compile: ctx => {
       const on = Boolean(ctx.On);
       return () => {
-        if (on === BlackHoles.arePaused) BlackHoles.togglePause();
+        if(ctx.Toggle) BlackHoles.togglePause();
+        else if (on === BlackHoles.arePaused) BlackHoles.togglePause();
+
         let blackHoleEvent;
         if (BlackHole(1).isUnlocked) {
-          blackHoleEvent = `Black Holes toggled ${ctx.On ? "ON" : "OFF"}`;
+          if(ctx.Toggle){
+            if(BlackHole(2).isUnlocked){
+              blackHoleEvent = `Black Holes toggled ${BlackHoles.arePaused ? "OFF" : "ON"}`;
+            }
+            else{
+              blackHoleEvent = `Black Hole toggled ${BlackHoles.arePaused ? "OFF" : "ON"}`;
+            }
+          }
+          else if(BlackHole(2).isUnlocked){
+            blackHoleEvent = `Black Holes toggled ${ctx.On ? "ON" : "OFF"}`;
+          }
+          else{
+            blackHoleEvent = `Black Hole toggled ${ctx.On ? "ON" : "OFF"}`;
+          }
         } else if (Enslaved.isRunning || Pelle.isDisabled("blackhole")) {
           blackHoleEvent = "Black Hole command ignored because BH is disabled in your current Reality";
         } else {
@@ -260,6 +283,7 @@ export const AutomatorCommands = [
     compile: (ctx, C) => {
       const evalComparison = C.visit(ctx.comparison);
       const commands = C.visit(ctx.block);
+      const EOC = ctx.RCurly[0].startLine + 1;
       return {
         run: S => {
           // If the commandState is empty, it means we haven't evaluated the if yet
@@ -280,6 +304,7 @@ export const AutomatorCommands = [
           return AUTOMATOR_COMMAND_STATUS.SAME_INSTRUCTION;
         },
         blockCommands: commands,
+        EOC: EOC
       };
     },
   },
@@ -290,6 +315,7 @@ export const AutomatorCommands = [
       $.OR([
         { ALT: () => $.CONSUME(T.StringLiteral) },
         { ALT: () => $.CONSUME(T.StringLiteralSingleQuote) },
+        { ALT: () => $.CONSUME(T.Identifier) },
       ]);
     },
     validate: ctx => {
@@ -299,8 +325,9 @@ export const AutomatorCommands = [
     compile: ctx => {
       const notifyText = ctx.StringLiteral || ctx.StringLiteralSingleQuote;
       return () => {
-        GameUI.notify.automator(`Automator: ${notifyText[0].image}`);
-        AutomatorData.logCommandEvent(`NOTIFY call: ${notifyText[0].image}`, ctx.startLine);
+        const text = player.reality.automator.vars[ctx?.Identifier?.[0]?.image] || notifyText?.[0]?.image;
+        GameUI.notify.automator(`Automator: ${text}`);
+        AutomatorData.logCommandEvent(`NOTIFY call: ${text}`, ctx.startLine);
         return AUTOMATOR_COMMAND_STATUS.NEXT_INSTRUCTION;
       };
     },
@@ -805,7 +832,7 @@ export const AutomatorCommands = [
           ctx.startLine);
           return AUTOMATOR_COMMAND_STATUS.SAME_INSTRUCTION;
         },
-        blockCommands: commands
+        blockCommands: commands,
       };
     },
   },
@@ -941,5 +968,167 @@ export const AutomatorCommands = [
       AutomatorData.logCommandEvent(`Automator execution stopped with STOP command`, ctx.startLine);
       return AUTOMATOR_COMMAND_STATUS.HALT;
     },
+    blockify: () => ({
+      ...automatorBlocksMap.STOP,
+    })
+  },
+  {
+    id: "restart",
+    rule: $ => () => {
+      $.CONSUME(T.Restart);
+    },
+    validate: ctx => {
+      ctx.startLine = ctx.Restart[0].startLine;
+      return true;
+    },
+    compile: ctx => () => {
+      AutomatorData.logCommandEvent(`Automator execution reset with Resarted command`, ctx.startLine);
+      return AUTOMATOR_COMMAND_STATUS.RESTART;
+    },
+    blockify: () => ({
+      ...automatorBlocksMap.Restart,
+    })
+  },
+  {
+    id: "goto",
+    rule: $ => () => {
+      $.CONSUME(T.GoTo);
+      $.CONSUME(T.NumberLiteral);
+    },
+    validate: ctx => {
+      ctx.startLine = ctx.GoTo[0].startLine;
+      return true;
+    },
+    compile: ctx => {
+      
+      return S => { // if your going to make functions you'll need to copy this
+        const line = Math.abs(Number.parseInt(ctx.NumberLiteral[0].image));
+        AutomatorBackend.initializeFromSave()
+        let depth = 0;
+
+        const block = [];
+        let com = undefined;
+        const ida = []
+
+        const d = (commands, parCommand) => {// make this work better
+          if(depth > 5 || com != undefined) return;
+          commands.forEach((command,index) => {
+            
+            if(command.lineNumber == line){
+              com = {command, depth, index};
+              return;
+            }
+
+            if(command.blockCommands){
+              depth++;
+              d(command.blockCommands, command);
+              if(com != undefined) {
+                block.push(command.blockCommands);
+                ida.push({command, index, depth, EOC: command.EOC});
+              };
+              depth--;
+              return;
+            }
+          })
+          
+        }
+
+        d(S.commands);
+
+        if(com != undefined) {
+          if(block.length != 0) {
+            block.reverse().forEach(x => AutomatorBackend.push(x));
+            ida.forEach(c => {
+              // AutomatorBackend.stack._data[c.depth].commandIndex = c.index;
+              if (c.EOC != undefined) AutomatorBackend.stack._data[c.depth].commandState = {
+                advanceOnPop: true,
+                ifEndLine: c.EOC
+              };
+            });
+          }
+
+          AutomatorBackend.stack._data[com.depth].commandIndex = com.index;
+          
+          AutomatorData.logCommandEvent(`Automator execution line is now ${line} from the GoTo command`, ctx.startLine);
+          return AUTOMATOR_COMMAND_STATUS.SET_NEW_INSTRUCTION;
+        }
+        else{
+          AutomatorData.logCommandEvent(`GoTo failed to find any command within 5 code blocks`, ctx.startLine);
+          return AUTOMATOR_COMMAND_STATUS.SKIP_INSTRUCTION;
+        }
+
+      }
+    },
+    blockify: () => ({
+      ...automatorBlocksMap.GOTO,
+    })
+  },
+  {
+    id: "var",
+    rule: $ => () => {
+      $.CONSUME(T.Var);
+      $.SUBRULE($.setValue);
+    },
+    validate: (ctx, V) => {
+      const k = ctx.setValue[0].children;
+      const O = k.SetOperator[0].image;
+      const idenValue = k.Identifier ? player.reality.automator.vars[k.Identifier[0].image] || player.reality.automator.constants[k.Identifier[0].image] : undefined;
+
+      if(O == '+=' && !(k.StringLiteral || k.StringLiteralSingleQuote || k.NumberLiteral || k.Identifier)) {
+        V.addError(k, `The "${O}" operation is only useable by Numbers and Strings`, ctx.line);
+        return false;
+      }
+      else if (O != '=' && !(k.NumberLiteral || k.Identifier)){
+        V.addError(k, `The "${O}" operation is only useable by Numbers`, `The "${O}" operation is only useable by Numbers`);
+        return false;
+      }
+
+      ctx.startLine = ctx.Var[0].startLine;
+      return true;
+    },
+    compile: ctx => {
+      
+      return () => {
+        const k = ctx.setValue[0].children;
+        const O = k.SetOperator[0].image;
+        const key = k.Identifier[0].image;  
+        const AC = k.AutomatorCurrency?.[0]?.tokenType.$getter().toString();
+
+        if(O == '='){
+          player.reality.automator.vars[key] = AC || k?.NumberLiteral?.[0]?.image || k?.StringLiteral?.[0]?.image || k?.StringLiteralSingleQuote?.[0]?.image || k?.Bool?.[0]?.image
+           || player.reality.automator.vars[key] || player.reality.automator.constants[key];
+        }
+        else if(O == '+='){
+          if(k.StringLiteral || k.StringLiteralSingleQuote) {
+              player.reality.automator.vars[key] += (k?.StringLiteral?.[0]?.image || k?.StringLiteralSingleQuote?.[0]?.image);
+          }
+          else{
+            player.reality.automator.vars[key] = Decimal.add(player.reality.automator.vars[key], k.NumberLiteral[0].image).toString();
+          }
+        }
+        else if(O == '-='){
+            player.reality.automator.vars[key] = Decimal.sub(player.reality.automator.vars[key], k.NumberLiteral[0].image).toString();
+        }
+        else if(O == '*='){
+            player.reality.automator.vars[key] = Decimal.mul(player.reality.automator.vars[key], k.NumberLiteral[0].image).toString();
+        }
+        else if(O == '/='){
+            player.reality.automator.vars[key] = Decimal.div(player.reality.automator.vars[key], k.NumberLiteral[0].image).toString();
+        }
+        else if(O == '^='){
+            player.reality.automator.vars[key] = Decismal.pow(player.reality.automator.vars[key], k.NumberLiteral[0].image).toString();
+        }
+
+        AutomatorData.logCommandEvent(`Set value "${key}" to ${player.reality.automator.vars[key]}`, ctx.startLine);
+        return AUTOMATOR_COMMAND_STATUS.NEXT_INSTRUCTION;
+      }
+    },
+    blockify: ctx => ({
+      singleSelectionInput: "VAR",
+      NameID: ctx.Identifier,
+      operator: ctx.SetOperator,
+      NumberLiteral: ctx.NumberLiteral,
+      ...automatorBlocksMap.VAR,
+    })
   }
 ];

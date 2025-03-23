@@ -8,7 +8,7 @@ export default {
   name: "DescriptionDisplay",
   props: {
     config: {
-      type: Object,
+      type: Object | Function | String,
       required: false,
       default: undefined
     },

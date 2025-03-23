@@ -43,7 +43,7 @@ window.decimalCubicSolution = function decimalCubicSolution(a, b, c, d, n = fals
   const delta0 = b.pow(2).sub(a.times(3).times(c));
   const delta1 = b.pow(3).times(2).sub(a.times(b).times(c).times(9)).add(a.pow(2).times(d).times(27));
   const ne = Decimal.sqrt(delta1.pow(2).sub(delta0.pow(3).times(4))).mul(n ? -1 : 1);
-  const C = Decimal.cbrt(delta1.add(ne).div(2));
+  let C = Decimal.cbrt(delta1.add(ne).div(2));
   // If C = 0, delta1 + ne -> delta1 - ne
   if (C.eq(0)) C = Decimal.cbrt(delta1.sub(ne).div(2));
   const x = DC.D1.div(a.times(3)).neg().times(b.add(C).add(delta0.div(C.eq(0) ? 0 : delta0.div(C))));

@@ -552,7 +552,7 @@ class AntimatterDimensionState extends DimensionState {
       }
     }
     if (Tickspeed.cost.e === this.cost.e) {
-      challengeData.nc9tickspeedCostIncreases = challengeData.nc9tickspeedCostIncreases.add(1);
+      player.challengeData.nc9tickspeedCostIncreases = player.challengeData.nc9tickspeedCostIncreases.add(1);
     }
   }
 

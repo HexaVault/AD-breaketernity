@@ -529,8 +529,8 @@ window.player = {
         followExecution: true,
         stack: [],
       },
-      scripts: {
-      },
+      scripts: {},
+      vars: {},
       constants: {},
       constantSortOrder: [],
       execTimer: 0,

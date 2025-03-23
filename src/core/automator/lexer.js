@@ -66,12 +66,22 @@ const BlackHoleStr = createToken({
 
 const Identifier = createToken({
   name: "Identifier",
-  pattern: /[a-zA-Z_][a-zA-Z_0-9]*/,
+  pattern: /[a-zA-Z_][a-zA-Z_0-9]{0,29}/,
 });
 
 const ComparisonOperator = createToken({
   name: "ComparisonOperator",
   pattern: Lexer.NA,
+});
+
+const SetOperator = createToken({
+  name: "SetOperator",
+  pattern: /[-\+\/\*\^]?=/,
+});
+
+const Bool = createToken({
+  name: "Bool",
+  pattern: /(true|false)/,
 });
 
 const AutomatorCurrency = createCategory("AutomatorCurrency");
@@ -95,18 +105,10 @@ createInCategory(ComparisonOperator, "OpLT", /</, {
   $autocomplete: "<",
   $compare: (a, b) => Decimal.lt(a, b),
 });
-const OpEQ = createInCategory(ComparisonOperator, "OpEQ", /==/, {
+createInCategory(ComparisonOperator, "OpEQ", /==/, {
+  $autocomplete: "==",
   $compare: (a, b) => Decimal.eq(a, b),
 });
-// EqualSign is a single = which is defined for both comparisons and define
-const EqualSign = createToken({
-  name: "EqualSign",
-  pattern: /=/,
-  categories: ComparisonOperator,
-  label: "=",
-  longer_alt: OpEQ,
-});
-EqualSign.$compare = (a, b) => Decimal.eq(a, b);
 
 createInCategory(AutomatorCurrency, "EP", /ep/i, { $getter: () => Currency.eternityPoints.value });
 createInCategory(AutomatorCurrency, "IP", /ip/i, { $getter: () => Currency.infinityPoints.value });
@@ -123,6 +125,22 @@ createInCategory(AutomatorCurrency, "bankedInfinities", /banked[ \t]+infinities/
 });
 createInCategory(AutomatorCurrency, "eternities", /eternities/i, { $getter: () => Currency.eternities.value });
 createInCategory(AutomatorCurrency, "realities", /realities/i, { $getter: () => Currency.realities.value });
+
+createInCategory(AutomatorCurrency, "timeInfinity", /time[ \t]+infinity/i, { $autocomplete: "time infinity", $getter: () => Time.thisInfinity.totalSeconds });
+createInCategory(AutomatorCurrency, "timeEternity", /time[ \t]+eternity/i, { $autocomplete: "time eternity", $getter: () => Time.thisEternity.totalSeconds });
+createInCategory(AutomatorCurrency, "timeReality", /time[ \t]+reality/i, { $autocomplete: "time reality", $getter: () => Time.thisReality.totalSeconds });
+
+createInCategory(AutomatorCurrency, "realTimeInfinity", /realtime[ \t]+infinity/i, { $autocomplete: "realtime infinity",  $getter: () => Time.thisInfinityRealTime.totalSeconds });
+createInCategory(AutomatorCurrency, "realTimeEternity", /realtime[ \t]+eternity/i, { $autocomplete: "realtime eternity", $getter: () => Time.thisEternityRealTime.totalSeconds });
+createInCategory(AutomatorCurrency, "realTimeReality", /realtime[ \t]+reality/i, { $autocomplete: "realtime reality", $getter: () => Time.thisRealityRealTime.totalSeconds });
+
+createInCategory(AutomatorCurrency, "bestTimeInfinity", /best[ \t]+time[ \t]+infinity/i, { $autocomplete: "best time infinity", $getter: () => Time.bestInfinity.totalSeconds });
+createInCategory(AutomatorCurrency, "bestTimeEternity", /best[ \t]+time[ \t]+eternity/i, { $autocomplete: "best time eternity", $getter: () => Time.bestEternity.totalSeconds });
+createInCategory(AutomatorCurrency, "bestTimeReality", /best[ \t]+time[ \t]+reality/i, { $autocomplete: "best time reality", $getter: () => Time.bestReality.totalSeconds });
+
+createInCategory(AutomatorCurrency, "bestRealTimeInfinity", /best[ \t]+realtime[ \t]+infinity/i, { $autocomplete: "best realtime infinity", $getter: () => Time.bestInfinityRealTime.totalSeconds });
+createInCategory(AutomatorCurrency, "bestRealTimeEternity", /best[ \t]+realtime[ \t]+eternity/i, { $autocomplete: "best realtime eternity", $getter: () => Time.bestEternityRealTime.totalSeconds });
+createInCategory(AutomatorCurrency, "bestRealTimeReality", /best[ \t]+realtime[ \t]+reality/i, { $autocomplete: "best realtime reality", $getter: () => Time.bestRealityRealTime.totalSeconds });
 
 createInCategory(AutomatorCurrency, "PendingIP", /pending[ \t]+ip/i, {
   $autocomplete: "pending IP",
@@ -266,11 +284,11 @@ createInCategory(TimeUnit, "Seconds", /s(ec(onds?)?)?/i, {
 });
 createInCategory(TimeUnit, "Minutes", /m(in(utes?)?)?/i, {
   $autocomplete: "min",
-  $scale: 60 * 1000,
+  $scale: 60000,
 });
 createInCategory(TimeUnit, "Hours", /h(ours?)?/i, {
   $autocomplete: "hours",
-  $scale: 3600 * 1000,
+  $scale: 3600000,
 });
 
 const Keyword = createToken({
@@ -307,6 +325,7 @@ createKeyword("Notify", /notify/i);
 createKeyword("Nowait", /nowait/i);
 createKeyword("Off", /off/i);
 createKeyword("On", /on/i);
+createKeyword("Toggle", /toggle|switch/i);
 createKeyword("Pause", /pause/i);
 // Names are a little special, because they can be named anything (like ec12 or wait)
 // So, we consume the label at the same time as we consume the preset. In order to report
@@ -316,6 +335,7 @@ createKeyword("Id", /id\b([ \t]+\d)?/i);
 createKeyword("Purchase", /purchase/i);
 createKeyword("Respec", /respec/i);
 createKeyword("Restart", /restart/i);
+createKeyword("GoTo", /goto/i);
 createKeyword("Start", /start/i);
 createKeyword("Stop", /stop/i);
 createKeyword("Studies", /studies/i);
@@ -332,6 +352,10 @@ createKeyword("StoreGameTime", /stored?[ \t]+game[ \t]+time/i, {
   $autocomplete: "store game time",
   $unlocked: () => Enslaved.isUnlocked,
 });
+
+createKeyword("Var", /(var|let)/i);
+
+createKeyword("Function", /Function */);
 
 createKeyword("Dilation", /dilation/i);
 createKeyword("EC", /ec/i);
@@ -356,9 +380,9 @@ const Exclamation = createToken({ name: "Exclamation", pattern: /!/, label: "!" 
 
 // The order here is the order the lexer looks for tokens in.
 export const automatorTokens = [
-  HSpace, StringLiteral, StringLiteralSingleQuote, Comment, EOL,
+  HSpace, StringLiteral, StringLiteralSingleQuote, Comment, EOL, Bool,
   ComparisonOperator, ...tokenLists.ComparisonOperator,
-  LCurly, RCurly, Comma, EqualSign, Pipe, Dash, Exclamation,
+  LCurly, RCurly, Comma, Pipe, Exclamation,
   BlackHoleStr, NumberLiteral,
   AutomatorCurrency, ...tokenLists.AutomatorCurrency,
   ECLiteral,
@@ -366,7 +390,7 @@ export const automatorTokens = [
   PrestigeEvent, ...tokenLists.PrestigeEvent,
   StudyPath, ...tokenLists.StudyPath,
   TimeUnit, ...tokenLists.TimeUnit,
-  Identifier,
+  Identifier, SetOperator, Dash
 ];
 
 // Labels only affect error messages and Diagrams.

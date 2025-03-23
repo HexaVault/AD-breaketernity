@@ -18,7 +18,7 @@ export default {
       const sorted = this.unsortedEvents.slice(0).sort((a, b) => (a.timestamp === b.timestamp
         ? (a.thisReality === b.thisReality
           ? a.line - b.line
-          : a.thisReality - b.thisReality)
+          : Decimal.sub(a.thisReality, b.thisReality).toNumber())
         : a.timestamp - b.timestamp));
       return this.newestFirst ? sorted.reverse() : sorted;
     },

@@ -74,6 +74,11 @@ CodeMirror.defineSimpleMode("automato", {
       next: "commandDone"
     },
     {
+      regex: /(var|let|goto)/ui,
+      token: "keyword",
+      next: "commandArgs"
+    },
+    {
       regex: /start\s|unlock\s/ui,
       token: "keyword",
       next: "startUnlock"
@@ -146,11 +151,12 @@ CodeMirror.defineSimpleMode("automato", {
   commandArgs: [
     commentRule,
     { sol: true, next: "start" },
-    { regex: /<=|>=|<|>/ui, token: "operator" },
+    { regex: /<=|>=|<|>|==/ui, token: "operator" },
+    { regex: /[-\+\/\*\^]?=/ui, token: "operator" },
     { regex: /nowait(\s|$)/ui, token: "property" },
     { regex: /".*"/ui, token: "string", next: "commandDone" },
     { regex: /'.*'/ui, token: "string", next: "commandDone" },
-    { regex: /(on|off|bh1|bh2|dilation|load|respec)(\s|$)/ui, token: "variable-2" },
+    { regex: /(on|off|toggle|switch|bh1|bh2|dilation|load|respec)(\s|$)/ui, token: "variable-2" },
     { regex: /(eternity|reality|use)(\s|$)/ui, token: "variable-2" },
     { regex: /(antimatter|infinity|time)(\s|$|(?=,))/ui, token: "variable-2" },
     { regex: /(active|passive|idle)(\s|$|(?=,))/ui, token: "variable-2" },
@@ -173,6 +179,7 @@ CodeMirror.defineSimpleMode("automato", {
     // This seems necessary to have a closing curly brace de-indent automatically in some cases
     { regex: /\}/ui, dedent: true },
   ],
+
 
   // The meta property contains global information about the mode. It
   // can contain properties like lineComment, which are supported by

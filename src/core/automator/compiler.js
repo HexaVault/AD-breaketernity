@@ -192,12 +192,20 @@ class Validator extends BaseVisitor {
     const varName = identifier.image;
     const varInfo = {};
     const constants = player.reality.automator.constants;
-    if (!Object.keys(constants).includes(varName)) {
-      this.addError(identifier, `Variable ${varName} has not been defined`,
+    const vars = player.reality.automator.vars;
+    let value = null;
+
+    if (Object.keys(constants).includes(varName)) {
+      value = constants[varName];
+    }
+    else if (Object.keys(vars).includes(varName)) {
+      value = vars[varName];
+    }
+    else {
+      this.addError(identifier, `Variable and/or Constant ${varName} has not been defined`,
         `Use the definition panel to define ${varName} in order to reference it, or check for typos`);
       return undefined;
     }
-    const value = constants[varName];
 
     let tree;
     switch (type) {
@@ -344,28 +352,30 @@ class Validator extends BaseVisitor {
   compareValue(ctx) {
     if (ctx.NumberLiteral) {
       ctx.$value = new Decimal(ctx.NumberLiteral[0].image);
-    } else if (ctx.Identifier) {
-      if (!this.isValidVarFormat(ctx.Identifier[0], AUTOMATOR_VAR_TYPES.NUMBER)) {
-        this.addError(ctx, `Constant ${ctx.Identifier[0].image} cannot be used for comparison`,
-          `Ensure that ${ctx.Identifier[0].image} contains a properly-formatted number and not a Time Study string`);
-      }
+    } 
+    else if (ctx.Bool){
+      ctx.$value = ctx.Bool[0].image == 'true' ? true: false;
+    }
+    else if (ctx.Identifier) {
       const varLookup = this.lookupVar(ctx.Identifier[0], AUTOMATOR_VAR_TYPES.NUMBER);
-      if (varLookup) ctx.$value = ctx.Identifier[0].image;
+      const varx = player.reality.automator.vars[ctx.Identifier[0].image];
+      ctx.$value = new Decimal(varLookup ? ctx.Identifier[0].image : varx);
+      if(varLookup == 'true' || varLookup == 'false') ctx.$value = varLookup == 'true' ? true : false;
     }
   }
 
   comparison(ctx) {
     super.comparison(ctx);
     if (!ctx.compareValue || ctx.compareValue[0].recoveredNode ||
-      ctx.compareValue.length !== 2 || ctx.compareValue[1].recoveredNode) {
-      this.addError(ctx, "Missing value for comparison", "Ensure that the comparison has two values");
+      ctx.compareValue.length === 3 || ctx?.compareValue?.[1]?.recoveredNode) {
+        this.addError(ctx, "Missing value for comparison", "Ensure that the comparison has two values");
     }
-    if (!ctx.ComparisonOperator || ctx.ComparisonOperator[0].isInsertedInRecovery) {
-      this.addError(ctx, "Missing comparison operator (<, >, <=, >=)", "Insert the appropriate comparison operator");
+    else if ((!ctx.ComparisonOperator || ctx.ComparisonOperator[0].isInsertedInRecovery) && ctx.compareValue.length !== 1) {
+      this.addError(ctx, "Missing comparison operator (<, >, <=, >=, ==)", "Insert the appropriate comparison operator");
       return;
     }
-    if (ctx.ComparisonOperator[0].tokenType === T.OpEQ || ctx.ComparisonOperator[0].tokenType === T.EqualSign) {
-      this.addError(ctx, "Please use an inequality comparison (>, <, >=, <=)",
+    else if (ctx?.ComparisonOperator?.[0]?.tokenType === T.SetOperator) {
+       this.addError(ctx, "Please use an inequality comparison (>, <, >=, <=, ==)",
         "Comparisons cannot be done with equality, only with inequality operators");
     }
   }
@@ -442,9 +452,15 @@ class Compiler extends BaseVisitor {
     const getters = ctx.compareValue.map(cv => {
       if (cv.children.AutomatorCurrency) return cv.children.AutomatorCurrency[0].tokenType.$getter;
       const val = cv.children.$value;
+      const key = cv.children?.Identifier?.[0]?.image;
+      if (typeof key === "string" && player.reality.automator.vars[key] != undefined) return () => 
+        (player.reality.automator.vars[key].toLowerCase() == 'true' || player.reality.automator.vars[key].toLowerCase() == 'false') ?
+      (player.reality.automator.vars[key].toLowerCase() == 'true') ? true : false : new Decimal(player.reality.automator.vars[key]);
+      
       if (typeof val === "string") return () => player.reality.automator.constants[val];
       return () => val;
     });
+
     // Some currencies are locked and should always evaluate to false if they're attempted to be used
     const canUseInComp = ctx.compareValue.map(cv => {
       if (cv.children.AutomatorCurrency) {
@@ -454,6 +470,7 @@ class Compiler extends BaseVisitor {
       // In this case, it's a constant (either automator-defined or literal)
       return true;
     });
+    if(canUseInComp[0] && !canUseInComp[1]) return () => getters[0]();
 
     if (!canUseInComp[0] || !canUseInComp[1]) return () => false;
     const compareFun = ctx.ComparisonOperator[0].tokenType.$compare;

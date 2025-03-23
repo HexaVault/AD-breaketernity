@@ -11,13 +11,18 @@ export default {
   data() {
     return {
       constants: [],
+      vars: [],
       count: 0,
       refreshConstants: false,
+      v: [],
     };
   },
   computed: {
     maxConstantCount() {
       return AutomatorData.MAX_ALLOWED_CONSTANT_COUNT;
+    },
+    maxVariableCount() {
+      return AutomatorData.MAX_ALLOWED_VARIABLE_COUNT;
     },
     maxNameLength() {
       return AutomatorData.MAX_ALLOWED_CONSTANT_NAME_LENGTH;
@@ -41,6 +46,9 @@ export default {
       const existingValues = player.reality.automator.constantSortOrder;
       this.count = existingValues.length;
       this.constants = this.count < this.maxConstantCount ? [...existingValues, ""] : [...existingValues];
+      this.v = Object.keys(player.reality.automator.vars);
+      this.varCount = this.v.length;
+      this.vars = this.varCount < this.maxVariableCount ? [...this.v, ""] : [...this.v];
     },
     deleteAllConstants() {
       if (this.hasConstants) Modal.clearAutomatorConstants.show();
@@ -93,6 +101,20 @@ export default {
         :key="i"
         :constant="constant"
       />
+
+    </div>
+    <br>
+      Variables have the same rules as Constants but can be change in the script
+    <br>
+    <div
+      :key="count + refreshConstants+constants.length"
+      class="l-definition-container"
+    >
+      <AutomatorDefineSingleEntry
+          v-for="(Var, i) in vars"
+          :key="i + constants.length"
+          :Var="Var"
+        />
     </div>
   </div>
 </template>

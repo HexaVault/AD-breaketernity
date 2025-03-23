@@ -9,6 +9,7 @@ export const AUTOMATOR_COMMAND_STATUS = Object.freeze({
   SKIP_INSTRUCTION: 4,
   HALT: 5,
   RESTART: 6,
+  SET_NEW_INSTRUCTION: 7
 });
 
 export const AUTOMATOR_MODE = Object.freeze({
@@ -169,6 +170,7 @@ export const AutomatorData = {
   // Note that a study string with ALL studies in unshortened form without duplicated studies is ~230 characters
   MAX_ALLOWED_CONSTANT_VALUE_LENGTH: 250,
   MAX_ALLOWED_CONSTANT_COUNT: 30,
+  MAX_ALLOWED_VARIABLE_COUNT: 150,
   MIN_CHARS_BETWEEN_UNDOS: 10,
   MAX_UNDO_ENTRIES: 30,
 
@@ -506,6 +508,31 @@ export const AutomatorBackend = {
     EventHub.dispatch(GAME_EVENT.AUTOMATOR_CONSTANT_CHANGED);
   },
 
+  addVariable(constantName, value) {
+    if (Object.keys(player.reality.automator.vars).length >= AutomatorData.MAX_ALLOWED_VARIABLE_COUNT) return;
+    player.reality.automator.vars[constantName] = value;
+    EventHub.dispatch(GAME_EVENT.AUTOMATOR_CONSTANT_CHANGED);
+  },
+  modifyVariable(constantName, newValue) {
+    if (Object.keys(player.reality.automator.vars).includes(constantName)) {
+      player.reality.automator.vars[constantName] = newValue;
+      EventHub.dispatch(GAME_EVENT.AUTOMATOR_CONSTANT_CHANGED);
+    } else {
+      this.addVariable(constantName, newValue);
+    }
+  },
+  renameVariable(oldName, newName) {
+    const data = player.reality.automator.vars[oldName];
+    player.reality.automator.vars[newName] = data;
+    delete player.reality.automator.vars[oldName];
+
+    EventHub.dispatch(GAME_EVENT.AUTOMATOR_CONSTANT_CHANGED);
+  },
+  deleteVariable(varName) {
+    delete player.reality.automator.vars[varName];
+    EventHub.dispatch(GAME_EVENT.AUTOMATOR_CONSTANT_CHANGED);
+  },
+
   // We can't just concatenate different parts of script data together or use some kind of delimiting character string
   // due to the fact that comments can essentially contain character sequences with nearly arbitrary content and
   // length. Instead, we take the approach of concatenating all data together with their lengths prepended at the start
@@ -724,7 +751,8 @@ export const AutomatorBackend = {
         case AUTOMATOR_COMMAND_STATUS.SAME_INSTRUCTION:
           return true;
         case AUTOMATOR_COMMAND_STATUS.NEXT_INSTRUCTION:
-          return this.nextCommand();
+            return this.nextCommand();
+        case AUTOMATOR_COMMAND_STATUS.SET_NEW_INSTRUCTION:
         case AUTOMATOR_COMMAND_STATUS.NEXT_TICK_SAME_INSTRUCTION:
           return false;
         case AUTOMATOR_COMMAND_STATUS.NEXT_TICK_NEXT_INSTRUCTION:
@@ -740,7 +768,6 @@ export const AutomatorBackend = {
           this.restart();
           return false;
       }
-
       // We need to break out of the loop if the last commands are all SKIP_INSTRUCTION, or else it'll start
       // trying to execute from an undefined stack if it isn't set to automatically repeat
       if (!this.stack.top) this.hasJustCompleted = true;
@@ -767,8 +794,11 @@ export const AutomatorBackend = {
     // state.
     // HALT and RESTART are exceptions, as these are called by commands which force
     // program flow to do something else other than simply advancing to the next line
+
     switch (this.runCurrentCommand()) {
+      case AUTOMATOR_COMMAND_STATUS.SET_NEW_INSTRUCTION:
       case AUTOMATOR_COMMAND_STATUS.NEXT_TICK_SAME_INSTRUCTION:
+      case AUTOMATOR_COMMAND_STATUS.SAME_INSTRUCTION:
         break;
       case AUTOMATOR_COMMAND_STATUS.HALT:
         this.stop();

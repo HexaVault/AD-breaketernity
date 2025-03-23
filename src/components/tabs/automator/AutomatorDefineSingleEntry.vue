@@ -6,7 +6,11 @@ export default {
   props: {
     constant: {
       type: String,
-      required: true,
+      required: false,
+    },
+    Var: {
+      type: String,
+      required: false,
     },
   },
   data() {
@@ -14,6 +18,7 @@ export default {
       oldAlias: "",
       aliasString: "",
       valueString: "",
+      isVar: false
     };
   },
   computed: {
@@ -25,9 +30,10 @@ export default {
     },
   },
   created() {
-    this.aliasString = this.constant;
+    this.isVar = this.Var != undefined ? true : false;
+    this.aliasString = (this.constant || this.Var || '');
     this.oldAlias = this.aliasString;
-    this.valueString = player.reality.automator.constants[this.aliasString];
+    this.valueString = player.reality.automator[this.isVar ? 'vars' : 'constants'][this.aliasString];
   },
   methods: {
     // We combine error checking from both input fields together and only show one of them because showing multiple
@@ -48,18 +54,20 @@ export default {
       const shadowsPrototype = ["constructor", "hasOwnProperty", "isPrototypeOf", "propertyIsEnumerable",
         "toLocaleString", "toString", "toValueOf"].some(p => this.aliasString.match(p));
 
-      if (!isValidName) return "Constant name must be alphanumeric without spaces and cannot start with a number";
-      if (alreadyExists) return "You have already defined a constant with this name";
-      if (hasCommandConflict) return "Constant name conflicts with a command key word";
-      if (shadowsPrototype) return "Constant name cannot shadow a built-in Javascript prototype prop";
+      if (!isValidName) return `${this.isVar ? 'Variable' : 'Constant'} name must be alphanumeric without spaces and cannot start with a number`;
+      if (alreadyExists) return `You have already defined a ${this.isVar ? 'Variable' : 'Constant'} with this name`;
+      if (hasCommandConflict) return `${this.isVar ? 'Variable' : 'Constant'} name conflicts with a command key word`;
+      if (shadowsPrototype) return `${this.isVar ? 'Variable' : 'Constant'} name cannot shadow a built-in Javascript prototype prop`;
 
-      if (!this.valueString) return "Constant value cannot be empty";
+      if (!this.valueString) return `${this.isVar ? 'Variable' : 'Constant'} value cannot be empty`;
 
       const isNumber = this.valueString.match(/^-?(0|[1-9]\d*)(\.\d+)?([eE][+-]?\d+)?$/u);
+      const isBool = this.valueString.match(/^(true|false)$/u);
+      const isString = this.valueString.match(/^('.*'|".*")$/u);
       // Note: Does not do validation for studies existing
       const isStudyString = TimeStudyTree.isValidImportString(this.valueString);
 
-      if (!isNumber && !isStudyString) return "Constant value must either be a number or Time Study string";
+      if (!isNumber && !isStudyString && !isString && !isBool) return `${this.isVar ? 'Variable' : 'Constant'} value must either be a number, Time Study string, text String or Bool`;
       return null;
     },
     errorTooltip() {
@@ -78,10 +86,10 @@ export default {
     },
     handleFocus(focus) {
       if (focus || this.currentError()) return;
-      if (!this.aliasString) AutomatorBackend.deleteConstant(this.oldAlias);
-      else if (!this.oldAlias) AutomatorBackend.addConstant(this.aliasString, this.valueString);
-      else if (this.oldAlias === this.aliasString) AutomatorBackend.modifyConstant(this.aliasString, this.valueString);
-      else AutomatorBackend.renameConstant(this.oldAlias, this.aliasString);
+      if (!this.aliasString) this.isVar ? AutomatorBackend.deleteVariable(this.oldAlias) : AutomatorBackend.deleteConstant(this.oldAlias);
+      else if (!this.oldAlias) this.isVar ? AutomatorBackend.addVariable(this.aliasString, this.valueString) : AutomatorBackend.addConstant(this.aliasString, this.valueString);
+      else if (this.oldAlias === this.aliasString) this.isVar ? AutomatorBackend.modifyvariable(this.aliasString, this.valueString) : AutomatorBackend.modifyConstant(this.aliasString, this.valueString);
+      else this.isVar ? AutomatorBackend.renameVariable(this.oldAlias, this.aliasString) : AutomatorBackend.renameConstant(this.oldAlias, this.aliasString);
       this.oldAlias = this.aliasString;
 
       // This makes scripts respond immediately to newly-defined constants if the player types them into the
@@ -89,7 +97,7 @@ export default {
       AutomatorData.recalculateErrors();
     },
     deleteConstant() {
-      AutomatorBackend.deleteConstant(this.aliasString);
+      this.isVar ? AutomatorBackend.deleteVariable(this.aliasString) : AutomatorBackend.deleteConstant(this.aliasString);
       this.oldAlias = "";
       this.aliasString = "";
       this.valueString = "";
@@ -104,7 +112,7 @@ export default {
       v-model="aliasString"
       class="c-define-textbox c-alias"
       :class="{ 'l-limit-textbox' : aliasString.length === maxNameLength }"
-      placeholder="New constant..."
+      :placeholder="isVar ? 'New variable...' : 'New constant...'"
       :maxlength="maxNameLength"
       @focusin="handleFocus(true)"
       @focusout="handleFocus(false)"
@@ -121,14 +129,14 @@ export default {
       v-model="valueString"
       class="c-define-textbox c-value"
       :class="{ 'l-limit-textbox' : valueString && valueString.length === maxValueLength }"
-      placeholder="Value for constant..."
+      :placeholder="isVar ? 'Value for Variable' :'Value for constant...'"
       :maxlength="maxValueLength"
       @focusin="handleFocus(true)"
       @focusout="handleFocus(false)"
     >
     <button
       v-if="aliasString"
-      v-tooltip="'Delete this constant'"
+      v-tooltip="isVar ? 'Delete this Variable' : 'Delete this Constant'"
       class="c-delete-button fas fa-eraser"
       @click="deleteConstant"
     />

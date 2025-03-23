@@ -124,7 +124,7 @@ export default {
       <ModalOptionsToggleButton
         v-if="dilationUnlocked"
         v-model="dilation"
-        :text="liat[2]"
+        :text="list[2]"
       />
       <ModalOptionsToggleButton
         v-if="tachyonsUnlocked"
