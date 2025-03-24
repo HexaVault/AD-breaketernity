@@ -1004,8 +1004,9 @@ export const AutomatorCommands = [
     },
     compile: ctx => {
       
-      return S => { // if your going to make functions you'll need to copy this
-        const v = ctx?.NumberLiteral?.[0]?.image || ctx?.Identifier?.[0]?.image;
+      return () => { // if your going to make functions you'll need to copy this
+        const v = ctx?.NumberLiteral?.[0]?.image || player.reality.automator.vars[ctx?.Identifier?.[0]?.image]
+        || player.reality.automator.constants[ctx?.Identifier?.[0]?.image];
         const line = v instanceof Decimal ? v.toNumber() : Math.abs(Number.parseInt(v));
         AutomatorBackend.initializeFromSave()
         let depth = 0;
@@ -1014,10 +1015,10 @@ export const AutomatorCommands = [
         let com = undefined;
         const ida = []
 
-        const d = (commands, parCommand) => {// make this work better
+        const d = (commands) => {
           if(depth > 5 || com != undefined) return;
           commands.forEach((command,index) => {
-            
+
             if(command.lineNumber == line){
               com = {command, depth, index};
               return;
@@ -1025,7 +1026,7 @@ export const AutomatorCommands = [
 
             if(command.blockCommands){
               depth++;
-              d(command.blockCommands, command);
+              d(command.blockCommands);
               if(com != undefined) {
                 block.push(command.blockCommands);
                 ida.push({command, index, depth, EOC: command.EOC});
@@ -1037,7 +1038,7 @@ export const AutomatorCommands = [
           
         }
 
-        d(S.commands);
+        d(AutomatorBackend.stack._data[0].commands);
 
         if(com != undefined) {
           if(block.length != 0) {
@@ -1050,6 +1051,8 @@ export const AutomatorCommands = [
               };
             });
           }
+          
+          while (com.depth+1 < AutomatorBackend.stack._data.length) AutomatorBackend.stack.pop(com.depth+1);
 
           AutomatorBackend.stack._data[com.depth].commandIndex = com.index;
           

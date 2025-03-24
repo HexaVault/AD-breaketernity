@@ -88,7 +88,7 @@ export default {
       if (focus || this.currentError()) return;
       if (!this.aliasString) this.isVar ? AutomatorBackend.deleteVariable(this.oldAlias) : AutomatorBackend.deleteConstant(this.oldAlias);
       else if (!this.oldAlias) this.isVar ? AutomatorBackend.addVariable(this.aliasString, this.valueString) : AutomatorBackend.addConstant(this.aliasString, this.valueString);
-      else if (this.oldAlias === this.aliasString) this.isVar ? AutomatorBackend.modifyvariable(this.aliasString, this.valueString) : AutomatorBackend.modifyConstant(this.aliasString, this.valueString);
+      else if (this.oldAlias === this.aliasString) this.isVar ? AutomatorBackend.modifyVariable(this.aliasString, this.valueString) : AutomatorBackend.modifyConstant(this.aliasString, this.valueString);
       else this.isVar ? AutomatorBackend.renameVariable(this.oldAlias, this.aliasString) : AutomatorBackend.renameConstant(this.oldAlias, this.aliasString);
       this.oldAlias = this.aliasString;
 
