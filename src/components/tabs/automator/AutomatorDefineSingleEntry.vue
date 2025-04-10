@@ -61,13 +61,13 @@ export default {
 
       if (!this.valueString) return `${this.isVar ? 'Variable' : 'Constant'} value cannot be empty`;
 
-      const isNumber = this.valueString.match(/^-?(0|[1-9]\d*)(\.\d+)?([eE][+-]?\d+)?$/u);
-      const isBool = this.valueString.match(/^(true|false)$/u);
+      const isNumber = !(new Decimal(this.valueString).isNan());
+      const isBoolean = this.valueString.match(/^(true|false)$/u);
       const isString = this.valueString.match(/^('.*'|".*")$/u);
       // Note: Does not do validation for studies existing
       const isStudyString = TimeStudyTree.isValidImportString(this.valueString);
 
-      if (!isNumber && !isStudyString && !isString && !isBool) return `${this.isVar ? 'Variable' : 'Constant'} value must either be a number, Time Study string, text String or Bool`;
+      if (!isNumber && !isStudyString && !isString && !isBoolean) return `${this.isVar ? 'Variable' : 'Constant'} value must either be a number, Time Study string, String or Boolean`;
       return null;
     },
     errorTooltip() {

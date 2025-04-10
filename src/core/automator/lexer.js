@@ -56,8 +56,9 @@ const Comment = createToken({
 
 const NumberLiteral = createToken({
   name: "NumberLiteral",
-  pattern: /-?(0|[1-9]\d*)(\.\d+)?([eE][+-]?\d+)?/,
+  pattern: /[F-]?(0|[1-9]\d*)(\.\d+)?([eE]*[+-]?\d+)?/,
 });
+
 
 const BlackHoleStr = createToken({
   name: "BlackHoleStr",
@@ -76,13 +77,18 @@ const ComparisonOperator = createToken({
 
 const SetOperator = createToken({
   name: "SetOperator",
-  pattern: /[-\+\/\*\^]?=/,
+  pattern: /(-|\+|\/|\*\*|\*|!|\||&)?=/,
 });
 
-const Bool = createToken({
-  name: "Bool",
+const Boolean = createToken({
+  name: "Boolean",
   pattern: /(true|false)/,
 });
+
+const SUBFUNCTION = createToken({
+  name: "SubFunction",
+  pattern: /(neg|floor|ceil|round|recip|log10|log|sqrt|min|max)/
+})
 
 const AutomatorCurrency = createCategory("AutomatorCurrency");
 const PrestigeEvent = createCategory("PrestigeEvent");
@@ -380,12 +386,10 @@ const Exclamation = createToken({ name: "Exclamation", pattern: /!/, label: "!" 
 
 // The order here is the order the lexer looks for tokens in.
 export const automatorTokens = [
-  HSpace, StringLiteral, StringLiteralSingleQuote, Comment, EOL, Bool,
-  ComparisonOperator, ...tokenLists.ComparisonOperator,
-  LCurly, RCurly, Comma, Pipe, Exclamation,
-  BlackHoleStr, NumberLiteral,
-  AutomatorCurrency, ...tokenLists.AutomatorCurrency,
-  ECLiteral,
+  HSpace, StringLiteral, StringLiteralSingleQuote, Comment, EOL, SUBFUNCTION, NumberLiteral,
+  Boolean, ComparisonOperator, ...tokenLists.ComparisonOperator,
+  LCurly, RCurly, Comma, Pipe, Exclamation, BlackHoleStr,
+  AutomatorCurrency, ...tokenLists.AutomatorCurrency, ECLiteral,
   Keyword, ...keywordTokens,
   PrestigeEvent, ...tokenLists.PrestigeEvent,
   StudyPath, ...tokenLists.StudyPath,

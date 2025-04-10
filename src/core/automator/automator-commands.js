@@ -325,7 +325,7 @@ export const AutomatorCommands = [
     compile: ctx => {
       const notifyText = ctx.StringLiteral || ctx.StringLiteralSingleQuote;
       return () => {
-        const text = player.reality.automator.vars[ctx?.Identifier?.[0]?.image] || notifyText?.[0]?.image;
+        const text = player.reality.automator.vars[ctx?.Identifier?.[0]?.image] || player.reality.automator.constants[ctx?.Identifier?.[0]?.image] || notifyText?.[0]?.image;
         GameUI.notify.automator(`Automator: ${text}`);
         AutomatorData.logCommandEvent(`NOTIFY call: ${text}`, ctx.startLine);
         return AUTOMATOR_COMMAND_STATUS.NEXT_INSTRUCTION;
@@ -1078,16 +1078,32 @@ export const AutomatorCommands = [
     },
     validate: (ctx, V) => {
       const k = ctx.setValue[0].children;
-      const O = k.SetOperator[0].image;
+      const O = k?.SetOperator?.[0].image;
+      const Func = k?.SubFunction?.[0]?.image;
       // const idenValue = k.Identifier ? player.reality.automator.vars[k.Identifier[0].image] || player.reality.automator.constants[k.Identifier[0].image] : undefined;
 
+      if (O == undefined) {
+        V.addError(k, `The "${O}" operation is only useable by Numbers and Strings`, ctx.startLine);
+        return false;
+      }
+
       if(O == '+=' && !(k.StringLiteral || k.StringLiteralSingleQuote || k.NumberLiteral || k.Identifier)) {
-        V.addError(k, `The "${O}" operation is only useable by Numbers and Strings`, ctx.line);
+        V.addError(k, `The "${O}" operation is only useable by Numbers and Strings`, ctx.startLine);
         return false;
       }
       else if (O != '=' && !(k.NumberLiteral || k.Identifier)){
-        V.addError(k, `The "${O}" operation is only useable by Numbers`, `The "${O}" operation is only useable by Numbers`);
+        V.addError(k, `The "${O}" operation is only useable by Numbers`, `The "${O}" operation is only useable by Numbers`, ctx.startLine);
         return false;
+      }
+
+      if (Func == 'min' || Func == 'max'){
+        const value = k?.NumberLiteral?.[0] || player.reality.automator.vars[k?.Identifier?.[0]?.image] || player.reality.automator.constants[k?.Identifier?.[0]?.image];
+        const value2 = k?.NumberLiteral?.[1] || player.reality.automator.vars[k?.Identifier?.[1]?.image] || player.reality.automator.constants[k?.Identifier?.[1]?.image];
+
+        if (value == undefined || value2 == undefined){
+          V.addError(k, `Missing value`, `Add a value`, ctx.startLine);
+          return false;
+        }
       }
 
       ctx.startLine = ctx.Var[0].startLine;
@@ -1098,32 +1114,87 @@ export const AutomatorCommands = [
       return () => {
         const k = ctx.setValue[0].children;
         const O = k.SetOperator[0].image;
-        const key = k.Identifier[0].image;  
+        const Func = k?.SubFunction?.[0]?.image;
+        const key = k.Identifier[0].image;
         const AC = k.AutomatorCurrency?.[0]?.tokenType.$getter().toString();
 
+        const curentValue = player.reality.automator.vars[key] || player.reality.automator.constants[key];
+
+        const key2 = k?.Identifier?.[1]?.image;
+        const value = AC || k?.NumberLiteral?.[0]?.image || k?.StringLiteral?.[0]?.image || k?.StringLiteralSingleQuote?.[0]?.image || k?.Bool?.[0]?.image
+         || player.reality.automator.vars[key2] || player.reality.automator.constants[key2];
+
         if(O == '='){
-          player.reality.automator.vars[key] = AC || k?.NumberLiteral?.[0]?.image || k?.StringLiteral?.[0]?.image || k?.StringLiteralSingleQuote?.[0]?.image || k?.Bool?.[0]?.image
-           || player.reality.automator.vars[key] || player.reality.automator.constants[key];
+          
+          console.log(curentValue, Func, k, key2, AC, value)
+          if (Func == 'neg'){
+            player.reality.automator.vars[key] = new Decimal(value).neg();
+          }
+          else if (Func == 'log'){
+            player.reality.automator.vars[key] = new Decimal(value).log(Math.E);
+          }
+          else if (Func == 'log10'){
+            player.reality.automator.vars[key] = new Decimal(value).log10();
+          }
+          else if (Func == 'sqrt'){
+            player.reality.automator.vars[key] = new Decimal(value).sqrt();
+          }
+          else if (Func == 'recip'){
+            player.reality.automator.vars[key] = new Decimal(value).recip();
+          }
+          else if (Func == 'round'){
+            player.reality.automator.vars[key] = new Decimal(value).round();
+          }
+          else if (Func == 'floor'){
+            player.reality.automator.vars[key] = new Decimal(value).floor();
+          }
+          else if (Func == 'ceil'){
+            player.reality.automator.vars[key] = new Decimal(value).ceil();
+          }
+          else if (Func == 'min'){
+            const key3 = k?.Identifier?.[2]?.image;
+            const AC2 = k?.AutomatorCurrency?.[2]?.tokenType.$getter().toString();
+            const value2 = AC2 || k?.NumberLiteral?.[2]?.image || player.reality.automator.vars[key3] || player.reality.automator.constants[key3];
+            player.reality.automator.vars[key] = Decimal.min(value2, value3);
+          }
+          else if (Func == 'max'){
+            const key3 = k?.Identifier?.[2]?.image;
+            const AC2 = k?.AutomatorCurrency?.[2]?.tokenType.$getter().toString();
+            const value2 = AC2 || k?.NumberLiteral?.[2]?.image || player.reality.automator.vars[key3] || player.reality.automator.constants[key3];
+            player.reality.automator.vars[key] = Decimal.max(value, value2);
+          }
+          else{
+            player.reality.automator.vars[key] = value;
+          }
         }
         else if(O == '+='){
           if(k.StringLiteral || k.StringLiteralSingleQuote) {
               player.reality.automator.vars[key] += (k?.StringLiteral?.[0]?.image || k?.StringLiteralSingleQuote?.[0]?.image);
           }
           else{
-            player.reality.automator.vars[key] = Decimal.add(player.reality.automator.vars[key], k.NumberLiteral[0].image).toString();
+            player.reality.automator.vars[key] = Decimal.add(curentValue, value).toString();
           }
         }
         else if(O == '-='){
-            player.reality.automator.vars[key] = Decimal.sub(player.reality.automator.vars[key], k.NumberLiteral[0].image).toString();
+            player.reality.automator.vars[key] = Decimal.sub(curentValue, value).toString();
+        }
+        else if(O == '!='){
+          player.reality.automator.vars[key] = !(new Boolean(curentValue).valueOf());
+        }
+        else if(O == '|='){
+          player.reality.automator.vars[key] = (new Boolean(curentValue).valueOf()) || (new Boolean(value).valueOf());
+        }
+        else if(O == '&='){
+          player.reality.automator.vars[key] = (new Boolean(curentValue).valueOf()) && (new Boolean(value).valueOf());
         }
         else if(O == '*='){
-            player.reality.automator.vars[key] = Decimal.mul(player.reality.automator.vars[key], k.NumberLiteral[0].image).toString();
+            player.reality.automator.vars[key] = Decimal.mul(curentValue, value).toString();
         }
         else if(O == '/='){
-            player.reality.automator.vars[key] = Decimal.div(player.reality.automator.vars[key], k.NumberLiteral[0].image).toString();
+            player.reality.automator.vars[key] = Decimal.div(curentValue, value).toString();
         }
-        else if(O == '^='){
-            player.reality.automator.vars[key] = Decismal.pow(player.reality.automator.vars[key], k.NumberLiteral[0].image).toString();
+        else if(O == '**='){
+            player.reality.automator.vars[key] = Decimal.pow(curentValue, value).toString();
         }
 
         AutomatorData.logCommandEvent(`Set value "${key}" to ${player.reality.automator.vars[key]}`, ctx.startLine);

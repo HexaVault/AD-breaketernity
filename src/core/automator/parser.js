@@ -71,20 +71,31 @@ class AutomatorParser extends Parser {
     $.RULE("setValue", () => {
       $.CONSUME(T.Identifier);
       $.CONSUME(T.SetOperator); 
-      $.OR([
-        { ALT: () => $.CONSUME(T.AutomatorCurrency)},
-        { ALT: () => $.CONSUME(T.NumberLiteral)},
-        { ALT: () => $.CONSUME(T.StringLiteral)},
-        { ALT: () => $.CONSUME(T.StringLiteralSingleQuote)},
-        { ALT: () => $.CONSUME2(T.Bool)},
-        { ALT: () => $.CONSUME2(T.Identifier)},
+      $.OPTION( () => {
+        $.OPTION2( () => {$.OR([
+          { ALT: () => $.CONSUME(T.AutomatorCurrency) },
+          { ALT: () => $.CONSUME(T.NumberLiteral) },
+          { ALT: () => $.CONSUME(T.StringLiteral) },
+          { ALT: () => $.CONSUME(T.StringLiteralSingleQuote) },
+          { ALT: () => $.CONSUME2(T.Boolean) },
+          { ALT: () => $.CONSUME2(T.Identifier) },
+        ])}),
+        $.CONSUME(T.SubFunction);
+      })
+      $.OR2([
+        { ALT: () => $.CONSUME2(T.AutomatorCurrency) },
+        { ALT: () => $.CONSUME2(T.NumberLiteral) },
+        { ALT: () => $.CONSUME2(T.StringLiteral) },
+        { ALT: () => $.CONSUME2(T.StringLiteralSingleQuote) },
+        { ALT: () => $.CONSUME3(T.Boolean) },
+        { ALT: () => $.CONSUME3(T.Identifier) },
       ])
     });
 
     $.RULE("compareValue", () => $.OR([
       { ALT: () => $.CONSUME(T.NumberLiteral) },
       { ALT: () => $.CONSUME(T.AutomatorCurrency) },
-      { ALT: () => $.CONSUME(T.Bool) },
+      { ALT: () => $.CONSUME(T.Boolean) },
       { ALT: () => $.CONSUME(T.Identifier) },
     ]));
 

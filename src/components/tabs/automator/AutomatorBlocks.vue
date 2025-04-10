@@ -198,7 +198,7 @@ export const automatorBlocks = [
     alias: "VAR",
     allowedPatterns: ["ABC"],
     A: ["* SPECIFIED NAME"],
-    B: ["=", "+=", "-=", "*=", "/="],
+    B: ["=", "+=", "-=", "*=", "/=", "**=", "&=", "|=", "!="],
     C: ["* SPECIFIED NUMBER"],
     targets: ["string", "operator", "number"],
   }

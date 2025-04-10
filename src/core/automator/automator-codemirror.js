@@ -74,7 +74,7 @@ CodeMirror.defineSimpleMode("automato", {
       next: "commandDone"
     },
     {
-      regex: /(var|let|goto)/ui,
+      regex: /(var|let|goto|neg|floor|ceil|round|recip|log|log10|sqrt|min|max)/ui,
       token: "keyword",
       next: "commandArgs"
     },
@@ -173,7 +173,7 @@ CodeMirror.defineSimpleMode("automato", {
     },
     { regex: / sec(onds ?) ?| min(utes ?) ?| hours ?/ui, token: "variable-2" },
     { regex: /([0-9]+:[0-5][0-9]:[0-5][0-9]|[0-5]?[0-9]:[0-5][0-9]|t[1-4])/ui, token: "number" },
-    { regex: /-?(0|[1-9]\d*)(\.\d+)?([eE][+-]?\d+)?/ui, token: "number" },
+    { regex: /[F-]?(0|[1-9]\d*)(\.\d+)?([eE]*[+-]?\d+)?/ui, token: "number" },
     { regex: /[a-zA-Z_][a-zA-Z_0-9]*/u, token: "variable" },
     { regex: /\{/ui, indent: true, next: "commandDone" },
     // This seems necessary to have a closing curly brace de-indent automatically in some cases
