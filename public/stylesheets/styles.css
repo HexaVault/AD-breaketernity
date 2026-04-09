@@ -2807,8 +2807,7 @@ br {
 
 /* #endregion l-options-grid */
 
-.l-select-notation,
-.l-select-theme {
+.l-dropdown {
   overflow: hidden;
   background-color: var(--color-base);
   border: 0.1rem var(--color-good);
@@ -2819,8 +2818,7 @@ br {
 
 /* We need scrollbar-color in this rule as well as identical color specifications in the following two; some
    modern browsers only support one or the other for scrollbar styling */
-.l-select-notation__inner,
-.l-select-theme__inner {
+.l-dropdown__inner {
   overflow-y: auto;
   flex-direction: column;
   max-height: 24.9rem;
@@ -2828,31 +2826,26 @@ br {
   scrollbar-width: thin;
 }
 
-.l-select-notation__inner::-webkit-scrollbar,
-.l-select-theme__inner::-webkit-scrollbar {
+.l-dropdown::-webkit-scrollbar {
   width: 0.8rem;
   background-color: var(--color-disabled);
 }
 
-.l-select-notation__inner::-webkit-scrollbar-thumb,
-.l-select-theme__inner::-webkit-scrollbar-thumb {
+.l-dropdown__inner::-webkit-scrollbar-thumb {
   background-color: var(--color-good-dark);
 }
 
-.l-select-notation__item:last-child,
-.l-select-theme__item:last-child {
+.l-dropdown__item:last-child {
   border: 0;
 }
 
-.l-select-notation__item,
-.l-select-theme__item {
+.l-dropdown__item {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.o-primary-btn.c-select-notation__item,
-.o-primary-btn.c-select-theme__item {
+.o-primary-btn .c-dropdown__item {
   border-style: none none solid;
   border-radius: 0;
   box-shadow: none;

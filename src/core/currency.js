@@ -1,70 +1,46 @@
-/**
- * @abstract
- */
+/** @abstract */
 class MathOperations {
-  /**
-   * @abstract
-   */
+  /** @abstract */
   // eslint-disable-next-line no-unused-vars
   add(left, right) { throw new NotImplementedError(); }
 
-  /**
-   * @abstract
-   */
+  /** @abstract */
   // eslint-disable-next-line no-unused-vars
   subtract(left, right) { throw new NotImplementedError(); }
 
-  /**
-   * @abstract
-   */
+  /** @abstract */
   // eslint-disable-next-line no-unused-vars
   multiply(left, right) { throw new NotImplementedError(); }
 
-  /**
-   * @abstract
-   */
+  /** @abstract */
   // eslint-disable-next-line no-unused-vars
   divide(left, right) { throw new NotImplementedError(); }
 
-  /**
-   * @abstract
-   */
+  /** @abstract */
   // eslint-disable-next-line no-unused-vars
   max(left, right) { throw new NotImplementedError(); }
 
-  /**
-   * @abstract
-   */
+  /** @abstract */
   // eslint-disable-next-line no-unused-vars
   min(left, right) { throw new NotImplementedError(); }
 
-  /**
-   * @abstract
-   */
+  /** @abstract */
   // eslint-disable-next-line no-unused-vars
   eq(left, right) { throw new NotImplementedError(); }
 
-  /**
-   * @abstract
-   */
+  /** @abstract */
   // eslint-disable-next-line no-unused-vars
   gt(left, right) { throw new NotImplementedError(); }
 
-  /**
-   * @abstract
-   */
+  /** @abstract */
   // eslint-disable-next-line no-unused-vars
   gte(left, right) { throw new NotImplementedError(); }
 
-  /**
-   * @abstract
-   */
+  /** @abstract */
   // eslint-disable-next-line no-unused-vars
   lt(left, right) { throw new NotImplementedError(); }
 
-  /**
-   * @abstract
-   */
+  /** @abstract */
   // eslint-disable-next-line no-unused-vars
   lte(left, right) { throw new NotImplementedError(); }
 }
@@ -97,18 +73,12 @@ MathOperations.decimal = new class DecimalMathOperations extends MathOperations 
   lte(left, right) { return Decimal.lte(left, right); }
 }();
 
-/**
- * @abstract
- */
+/** @abstract */
 export class Currency {
-  /**
-   * @abstract
-   */
+  /** @abstract */
   get value() { throw new NotImplementedError(); }
 
-  /**
-   * @abstract
-   */
+  /** @abstract */
   set value(value) { throw new NotImplementedError(); }
 
   /**
@@ -539,11 +509,11 @@ Currency.realityMachines = new class extends DecimalCurrency {
     let log10FinalEP = player.records.thisReality.maxEP.plus(ep()).max(1).log10();
     if (!PlayerProgress.realityUnlocked()) {
       if (log10FinalEP.gt(8000)) log10FinalEP = new Decimal(8000);
-      if (log10FinalEP.gt(6000)) log10FinalEP = log10FinalEP.sub((log10FinalEP.sub(6000)).times(0.75));
+      if (log10FinalEP.gt(6000)) log10FinalEP = log10FinalEP.sub(log10FinalEP.sub(6000).times(0.75));
     }
     let rmGain = DC.E3.pow(log10FinalEP.div(4000).sub(1));
     // Increase base RM gain if <10 RM
-    if (rmGain.gte(1) && rmGain.lt(10)) rmGain = (log10FinalEP).minus(26).mul(27).div(4000);
+    if (rmGain.gte(1) && rmGain.lt(10)) rmGain = log10FinalEP.minus(26).mul(27).div(4000);
     return rmGain;
   }
 

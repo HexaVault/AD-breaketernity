@@ -455,9 +455,10 @@ function keyboardAutomatorToggle() {
       const visibleIndex = player.reality.automator.state.editorScript;
       AutomatorBackend.restart();
       AutomatorBackend.start(visibleIndex);
-      if (AutomatorData.currentErrors().length === 0) {
-        if (player.options.notifications.keybinds) GameUI.notify.automator(`Starting script "${AutomatorBackend.scriptName}"`);
-      } else if (player.options.notifications.keybinds) GameUI.notify.error(`Cannot start script "${AutomatorBackend.scriptName}" (has errors)`);
+      if (player.options.notifications.keybinds) {
+        if (AutomatorData.currentErrors().length === 0) GameUI.notify.automator(`Starting script "${AutomatorBackend.scriptName}"`);
+        else GameUI.notify.error(`Cannot start script "${AutomatorBackend.scriptName}" (has errors)`);
+      }
       return;
     }
     const action = AutomatorBackend.isRunning ? "Resuming" : "Pausing";

@@ -3,6 +3,7 @@ import ExpandingControlBox from "@/components/ExpandingControlBox";
 import OpenModalHotkeysButton from "@/components/OpenModalHotkeysButton";
 import OptionsButton from "@/components/OptionsButton";
 import PrimaryToggleButton from "@/components/PrimaryToggleButton";
+import SelectAMGainDisplayDropdown from "./SelectAMGainDisplayDropdown";
 import SelectLargeNotationDropdown from "./SelectLargeNotationDropdown";
 import SelectNotationDropdown from "@/components/tabs/options-visual/SelectNotationDropdown";
 import SelectSidebarDropdown from "@/components/tabs/options-visual/SelectSidebarDropdown";
@@ -21,6 +22,7 @@ export default {
     SelectNotationDropdown,
     SelectSidebarDropdown,
     SelectLargeNotationDropdown,
+    SelectAMGainDisplayDropdown,
   },
   data() {
     return {
@@ -29,6 +31,7 @@ export default {
       lnotation: "",
       sidebarResource: "",
       headerTextColored: true,
+      amGainDisplayType: "",
     };
   },
   computed: {
@@ -50,6 +53,9 @@ export default {
     },
     languageLabel() {
       return i18n("options", "language", [() => Lang.current.nameInLang]);
+    },
+    amGainDisplayLabel() {
+      return `Antimatter Gain Display: ${this.amGainDisplayType}`;
     }
   },
   watch: {
@@ -63,6 +69,7 @@ export default {
       this.theme = Theme.currentName();
       this.notation = options.notation;
       this.lnotation = options.lnotation;
+      this.amGainDisplayType = options.amGainDisplayType;
       this.sidebarResource = player.options.sidebarResourceID === 0
         ? "Latest Resource"
         : this.sidebarDB.find(e => e.id === player.options.sidebarResourceID).optionName;
@@ -184,6 +191,15 @@ export default {
         >
           {{ languageLabel }}
         </OptionsButton>
+        <ExpandingControlBox
+          class="l-options-grid__button c-options-grid__notations"
+          button-class="o-primary-btn o-primary-btn--option l-options-grid__notations-header"
+          :label="amGainDisplayLabel"
+        >
+          <template #dropdown>
+            <SelectAMGainDisplayDropdown />
+          </template>
+        </ExpandingControlBox>
         <ExpandingControlBox
           v-if="$viewModel.newUI"
           class="l-options-grid__button c-options-grid__notations"

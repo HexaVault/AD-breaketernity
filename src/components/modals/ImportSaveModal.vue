@@ -200,6 +200,9 @@ export default {
         v-if="player"
         class="c-modal-hard-reset-danger"
       >
+        <div v-if="!isDevEnv && player.devVersion">
+          WARNING: This save comes from a development version. It might fail to import!
+        </div>
         <div v-if="willLoseCosmetics">
           <br>
           {{ i18n("modal", "willLoseCosmeticsA") }}

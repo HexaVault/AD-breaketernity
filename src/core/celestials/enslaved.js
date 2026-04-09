@@ -262,7 +262,7 @@ class EnslavedProgressState extends BitUpgradeState {
   }
 
   get completedInfo() {
-    return typeof this.config.condition === "function" ? this.config.condition() : this.config.condition;
+    return handlePossibleFunction(this.config.condition);
   }
 
   giveProgress() {

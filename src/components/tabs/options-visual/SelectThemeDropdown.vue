@@ -20,12 +20,12 @@ export default {
 </script>
 
 <template>
-  <div class="l-select-theme">
-    <div class="l-select-theme__inner">
+  <div class="l-dropdown">
+    <div class="l-dropdown__inner">
       <div
         v-for="theme in themes"
         :key="theme.name"
-        class="o-primary-btn l-select-theme__item c-select-theme__item"
+        class="o-primary-btn l-dropdown__item c-dropdown__item"
         @click="theme.set()"
       >
         {{ theme.displayName() }}

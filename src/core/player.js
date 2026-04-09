@@ -957,7 +957,8 @@ window.player = {
       singMilestone: true,
       pelle: true,
       speedrun: true,
-    }
+    },
+    amGainDisplayType: "Normal",
   },
   IAP: {
     enabled: false,
@@ -1107,7 +1108,7 @@ export function guardFromNaNValues(obj) {
           if (newValue === null || newValue === undefined) {
             throw new Error("null/undefined player property assignment");
           }
-          if (!isConstant(newValue)) {
+          if (!isNumber(newValue)) {
             throw new Error("Non-Number assignment to Number player property");
           }
           if (!Decimal.isFinite(newValue)) {

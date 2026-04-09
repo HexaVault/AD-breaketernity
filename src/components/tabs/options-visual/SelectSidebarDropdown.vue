@@ -16,11 +16,11 @@ export default {
 </script>
 
 <template>
-  <div class="l-select-theme">
-    <div class="l-select-theme__inner">
+  <div class="l-dropdown">
+    <div class="l-dropdown__inner">
       <div
         key="Default"
-        class="o-primary-btn l-select-theme__item c-select-theme__item"
+        class="o-primary-btn l-dropdown__item c-dropdown__item"
         @click="setResource(0)"
       >
         Latest Resource
@@ -28,7 +28,7 @@ export default {
       <div
         v-for="res in resources"
         :key="res.name"
-        class="o-primary-btn l-select-theme__item c-select-theme__item"
+        class="o-primary-btn l-dropdown__item c-dropdown__item"
         @click="setResource(res.id)"
       >
         {{ res.optionName }}

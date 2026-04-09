@@ -432,6 +432,8 @@ export const Glyphs = {
     if (requestedInventoryIndex !== undefined) {
       if (this.inventory[requestedInventoryIndex] === null) index = requestedInventoryIndex;
     }
+    glyph.level = new Decimal(glyph.level);
+    glyph.strength = new Decimal(glyph.strength);
     this.inventory[index] = glyph;
     glyph.idx = index;
 

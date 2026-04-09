@@ -40,12 +40,12 @@ export default {
 </script>
 
 <template>
-  <div class="l-select-theme">
-    <div class="l-select-theme__inner">
+  <div class="l-dropdown">
+    <div class="l-dropdown__inner">
       <div
         v-for="type in availableTypes"
         :key="type"
-        class="o-primary-btn l-select-theme__item c-select-theme__item"
+        class="o-primary-btn l-dropdown__item c-dropdown__item"
         @click="setType(type)"
       >
         {{ getType(type) }}
