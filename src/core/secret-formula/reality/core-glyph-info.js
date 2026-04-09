@@ -341,7 +341,7 @@ export const glyphTypes = {
     },
     alchemyResource: "replication",
     pelleUniqueEffect: {
-      effect: Decimal.pow(53, PelleRfts.vacuum.percentage).pow10(),
+      effect: () => Decimal.pow(53, PelleRifts.vacuum.percentage).pow10(),
       formatEffect: effect => formatX(effect, 2),
       description: () => `Replication speed {value} (based on ${wordShift.wordCycle(PelleRifts.vacuum.name)})`,
       combine: GlyphCombiner.multiply,
