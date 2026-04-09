@@ -159,7 +159,7 @@ export const Enslaved = {
     AutomatorData.recalculateErrors();
     if (AutomatorBackend.state.mode === AUTOMATOR_MODE.RUN && AutomatorData.currentErrors().length) {
       AutomatorBackend.stop();
-      GameUI.notify.error("This Reality forbids Black Holes! (Automator stopped)");
+      if (player.options.notifications.enslaved) GameUI.notify.error("This Reality forbids Black Holes! (Automator stopped)");
     }
 
     this.quotes.startRun.show();
@@ -270,7 +270,7 @@ class EnslavedProgressState extends BitUpgradeState {
     if (this.hasHint && !this.hasProgress) {
       player.celestials.enslaved.zeroHintTime -= Math.log(2) /
         Math.log(3) * TimeSpan.fromDays(1).totalMilliseconds.toNumber();
-      GameUI.notify.success("You found a crack in The Nameless Ones' Reality!", 10000);
+      if (player.options.notifications.enslaved) GameUI.notify.success("You found a crack in The Nameless Ones' Reality!", 10000);
     }
     player.celestials.enslaved.progressBits |= (1 << this.id);
   }

@@ -72,6 +72,7 @@ export default {
       return this.layer.getRuns;
     },
     hasRealTime: () => PlayerProgress.seenAlteredSpeed(),
+    hasTrueTime: () => PlayerProgress.seenAlteredRealSpeed(),
   },
   methods: {
     update() {
@@ -85,7 +86,7 @@ export default {
       this.hasChallenges = this.runs.map(r => this.challengeText(r)).some(t => t);
       this.hasIM = Currency.imaginaryMachines.cap.gt(0);
 
-      // We have 4 different "useful" stat pairings we could display, but this ends up being pretty boilerplatey
+      // We have 5 different "useful" stat pairings we could display, but this ends up being pretty boilerplatey
       const names = [this.points, `${this.points} Rate`, this.plural, `${this.singular} Rate`, `${this.points} ×Last ${this.singular}`, `${this.plural} ×Last ${this.singular}`];
       switch (this.resourceType) {
         case RECENT_PRESTIGE_RESOURCE.ABSOLUTE_GAIN:
@@ -157,7 +158,7 @@ export default {
     infoCol() {
       const cells = ["Run", this.hasRealTime ? "Game Time" : "Time in Run"];
       if (this.hasRealTime) cells.push("Real Time");
-      if (this.hasRealTime) cells.push("True Time");
+      if (this.hasTrueTime) cells.push("True Time");
       cells.push(...this.resourceTitles);
       if (this.hasChallenges) cells.push("Challenge");
 

@@ -63,8 +63,8 @@ class AchievementState extends GameMechanicState {
       GameCache.staticGlyphWeights.invalidate();
     }
     if (auto) {
-      GameUI.notify.reality(`Automatically unlocked: ${this.name}`);
-    } else {
+      if (player.options.notifications.autoAchievement) GameUI.notify.reality(`Automatically unlocked: ${this.name}`);
+    } else if (player.options.notifications.achievement) {
       GameUI.notify.success(`Achievement: ${this.name}`);
     }
     if (player.speedrun.isActive && !player.speedrun.achievementTimes[this.id]) {

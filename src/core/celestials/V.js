@@ -85,7 +85,7 @@ class VRunUnlockState extends GameMechanicState {
     Decimal.gte(playerData.runRecords[this.id], this.conditionValue)) {
       if (!V.isFlipped && this.config.isHard) continue;
       this.completions++;
-      GameUI.notify.success(`You have unlocked V-Achievement
+      if (player.options.notifications.v) GameUI.notify.success(`You have unlocked V-Achievement
         '${this.config.name}' tier ${formatInt(this.completions)}`);
 
       V.updateTotalRunUnlocks();
@@ -131,7 +131,7 @@ class VUnlockState extends BitUpgradeState {
   }
 
   onUnlock() {
-    GameUI.notify.success(this.description);
+    if (player.options.notifications.v) GameUI.notify.success(this.description);
   }
 }
 
@@ -179,7 +179,7 @@ export const V = {
   },
   unlockCelestial() {
     player.celestials.v.unlockBits |= (1 << VUnlocks.vAchievementUnlock.id);
-    GameUI.notify.success("You have unlocked V, The Celestial Of Achievements!", 10000);
+    if (player.options.notifications.v) GameUI.notify.success("You have unlocked V, The Celestial Of Achievements!", 10000);
     V.quotes.unlock.show();
   },
   initializeRun() {

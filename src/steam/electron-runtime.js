@@ -26,7 +26,7 @@ export const ElectronRuntime = {
     }
 
     if (zoomFactor > MAX_ZOOM) {
-      GameUI.notify.info("Zoom Level is at Maximum");
+      if (player.options.notifications.keybinds) GameUI.notify.info("Zoom Level is at Maximum");
       return;
     }
 
@@ -39,7 +39,7 @@ export const ElectronRuntime = {
     }
 
     if (zoomFactor < MIN_ZOOM) {
-      GameUI.notify.info("Zoom Level is at Minimum");
+      if (player.options.notifications.keybinds) GameUI.notify.info("Zoom Level is at Minimum");
       return;
     }
 
@@ -62,7 +62,7 @@ export const ElectronRuntime = {
     zoomFactor = value;
     localStorage.setItem("Zoom", zoomFactor.toString());
     this.updateZoom();
-    GameUI.notify.info(`Size changed to ${Math.round(zoomFactor * 100)}%`);
+    if (player.options.notifications.keybinds) GameUI.notify.info(`Size changed to ${Math.round(zoomFactor * 100)}%`);
   },
 
   updateZoom() {

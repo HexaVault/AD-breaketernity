@@ -114,7 +114,7 @@ Theme.tryUnlock = function(name) {
   Theme.set(prefix);
   SecretAchievement(25).unlock();
   if (!isAlreadyUnlocked) {
-    GameUI.notify.success(`You have unlocked the ${name.capitalize()} theme!`, 5000);
+    if (player.options.notifications.options) GameUI.notify.success(`You have unlocked the ${name.capitalize()} theme!`, 5000);
     if (Theme.current().isAnimated) {
       setTimeout(Modal.message.show(i18n("modal", "animatedTheme")), 100);
     }

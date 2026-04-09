@@ -60,6 +60,10 @@ export class PlayerProgress {
     return this.gameBeaten() || this.realityUnlocked() || ec12.completions > 0 || ec12.isRunning;
   }
 
+  static seenAlteredRealSpeed() {
+    return false;
+  }
+
   static challengeCompleted() {
     return NormalChallenges.all.slice(1).some(c => c.isCompleted);
   }

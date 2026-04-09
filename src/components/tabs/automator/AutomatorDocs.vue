@@ -136,8 +136,8 @@ export default {
       const toExport = AutomatorBackend.exportCurrentScriptContents();
       if (toExport) {
         copyToClipboard(toExport);
-        GameUI.notify.automator("Exported current Automator script to your clipboard");
-      } else {
+        if (player.options.notifications.automator) GameUI.notify.automator("Exported current Automator script to your clipboard");
+      } else if (player.options.notifications.automator) {
         GameUI.notify.error("Could not export blank Automator script!");
       }
     },

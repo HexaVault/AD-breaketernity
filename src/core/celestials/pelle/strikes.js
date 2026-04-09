@@ -33,7 +33,7 @@ class PelleStrikeState extends BitUpgradeState {
   }
 
   onUnlock() {
-    GameUI.notify.strike(`You encountered a Pelle Strike: ${this.requirement}`);
+    if (player.options.notifications.pelle) GameUI.notify.strike(`You encountered a Pelle Strike: ${this.requirement}`);
     player.celestials.pelle.collapsed.rifts = false;
 
     // If it's paradox, reset the records

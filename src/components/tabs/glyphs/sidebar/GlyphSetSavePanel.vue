@@ -120,9 +120,9 @@ export default {
         }
       }
       if (missingGlyphs > 0) {
-        GameUI.notify.error(`Could not find or equip ${missingGlyphs} ${pluralize("Glyph", missingGlyphs)} from
+        if (player.options.notifications.glyphs) GameUI.notify.error(`Could not find or equip ${missingGlyphs} ${pluralize("Glyph", missingGlyphs)} from
           ${this.setName(id)}.`);
-      } else {
+      } else if (player.options.notifications.glyphs) {
         GameUI.notify.success(`Successfully loaded ${this.setName(id)}.`);
       }
     },

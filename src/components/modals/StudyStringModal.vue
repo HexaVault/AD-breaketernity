@@ -214,7 +214,7 @@ export default {
     savePreset() {
       if (this.inputIsValid) {
         player.timestudy.presets[this.id].studies = this.input;
-        GameUI.notify.eternity(i18n("modal", "successEdit", [this.name]));
+        if (player.options.notifications.studies) GameUI.notify.eternity(i18n("modal", "successEdit", [this.name]));
         this.emitClose();
       }
     },
@@ -223,7 +223,7 @@ export default {
       const presetName = i18n("modal", name ? "studyNamed" : "studyUnnamed", [name]);
       player.timestudy.presets[this.id].studies = "";
       player.timestudy.presets[this.id].name = "";
-      GameUI.notify.eternity(i18n("modal", "presetDeleted", [presetName, this.id + 1]));
+      if (player.options.notifications.studies) GameUI.notify.eternity(i18n("modal", "presetDeleted", [presetName, this.id + 1]));
     },
     studyString(study) {
       return study instanceof ECTimeStudyState ? `EC${study.id}` : `${study.id}`;

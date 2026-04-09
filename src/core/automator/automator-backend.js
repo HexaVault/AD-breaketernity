@@ -199,7 +199,7 @@ export const AutomatorData = {
   },
   createNewScript(content, name) {
     const newScript = AutomatorScript.create(name, content);
-    GameUI.notify.automator(`Imported Script "${name}"`);
+    if (player.options.notifications.automator) GameUI.notify.automator(`Imported Script "${name}"`);
     player.reality.automator.state.editorScript = newScript.id;
     AutomatorData.clearUndoData();
     EventHub.dispatch(GAME_EVENT.AUTOMATOR_SAVE_CHANGED);
@@ -767,7 +767,7 @@ export const AutomatorBackend = {
     // and input 3000 comments in a row. If hasJustCompleted is true, then we actually broke out because the end of
     // the script has no-ops and we just looped through them, and therefore shouldn't show these messages
     if (!this.hasJustCompleted) {
-      GameUI.notify.error("Automator halted - too many consecutive no-ops detected");
+      if (player.options.notifications.automator) GameUI.notify.error("Automator halted - too many consecutive no-ops detected");
       AutomatorData.logCommandEvent("Automator halted due to excessive no-op commands", this.currentLineNumber);
     }
 

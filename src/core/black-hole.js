@@ -254,7 +254,7 @@ class BlackHoleState {
       if (this.phase.gte(this.duration)) {
         this._data.phase = this._data.phase.sub(this.duration);
         this._data.active = false;
-        if (GameUI.notify.showBlackHoles) {
+        if (GameUI.notify.showBlackHoles && player.options.notifications[`bh${this.id}`]) {
           GameUI.notify.blackHole(`${this.description(true)} duration ended.`);
         }
       }
@@ -262,7 +262,7 @@ class BlackHoleState {
       this._data.phase = this._data.phase.sub(this.interval);
       this._data.activations = this._data.activations.add(1);
       this._data.active = true;
-      if (GameUI.notify.showBlackHoles) {
+      if (GameUI.notify.showBlackHoles && player.options.notifications[`bh${this.id}`]) {
         GameUI.notify.blackHole(`${this.description(true)} has activated!`);
       }
     }
@@ -369,7 +369,9 @@ export const BlackHoles = {
     // eslint-disable-next-line no-nested-ternary
     const pauseType = player.blackHolePause ? (BlackHoles.areNegative ? "inverted" : "paused") : "unpaused";
     const automaticString = automatic ? "automatically " : "";
-    GameUI.notify.blackHole(`${blackHoleString} ${automaticString}${pauseType}`);
+    if (player.options.notifications.bh1 && (!BlackHoles[1].isUnlocked || player.options.notifications.bh2)) {
+      GameUI.notify.blackHole(`${blackHoleString} ${automaticString}${pauseType}`);
+    }
   },
 
   get unpauseAccelerationFactor() {

@@ -196,7 +196,7 @@ export default {
       const simpleData = [filter.select, filter.simple, filter.trash].join("|");
       const typeData = GlyphInfo.alchemyGlyphTypes.map(t => serializeType(filter.types[t])).join("|");
       copyToClipboard(GameSaveSerializer.encodeText(`${simpleData}|${typeData}`, "glyph filter"));
-      GameUI.notify.info("Filter settings copied to clipboard");
+      if (player.options.notifications.glyphs) GameUI.notify.info("Filter settings copied to clipboard");
     },
     importFilterSettings() {
       Modal.importFilter.show();

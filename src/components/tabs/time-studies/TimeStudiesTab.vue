@@ -123,11 +123,11 @@ export default {
       throw "Unknown Time Study type";
     },
     exportStudyTree() {
-      if (player.timestudy.studies.length === 0) {
+      if (player.timestudy.studies.length === 0 && player.options.notifications.studies) {
         GameUI.notify.error("You cannot export an empty Time Study Tree!");
       } else {
         copyToClipboard(GameCache.currentStudyTree.value.exportString);
-        GameUI.notify.info("Exported current Time Studies to your clipboard");
+        if (player.options.notifications.studies) GameUI.notify.info("Exported current Time Studies to your clipboard");
       }
     }
   }

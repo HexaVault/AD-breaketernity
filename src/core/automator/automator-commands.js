@@ -299,7 +299,7 @@ export const AutomatorCommands = [
     compile: ctx => {
       const notifyText = ctx.StringLiteral || ctx.StringLiteralSingleQuote;
       return () => {
-        GameUI.notify.automator(`Automator: ${notifyText[0].image}`);
+        if (player.options.notifications.automator) GameUI.notify.automator(`Automator: ${notifyText[0].image}`);
         AutomatorData.logCommandEvent(`NOTIFY call: ${notifyText[0].image}`, ctx.startLine);
         return AUTOMATOR_COMMAND_STATUS.NEXT_INSTRUCTION;
       };

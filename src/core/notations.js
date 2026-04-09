@@ -64,7 +64,7 @@ export const LNotation = (function() {
 Notation.emoji.setAsCurrent = (silent = false) => {
   player.options.notation = Notation.emoji.name;
   ui.notationName = Notation.emoji.name;
-  if (!silent) GameUI.notify.success("😂😂😂");
+  if (!silent && player.options.notifications.options) GameUI.notify.success("😂😂😂");
 };
 
 // Post e9e15

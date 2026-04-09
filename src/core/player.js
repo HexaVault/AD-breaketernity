@@ -935,6 +935,29 @@ window.player = {
     language: "GBR_EN",
     englishLangNames: true,
     showFomula: false,
+    // These are in (rough) order of when they are unlocked
+    notifications: {
+      keybinds: true,
+      saving: true,
+      options: true,
+      achievement: true,
+      icUnlock: true,
+      studies: true,
+      autoAchievement: true,
+      realityUpgrade: true,
+      bh1: true,
+      automator: true,
+      bh2: true,
+      // The first time you really see this is music glyph
+      glyphs: true,
+      enslaved: true,
+      v: true,
+      imagUpgrade: true,
+      continuum: true,
+      singMilestone: true,
+      pelle: true,
+      speedrun: true,
+    }
   },
   IAP: {
     enabled: false,

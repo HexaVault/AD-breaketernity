@@ -27,7 +27,7 @@ class SecretAchievementState extends GameMechanicState {
   unlock() {
     if (this.isUnlocked) return;
     player.secretAchievementBits[this.row - 1] |= this._bitmask;
-    GameUI.notify.success(`Secret Achievement: ${this.name}`);
+    if (player.options.notifications.achievement) GameUI.notify.success(`Secret Achievement: ${this.name}`);
     EventHub.dispatch(GAME_EVENT.ACHIEVEMENT_UNLOCKED);
   }
 

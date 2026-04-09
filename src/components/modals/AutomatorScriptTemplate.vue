@@ -118,7 +118,7 @@ export default {
     },
     copyAndClose() {
       copyToClipboard(this.templateScript.script);
-      GameUI.notify.info(i18n("modal", "tempCopied"));
+      if (player.options.notifications.automator) GameUI.notify.info(i18n("modal", "tempCopied"));
       this.emitClose();
     }
   }
