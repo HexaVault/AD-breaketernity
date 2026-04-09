@@ -258,6 +258,8 @@ export const glyphTypes = {
       formatEffect: effect => formatPercents(effect.sub(1)),
       description: "Galaxies are {value} stronger",
       combine: GlyphCombiner.addExponents,
+      requirement: () => PelleRifts.chaos.milestones[1].canBeApplied,
+      default: DC.D1
     },
     isGenerated: true,
     adjNounImportance: 1,
@@ -294,6 +296,8 @@ export const glyphTypes = {
       formatEffect: effect => formatX(effect, 2),
       description: "Infinity Point gain {value} (based on current IP)",
       combine: GlyphCombiner.multiply,
+      requirement: () => PelleRifts.chaos.milestones[1].canBeApplied,
+      default: DC.D1
     },
     isGenerated: true,
     adjNounImportance: 1,
@@ -337,10 +341,12 @@ export const glyphTypes = {
     },
     alchemyResource: "replication",
     pelleUniqueEffect: {
-      effect: 5,
+      effect: Decimal.pow(53, PelleRfts.vacuum.percentage).pow10(),
       formatEffect: effect => formatX(effect, 2),
       description: () => `Replication speed {value} (based on ${wordShift.wordCycle(PelleRifts.vacuum.name)})`,
       combine: GlyphCombiner.multiply,
+      requirement: () => PelleRifts.chaos.milestones[1].canBeApplied,
+      default: DC.D1
     },
     isGenerated: true,
     adjNounImportance: 1,
@@ -377,6 +383,8 @@ export const glyphTypes = {
       formatEffect: effect => formatX(effect, 2),
       description: "Eternity Point gain {value} (based on current EP)",
       combine: GlyphCombiner.multiply,
+      requirement: () => PelleRifts.chaos.milestones[1].canBeApplied,
+      default: DC.D1
     },
     isGenerated: true,
     adjNounImportance: 1,
@@ -415,6 +423,8 @@ export const glyphTypes = {
       formatEffect: effect => formatX(effect, 2),
       description: "Dilated Time gain {value} (based on Tachyon Galaxies)",
       combine: GlyphCombiner.multiply,
+      requirement: () => PelleRifts.chaos.milestones[1].canBeApplied,
+      default: DC.D1
     },
     isGenerated: true,
     adjNounImportance: 1,

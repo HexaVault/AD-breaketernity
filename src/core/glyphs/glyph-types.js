@@ -3,6 +3,7 @@ import { GameMechanicState } from "../game-mechanics/game-mechanic";
 
 class PelleGlyphEffectState extends GameMechanicState {
   get effectValue() {
+    if (!this.config.requirement()) return this.config.default;
     return this.config.combine(Glyphs.activeList.filter(g => g.type === this.id)
       // TODO: strength should actually refer to Pelle.glyphStrength or something
       .map(g => (isFunction(this.config.effect) ? this.config.effect(g.level, g.strength) : this.config.effect)));

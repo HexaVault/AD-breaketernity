@@ -581,7 +581,7 @@ export const normalTimeStudies = [
     requirement: [214],
     reqType: TS_REQUIREMENT_TYPE.AT_LEAST_ONE,
     requiresST: [227],
-    description: () => () => i18n("studies", "ts221", [
+    description: () => i18n("studies", "ts228", [
       Sacrifice.getSacrificeDescription({ "TimeStudy228": false }),
       Sacrifice.getSacrificeDescription({ "TimeStudy228": true })
     ]),

@@ -62,7 +62,7 @@ export const eternityChallenges = [
   },
   {
     id: 5,
-    description: () => i18n("chall", "ec5", formatInt(100)),
+    description: () => i18n("chall", "ec5", [formatInt(100)]),
     goal: DC.E750,
     pelleGoal: DC.E1400,
     goalIncrease: DC.E400,
@@ -87,7 +87,7 @@ export const eternityChallenges = [
       effect: completions => completions * 0.2,
       formatEffect: value => {
         const total = Player.dimensionMultDecrease.add(Effects.sum(EternityChallenge(6).reward)).round().sub(value);
-        return i18n("chall", "ec6rewFormat", [value, total]);
+        return i18n("chall", "ec6rewFormat", [format(value, 2, 1), format(total, 2, 1)]);
       }
     },
     get scrambleText() { return i18n("chall", "ec6enslavedScramble").split(" $ "); },
@@ -102,7 +102,7 @@ export const eternityChallenges = [
     reward: {
       description: () => i18n("chall", "ec7rew"),
       effect: completions => TimeDimension(1).productionPerSecond.pow(completions * 0.2).minus(1).clampMin(0),
-      formatEffect: value => i18n("chall", "ec7rewFormat", [value]),
+      formatEffect: value => i18n("chall", "ec7rewFormat", [format(value, 2, 2)]),
     }
   },
   {
@@ -136,7 +136,7 @@ export const eternityChallenges = [
   {
     id: 10,
     description: () => {
-      let description = i18n("chall", "ec9", [formatPow(950), specialInfinityGlyphDisabledEffectText()]);
+      let description = i18n("chall", "ec10", [formatInt(950), specialInfinityGlyphDisabledEffectText()]);
       EternityChallenge(10).applyEffect(v => description += i18n("chall", "ec10additional", [formatX(v, 2, 1)]));
       return description;
     },
@@ -172,7 +172,7 @@ export const eternityChallenges = [
       effect: completions => completions * 0.07,
       formatEffect: value => {
         const total = Player.tickSpeedMultDecrease.add(Effects.sum(EternityChallenge(11).reward)).round().sub(value);
-        return i18n("chall", "ec11rewFormat", [value, total]);
+        return i18n("chall", "ec11rewFormat", [format(value, 2, 2), format(total, 2, 2)]);
       }
     }
   },
