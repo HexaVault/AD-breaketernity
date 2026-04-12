@@ -62,6 +62,8 @@ export class GlyphEffectConfig {
     this.alterationType = config.alterationType;
     // Indicates whether the effect grows or shrinks with level
     this._biggerIsBetter = undefined;
+    this._effCol = config.effectCol;
+    this._effectCol = undefined;
   }
 
   get isEnabledInDoomed() {
@@ -95,6 +97,26 @@ export class GlyphEffectConfig {
     return this._biggerIsBetter;
   }
 
+  get effectCol() {
+    // This basically is our "lazy" way of caching, so we dont recalculate each time.
+    if (this._effectCol) return this._effectCol;
+    if (!this._effCol) {
+      this._effectCol = "#ffffff";
+      return "#ffffff";
+    }
+    if (this._effCol.slice(0, 1) === "#") {
+      this._effectCol = this._effCol;
+      return this._effCol;
+    }
+    if (GlyphInfo.glyphTypes.includes(this._effCol)) {
+      this._effectCol = CosmeticGlyphTypes[this._effCol].currentColor.border;
+      if (this._effCol === "cursed") this._effectCol = "var(--color-celestials)";
+      return this._effectCol;
+    }
+    this._effectCol = "#ffffff";
+    return "#ffffff";
+  }
+
   compareValues(effectValueA, effectValueB) {
     const result = Decimal.compare(effectValueA, effectValueB);
     return this.biggerIsBetter ? result : -result;
@@ -121,7 +143,7 @@ export class GlyphEffectConfig {
   static checkInputs(setup) {
     const KNOWN_KEYS = ["id", "intID", "glyphTypes", "singleDesc", "totalDesc", "genericDesc", "shortDesc",
       "effect", "formatEffect", "formatSingleEffect", "combine", "softcap", "conversion", "formatSecondaryEffect",
-      "formatSingleSecondaryEffect", "alteredColor", "alterationType", "isGenerated", "enabledInDoomed"];
+      "formatSingleSecondaryEffect", "alteredColor", "alterationType", "isGenerated", "enabledInDoomed", "effectCol"];
     const unknownField = Object.keys(setup).find(k => !KNOWN_KEYS.includes(k));
     if (unknownField !== undefined) {
       // eslint-disable-next-line no-console

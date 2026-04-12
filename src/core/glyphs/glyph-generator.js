@@ -288,7 +288,8 @@ export const GlyphGenerator = {
 
     if (GlyphInfo[type].effectWeights) {
       for (const i of glyphTypeEffects) {
-        effectValues[i] = Math.pow(effectValues[i], GlyphInfo[type].effectWeights[i]);
+        // This should be .root not .pow
+        effectValues[i] = Math.root(effectValues[i], GlyphInfo[type].effectWeights[i]);
       }
     }
 
@@ -311,16 +312,15 @@ export const GlyphGenerator = {
     }
 
     for (let i = 0; i < guarenteedEffects.length; i++) {
-      // eslint-disable-next-line no-loop-func
       effectValues[GlyphInfo[type].effects.filter(e => e.id === guarenteedEffects[i])[0].id] = 2;
     }
 
+    let fcount = count;
     if (GlyphInfo[type].primaryEffects !== undefined) {
-      // eslint-disable-next-line no-param-reassign
-      count = Math.max(count, guarenteedEffects.length + GlyphInfo[type].primaryEffects.length);
+      fcount = Math.max(count, guarenteedEffects.length + GlyphInfo[type].primaryEffects.length);
     }
     // Sort from highest to lowest value.
-    let effects = Object.keys(effectValues).sort((a, b) => effectValues[b] - effectValues[a]).slice(0, count);
+    let effects = Object.keys(effectValues).sort((a, b) => effectValues[b] - effectValues[a]).slice(0, fcount);
     if (GlyphInfo[type].excessEffects.length > 0) effects = effects.concat(GlyphInfo[type].excessEffects);
 
     return effects;
