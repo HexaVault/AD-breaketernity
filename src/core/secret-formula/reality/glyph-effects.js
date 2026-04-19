@@ -26,7 +26,9 @@ export const glyphEffects = {
   timepow: {
     id: "timepow",
     intID: 0,
-    glyphTypes: ["time"],
+    glyphTypes: [
+      [true, "time"]
+    ],
     singleDesc: "Time Dimension power +{value}",
     totalDesc: "Time Dimension multipliers ^{value}",
     shortDesc: "TD power +{value}",
@@ -50,7 +52,9 @@ export const glyphEffects = {
   timespeed: {
     id: "timespeed",
     intID: 1,
-    glyphTypes: ["time"],
+    glyphTypes: [
+      [true, "time"]
+    ],
     singleDesc: "Multiply game speed by {value}",
     totalDesc: "Game runs ×{value} faster",
     genericDesc: "Game speed multiplier",
@@ -75,7 +79,9 @@ export const glyphEffects = {
   timeetermult: {
     id: "timeetermult",
     intID: 2,
-    glyphTypes: ["time"],
+    glyphTypes: [
+      [true, "time"]
+    ],
     singleDesc: "Multiply Eternity gain by {value}",
     totalDesc: "Eternity gain ×{value}",
     genericDesc: "Eternity gain multiplier",
@@ -97,7 +103,9 @@ export const glyphEffects = {
   timeEP: {
     id: "timeEP",
     intID: 3,
-    glyphTypes: ["time"],
+    glyphTypes: [
+      [true, "time"]
+    ],
     singleDesc: () => (GlyphAlteration.isAdded("time")
       ? "Eternity Point gain \n×{value} [and ^]{value2}"
       : "Multiply Eternity Point gain by {value}"),
@@ -129,7 +137,9 @@ export const glyphEffects = {
   dilationDT: {
     id: "dilationDT",
     intID: 4,
-    glyphTypes: ["dilation"],
+    glyphTypes: [
+      [true, "dilation"]
+    ],
     singleDesc: "Multiply Dilated Time gain by {value}",
     totalDesc: "Dilated Time gain ×{value}",
     shortDesc: "DT ×{value}",
@@ -151,7 +161,9 @@ export const glyphEffects = {
   dilationgalaxyThreshold: {
     id: "dilationgalaxyThreshold",
     intID: 5,
-    glyphTypes: ["dilation"],
+    glyphTypes: [
+      [true, "dilation"]
+    ],
     singleDesc: "Tachyon Galaxy threshold multiplier ×{value}",
     genericDesc: "Tachyon Galaxy cost multiplier",
     shortDesc: "TG threshold ×{value}",
@@ -176,7 +188,9 @@ export const glyphEffects = {
     // TTgen slowly generates TT, value amount is per second, displayed per hour
     id: "dilationTTgen",
     intID: 6,
-    glyphTypes: ["dilation"],
+    glyphTypes: [
+      [true, "dilation"]
+    ],
     singleDesc: () => (GlyphAlteration.isAdded("dilation")
       ? "Generates {value} Time Theorems/hour \n[and multiplies Time Theorem \ngeneration by] {value2}"
       : "Generates {value} Time Theorems per hour"),
@@ -208,7 +222,9 @@ export const glyphEffects = {
   dilationpow: {
     id: "dilationpow",
     intID: 7,
-    glyphTypes: ["dilation"],
+    glyphTypes: [
+      [true, "dilation"]
+    ],
     singleDesc: "Antimatter Dimension power +{value} while Dilated",
     totalDesc: "Antimatter Dimension multipliers ^{value} while Dilated",
     genericDesc: "Antimatter Dimensions ^x while Dilated",
@@ -231,7 +247,9 @@ export const glyphEffects = {
   replicationspeed: {
     id: "replicationspeed",
     intID: 8,
-    glyphTypes: ["replication"],
+    glyphTypes: [
+      [true, "replication"]
+    ],
     singleDesc: "Multiply Replication speed by {value}",
     totalDesc: "Replication speed ×{value}",
     genericDesc: "Replication speed multiplier",
@@ -254,7 +272,9 @@ export const glyphEffects = {
   replicationpow: {
     id: "replicationpow",
     intID: 9,
-    glyphTypes: ["replication"],
+    glyphTypes: [
+      [true, "replication"]
+    ],
     singleDesc: "Replicanti multiplier power +{value}",
     totalDesc: "Replicanti multiplier ^{value}",
     shortDesc: "Replicanti mult. power +{value}",
@@ -271,7 +291,9 @@ export const glyphEffects = {
   replicationdtgain: {
     id: "replicationdtgain",
     intID: 10,
-    glyphTypes: ["replication"],
+    glyphTypes: [
+      [true, "replication"]
+    ],
     singleDesc: () => (GlyphAlteration.isAdded("replication")
       ? `Multiply Dilated Time \n[and Replicanti speed] by \n+{value} per ${format(DC.E10000)} replicanti`
       : `Multiply Dilated Time gain by \n+{value} per ${format(DC.E10000)} replicanti`),
@@ -310,7 +332,9 @@ export const glyphEffects = {
   replicationglyphlevel: {
     id: "replicationglyphlevel",
     intID: 11,
-    glyphTypes: ["replication"],
+    glyphTypes: [
+      [true, "replication"]
+    ],
     singleDesc: () => `Replicanti factor for Glyph level:\n ^${format(0.4, 1, 1)}
       ➜ ^(${format(0.4, 1, 1)} + {value})`,
     totalDesc: () => `Replicanti factor for Glyph level: ^${format(0.4, 1, 1)}
@@ -331,7 +355,9 @@ export const glyphEffects = {
   infinitypow: {
     id: "infinitypow",
     intID: 12,
-    glyphTypes: ["infinity"],
+    glyphTypes: [
+      [true, "infinity"]
+    ],
     singleDesc: "Infinity Dimension power +{value}",
     totalDesc: "Infinity Dimension multipliers ^{value}",
     shortDesc: "ID power +{value}",
@@ -355,7 +381,9 @@ export const glyphEffects = {
   infinityrate: {
     id: "infinityrate",
     intID: 13,
-    glyphTypes: ["infinity"],
+    glyphTypes: [
+      [true, "infinity"]
+    ],
     singleDesc: () => `Infinity Power conversion rate: \n^${formatInt(7)}
       ➜ ^(${formatInt(7)} + {value})`,
     totalDesc: () => `Infinity Power conversion rate: ^${formatInt(7)}
@@ -371,7 +399,9 @@ export const glyphEffects = {
   infinityIP: {
     id: "infinityIP",
     intID: 14,
-    glyphTypes: ["infinity"],
+    glyphTypes: [
+      [true, "infinity"]
+    ],
     singleDesc: () => (GlyphAlteration.isAdded("infinity")
       ? "Infinity Point gain \n×{value} [and ^]{value2}"
       : "Multiply Infinity Point gain by {value}"),
@@ -405,7 +435,9 @@ export const glyphEffects = {
   infinityinfmult: {
     id: "infinityinfmult",
     intID: 15,
-    glyphTypes: ["infinity"],
+    glyphTypes: [
+      [true, "infinity"]
+    ],
     singleDesc: "Multiply Infinity gain by {value}",
     totalDesc: "Infinity gain ×{value}",
     genericDesc: "Infinity gain multiplier",
@@ -428,7 +460,9 @@ export const glyphEffects = {
   powerpow: {
     id: "powerpow",
     intID: 16,
-    glyphTypes: ["power"],
+    glyphTypes: [
+      [true, "power"]
+    ],
     singleDesc: () => (GlyphAlteration.isAdded("power")
       ? "Antimatter Dimension power +{value}\n[and Antimatter Galaxy cost ×]{value2}"
       : "Antimatter Dimension power +{value}"),
@@ -455,7 +489,9 @@ export const glyphEffects = {
   powermult: {
     id: "powermult",
     intID: 17,
-    glyphTypes: ["power"],
+    glyphTypes: [
+      [true, "power"]
+    ],
     singleDesc: "Antimatter Dimension multipliers ×{value}",
     shortDesc: "AD ×{value}",
     effect: (level, strength) => {
@@ -477,7 +513,9 @@ export const glyphEffects = {
   powerdimboost: {
     id: "powerdimboost",
     intID: 18,
-    glyphTypes: ["power"],
+    glyphTypes: [
+      [true, "power"]
+    ],
     singleDesc: "Dimension Boost multiplier ×{value}",
     genericDesc: "Dimension Boost multiplier",
     shortDesc: "Dimboost mult. ×{value}",
@@ -499,7 +537,9 @@ export const glyphEffects = {
   powerbuy10: {
     id: "powerbuy10",
     intID: 19,
-    glyphTypes: ["power"],
+    glyphTypes: [
+      [true, "power"]
+    ],
     singleDesc: () => `Increase the bonus from buying ${formatInt(10)} Antimatter Dimensions by {value}`,
     totalDesc: () => `Multiplier from "Buy ${formatInt(10)}" ×{value}`,
     genericDesc: () => `"Buy ${formatInt(10)}" bonus increase`,
@@ -519,7 +559,9 @@ export const glyphEffects = {
   effarigrm: {
     id: "effarigrm",
     intID: 20,
-    glyphTypes: ["effarig"],
+    glyphTypes: [
+      [true, "effarig"]
+    ],
     singleDesc: "Reality Machine multiplier ×{value}",
     genericDesc: "Reality Machine multiplier",
     shortDesc: "RM ×{value}",
@@ -541,7 +583,9 @@ export const glyphEffects = {
   effarigglyph: {
     id: "effarigglyph",
     intID: 21,
-    glyphTypes: ["effarig"],
+    glyphTypes: [
+      [true, "effarig"]
+    ],
     singleDesc: "Glyph Instability starting level +{value}",
     genericDesc: "Glyph Instability delay",
     shortDesc: "Instability delay +{value}",
@@ -559,7 +603,9 @@ export const glyphEffects = {
   effarigblackhole: {
     id: "effarigblackhole",
     intID: 22,
-    glyphTypes: ["effarig"],
+    glyphTypes: [
+      [true, "effarig"]
+    ],
     singleDesc: "Game speed power +{value}",
     totalDesc: "Game speed ^{value}",
     genericDesc: "Game speed ^x",
@@ -580,7 +626,9 @@ export const glyphEffects = {
   effarigachievement: {
     id: "effarigachievement",
     intID: 23,
-    glyphTypes: ["effarig"],
+    glyphTypes: [
+      [true, "effarig"]
+    ],
     singleDesc: "Achievement multiplier power +{value}",
     totalDesc: "Achievement multiplier ^{value}",
     genericDesc: "Achievement multiplier ^x",
@@ -603,7 +651,9 @@ export const glyphEffects = {
   effarigforgotten: {
     id: "effarigforgotten",
     intID: 24,
-    glyphTypes: ["effarig"],
+    glyphTypes: [
+      [true, "effarig"]
+    ],
     singleDesc: () => (GlyphAlteration.isAdded("effarig")
       ? `"Buy ${formatInt(10)}" multiplier ^{value} [and\nDimension Boost multiplier ^]{value2}`
       : `Bonus from buying ${formatInt(10)} Dimensions ^{value}`),
@@ -635,7 +685,9 @@ export const glyphEffects = {
   effarigdimensions: {
     id: "effarigdimensions",
     intID: 25,
-    glyphTypes: ["effarig"],
+    glyphTypes: [
+      [true, "effarig"]
+    ],
     singleDesc: "All Dimension power +{value}",
     totalDesc: "All Dimension multipliers ^{value}",
     genericDesc: "All Dimension multipliers ^x",
@@ -656,7 +708,9 @@ export const glyphEffects = {
   effarigantimatter: {
     id: "effarigantimatter",
     intID: 26,
-    glyphTypes: ["effarig"],
+    glyphTypes: [
+      [true, "effarig"]
+    ],
     singleDesc: () => `Antimatter production:\n${formatInt(10)}^x ➜ ${formatInt(10)}^(x^{value})`,
     genericDesc: "Antimatter production exponent power",
     shortDesc: "AM production exponent ^{value}",
@@ -675,8 +729,9 @@ export const glyphEffects = {
   timeshardpow: {
     id: "timeshardpow",
     intID: 27,
-    // This gets explicitly added to time glyphs elsewhere (once unlocked)
-    glyphTypes: [],
+    // This is an additional effect, and by default has no natural generation on any glyph.
+    glyphTypes: [
+    ],
     singleDesc: "Time Shard power +{value}",
     totalDesc: "Time Shard gain ^{value}",
     genericDesc: "Time Shards ^x",
@@ -698,7 +753,9 @@ export const glyphEffects = {
   cursedgalaxies: {
     id: "cursedgalaxies",
     intID: 28,
-    glyphTypes: ["cursed"],
+    glyphTypes: [
+      [true, "cursed"]
+    ],
     singleDesc: `All Galaxies are {value} weaker`,
     totalDesc: "All Galaxy strength -{value}",
     shortDesc: "Galaxy Strength -{value}",
@@ -717,7 +774,9 @@ export const glyphEffects = {
   curseddimensions: {
     id: "curseddimensions",
     intID: 29,
-    glyphTypes: ["cursed"],
+    glyphTypes: [
+      [true, "cursed"]
+    ],
     singleDesc: "All Dimension multipliers ^{value}",
     shortDesc: "All Dimensions ^{value}",
     // Multiplies by 0.734 per glyph
@@ -735,7 +794,9 @@ export const glyphEffects = {
   cursedtickspeed: {
     id: "cursedtickspeed",
     intID: 30,
-    glyphTypes: ["cursed"],
+    glyphTypes: [
+      [true, "cursed"]
+    ],
     singleDesc: "The threshold for Tickspeed Upgrades from Time Dimensions is multiplied by ×{value}",
     totalDesc: "The threshold for Tickspeed Upgrades from Time Dimensions is increased by ×{value}",
     shortDesc: "TD Tickspeed threshold ×{value}",
@@ -754,7 +815,9 @@ export const glyphEffects = {
   cursedEP: {
     id: "cursedEP",
     intID: 31,
-    glyphTypes: ["cursed"],
+    glyphTypes: [
+      [true, "cursed"]
+    ],
     singleDesc: "Divide Eternity Point gain by {value}",
     totalDesc: "Eternity Point gain / {value}",
     shortDesc: "EP / {value}",
@@ -773,7 +836,9 @@ export const glyphEffects = {
   realityglyphlevel: {
     id: "realityglyphlevel",
     intID: 32,
-    glyphTypes: ["reality"],
+    glyphTypes: [
+      [true, "reality"]
+    ],
     singleDesc: "Increase the effective level of equipped basic Glyphs by {value}",
     totalDesc: "Equipped basic Glyph level +{value}",
     shortDesc: "Basic Glyph Level +{value}",
@@ -791,7 +856,9 @@ export const glyphEffects = {
   realitygalaxies: {
     id: "realitygalaxies",
     intID: 33,
-    glyphTypes: ["reality"],
+    glyphTypes: [
+      [true, "reality"]
+    ],
     singleDesc: "All Galaxies are {value} stronger",
     totalDesc: "All Galaxy strength +{value}",
     shortDesc: "Galaxy Strength +{value}",
@@ -809,7 +876,9 @@ export const glyphEffects = {
   realityrow1pow: {
     id: "realityrow1pow",
     intID: 34,
-    glyphTypes: ["reality"],
+    glyphTypes: [
+      [true, "reality"]
+    ],
     singleDesc: "Multiplier from Reality Upgrade Amplifiers ^{value}",
     totalDesc: "Reality Upgrade Amplifier multiplier ^{value}",
     shortDesc: "Amplifier Multiplier ^{value}",
@@ -827,7 +896,9 @@ export const glyphEffects = {
   realityDTglyph: {
     id: "realityDTglyph",
     intID: 35,
-    glyphTypes: ["reality"],
+    glyphTypes: [
+      [true, "reality"]
+    ],
     singleDesc: () => `Dilated Time factor for Glyph level: \n^${format(1.3, 1, 1)}
       ➜ ^(${format(1.3, 1, 1)} + {value})`,
     totalDesc: () => `Dilated Time factor for Glyph level: ^${format(1.3, 1, 1)}
@@ -849,7 +920,9 @@ export const glyphEffects = {
   companiondescription: {
     id: "companiondescription",
     intID: 36,
-    glyphTypes: ["companion"],
+    glyphTypes: [
+      [true, "companion"]
+    ],
     singleDesc: "It does nothing but sit there and cutely smile at you, whisper into your dreams politely, " +
       "and plot the demise of all who stand against you. This one-of-a-kind Glyph will never leave you.",
     totalDesc: "+{value} happiness",
@@ -868,7 +941,9 @@ export const glyphEffects = {
   companionEP: {
     id: "companionEP",
     intID: 37,
-    glyphTypes: ["companion"],
+    glyphTypes: [
+      [true, "companion"]
+    ],
     singleDesc: "Thanks for your dedication for the game! You reached {value} Eternity Points on your first Reality.",
     shortDesc: "It loves you very, very much",
     totalDesc: () => ((Enslaved.isRunning || Glyphs.active.countWhere(g => g?.type === "cursed")) ? "Help me" : "Yay!"),

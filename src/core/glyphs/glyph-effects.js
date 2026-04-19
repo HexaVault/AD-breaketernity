@@ -53,7 +53,7 @@ export class GlyphEffectConfig {
     });
 
     this.intID = config.intID;
-    this.glyphTypes = config.glyphTypes;
+    this._glyphTypes = config.glyphTypes;
     // Flag to separate "basic"/effarig glyphs from cursed/reality glyphs
     this.isGenerated = config.isGenerated;
     // Color to show numbers in glyph tooltips if boosted
@@ -95,6 +95,23 @@ export class GlyphEffectConfig {
   get biggerIsBetter() {
     if (this._biggerIsBetter === undefined) this._biggerIsBetter = this.checkBiggerIsBetter();
     return this._biggerIsBetter;
+  }
+
+  get glyphTypes() {
+    const glyphs = [];
+    if (this._glyphTypes.length === 0) return glyphs;
+    for (const item of glyphs) {
+      let isValid;
+      try {
+        isValid = handlePossibleFunction(item[0]);
+      } catch (error) {
+        isValid = false;
+      }
+      if (isValid) {
+        glyphs.push(...item.slice(1));
+      }
+    }
+    return glyphs;
   }
 
   get effectCol() {
