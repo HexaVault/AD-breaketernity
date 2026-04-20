@@ -9,7 +9,9 @@ to "main" in settings -> default branch.
 
 
 The main branch will remain unmodified until refactor is considered complete, at which point
-this branch will be merged into main, and this branch will be deleted in favor of main.
+this branch will be merged into main, and this branch will be deleted in favor of main.]
+
+Interested in modding AD? Here's the [discord](https://discord.gg/9p9DknraUr)
 
 ## Modifying
 This repository is worked on using Visual Studio Code and if you don't know what you are doing, you should use so aswell.
