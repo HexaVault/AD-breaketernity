@@ -962,8 +962,17 @@ window.player = {
   },
   IAP: {
     enabled: false,
-    checkoutSession: {
-      id: false,
+    std: DC.D0,
+    spentSTD: DC.D0,
+    purchases: {
+      dimPurchases: DC.D0,
+      allDimPurchases: DC.D0,
+      IPPurchases: DC.D0,
+      replicantiPurchases: DC.D0,
+      EPPurchases: DC.D0,
+      dilatedTimePurchases: DC.D0,
+      RMPurchases: DC.D0
+      // Note: Since we never to load it again here, there is 0 reason to store purchases of any offline or cosmetics here, so we don't
     }
   },
 };

@@ -39,7 +39,7 @@ export const secret = {
   ach32title: "Less than or equal to 0.001",
   ach32desc: "Get a fastest infinity or eternity time of less than or equal to $1aX seconds.",
   ach33title: "A sound financial decision",
-  ach33desc: "Import shop (this is a temporary req)",
+  ach33desc: "Attempt to purchase STDs (You can't even do that)",
   ach34title: "You do know how these work, right?",
   ach34desc: "Respec with an empty Time Study Tree.",
   ach35title: "Should we tell them about buy max...",

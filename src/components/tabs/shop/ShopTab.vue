@@ -1,16 +1,147 @@
 <script>
 import "vue-loading-overlay/dist/vue-loading.css";
 
+import Loading from "vue-loading-overlay";
+
+import { STEAM } from "@/env";
+
+import PrimaryButton from "@/components/PrimaryButton";
+import ShopButton from "./ShopButton";
+
 export default {
   name: "ShopTab",
+  components: {
+    ShopButton,
+    Loading,
+    PrimaryButton,
+  },
+  data() {
+    return {
+      // These aren't decimal in vanilla, but unless you are really going to do this sort of monetisation, it'll be fine to make them now decimal.
+      availableSTD: new Decimal(),
+      spentSTD: new Decimal(),
+      isLoading: false,
+      IAPsEnabled: false,
+      creditsClosed: false,
+      loggedIn: false,
+      username: "",
+      canRespec: false,
+      respecTimeStr: "",
+    };
+  },
+  computed: {
+    STEAM() {
+      return false;
+      return STEAM;
+    },
+    purchases() {
+      return ShopPurchase.all;
+    },
+    enableText() {
+      return `In-app Purchases: ${this.IAPsEnabled ? "Enabled" : "Disabled"}`;
+    },
+    respecText() {
+      if (!this.canRespec) return "No respec available! (Purchase STDs or wait 3 days since your last one)";
+      return null;
+    },
+    hiddenName() {
+      return player.options.hideGoogleName;
+    }
+  },
+  methods: {
+    update() {
+      this.availableSTD = ShopPurchaseData.availableSTD;
+      this.spentSTD = ShopPurchaseData.spentSTD;
+      this.isLoading = Boolean(player.IAP.checkoutSession.id);
+      this.IAPsEnabled = player.IAP.enabled;
+      this.creditsClosed = GameEnd.creditsEverClosed;
+      this.loggedIn = Cloud.loggedIn;
+      this.username = Cloud.user?.displayName;
+      this.canRespec = ShopPurchaseData.canRespec;
+      if (!ShopPurchaseData.respecAvailable && !this.canRespec) {
+        this.respecTimeStr = ShopPurchaseData.timeUntilRespec.toStringShort();
+      }
+    },
+    showStore() {
+      if (this.creditsClosed) return;
+      SecretAchievement(33).unlock();
+      if (this.loggedIn) Modal.shop.show();
+      else Modal.message.show("You cannot purchase STD coins without logging in first.");
+    },
+    respec() {
+      if (this.creditsClosed || !this.loggedIn || !this.canRespec) return;
+      ShopPurchaseData.respecRequest();
+    },
+    toggleEnable() {
+      if (ShopPurchaseData.availableSTD < 0) return;
+      player.IAP.enabled = !player.IAP.enabled;
+      if (ShopPurchaseData.isIAPEnabled) Speedrun.setSTDUse(true);
+    },
+    respecClass() {
+      return {
+        "o-primary-btn--subtab-option": true,
+        "o-pelle-disabled-pointer": this.creditsClosed,
+        "o-primary-btn--disabled": !this.loggedIn || !this.canRespec
+      };
+    }
+  },
 };
 </script>
 
 <template>
   <div class="tab shop">
-    <div>
-      STD's cannot be bought on games made with the Break Eternity port of AD.
+    <div class="c-shop-disclaimer">
+      Disclaimer: .
     </div>
+    <div>
+      Note: These obviously don't transfer, as a heads up.
+    </div>
+    <div class="c-subtab-option-container">
+      <PrimaryButton
+        class="o-primary-btn--subtab-option"
+        :class="{ 'o-pelle-disabled-pointer': creditsClosed }"
+        label="Disable in-app-purchases:"
+        @click="toggleEnable()"
+      >
+        {{ enableText }}
+      </PrimaryButton>
+      <PrimaryButton
+        v-if="!STEAM"
+        v-tooltip="respecText"
+        :class="respecClass()"
+        @click="respec()"
+      >
+        Respec Shop
+      </PrimaryButton>
+    </div>
+    <div v-if="loggedIn && !canRespec && !STEAM">
+      Time until respec available: {{ respecTimeStr }}
+    </div>
+    <div class="c-shop-header">
+      <span>You have {{ availableSTD }}</span>
+      <img
+        src="images/std_coin.png"
+        class="c-shop-header__img"
+      >
+      <button
+        class="o-shop-button-button"
+        @click="showStore()"
+      >
+        Buy More
+      </button>
+    </div>
+    Note: All numbers on this page are intentionally unaffected by your notation settings
+    <div class="l-shop-buttons-container">
+      <ShopButton
+        v-for="purchase in purchases"
+        :key="purchase.key"
+        :purchase="purchase"
+      />
+    </div>
+    <loading
+      :active="isLoading"
+      :is-full-page="true"
+    />
   </div>
 </template>
 
