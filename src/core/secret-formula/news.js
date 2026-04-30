@@ -2590,6 +2590,11 @@ export const news = [
       fast. Update, just 5 hours.`
   },
   {
+    id: "a391",
+    text:
+      `Happy 10th birthday to AD!`
+  },
+  {
     id: "l1",
     text: "You just made your 1,000,000,000,000,000th antimatter. This one tastes like chicken.",
     get unlocked() { return Currency.antimatter.value.max(1).log10().eq(15); }

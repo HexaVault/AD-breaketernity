@@ -75,6 +75,8 @@ import S12GamesModal from "@/components/modals/secret-themes/S12GamesModal";
 
 import SwitchLangugeModal from "@/components/modals/switch-language/SwitchLangugeModal";
 
+import StdStoreModal from "@/components/modals/StdStoreModal";
+
 let nextModalID = 0;
 export class Modal {
   constructor(component, priority = 0, closeEvent) {
@@ -263,6 +265,8 @@ Modal.breakInfinity = new Modal(BreakInfinityModal, 1, GAME_EVENT.ETERNITY_RESET
 Modal.s12Games = new Modal(S12GamesModal);
 
 Modal.switchLanguage = new Modal(SwitchLangugeModal);
+
+Modal.shop = new Modal(StdStoreModal);
 
 Modal.message = new class extends Modal {
   show(text, props = {}, messagePriority = 0) {

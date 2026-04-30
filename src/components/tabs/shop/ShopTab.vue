@@ -1,8 +1,6 @@
 <script>
 import "vue-loading-overlay/dist/vue-loading.css";
 
-import Loading from "vue-loading-overlay";
-
 import { STEAM } from "@/env";
 
 import PrimaryButton from "@/components/PrimaryButton";
@@ -12,7 +10,6 @@ export default {
   name: "ShopTab",
   components: {
     ShopButton,
-    Loading,
     PrimaryButton,
   },
   data() {
@@ -20,7 +17,6 @@ export default {
       // These aren't decimal in vanilla, but unless you are really going to do this sort of monetisation, it'll be fine to make them now decimal.
       availableSTD: new Decimal(),
       spentSTD: new Decimal(),
-      isLoading: false,
       IAPsEnabled: false,
       creditsClosed: false,
       loggedIn: false,
@@ -52,15 +48,12 @@ export default {
     update() {
       this.availableSTD = ShopPurchaseData.availableSTD;
       this.spentSTD = ShopPurchaseData.spentSTD;
-      this.isLoading = Boolean(player.IAP.checkoutSession.id);
       this.IAPsEnabled = player.IAP.enabled;
       this.creditsClosed = GameEnd.creditsEverClosed;
-      this.loggedIn = Cloud.loggedIn;
-      this.username = Cloud.user?.displayName;
+      this.loggedIn = true;
+      this.username = "Test User #4683";
       this.canRespec = ShopPurchaseData.canRespec;
-      if (!ShopPurchaseData.respecAvailable && !this.canRespec) {
-        this.respecTimeStr = ShopPurchaseData.timeUntilRespec.toStringShort();
-      }
+      this.respecStr = ShopPurchaseData.timeUntilRespec.toStringShort();
     },
     showStore() {
       if (this.creditsClosed) return;
@@ -91,7 +84,7 @@ export default {
 <template>
   <div class="tab shop">
     <div class="c-shop-disclaimer">
-      Disclaimer: .
+      Disclaimer: These shouldn't be required to complete the game in any capacity.
     </div>
     <div>
       Note: These obviously don't transfer, as a heads up.
@@ -114,9 +107,7 @@ export default {
         Respec Shop
       </PrimaryButton>
     </div>
-    <div v-if="loggedIn && !canRespec && !STEAM">
-      Time until respec available: {{ respecTimeStr }}
-    </div>
+    Time until respec available: {{ (() => respecStr)() }}
     <div class="c-shop-header">
       <span>You have {{ availableSTD }}</span>
       <img
@@ -138,10 +129,6 @@ export default {
         :purchase="purchase"
       />
     </div>
-    <loading
-      :active="isLoading"
-      :is-full-page="true"
-    />
   </div>
 </template>
 

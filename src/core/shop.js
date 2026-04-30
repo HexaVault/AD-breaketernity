@@ -6,7 +6,7 @@ export const shop = {};
 
 export const ShopPurchaseData = {
   respecAvailable: false,
-  lastRespec: DC.BEMAX,
+  lastRespec: DC.D0,
   unlockedCosmetics: [],
 
   get currentSTD() {
@@ -38,8 +38,9 @@ export const ShopPurchaseData = {
   // We also allow for respecs if it's been at least 3 days since the last one
   get timeUntilRespec() {
     // Since we aren't actually doing payments, this is linked to the games realtime factor. Change if necessary.
-    const msSinceLast = Date.now() - new Date(ShopPurchaseData.lastRespec).getTime();
-    return TimeSpan.fromMilliseconds(new Decimal(2592e5 - msSinceLast).max(0));
+    const msSinceLast = player.records.realTimePlayed.sub(ShopPurchaseData.lastRespec);
+    if (msSinceLast.gt(2592e5)) return { toStringShort: () => "Now" };
+    return TimeSpan.fromMilliseconds(msSinceLast.sub(2592e5).neg().max(0));
   },
 
   get canRespec() {
@@ -85,7 +86,7 @@ class ShopPurchaseState extends RebuyableMechanicState {
   }
 
   get isAffordable() {
-    return this.currency >= this.cost;
+    return this.currency.gte(this.cost);
   }
 
   get description() {

@@ -15,6 +15,7 @@ import { infinity } from "./infinity";
 import { news } from "./news";
 import { progressStages } from "./progress-checker";
 import { reality } from "./reality";
+import { shopPurchases } from "./shop-purchases";
 import { sidebarResources } from "./sidebar-resources";
 import { speedrunMilestones } from "./speedrun-milestones";
 import { tabNotifications } from "./tab-notifications";
@@ -38,6 +39,7 @@ export const GameDatabase = {
   news,
   progressStages,
   reality,
+  shopPurchases,
   sidebarResources,
   speedrunMilestones,
   tabNotifications,

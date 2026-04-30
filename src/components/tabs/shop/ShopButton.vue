@@ -37,7 +37,7 @@ export default {
       this.nextMult = this.purchase.nextMultForDisplay;
       this.canAfford = this.purchase.canBeBought;
       this.iapDisabled = !ShopPurchaseData.isIAPEnabled;
-      this.cost = Math.clampMin(this.purchase.cost, 0);
+      this.cost = Decimal.clampMin(this.purchase.cost, 0);
       this.hasChosen = GlyphAppearanceHandler.chosenFromModal !== null;
       this.chosenSet = GlyphAppearanceHandler.chosenFromModal?.name ?? "Not Selected";
       this.lockedCount = GlyphAppearanceHandler.lockedSets.length;
@@ -109,7 +109,7 @@ export default {
       :class="purchaseButtonObject()"
       @click="performPurchase"
     >
-      Cost: {{ cost }}
+      Cost: {{ format(cost, 2) }}
       <img
         src="images/std_coin.png"
         class="o-shop-button-button__img"

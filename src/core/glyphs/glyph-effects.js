@@ -167,7 +167,7 @@ export class GlyphEffectConfig {
       console.warn(`Glyph effect "${setup.id}" includes unrecognized field "${unknownField}"`);
     }
 
-    const unknownGlyphType = setup.glyphTypes.find(e => !GlyphInfo.glyphTypes.includes(e));
+    const unknownGlyphType = setup.glyphTypes.find(e => e.slice(1).find(f => !GlyphInfo.glyphTypes.includes(f)));
     if (unknownGlyphType !== undefined) {
       // eslint-disable-next-line no-console
       console.warn(`Glyph effect "${setup.id}" references unknown glyphType "${unknownGlyphType}"`);

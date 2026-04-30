@@ -1,21 +1,21 @@
 export const shopPurchases = {
   dimPurchases: {
     key: "dimPurchases",
-    cost: 30,
+    cost: new Decimal(30),
     description: "Double all your Antimatter Dimension multipliers. Forever.",
     multiplier: purchases => Decimal.pow(2, purchases),
     formatEffect: x => formatX(x, 2),
   },
   allDimPurchases: {
     key: "allDimPurchases",
-    cost: 60,
-    description: () => `Double BASE Dimension multipliers (multiplicative until ${formatX(32, 1, 1)}, then +${formatX(2, 0, 0)} each). Forever.`,
+    cost: new Decimal(60),
+    description: () => `Double BASE Dimension multipliers (multiplicative until ${formatX(32, 1, 1)}, then adding ${formatX(2, 0, 0)} each). Forever.`,
     multiplier: purchases => Decimal.min(Decimal.pow(2, purchases), purchases.mul(2).add(22)),
     formatEffect: x => formatX(x, 2),
   },
   IPPurchases: {
     key: "IPPurchases",
-    cost: 40,
+    cost: new Decimal(40),
     description: "Double your Infinity Point gain from all sources. (additive)",
     multiplier: purchases => purchases.mul(2).clampMin(1),
     formatEffect: x => formatX(x, 2),
@@ -24,7 +24,7 @@ export const shopPurchases = {
   },
   replicantiPurchases: {
     key: "replicantiPurchases",
-    cost: 60,
+    cost: new Decimal(60),
     description: "Increase your Replicanti gain by 50%. (additive)",
     multiplier: purchases => purchases.div(2).add(1),
     formatEffect: x => formatX(x, 2, 1),
@@ -33,7 +33,7 @@ export const shopPurchases = {
   },
   EPPurchases: {
     key: "EPPurchases",
-    cost: 50,
+    cost: new Decimal(50),
     description: "Triple your Eternity Point gain from all sources. (additive)",
     multiplier: purchases => purchases.mul(2).clampMin(1),
     formatEffect: x => formatX(x, 2),
@@ -42,7 +42,7 @@ export const shopPurchases = {
   },
   dilatedTimePurchases: {
     key: "dilatedTimePurchases",
-    cost: 40,
+    cost: new Decimal(40),
     description: () => `Increase your Dilated Time gain by ${formatPercents(0.5, 0, 0)}. (additive)`,
     multiplier: purchases => purchases.div(2).add(1),
     formatEffect: x => formatX(x, 2, 1),
@@ -51,7 +51,7 @@ export const shopPurchases = {
   },
   RMPurchases: {
     key: "RMPurchases",
-    cost: 60,
+    cost: new Decimal(60),
     description: () => `Increase your Reality Machine gain by ${formatPercents(1, 0, 0)}. (additive)`,
     multiplier: purchases => purchases.add(1),
     formatEffect: x => formatX(x, 2),
@@ -60,7 +60,7 @@ export const shopPurchases = {
   },
   smallTimeSkip: {
     key: "smallTimeSkip",
-    cost: 10,
+    cost: new Decimal(10),
     description: () => `Get ${formatInt(6)} hours worth of offline production. (Autobuyers might not work at full speed)`,
     instantPurchase: true,
     onPurchase: () => {
@@ -69,7 +69,7 @@ export const shopPurchases = {
   },
   bigTimeSkip: {
     key: "bigTimeSkip",
-    cost: 20,
+    cost: new Decimal(20),
     description: () => `Get ${formatInt(24)} hours worth of offline production. (Autobuyers won't work at full speed)`,
     instantPurchase: true,
     onPurchase: () => {
@@ -78,7 +78,7 @@ export const shopPurchases = {
   },
   singleCosmeticSet: {
     key: "singleCosmeticSet",
-    cost: 20,
+    cost: new Decimal(20),
     description: "Unlock a Glyph cosmetic set of your choice",
     instantPurchase: true,
     onPurchase: () => {
@@ -102,7 +102,7 @@ export const shopPurchases = {
       // Using this instead of the actual set count maintains consistency with the backend price,
       // at the cost of the frontend UI being wrong for cheated saves
       const currentSetCount = GlyphAppearanceHandler.expectedSetCount;
-      return Math.floor(baseCost * (totalSets - currentSetCount) / totalSets);
+      return new Decimal(Math.floor(baseCost * (totalSets - currentSetCount) / totalSets));
     },
     description: "Unlock all remaining Glyph cosmetic sets at once",
     instantPurchase: true,

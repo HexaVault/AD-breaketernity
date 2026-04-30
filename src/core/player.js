@@ -940,6 +940,7 @@ window.player = {
       keybinds: true,
       saving: true,
       options: true,
+      shop: true,
       achievement: true,
       icUnlock: true,
       studies: true,
@@ -972,7 +973,7 @@ window.player = {
       EPPurchases: DC.D0,
       dilatedTimePurchases: DC.D0,
       RMPurchases: DC.D0
-      // Note: Since we never to load it again here, there is 0 reason to store purchases of any offline or cosmetics here, so we don't
+      // Note: Since we never need to load it again here, there is 0 reason to store purchases of any offline or cosmetics here, so we don't
     }
   },
 };
