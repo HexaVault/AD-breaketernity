@@ -5,8 +5,6 @@ import OptionsButton from "@/components/OptionsButton";
 import PrimaryToggleButton from "@/components/PrimaryToggleButton";
 import SaveFileName from "./SaveFileName";
 
-import { STEAM } from "@/env";
-
 export default {
   name: "OptionsSavingTab",
   components: {

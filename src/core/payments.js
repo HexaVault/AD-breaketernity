@@ -18,7 +18,6 @@ const Payments = {
     if (!player.IAP.std.gt(cost)) GameUI.notify.info(`Could not purchase upgrade (Not enough STD)`);
     player.IAP.std = player.IAP.std.sub(cost);
     player.IAP.purchases[upgradeKey] = player.IAP.purchases[upgradeKey].add(1);
-    ShopPurchaseData[upgradeKey] = ShopPurchaseData[upgradeKey].add(1);
     GameUI.notify.info(`Successfully spent ${format(cost, 2)} STD coins`, 10000);
   },
 };

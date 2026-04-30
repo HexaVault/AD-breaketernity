@@ -1,7 +1,5 @@
 import VTooltip from "v-tooltip";
 
-import { DEV } from "@/env";
-
 import { useLongPress, useRepeatingClick } from "./longpress";
 import { notify } from "./notify";
 import { state } from "./ui.init";

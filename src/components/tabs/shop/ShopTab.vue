@@ -1,8 +1,6 @@
 <script>
 import "vue-loading-overlay/dist/vue-loading.css";
 
-import { STEAM } from "@/env";
-
 import PrimaryButton from "@/components/PrimaryButton";
 import ShopButton from "./ShopButton";
 
@@ -26,10 +24,6 @@ export default {
     };
   },
   computed: {
-    STEAM() {
-      return false;
-      return STEAM;
-    },
     purchases() {
       return ShopPurchase.all;
     },
@@ -46,14 +40,14 @@ export default {
   },
   methods: {
     update() {
-      this.availableSTD = ShopPurchaseData.availableSTD;
-      this.spentSTD = ShopPurchaseData.spentSTD;
+      this.availableSTD.copyFrom(ShopPurchaseData.availableSTD);
+      this.spentSTD.copyFrom(ShopPurchaseData.spentSTD);
       this.IAPsEnabled = player.IAP.enabled;
       this.creditsClosed = GameEnd.creditsEverClosed;
       this.loggedIn = true;
       this.username = "Test User #4683";
       this.canRespec = ShopPurchaseData.canRespec;
-      this.respecStr = ShopPurchaseData.timeUntilRespec.toStringShort();
+      this.respecTimeStr = ShopPurchaseData.timeUntilRespec.toStringShort();
     },
     showStore() {
       if (this.creditsClosed) return;
@@ -66,7 +60,7 @@ export default {
       ShopPurchaseData.respecRequest();
     },
     toggleEnable() {
-      if (ShopPurchaseData.availableSTD < 0) return;
+      if (ShopPurchaseData.availableSTD.lt(0)) return;
       player.IAP.enabled = !player.IAP.enabled;
       if (ShopPurchaseData.isIAPEnabled) Speedrun.setSTDUse(true);
     },
@@ -99,7 +93,6 @@ export default {
         {{ enableText }}
       </PrimaryButton>
       <PrimaryButton
-        v-if="!STEAM"
         v-tooltip="respecText"
         :class="respecClass()"
         @click="respec()"
@@ -107,7 +100,7 @@ export default {
         Respec Shop
       </PrimaryButton>
     </div>
-    Time until respec available: {{ (() => respecStr)() }}
+    Time until respec available: {{ respecTimeStr }}
     <div class="c-shop-header">
       <span>You have {{ availableSTD }}</span>
       <img

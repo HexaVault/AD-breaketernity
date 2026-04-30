@@ -1,8 +1,5 @@
 /* eslint-disable no-console */
 
-
-import { MAC, STEAM } from "@/env";
-
 let isInitialized = false;
 let isActive = false;
 

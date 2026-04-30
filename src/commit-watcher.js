@@ -1,5 +1,5 @@
 export function watchLatestCommit() {
-  if (isLocalEnvironment()) return;
+  if (LOCAL) return;
 
   const url = "commit.json";
   let current;

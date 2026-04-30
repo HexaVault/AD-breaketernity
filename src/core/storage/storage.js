@@ -1,6 +1,5 @@
 import * as ADNotations from "adnot-beport-small";
 
-import { DEV } from "@/env";
 import { devMigrations } from "./dev-migrations";
 import { migrations } from "./migrations";
 

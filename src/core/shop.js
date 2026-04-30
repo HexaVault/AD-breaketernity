@@ -44,7 +44,7 @@ export const ShopPurchaseData = {
   },
 
   get canRespec() {
-    return this.respecAvailable || this.timeUntilRespec.totalDays <= 0;
+    return this.respecAvailable || this.timeUntilRespec.totalDays.lte(0);
   },
 
   resetSTD() {
@@ -77,9 +77,6 @@ export const ShopPurchaseData = {
   },
 };
 
-// We track the local state of shop purchases here, so dynamically add all the keys which exist in the gameDB
-for (const key of Object.keys(GameDatabase.shopPurchases)) ShopPurchaseData[key] = player.IAP.purchases[key];
-
 class ShopPurchaseState extends RebuyableMechanicState {
   get currency() {
     return ShopPurchaseData.availableSTD;
@@ -90,24 +87,22 @@ class ShopPurchaseState extends RebuyableMechanicState {
   }
 
   get description() {
-    const desc = this.config.description;
-    return typeof desc === "function" ? desc() : desc;
+    return handlePossibleFunction(this.config.description);
   }
 
   get cost() {
-    const cost = this.config.cost;
-    return typeof cost === "function" ? cost() : cost;
+    return handlePossibleFunction(this.config.cost);
   }
 
   // ShopPurchaseData for any particular key is undefined in between page load and STD load,
   // so we need to guard against that causing NaNs to propagate through the save
   get purchases() {
-    return ShopPurchaseData[this.config.key] ?? 0;
+    return player.IAP.purchases[this.config.key] ?? 0;
   }
 
   set purchases(value) {
     if (!Number.isFinite(value)) return;
-    ShopPurchaseData[this.config.key] = value;
+    player.IAP.purchases[this.config.key] = value;
   }
 
   isUnlocked() {

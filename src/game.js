@@ -1,7 +1,6 @@
 import TWEEN from "@tweenjs/tween.js";
 
 import { deepmergeAll } from "@/utility/deepmerge";
-import { DEV } from "@/env";
 import { ElectronRuntime } from "@/steam";
 import { SpeedrunMilestones } from "./core/speedrun";
 import { supportedBrowsers } from "./supported-browsers";

@@ -63,7 +63,7 @@ export const GameIntervals = (function() {
       if (Math.random() < 0.00001) SecretAchievement(18).unlock();
     }, 1000),
     checkForUpdates: interval(() => {
-      if (isLocalEnvironment()) return;
+      if (LOCAL) return;
       fetch("version.txt")
         .then(response => response.json())
         .then(json => {

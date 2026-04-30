@@ -1,7 +1,5 @@
 /* eslint-disable no-console */
 
-import { STEAM } from "@/env";
-
 /**
  * @template TModule
  */

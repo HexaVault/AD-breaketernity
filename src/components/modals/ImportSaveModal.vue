@@ -97,6 +97,9 @@ export default {
     },
     willLoseSpeedrun() {
       return player.speedrun.isUnlocked && !this.player.speedrun?.isUnlocked;
+    },
+    isDevEnv() {
+      return DEV;
     }
   },
   mounted() {
@@ -200,7 +203,7 @@ export default {
         v-if="player"
         class="c-modal-hard-reset-danger"
       >
-        <div v-if="!isDevEnv && player.devVersion">
+        <div v-if="!isDevEnv && player.devVersion !== undefined">
           WARNING: This save comes from a development version. It might fail to import!
         </div>
         <div v-if="willLoseCosmetics">
