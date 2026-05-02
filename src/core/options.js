@@ -67,7 +67,7 @@ export function tryImportSecret(data) {
       return true;
     case 3:
       if (player.records.fullGameCompletions > 0 || DEV) Speedrun.unlock();
-      else if (player.options.notifications.keybinds) GameUI.notify.error("Complete the game at least once first!", 15000);
+      else if (player.options.notifications.saving) GameUI.notify.error("Complete the game at least once first!", 15000);
       return true;
     case 4:
       SecretAchievement(33).unlock();

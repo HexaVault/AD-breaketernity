@@ -143,7 +143,7 @@ export const GameStorage = {
     this.backupOfflineSlots();
     Tabs.all.find(t => t.id === player.options.lastOpenTab).show(false);
     Modal.hideAll();
-    if (player.options.notifications.saving) GameUI.notify.info("Game loaded");
+    if (player.options.notifications.saving) GameUI.notify.info(`Game loaded from slot ${slot}`);
   },
 
   import(saveData) {

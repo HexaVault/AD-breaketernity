@@ -43,11 +43,22 @@ export default {
       return {
         visibility: ui.view.tabs.reality.automator.fullScreen ? "hidden" : "visible"
       };
+    },
+    notifcationStyle() {
+      const corner = player.options.notificationDisplay;
+      return {
+        "l-notification-container": true,
+        "l-notification-tr": corner === 0,
+        "l-notification-tl": corner === 1,
+        "l-notification-bl": corner === 2,
+        "l-notification-br": corner === 3,
+      };
     }
   },
   methods: {
     update() {
       this.ending = GameEnd.endState >= END_STATE_MARKERS.FADE_AWAY && !GameEnd.creditsClosed;
+      this.$recompute("notificationStyle");
     }
   }
 };
@@ -62,7 +73,7 @@ export default {
   >
     <div
       id="notification-container"
-      class="l-notification-container"
+      :class="notifcationStyle"
     />
     <HowToPlay :style="hideIfMatoFullscreen" />
     <TimeTheoremShop

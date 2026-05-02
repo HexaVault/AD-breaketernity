@@ -1,13 +1,14 @@
 export const notify = (function() {
   const template = document.createElement("div");
   template.classList.add("o-notification");
-  const enterAnimation = "a-notification--enter";
-  const leaveAnimation = "a-notification--leave";
   function showNotification(text, elClass, duration = 2000) {
     if (!GameUI.initialized) {
       setTimeout(showNotification, 500, text, elClass, duration);
       return;
     }
+    const isLeft = player.options.notificationDisplay === 1 || player.options.notificationDisplay === 2;
+    const enterAnimation = `a-notification--enter-${isLeft ? "left" : "right"}`;
+    const leaveAnimation = `a-notification--leave-${isLeft ? "left" : "right"}`;
     const el = template.cloneNode();
     el.textContent = text;
     el.classList.add(elClass, enterAnimation);

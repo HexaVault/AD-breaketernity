@@ -1,7 +1,7 @@
 import * as Electron from "./bindings/electron";
 
-const MIN_ZOOM = 0.5;
-const MAX_ZOOM = 1.5;
+const MIN_ZOOM = 0.1;
+const MAX_ZOOM = 3.0;
 
 let zoomFactor = 1;
 

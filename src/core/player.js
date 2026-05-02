@@ -959,6 +959,8 @@ window.player = {
       pelle: true,
       speedrun: true,
     },
+    // 0 is top right, 1 is top left, 2 is bottom left, 3 is bottom right.
+    notificationDisplay: 0,
     amGainDisplayType: "Normal",
   },
   IAP: {
