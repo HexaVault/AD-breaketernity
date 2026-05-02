@@ -275,22 +275,11 @@ Currency.infinityPoints = new class extends DecimalCurrency {
   }
 
   get gain() {
-    let ip = this.pureGain;
-    if (Pelle.isDisabled("IPMults")) {
-      return ip.timesEffectsOf(PelleRifts.vacuum, GlyphInfo.infinity.pelleEffect).floor();
-    }
-    if (Teresa.isRunning) {
-      ip = ip.pow(0.55);
-    } else if (V.isRunning) {
-      ip = ip.pow(0.5);
-    } else if (Laitela.isRunning) {
-      ip = dilatedValueOf(ip);
-    }
-    ip = ip.times(GameCache.totalIPMult.value);
-    if (GlyphAlteration.isAdded("infinity")) {
-      ip = ip.pow(getSecondaryGlyphEffect("infinityIP"));
-    }
-    return ip.floor();
+    return GameDatabase.currencies.formulae.ip.nerfedFinal(this.pureGain).floor();
+  }
+
+  requiredAMforIP(ipAmount) {
+    return GameDatabase.currencies.formulae.ip.currencyReq(ipAmount);
   }
 }();
 
@@ -329,47 +318,19 @@ Currency.eternityPoints = new class extends DecimalCurrency {
   }
 
   requiredIPforEP(epAmount) {
-    return Decimal.pow10(Decimal.log(Decimal.div(epAmount, Currency.eternityPoints.mult), 5).plus(0.7).times(308))
-      .clampMin(Number.MAX_VALUE);
+    return GameDatabase.currencies.formulae.ep.currencyReq(epAmount);
   }
 
   get mult() {
-    return Pelle.isDisabled("EPMults")
-      ? DC.D1.timesEffectsOf(GlyphInfo.time.pelleEffect, PelleRifts.vacuum.milestones[2])
-      : DC.D1.timesEffectsOf(
-        EternityUpgrade.epMult,
-        TimeStudy(61),
-        TimeStudy(122),
-        TimeStudy(121),
-        TimeStudy(123),
-        RealityUpgrade(12),
-        GlyphEffects.timeEP.primary,
-        GlyphEffects.cursedEP.primary,
-      );
+    return GameCache.totalEPMult.value;
   }
 
   get pureGain() {
-    const div = Decimal.sub(308, PelleRifts.recursion.effectValue);
-    const ep = DC.D5.pow(player.records.thisEternity.maxIP.plus(Currency.infinityPoints.gain)
-      .max(1).log10().div(div).sub(0.7));
-
-    return ep;
+    return GameDatabase.currencies.formulae.ep.gainFormula();
   }
 
   get gain() {
-    let ep = this.pureGain;
-    ep = ep.times(this.mult);
-    if (Teresa.isRunning) {
-      ep = ep.pow(0.55);
-    } else if (V.isRunning) {
-      ep = ep.pow(0.5);
-    } else if (Laitela.isRunning) {
-      ep = dilatedValueOf(ep);
-    }
-    if (GlyphAlteration.isAdded("time")) {
-      ep = ep.pow(getSecondaryGlyphEffect("timeEP"));
-    }
-    return ep.floor();
+    return GameDatabase.currencies.formulae.ep.nerfedFinal(this.pureGain).floor();
   }
 }();
 
@@ -414,34 +375,19 @@ Currency.realityMachines = new class extends DecimalCurrency {
   }
 
   get mult() {
-    return Teresa.rmMultiplier.timesEffectsOf(
-      PerkShopUpgrade.rmMult,
-      GlyphEffects.effarigrm.primary,
-      Achievement(167),
-    );
+    return GameCache.totalRMMult.value;
   }
 
   get pureGain() {
-    const ep = () => Currency.eternityPoints.gain;
-    let log10FinalEP = player.records.thisReality.maxEP.plus(ep()).max(1).log10();
-    if (!PlayerProgress.realityUnlocked()) {
-      if (log10FinalEP.gt(8000)) log10FinalEP = new Decimal(8000);
-      if (log10FinalEP.gt(6000)) log10FinalEP = log10FinalEP.sub(log10FinalEP.sub(6000).times(0.75));
-    }
-    let rmGain = DC.E3.pow(log10FinalEP.div(4000).sub(1));
-    // Increase base RM gain if <10 RM
-    if (rmGain.gte(1) && rmGain.lt(10)) rmGain = log10FinalEP.minus(26).mul(27).div(4000);
-    return rmGain;
+    return GameDatabase.currencies.formulae.rm.gainFormula();
   }
 
   get gain() {
-    let rmGain = this.pureGain;
-    rmGain = rmGain.mul(this.mult);
-    return rmGain;
+    return GameDatabase.currencies.formulae.rm.nerfedFinal(this.pureGain).floor();
   }
 
-  get cappedGain() {
-    return Decimal.min(this.gain, this.hardcap);
+  get uncappedGain() {
+    return GameDatabase.currencies.formulae.rm.nerfedFinal(this.pureGain, false).floor();
   }
 
   get hardcapMult() {
@@ -461,11 +407,7 @@ Currency.realityMachines = new class extends DecimalCurrency {
 
 
 // Technically this is depreciated, but the official method is finnicky at best.
-Currency.relicShards.__defineGetter__("gain", () => {
-  if (!TeresaUnlocks.effarig.canBeApplied) return DC.D0;
-  return Decimal.floor(Decimal.pow(Currency.eternityPoints.value.max(1).log10().div(7500),
-    getActiveGlyphEffects().length)).times(AlchemyResource.effarig.effectValue);
-});
+Currency.relicShards.__defineGetter__("gain", () => GameDatabase.currencies.formulae.relicShards.gainFormula());
 
 
 
@@ -484,7 +426,7 @@ Currency.imaginaryMachines = new class extends DecimalCurrency {
   }
 
   get isUnlocked() {
-    return Currency.realityMachines.value.gte(Currency.realityMachines.hardcap);
+    return Currency.realityMachines.value.gte(Currency.realityMachines.baseHardcap);
   }
 
   get projCapBase() {
@@ -540,6 +482,7 @@ Currency.darkMatter = new class extends DecimalCurrency {
 
 
 // Technically this is depreciated, but the official method is finnicky at best.
+// This also lets us put the rest of DE under the general currency code.
 Currency.darkEnergy.__defineGetter__("productionPerSecond", () => DarkMatterDimensions.all
   .map(d => d.productionPerSecond).sum());
 

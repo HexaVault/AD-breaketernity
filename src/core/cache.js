@@ -118,7 +118,11 @@ export const GameCache = {
 
   logTotalGlyphSacrifice: new Lazy(() => GlyphSacrificeHandler.logTotalSacrifice),
 
+  // Total Currency Multipliers
+  // Honestly just here so its easier to do, ig has the performance benefit asw.
   totalIPMult: new Lazy(() => totalIPMult()),
+  totalEPMult: new Lazy(() => totalEPMult()),
+  totalRMMult: new Lazy(() => totalRMMult()),
 
   challengeTimeSum: new Lazy(() => player.challenge.normal.bestTimes.reduce(Decimal.sumReducer)),
 

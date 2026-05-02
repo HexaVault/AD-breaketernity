@@ -241,6 +241,9 @@ export function getDilationTimeEstimate(goal) {
     .div(rawDTGain)).toTimeEstimate();
 }
 
+export function dilatedPenalty() {
+  return Effects.product(DilationUpgrade.dilationPenalty).times(0.75);
+}
 export function dilatedValueOf(value) {
   const log10 = value.eq(0) ? DC.D0 : value.log10();
   const dilationPenalty = Effects.product(DilationUpgrade.dilationPenalty).times(0.75);

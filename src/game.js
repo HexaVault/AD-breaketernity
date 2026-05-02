@@ -231,6 +231,15 @@ export function updateRefresh() {
   location.reload(true);
 }
 
+export function totalRMMult() {
+  return Teresa.rmMultiplier.timesEffectsOf(
+    PerkShopUpgrade.rmMult,
+    GlyphEffects.effarigrm.primary,
+    Achievement(167),
+  );
+}
+
+
 export const GAME_SPEED_EFFECT = {
   FIXED_SPEED: 1,
   TIME_GLYPH: 2,
@@ -462,6 +471,8 @@ export function gameLoop(passedDiff, options = {}) {
   GameCache.infinityDimensionCommonMultiplier.invalidate();
   GameCache.timeDimensionCommonMultiplier.invalidate();
   GameCache.totalIPMult.invalidate();
+  GameCache.totalEPMult.invalidate();
+  GameCache.totalRMMult.invalidate();
 
   const fixedSpeedActive = EternityChallenge(12).isRunning;
   if (!Enslaved.isReleaseTick && !fixedSpeedActive) {

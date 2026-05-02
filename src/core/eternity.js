@@ -254,6 +254,19 @@ export function gainedEternities() {
     ).powEffectOf(AlchemyResource.eternity);
 }
 
+export function totalEPMult() {
+  return DC.D1.timesEffectsOf(
+    EternityUpgrade.epMult,
+    TimeStudy(61),
+    TimeStudy(122),
+    TimeStudy(121),
+    TimeStudy(123),
+    RealityUpgrade(12),
+    GlyphEffects.timeEP.primary,
+    GlyphEffects.cursedEP.primary,
+  );
+}
+
 export class EternityMilestoneState {
   constructor(config) {
     this.config = config;
