@@ -83,7 +83,7 @@ export const shopPurchases = {
     instantPurchase: true,
     onPurchase: () => {
       // The actual unlocks are handled in the ShopPurchaseData object, so we just show notifications here
-      GameUI.notify.info(
+      if (player.options.notifications.shoo) GameUI.notify.info(
         `You have purchased the "${GlyphAppearanceHandler.chosenFromModal.name}" Set for Glyph cosmetics!`,
         10000);
       GlyphAppearanceHandler.chosenFromModal = null;
@@ -108,7 +108,7 @@ export const shopPurchases = {
     instantPurchase: true,
     onPurchase: () => {
       // The actual unlocks are handled in the ShopPurchaseData object, so we just show notifications here
-      GameUI.notify.info(`You have unlocked all sets for Glyph cosmetics!`, 15000);
+      if (player.options.notifications.shop) GameUI.notify.info(`You have unlocked all sets for Glyph cosmetics!`, 15000);
       GlyphAppearanceHandler.applyNotification();
     },
     isUnlocked: () => PlayerProgress.realityUnlocked(),

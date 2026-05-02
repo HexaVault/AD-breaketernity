@@ -68,12 +68,15 @@ export const ShopPurchaseData = {
     if (!this.canRespec) {
       // This case only happens if the player is cheating and using the console to make the game think it has a respec
       // when on the backend they don't. Nevertheless, responsive UI rarely hurts
-      GameUI.notify.error("You do not have a respec available", 10000);
+      if (player.options.notifications.shop) GameUI.notify.error("You do not have a respec available", 10000);
       return;
     }
-    if (stdData.success) GameUI.notify.info("STD respec successful!", 10000);
-    else GameUI.notify.error("No purchases to respec!", 10000);
-    this.updateLocalSTD(stdData.data);
+    if (player.options.notifications.studies) {
+      if (stdData.success) GameUI.notify.info("STD respec successful!", 10000);
+      else GameUI.notify.error("No purchases to respec!", 10000);
+    }
+    this.spentSTD = DC.D0;
+    for (const key of Object.keys(GameDatabase.shopPurchases)) this[key] = DC.D0;
   },
 };
 

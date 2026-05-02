@@ -1,63 +1,42 @@
+/* eslint-disable no-multiple-empty-lines */
+import { simpleCur } from "./secret-formula/currency/simple-currencies";
+
+/* eslint-disable no-unused-vars */
 /** @abstract */
 class MathOperations {
   /** @abstract */
-  // eslint-disable-next-line no-unused-vars
   add(left, right) { throw new NotImplementedError(); }
 
   /** @abstract */
-  // eslint-disable-next-line no-unused-vars
   subtract(left, right) { throw new NotImplementedError(); }
 
   /** @abstract */
-  // eslint-disable-next-line no-unused-vars
   multiply(left, right) { throw new NotImplementedError(); }
 
   /** @abstract */
-  // eslint-disable-next-line no-unused-vars
   divide(left, right) { throw new NotImplementedError(); }
 
   /** @abstract */
-  // eslint-disable-next-line no-unused-vars
   max(left, right) { throw new NotImplementedError(); }
 
   /** @abstract */
-  // eslint-disable-next-line no-unused-vars
   min(left, right) { throw new NotImplementedError(); }
 
   /** @abstract */
-  // eslint-disable-next-line no-unused-vars
   eq(left, right) { throw new NotImplementedError(); }
 
   /** @abstract */
-  // eslint-disable-next-line no-unused-vars
   gt(left, right) { throw new NotImplementedError(); }
 
   /** @abstract */
-  // eslint-disable-next-line no-unused-vars
   gte(left, right) { throw new NotImplementedError(); }
 
   /** @abstract */
-  // eslint-disable-next-line no-unused-vars
   lt(left, right) { throw new NotImplementedError(); }
 
   /** @abstract */
-  // eslint-disable-next-line no-unused-vars
   lte(left, right) { throw new NotImplementedError(); }
 }
-
-MathOperations.number = new class NumberMathOperations extends MathOperations {
-  add(left, right) { return left + right; }
-  subtract(left, right) { return left - right; }
-  multiply(left, right) { return left * right; }
-  divide(left, right) { return left / right; }
-  max(left, right) { return Math.max(left, right); }
-  min(left, right) { return Math.min(left, right); }
-  eq(left, right) { return left === right; }
-  gt(left, right) { return left > right; }
-  gte(left, right) { return left >= right; }
-  lt(left, right) { return left < right; }
-  lte(left, right) { return left <= right; }
-}();
 
 MathOperations.decimal = new class DecimalMathOperations extends MathOperations {
   add(left, right) { return Decimal.add(left, right); }
@@ -158,23 +137,8 @@ export class Currency {
 
   /**
    * @abstract
-   * The gain before you include nerfs
-   */
-  get rawGain() { return new Decimal(0); }
-
-  /**
-   * @abstract
    */
   get gain() { return new Decimal(0); }
-}
-
-/**
- * @abstract
- */
-// eslint-disable-next-line no-unused-vars
-class NumberCurrency extends Currency {
-  get operations() { return MathOperations.number; }
-  get startingValue() { return 0; }
 }
 
 /**
@@ -188,6 +152,32 @@ class DecimalCurrency extends Currency {
   get startingValue() { return DC.D0; }
 }
 window.DecimalCurrency = DecimalCurrency;
+
+// If you need to add more advanced code for setting or getting, remove it from here.
+
+for (const store in simpleCur) {
+  const loc = simpleCur[store].loc;
+  const sVal = simpleCur[store].startingVal;
+  Currency[store] = new class extends DecimalCurrency {
+    get value() {
+      if (loc.length === 1) return player[loc[0]];
+      if (loc.length === 2) return player[loc[0]][loc[1]];
+      return player[loc[0]][loc[1]][loc[2]];
+    }
+
+    set value(value) {
+      if (loc.length === 1) player[loc[0]] = value;
+      else if (loc.length === 2) player[loc[0]][loc[1]] = value;
+      else player[loc[0]][loc[1]][loc[2]] = value;
+    }
+
+    get startingValue() {
+      return sVal ? sVal() : DC.D0;
+    }
+  }();
+}
+
+// To allow for easier viewing, each currency is seperated by 4 empty lines.
 
 Currency.antimatter = new class extends DecimalCurrency {
   get value() { return player.antimatter; }
@@ -238,27 +228,15 @@ Currency.antimatter = new class extends DecimalCurrency {
   }
 }();
 
-Currency.matter = new class extends DecimalCurrency {
-  get value() { return player.challengeData.matter; }
-  set value(value) {
-    player.challengeData.matter = Decimal.min(value, DC.BEMAX);
-  }
-}();
 
-Currency.infinities = new class extends DecimalCurrency {
-  get value() { return player.infinities; }
-  set value(value) { player.infinities = value; }
-}();
 
-Currency.infinitiesBanked = new class extends DecimalCurrency {
-  get value() { return player.infinitiesBanked; }
-  set value(value) { player.infinitiesBanked = value; }
-}();
 
 Currency.infinitiesTotal = new class extends DecimalCurrency {
   get value() { return player.infinities.plus(player.infinitiesBanked); }
-  set value(value) { player.infinities = value; }
 }();
+
+
+
 
 Currency.infinityPoints = new class extends DecimalCurrency {
   get value() { return player.infinityPoints; }
@@ -293,24 +271,7 @@ Currency.infinityPoints = new class extends DecimalCurrency {
   }
 
   get pureGain() {
-    const div = Effects.min(
-      308,
-      Achievement(103),
-      TimeStudy(111)
-    );
-    const ip = player.break
-      ? Decimal.pow10(player.records.thisInfinity.maxAM.max(1).log10().div(div).sub(0.75))
-      : Decimal.div(308, div);
-    return (Effarig.isRunning && Effarig.currentStage === EFFARIG_STAGES.ETERNITY) ? ip.max(1e200) : ip;
-  }
-
-  get rawGain() {
-    let ip = this.pureGain;
-    ip = ip.times(GameCache.totalIPMult.value);
-    if (GlyphAlteration.isAdded("infinity")) {
-      ip = ip.pow(getSecondaryGlyphEffect("infinityIP"));
-    }
-    return ip;
+    return GameDatabase.currencies.formulae.ip.gainFormula();
   }
 
   get gain() {
@@ -333,23 +294,8 @@ Currency.infinityPoints = new class extends DecimalCurrency {
   }
 }();
 
-Currency.infinityPower = new class extends DecimalCurrency {
-  get value() { return player.infinityPower; }
-  set value(value) { player.infinityPower = value; }
-}();
 
-Currency.eternities = new class extends DecimalCurrency {
-  get value() { return player.eternities; }
-  set value(value) { player.eternities = value; }
 
-  get startingValue() {
-    if (Pelle.isDoomed) return new Decimal(0);
-    return Effects.max(
-      0,
-      RealityUpgrade(10)
-    );
-  }
-}();
 
 Currency.eternityPoints = new class extends DecimalCurrency {
   get value() { return player.eternityPoints; }
@@ -410,15 +356,6 @@ Currency.eternityPoints = new class extends DecimalCurrency {
     return ep;
   }
 
-  get rawGain() {
-    let ep = this.pureGain;
-    ep = ep.times(this.mult);
-    if (GlyphAlteration.isAdded("time")) {
-      ep = ep.pow(getSecondaryGlyphEffect("timeEP"));
-    }
-    return ep.floor();
-  }
-
   get gain() {
     let ep = this.pureGain;
     ep = ep.times(this.mult);
@@ -436,10 +373,8 @@ Currency.eternityPoints = new class extends DecimalCurrency {
   }
 }();
 
-Currency.timeShards = new class extends DecimalCurrency {
-  get value() { return player.timeShards; }
-  set value(value) { player.timeShards = value; }
-}();
+
+
 
 Currency.timeTheorems = new class extends DecimalCurrency {
   get value() { return player.timestudy.theorem; }
@@ -463,24 +398,6 @@ Currency.timeTheorems = new class extends DecimalCurrency {
     TimeTheoremPurchaseType.ep.reset();
     player.timestudy.maxTheorem = this.startingValue;
   }
-}();
-
-Currency.tachyonParticles = new class extends DecimalCurrency {
-  get value() { return player.dilation.tachyonParticles; }
-  set value(value) { player.dilation.tachyonParticles = value; }
-}();
-
-Currency.dilatedTime = new class extends DecimalCurrency {
-  get value() { return player.dilation.dilatedTime; }
-  set value(value) {
-    player.dilation.dilatedTime = value;
-    player.records.thisReality.maxDT = player.records.thisReality.maxDT.max(value);
-  }
-}();
-
-Currency.realities = new class extends DecimalCurrency {
-  get value() { return player.realities; }
-  set value(value) { player.realities = value; }
 }();
 
 Currency.realityMachines = new class extends DecimalCurrency {
@@ -541,20 +458,16 @@ Currency.realityMachines = new class extends DecimalCurrency {
   }
 }();
 
-Currency.perkPoints = new class extends DecimalCurrency {
-  get value() { return player.reality.perkPoints; }
-  set value(value) { player.reality.perkPoints = value; }
-}();
 
-Currency.relicShards = new class extends DecimalCurrency {
-  get value() { return player.celestials.effarig.relicShards; }
-  set value(value) { player.celestials.effarig.relicShards = value; }
-  get gain() {
-    if (!TeresaUnlocks.effarig.canBeApplied) return DC.D0;
-    return Decimal.floor(Decimal.pow(Currency.eternityPoints.value.max(1).log10().div(7500),
-      getActiveGlyphEffects().length)).times(AlchemyResource.effarig.effectValue);
-  }
-}();
+
+// Technically this is depreciated, but the official method is finnicky at best.
+Currency.relicShards.__defineGetter__("gain", () => {
+  if (!TeresaUnlocks.effarig.canBeApplied) return DC.D0;
+  return Decimal.floor(Decimal.pow(Currency.eternityPoints.value.max(1).log10().div(7500),
+    getActiveGlyphEffects().length)).times(AlchemyResource.effarig.effectValue);
+});
+
+
 
 Currency.imaginaryMachines = new class extends DecimalCurrency {
   get value() { return player.reality.imaginaryMachines; }
@@ -608,6 +521,9 @@ Currency.imaginaryMachines = new class extends DecimalCurrency {
   }
 }();
 
+
+
+
 Currency.darkMatter = new class extends DecimalCurrency {
   get value() { return player.celestials.laitela.darkMatter; }
   set value(value) {
@@ -620,36 +536,15 @@ Currency.darkMatter = new class extends DecimalCurrency {
   set max(value) { player.celestials.laitela.maxDarkMatter = value; }
 }();
 
-Currency.darkEnergy = new class extends DecimalCurrency {
-  get value() { return player.celestials.laitela.darkEnergy; }
-  set value(value) { player.celestials.laitela.darkEnergy = value; }
 
-  get productionPerSecond() {
-    return DarkMatterDimensions.all
-      .map(d => d.productionPerSecond)
-      .sum();
-  }
-}();
 
-Currency.singularities = new class extends DecimalCurrency {
-  get value() { return player.celestials.laitela.singularities; }
-  set value(value) { player.celestials.laitela.singularities = value; }
-}();
 
-Currency.remnants = new class extends DecimalCurrency {
-  get value() { return player.celestials.pelle.remnants; }
-  set value(value) { player.celestials.pelle.remnants = value; }
-}();
+// Technically this is depreciated, but the official method is finnicky at best.
+Currency.darkEnergy.__defineGetter__("productionPerSecond", () => DarkMatterDimensions.all
+  .map(d => d.productionPerSecond).sum());
 
-Currency.realityShards = new class extends DecimalCurrency {
-  get value() { return player.celestials.pelle.realityShards; }
-  set value(value) { player.celestials.pelle.realityShards = value; }
-}();
 
-Currency.replicanti = new class extends DecimalCurrency {
-  get value() { return player.replicanti.amount; }
-  set value(value) { player.replicanti.amount = value; }
-}();
+
 
 Currency.galaxyGeneratorGalaxies = new class extends DecimalCurrency {
   get value() {

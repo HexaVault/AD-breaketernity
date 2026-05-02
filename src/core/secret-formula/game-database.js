@@ -1,3 +1,4 @@
+/* eslint-disable capitalized-comments */
 // import { multiplierTabTree, multiplierTabValues } from "./multiplier-tab";
 
 import { achievements } from "./achievements";
@@ -8,6 +9,7 @@ import { challenges } from "./challenges";
 import { changelog } from "./changelog";
 import { confirmationTypes } from "./confirmation-types";
 import { credits } from "./credits";
+import { currencies } from "./currency";
 import { discordRichPresence } from "./discord-rich-presence";
 import { eternity } from "./eternity";
 import { h2p } from "./h2p";
@@ -30,6 +32,7 @@ export const GameDatabase = {
   changelog,
   confirmationTypes,
   credits,
+  currencies,
   discordRichPresence,
   eternity,
   h2p,

@@ -65,6 +65,21 @@ export function playerInfinityUpgradesOnReset() {
   GameCache.dimensionMultDecrease.invalidate();
 }
 
+export function stackedLogPower(value, stacks, power) {
+  let finalValue = value;
+  for (let i = stacks; i > 0; i--) {
+    finalValue = Decimal.max(1, finalValue.log10());
+  }
+  if (finalValue.eq(1)) {
+    return value;
+  }
+  finalValue = finalValue.pow(power);
+  for (let i = stacks; i > 0; i--) {
+    finalValue = finalValue.pow10();
+  }
+  return finalValue;
+}
+
 export function breakInfinity() {
   if (!Autobuyer.bigCrunch.hasMaxedInterval) return;
   if (InfinityChallenge.isRunning) return;
