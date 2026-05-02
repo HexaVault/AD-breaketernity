@@ -111,7 +111,7 @@ export default {
     >
       Cost: {{ format(cost, 2) }}
       <img
-        src="images/std_coin.png"
+        src="/images/std_coin.png"
         class="o-shop-button-button__img"
       >
     </button>
