@@ -83,7 +83,7 @@ export const shopPurchases = {
     instantPurchase: true,
     onPurchase: () => {
       // The actual unlocks are handled in the ShopPurchaseData object, so we just show notifications here
-      if (player.options.notifications.shoo) GameUI.notify.info(
+      if (player.options.notifications.shop) GameUI.notify.info(
         `You have purchased the "${GlyphAppearanceHandler.chosenFromModal.name}" Set for Glyph cosmetics!`,
         10000);
       GlyphAppearanceHandler.chosenFromModal = null;
@@ -101,8 +101,8 @@ export const shopPurchases = {
 
       // Using this instead of the actual set count maintains consistency with the backend price,
       // at the cost of the frontend UI being wrong for cheated saves
-      const currentSetCount = GlyphAppearanceHandler.expectedSetCount;
-      return new Decimal(Math.floor(baseCost * (totalSets - currentSetCount) / totalSets));
+      const currentSetCount = player.records.fullGameCompletions;
+      return Decimal.floor(baseCost * (totalSets - currentSetCount) / totalSets);
     },
     description: "Unlock all remaining Glyph cosmetic sets at once",
     instantPurchase: true,
