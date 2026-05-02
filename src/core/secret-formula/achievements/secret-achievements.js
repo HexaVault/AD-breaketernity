@@ -50,7 +50,7 @@ export const secretAchievements = [
   {
     id: 22,
     get name() { return i18n("secret", "ach22title"); },
-    get description() { return i18n("secret", "ach22desc", formatInt(1e5)); },
+    get description() { return i18n("secret", "ach22desc", [formatInt(1e5)]); },
     checkRequirement: () => player.requirementChecks.permanent.emojiGalaxies.gte(1e5),
     checkEvent: GAME_EVENT.GALAXY_RESET_AFTER
   },
@@ -94,12 +94,12 @@ export const secretAchievements = [
   {
     id: 31,
     get name() { return i18n("secret", "ach31title"); },
-    get description() { return i18n("secret", "ach31desc", formatInt(200)); },
+    get description() { return i18n("secret", "ach31desc", [formatInt(200)]); },
   },
   {
     id: 32,
     get name() { return i18n("secret", "ach32title"); },
-    get description() { return i18n("secret", "ach32desc", format(0.001, 3, 3)); },
+    get description() { return i18n("secret", "ach32desc", [format(0.001, 3, 3)]); },
     checkRequirement: () =>
       Time.bestInfinity.totalMilliseconds.lte(1) ||
       Time.bestEternity.totalMilliseconds.lte(1),
@@ -118,7 +118,7 @@ export const secretAchievements = [
   {
     id: 35,
     get name() { return i18n("secret", "ach35title"); },
-    get description() { return i18n("secret", "ach35desc", formatInt(1e5)); },
+    get description() { return i18n("secret", "ach35desc", [formatInt(1e5)]); },
     checkRequirement: () => player.requirementChecks.permanent.singleTickspeed >= 1e5,
     checkEvent: GAME_EVENT.GAME_TICK_AFTER
   },

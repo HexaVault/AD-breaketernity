@@ -39,7 +39,7 @@ export const ach = {
   ach28reward: "1st Antimatter Dimensions are $1aX stronger.",
   ach31title: "I forgot to nerf that",
   ach31desc: "Get any Antimatter Dimension multiplier over $1aX.",
-  ach31Reward: "1st Antimatter Dimensions are $1aX stronger.",
+  ach31reward: "1st Antimatter Dimensions are $1aX stronger.",
   ach32title: "The Gods are pleased",
   ach32desc: "Get over $1aX from Dimension Sacrifice outside of Challenge 8.",
   ach32reward: "Dimensional Sacrifice is stronger, $1aX ➜ $2aX.",

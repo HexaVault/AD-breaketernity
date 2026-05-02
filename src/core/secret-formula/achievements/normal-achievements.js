@@ -161,7 +161,7 @@ export const normalAchievements = [
     get description() { return i18n("ach", "ach37desc", [formatInt(2)]); },
     checkRequirement: () => Time.thisInfinityRealTime.totalHours.lte(2),
     checkEvent: GAME_EVENT.BIG_CRUNCH_BEFORE,
-    get reward() { return i18n("ach", "ach36reward", [formatInt(5000)]); },
+    get reward() { return i18n("ach", "ach37reward", [formatInt(5000)]); },
     effect: 5000
   },
   {
@@ -243,7 +243,7 @@ export const normalAchievements = [
     get description() { return i18n("ach", "ach48desc", [formatInt(12)]); },
     checkRequirement: () => NormalChallenges.all.countWhere(c => !c.isCompleted) === 0,
     checkEvent: [GAME_EVENT.BIG_CRUNCH_AFTER, GAME_EVENT.REALITY_RESET_AFTER, GAME_EVENT.REALITY_UPGRADE_TEN_BOUGHT],
-    get reward() { return i18n("ach", "ach48eward", [formatPercents(0.1)]); },
+    get reward() { return i18n("ach", "ach48reward", [formatPercents(0.1)]); },
     effect: 1.1
   },
   {
@@ -278,7 +278,7 @@ export const normalAchievements = [
     get description() { return i18n("ach", "ach54desc", [formatInt(10)]); },
     checkRequirement: () => Time.thisInfinityRealTime.totalMinutes.lte(10),
     checkEvent: GAME_EVENT.BIG_CRUNCH_BEFORE,
-    get description() { return i18n("ach", "ach54reward", [format(5e5)]); },
+    get reward() { return i18n("ach", "ach54reward", [format(5e5)]); },
     effect: 5e5
   },
   {
@@ -287,7 +287,7 @@ export const normalAchievements = [
     get description() { return i18n("ach", "ach55desc", [formatInt(1)]); },
     checkRequirement: () => Time.thisInfinityRealTime.totalMinutes.lte(1),
     checkEvent: GAME_EVENT.BIG_CRUNCH_BEFORE,
-    get description() { return i18n("ach", "ach55reward", [format(5e10)]); },
+    get reward() { return i18n("ach", "ach55reward", [format(5e10)]); },
     effect: 5e10
   },
   {
@@ -428,10 +428,10 @@ export const normalAchievements = [
   {
     id: 74,
     get name() { return i18n("ach", "ach74title"); },
-    get description() { return i18n("ach", "ach73desc", [formatInt(5)]); },
+    get description() { return i18n("ach", "ach74desc", [formatInt(5)]); },
     checkRequirement: () => Time.challengeSum.totalSeconds.lt(5),
     checkEvent: [GAME_EVENT.BIG_CRUNCH_AFTER, GAME_EVENT.REALITY_RESET_AFTER],
-    get reward() { return i18n("ach", "ach72reward", [formatPercents(0.4)]); },
+    get reward() { return i18n("ach", "ach74reward", [formatPercents(0.4)]); },
     effect: 1.4,
     effectCondition: () => Player.isInAnyChallenge
   },
@@ -516,7 +516,7 @@ export const normalAchievements = [
   {
     id: 86,
     get name() { return i18n("ach", "ach86title"); },
-    get description() { return i18n("ach", "ach85desc", [formatX(1e3)]); },
+    get description() { return i18n("ach", "ach86desc", [formatX(1e3)]); },
     checkRequirement: () => Tickspeed.multiplier.recip().gte(1e3),
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     get reward() { return i18n("ach", "ach86reward", [formatPercents(0.01)]); },
@@ -604,8 +604,8 @@ export const normalAchievements = [
   },
   {
     id: 97,
-    get name() { return i18n("ach", "ach96title"); },
-    get description() { return i18n("ach", "ach96desc", [format(6.66, 2, 2)]); },
+    get name() { return i18n("ach", "ach97title"); },
+    get description() { return i18n("ach", "ach97desc", [format(6.66, 2, 2)]); },
     checkRequirement: () => Time.infinityChallengeSum.totalSeconds.lt(6.66),
     checkEvent: [GAME_EVENT.BIG_CRUNCH_AFTER, GAME_EVENT.REALITY_RESET_AFTER],
   },
@@ -826,7 +826,7 @@ export const normalAchievements = [
   {
     id: 128,
     get name() { return i18n("ach", "ach128title"); },
-    get description() { return i18n("ach", "ach127desc", [formatPostBreak("1e22000")]); },
+    get description() { return i18n("ach", "ach128desc", [formatPostBreak("1e22000")]); },
     checkRequirement: () => Currency.infinityPoints.gte("1e22000") && player.timestudy.studies.length === 0,
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     get reward() { return i18n("ach", "ach128reward"); },
@@ -901,7 +901,7 @@ export const normalAchievements = [
   {
     id: 138,
     get name() { return i18n("ach", "ach138title"); },
-    get description() { return i18n("ach", "ach137desc", [formatPostBreak("1e26000")]); },
+    get description() { return i18n("ach", "ach138desc", [formatPostBreak("1e26000")]); },
     checkRequirement: () =>
       player.timestudy.studies.length === 0 &&
       player.dilation.active &&
@@ -1036,7 +1036,7 @@ export const normalAchievements = [
     get description() { return i18n("ach", "ach156desc"); },
     checkRequirement: () => player.requirementChecks.reality.noPurchasedTT,
     checkEvent: GAME_EVENT.REALITY_RESET_BEFORE,
-    get reward() { return i18n("ach", "ach154reward", [formatX(2.5, 0, 1)]); },
+    get reward() { return i18n("ach", "ach156reward", [formatX(2.5, 0, 1)]); },
     effect: 2.5
   },
   {
@@ -1084,7 +1084,7 @@ export const normalAchievements = [
     get description() { return i18n("ach", "ach164desc", [format(DC.NUMMAX, 1)]); },
     checkRequirement: () => Currency.infinitiesTotal.gte(DC.NUMMAX),
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
-    get reward() { return i18n("ach", "ach165reward", [formatInt(1024)]); },
+    get reward() { return i18n("ach", "ach164reward", [formatInt(1024)]); },
     effect: 1024
   },
   {
