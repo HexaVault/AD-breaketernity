@@ -692,5 +692,11 @@ in a different run, you will get the same options for Glyphs.`,
   cantLoadSave: "Could not load the save (format unrecognized or invalid).",
   rmLimited: `Reality Machine gain for your first Reality is reduced above $1aX Eternity Points and capped at $2aX Eternity Points.
   This is due to balance changes made in the Reality update which affect the difficulty of reaching those amounts,
-  such as the increased Time Dimension cost scaling above $3aX.`
+  such as the increased Time Dimension cost scaling above $3aX.`,
+  importOptionsFilename: "File Name: $1aX",
+  importOptionsNotation: "Notation: $1aX",
+  importOptionsLNotation: "Large Notation: $1aX",
+  importOptionsTheme: "Theme: $1aX",
+  importOptionsUI: "UI Type: $1aX",
+  importOptionsLanguage: "Language: ",
 };

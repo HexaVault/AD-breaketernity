@@ -70,6 +70,11 @@ export default {
       } else {
         Modal.message.show(i18n("modal", "noChangeSeed"));
       }
+    },
+    exportOptions() {
+      const json = JSON.stringify(player.options, GameSaveSerializer.jsonConverter);
+      copyToClipboard(GameSaveSerializer.encodeText(json, "settings"));
+      if (player.options.notifications.saving) GameUI.notify.info("Exported settings to your clipboard");
     }
   }
 };
@@ -175,6 +180,13 @@ export default {
           @click="openSeedModal()"
         >
           Change Glyph RNG Seed
+        </OptionsButton>
+        <OptionsButton
+          class="o-primary-btn--option_font-x-large"
+          :class="{ 'o-pelle-disabled-pointer': creditsClosed }"
+          @click="exportOptions()"
+        >
+          Export save
         </OptionsButton>
       </div>
       <OpenModalHotkeysButton />

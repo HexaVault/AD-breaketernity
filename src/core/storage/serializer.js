@@ -74,6 +74,7 @@ export const GameSaveSerializer = {
     // This step transforms saves into unsigned 8-bit arrays, as pako requires.
     { encode: x => GameSaveSerializer.encoder.encode(x), decode: x => GameSaveSerializer.decoder.decode(x) },
     // This step is  where the compression actually happens. The pako library works with unsigned 8-bit arrays.
+    // eslint-disable-next-line import/no-named-as-default-member
     { encode: x => pako.deflate(x), decode: x => pako.inflate(x) },
     // This step converts from unsigned 8-bit arrays to strings with codepoints less than 256.
     // We need to do this outselves because GameSaveSerializer.decoder would give us unicode sometimes.
