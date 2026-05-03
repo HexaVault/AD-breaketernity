@@ -46,7 +46,7 @@ export const formulae = {
         TimeStudy(111)
       );
       // eslint-disable-next-line prefer-const
-      let am = value;
+      let am = new Decimal(value);
       if (GlyphAlteration.isAdded("infinity")) {
         am = am.root(getSecondaryGlyphEffect("infinityIP"));
       }
@@ -93,7 +93,7 @@ export const formulae = {
     },
 
     currencyReq: value => {
-      let ip = value;
+      let ip = new Decimal(value);
       ip = ip.div(GameCache.totalEPMult.value);
       if (GlyphAlteration.isAdded("time")) {
         ip = ip.root(getSecondaryGlyphEffect("timeEP"));
@@ -135,7 +135,7 @@ export const formulae = {
     },
 
     currencyReq: value => {
-      let ep = value;
+      let ep = new Decimal(value);
       ep = ep.div(GameCache.totalRMMult.value);
       ep = ep.log(1e3).add(1).mul(4000);
       return ep;

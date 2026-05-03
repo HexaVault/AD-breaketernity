@@ -810,7 +810,7 @@ function applyAutoprestige(diff) {
   }
 
   if (InfinityUpgrade.ipGen.isCharged) {
-    const addedRM = Currency.realityMachines.cappedGain
+    const addedRM = Currency.realityMachines.gain
       .timesEffectsOf(InfinityUpgrade.ipGen.chargedEffect)
       .times(diff.div(1000));
     Currency.realityMachines.add(addedRM);
@@ -984,6 +984,7 @@ export function simulateTime(seconds, real, fast) {
     afterSimulation(seconds, playerStart);
   } else {
     const progress = {};
+    debugger;
     ui.view.modal.progressBar = {};
     Async.run(loopFn,
       ticks,

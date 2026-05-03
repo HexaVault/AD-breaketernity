@@ -88,9 +88,9 @@ export default {
       this.level.copyFrom(gainedGlyphLevel().actualLevel);
       this.simRealities = simulatedRealityCount(false).add(1);
       this.hasSpace = Decimal.fromNumber(GameCache.glyphInventorySpace.value).gte(this.simRealities);
-      const simRMGained = Currency.realityMachines.cappedGain.times(this.simRealities);
+      const simRMGained = Currency.realityMachines.gain.times(this.simRealities);
       this.realityMachines.copyFrom(simRMGained.clampMax(Currency.realityMachines.hardcap
-        .sub(Currency.realityMachines.cappedGain)));
+        .sub(Currency.realityMachines.gain)));
       this.shardsGained = simulatedRealityCount(false).add(1).mul(Currency.relicShards.gain);
       this.willAutoPurge = player.reality.autoAutoClean;
       if (this.firstReality) return;

@@ -1138,7 +1138,7 @@ export const normalAchievements = [
     id: 172,
     get name() { return i18n("ach", "ach172title"); },
     get description() { return i18n("ach", "ach172desc", [format(DC.NUMMAX, 1)]); },
-    checkRequirement: () => Currency.realityMachines.cappedGain.gte(DC.NUMMAX) &&
+    checkRequirement: () => Currency.realityMachines.gain.gte(DC.NUMMAX) &&
       player.celestials.ra.charged.size === 0 && Glyphs.activeWithoutCompanion.length === 0 &&
       player.requirementChecks.reality.noTriads,
     checkEvent: GAME_EVENT.REALITY_RESET_BEFORE,

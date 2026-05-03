@@ -90,11 +90,11 @@ export default {
       }
 
       const multiplier = simulatedRealityCount(false).add(1);
-      this.projectedRM = Currency.realityMachines.cappedGain.times(multiplier)
+      this.projectedRM = Currency.realityMachines.gain.times(multiplier)
         .clampMax(Currency.realityMachines.hardcap);
       this.newIMCap = Currency.imaginaryMachines.projCap;
       this.machinesGained = this.projectedRM.clampMax(Currency.realityMachines.hardcap
-        .sub(Currency.realityMachines.cappedGain));
+        .sub(Currency.realityMachines.gain));
       this.realityTime.copyFrom(Time.thisRealityRealTime.totalMinutes);
       this.glyphLevel.copyFrom(gainedGlyphLevel().actualLevel);
       this.nextGlyphPercent = this.percentToNextGlyphLevelText();

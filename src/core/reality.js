@@ -264,7 +264,7 @@ export function getRealityProps(isReset, alreadyGotGlyph = false) {
   });
   return Object.assign(defaults, {
     reset: false,
-    gainedRM: Currency.realityMachines.cappedGain,
+    gainedRM: Currency.realityMachines.gain,
     gainedGlyphLevel: gainedGlyphLevel(),
     gainedShards: Currency.relicShards.gain,
     simulatedRealities: simulatedRealityCount(true),
