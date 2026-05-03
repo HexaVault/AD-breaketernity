@@ -80,6 +80,15 @@ export function stackedLogPower(value, stacks, power) {
   return finalValue;
 }
 
+export function stackedLog(value, stacks) {
+  let finalValue = value;
+  for (let i = stacks; i > 0; i--) {
+    finalValue = Decimal.max(1, finalValue.log10());
+  }
+  if (finalValue.eq(1)) return DC.D0;
+  return finalValue;
+}
+
 export function breakInfinity() {
   if (!Autobuyer.bigCrunch.hasMaxedInterval) return;
   if (InfinityChallenge.isRunning) return;
