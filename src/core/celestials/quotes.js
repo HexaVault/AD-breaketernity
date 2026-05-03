@@ -1,4 +1,4 @@
-import { BitUpgradeState } from "../game-mechanics";
+import { ArrayUpgradeState } from "../game-mechanics";
 import wordShift from "../word-shift";
 
 export const Quote = {
@@ -110,7 +110,7 @@ class QuoteLine {
   }
 }
 
-class CelQuotes extends BitUpgradeState {
+class CelQuotes extends ArrayUpgradeState {
   constructor(config, celestial) {
     super(config);
     this._celestial = celestial;
@@ -118,8 +118,8 @@ class CelQuotes extends BitUpgradeState {
     this._lines = lines.map(line => new QuoteLine(line(), this));
   }
 
-  get bits() { return player.celestials[this._celestial].quoteBits; }
-  set bits(value) { player.celestials[this._celestial].quoteBits = value; }
+  get array() { return player.celestials[this._celestial].quoteArray; }
+  set array(value) { player.celestials[this._celestial].quoteArray = value; }
 
   get requirement() {
     // If requirement is defined, it is always a function returning a boolean.

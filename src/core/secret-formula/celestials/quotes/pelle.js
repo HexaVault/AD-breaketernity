@@ -1,3 +1,6 @@
+/* eslint-disable no-inline-comments */
+/* eslint-disable capitalized-comments */
+/* eslint-disable no-unused-vars */
 // These entries describe the special flash-between-celestial effect on some quotes, with the numbers being
 // durations of each celestial in seconds
 const flashCelestial = [

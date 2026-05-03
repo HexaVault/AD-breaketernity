@@ -360,7 +360,7 @@ export const Pelle = {
         phase: 0,
         sacrificeActive: false
       },
-      quoteBits: 0,
+      quoteArray: [],
       collapsed: {
         upgrades: false,
         rifts: false,

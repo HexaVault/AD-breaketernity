@@ -53,7 +53,20 @@ export function beMigration(player) {
   player.blackHole[1].powerUpgrades = D(player.blackHole[1].powerUpgrades);
   player.blackHole[1].intervalUpgrades = D(player.blackHole[1].intervalUpgrades);
   player.blackHolePauseTime = D(player.blackHolePauseTime);
+  let tempArray;
+  tempArray = [];
+  for (let i = 0; i < 30; i++) {
+    if (player.celestials.effarig.quoteBits >> i % 2 === 1) tempArray.push(i);
+  }
+  player.celestials.effarig.quoteArray = tempArray;
+  delete player.celestials.effarig.quoteBits;
   player.celestials.effarig.relicShards = D(player.celestials.effarig.relicShards);
+  tempArray = [];
+  for (let i = 0; i < 30; i++) {
+    if (player.celestials.enslaved.quoteBits >> i % 2 === 1) tempArray.push(i);
+  }
+  player.celestials.enslaved.quoteArray = tempArray;
+  delete player.celestials.enslaved.quoteBits;
   player.celestials.enslaved.stored = D(player.celestials.enslaved.stored);
   player.celestials.enslaved.storedReal = D(player.celestials.enslaved.storedReal);
   player.celestials.enslaved.tesseracts = D(player.celestials.enslaved.tesseracts);
@@ -61,7 +74,19 @@ export function beMigration(player) {
   player.celestials.laitela.darkMatterMult = D(player.celestials.laitela.darkMatterMult);
   player.celestials.laitela.entropy = D(player.celestials.laitela.entropy);
   player.celestials.laitela.fastestCompletion = D(player.celestials.laitela.fastestCompletion);
+  tempArray = [];
+  for (let i = 0; i < 30; i++) {
+    if (player.celestials.laitela.quoteBits >> i % 2 === 1) tempArray.push(i);
+  }
+  player.celestials.laitela.quoteArray = tempArray;
+  delete player.celestials.laitela.quoteBits;
   player.celestials.laitela.singularities = D(player.celestials.laitela.singularities);
+  tempArray = [];
+  for (let i = 0; i < 30; i++) {
+    if (player.celestials.pelle.quoteBits >> i % 2 === 1) tempArray.push(i);
+  }
+  player.celestials.pelle.quoteArray = tempArray;
+  delete player.celestials.pelle.quoteBits;
   player.celestials.pelle.realityShards = D(player.celestials.pelle.realityShards);
   player.celestials.pelle.rebuyables.antimatterDimensionMult = D(player.celestials.pelle.rebuyables.antimatterDimensionMult);
   player.celestials.pelle.rebuyables.galaxyGeneratorAdditive = D(player.celestials.pelle.rebuyables.galaxyGeneratorAdditive);
@@ -97,6 +122,12 @@ export function beMigration(player) {
   player.celestials.ra.pets.teresa.memoryChunks = D(player.celestials.ra.pets.teresa.memoryChunks);
   player.celestials.ra.pets.v.memories = D(player.celestials.ra.pets.v.memories);
   player.celestials.ra.pets.effarig.v = D(player.celestials.ra.pets.v.memoryChunks);
+  tempArray = [];
+  for (let i = 0; i < 30; i++) {
+    if (player.celestials.ra.quoteBits >> i % 2 === 1) tempArray.push(i);
+  }
+  player.celestials.ra.quoteArray = tempArray;
+  delete player.celestials.ra.quoteBits;
   player.celestials.ra.unlocks = raFix(player);
   delete player.celestials.ra.unlockBits;
   // eslint-disable-next-line eqeqeq, max-statements-per-line
@@ -106,6 +137,18 @@ export function beMigration(player) {
     player.celestials.teresa.lastRepeatedMachines = new Decimal("1e1000");
     player.celestials.teresa.lastRepeatediM = player.celestials.teresa.lastRepeatedMachines.div("1e10000");
   }
+  tempArray = [];
+  for (let i = 0; i < 30; i++) {
+    if (player.celestials.teresa.quoteBits >> i % 2 === 1) tempArray.push(i);
+  }
+  player.celestials.teresa.quoteArray = tempArray;
+  delete player.celestials.teresa.quoteBits;
+  tempArray = [];
+  for (let i = 0; i < 30; i++) {
+    if (player.celestials.v.quoteBits >> i % 2 === 1) tempArray.push(i);
+  }
+  player.celestials.v.quoteArray = tempArray;
+  delete player.celestials.v.quoteBits;
   player.celestials.v.runGlyphs = player.celestials.v.runGlyphs.map(n => n.map(g => updateGlyphs(g)));
   player.celestials.v.runRecords[1] = D(player.celestials.v.runRecords[1]);
   player.celestials.v.runRecords[2] = D(player.celestials.v.runRecords[2]);

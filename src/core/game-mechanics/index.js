@@ -1,6 +1,7 @@
 export * from "./effect";
 export * from "./effects";
 export * from "./game-mechanic";
+export * from "./array-upgrade-state";
 export * from "./bit-upgrade-state";
 export * from "./puchasable";
 export * from "./set-purchasable";

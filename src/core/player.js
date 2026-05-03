@@ -581,7 +581,7 @@ window.player = {
   celestials: {
     teresa: {
       pouredAmount: 0,
-      quoteBits: 0,
+      quoteArray: [],
       unlockBits: 0,
       run: false,
       bestRunAM: DC.D1,
@@ -594,7 +594,7 @@ window.player = {
       relicShards: DC.D0,
       unlockBits: 0,
       run: false,
-      quoteBits: 0,
+      quoteArray: [],
       glyphWeights: {
         ep: 25,
         repl: 25,
@@ -610,7 +610,7 @@ window.player = {
       storedReal: DC.D0,
       autoStoreReal: false,
       isAutoReleasing: false,
-      quoteBits: 0,
+      quoteArray: [],
       unlocks: [],
       run: false,
       completed: false,
@@ -626,7 +626,7 @@ window.player = {
     v: {
       unlockBits: 0,
       run: false,
-      quoteBits: 0,
+      quoteArray: [],
       runUnlocks: [0, 0, 0, 0, 0, 0, 0, 0, 0],
       goalReductionSteps: [0, 0, 0, 0, 0, 0, 0, 0, 0],
       STSpent: 0,
@@ -679,7 +679,7 @@ window.player = {
         dilation: DC.D0,
         effarig: DC.D0
       },
-      quoteBits: 0,
+      quoteArray: [],
       momentumTime: DC.D0,
       unlocks: [],
       run: false,
@@ -692,7 +692,7 @@ window.player = {
       darkMatter: DC.D0,
       maxDarkMatter: DC.D0,
       run: false,
-      quoteBits: 0,
+      quoteArray: [],
       dimensions: Array.range(0, 4).map(() =>
         ({
           amount: DC.D0,
@@ -778,7 +778,7 @@ window.player = {
         phase: 0,
         sacrificeActive: false
       },
-      quoteBits: 0,
+      quoteArray: [],
       collapsed: {
         upgrades: false,
         rifts: false,
