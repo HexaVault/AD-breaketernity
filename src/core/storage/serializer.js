@@ -17,10 +17,10 @@ export const GameSaveSerializer = {
     }
     return value;
   },
-  deserialize(data) {
+  deserialize(data, type = "savefile") {
     if (typeof data !== "string") return undefined;
     try {
-      const json = this.decodeText(data, "savefile");
+      const json = this.decodeText(data, type);
       // eslint-disable-next-line no-unused-vars
       return JSON.parse(json, (k, v) => ((v === Infinity) ? "Infinity" : v));
     } catch (e) {

@@ -164,6 +164,22 @@ export default {
       </div>
       <div class="l-options-grid__row">
         <OptionsButton
+          class="o-primary-btn--option_font-x-large"
+          :class="{ 'o-pelle-disabled-pointer': creditsClosed }"
+          @click="exportOptions()"
+        >
+          Export settings
+        </OptionsButton>
+        <OptionsButton
+          class="o-primary-btn--option_font-x-large"
+          :class="{ 'o-pelle-disabled-pointer': creditsClosed }"
+          onclick="Modal.settingImport.show()"
+        >
+          Import settings
+        </OptionsButton>
+      </div>
+      <div class="l-options-grid__row">
+        <OptionsButton
           v-if="canSpeedrun"
           class="o-primary-btn--option_font-x-large"
           :class="{ 'o-pelle-disabled-pointer': creditsClosed }"
@@ -180,13 +196,6 @@ export default {
           @click="openSeedModal()"
         >
           Change Glyph RNG Seed
-        </OptionsButton>
-        <OptionsButton
-          class="o-primary-btn--option_font-x-large"
-          :class="{ 'o-pelle-disabled-pointer': creditsClosed }"
-          @click="exportOptions()"
-        >
-          Export save
         </OptionsButton>
       </div>
       <OpenModalHotkeysButton />

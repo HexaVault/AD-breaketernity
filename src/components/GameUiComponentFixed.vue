@@ -32,7 +32,8 @@ export default {
   },
   data() {
     return {
-      ending: false
+      ending: false,
+      nDisp: 0
     };
   },
   computed: {
@@ -55,10 +56,15 @@ export default {
       };
     }
   },
+  watch: {
+    nDisp() {
+      this.$recompute("notificationStyle");
+    }
+  },
   methods: {
     update() {
       this.ending = GameEnd.endState >= END_STATE_MARKERS.FADE_AWAY && !GameEnd.creditsClosed;
-      this.$recompute("notificationStyle");
+      this.nDisp = player.options.notificationDisplay;
     }
   }
 };

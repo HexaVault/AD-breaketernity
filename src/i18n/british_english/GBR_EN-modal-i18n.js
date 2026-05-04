@@ -698,5 +698,16 @@ in a different run, you will get the same options for Glyphs.`,
   importOptionsLNotation: "Large Notation: $1aX",
   importOptionsTheme: "Theme: $1aX",
   importOptionsUI: "UI Type: $1aX",
-  importOptionsLanguage: "Language: ",
+  importOptionsLanguage: "Language: $1aX ($2aX)",
+  importOptionsOverride: "(Your current settings will be overwritten!)",
+  importOptionsInvalidSettings: "Invalid settings import:",
+  importOptionsFailStrings: `
+  $Import does not contain a save file name
+  $Import does not choose a notation
+  $Import does not choose a large notation
+  $Import does not choose a UI
+  $Import does not have valid Classic or Modern Themes
+  $Import does not specify a language
+  $Invalid import
+  `
 };

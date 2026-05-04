@@ -55,6 +55,7 @@ import GlyphShowcasePanelModal from "@/components/modals/GlyphShowcasePanelModal
 import H2PModal from "@/components/modals/H2PModal";
 import ImportAutomatorDataModal from "@/components/modals/ImportAutomatorDataModal";
 import ImportFilterModal from "@/components/modals/ImportFilterModal";
+import ImportOptionsModal from "@/components/modals/ImportOptionsModal";
 import ImportSaveModal from "@/components/modals/ImportSaveModal";
 import ImportTimeStudyConstants from "@/components/modals/ImportTimeStudyConstants";
 import InformationModal from "@/components/modals/InformationModal";
@@ -265,8 +266,8 @@ Modal.breakInfinity = new Modal(BreakInfinityModal, 1, GAME_EVENT.ETERNITY_RESET
 Modal.s12Games = new Modal(S12GamesModal);
 
 Modal.switchLanguage = new Modal(SwitchLangugeModal);
-
 Modal.shop = new Modal(StdStoreModal);
+Modal.settingImport = new Modal(ImportOptionsModal);
 
 Modal.message = new class extends Modal {
   show(text, props = {}, messagePriority = 0) {
