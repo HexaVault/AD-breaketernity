@@ -801,7 +801,6 @@ window.player = {
       includeAnimated: true,
     },
     notation: "Mixed scientific",
-    lnotation: "Stacked Scientific",
     notationDigits: {
       comma: 5,
       notation: 9
@@ -932,6 +931,8 @@ window.player = {
     },
     invertTTgenDisplay: false,
     autoRealityForFilter: false,
+    // BE exclusive settings
+    lnotation: "Stacked Scientific",
     language: "GBR_EN",
     englishLangNames: true,
     showFomula: false,
