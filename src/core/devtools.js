@@ -177,10 +177,9 @@ dev.beTests.completeChalleges.all = function() {
   dev.beTests.completeChalleges.eternity();
 };
 
+// eslint-disable-next-line complexity
 function nanFuckIteration(value, value2) {
   for (const item in value) {
-    console.log(value[item]);
-    console.log(value2[item]);
     if (value[item] instanceof Decimal && value2[item] !== undefined) {
       if (value2[item].neq(0)) {
         if (value[item].lt(0) || value[item].layer > 8e15)
@@ -193,19 +192,25 @@ function nanFuckIteration(value, value2) {
         if (value[item] > 1e300) {
           value[item] = value2[item];
         }
-      } else if (value[item] > 1e300 || value[item] < 0);
-      value[item] = value2[item];
+      } else if (value[item] > 1e300 || value[item] < 0)
+        value[item] = value2[item];
     }
     if ((value[item] instanceof Object || value[item] instanceof Array) &&
       !(value[item] instanceof Decimal) && value2[item] !== undefined)
-      value[item] = dev.beTests.nanFuckIteration(value[item], value2[item]);
-    if (value[item] === undefined && value2[item] !== undefined)
+      value[item] = nanFuckIteration(value[item], value2[item]);
+    if ((value[item] === undefined || value[item] === null) && value2[item] !== undefined)
       value[item] = value2[item];
+    if ((value[item] === undefined || value[item] === null) && value2[item] !== undefined) {
+      // If neither the player object nor default object knows what we're looking it, just remove it.
+      delete value[item];
+    }
   }
   return value;
 };
 
-dev.beTests.nanFuck = function() {
+// This function used to be called nanFuck (as reference to how we would constantly have our saves "fucked" by NaN values)
+// and although I want to get rid of the swearing in the name, I will keep the name of the internal function the same, as a tribute.
+dev.fixSave = function() {
   player = nanFuckIteration(player, Player.defaultStart);
   GameStorage.save();
 };
@@ -214,4 +219,5 @@ dev.beTests.prepare = function() {
   dev.beTests.speed();
   GameStorage.import("blob");
   Notation.scientific.setAsCurrent();
+  LNotation.stackedScientific.setAsCurrent();
 };

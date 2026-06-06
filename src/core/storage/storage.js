@@ -151,7 +151,8 @@ export const GameStorage = {
       return;
     }
     const newPlayer = GameSaveSerializer.deserialize(saveData);
-    if (this.checkPlayerObject(newPlayer) !== "") {
+    // Change this boolean from false to true to remove the ability to attempt save repairal
+    if (this.checkPlayerObject(newPlayer) !== "" && false) {
       Modal.message.show(i18n("modal", "cantLoadSave"));
       return;
     }
@@ -214,13 +215,13 @@ export const GameStorage = {
             hasNaN = hasNaN || thisNaN;
             break;
           case "number":
-            thisNaN = Number.isNaN(prop);
+            thisNaN = Number.isNaN(prop) || prop === undefined;
             hasNaN = hasNaN || thisNaN;
             if (thisNaN) invalidProps.push(`${path}.${key}`);
             break;
           case "string":
             // If we're attempting to import, all NaN entries will still be strings
-            thisNaN = prop === "NaN";
+            thisNaN = prop === "NaN" || prop === undefined || prop === "undefined";
             hasNaN = hasNaN || thisNaN;
             if (thisNaN) invalidProps.push(`${path}.${key}`);
             break;
@@ -232,8 +233,8 @@ export const GameStorage = {
 
     // TODO: Check if it can be fixed by dev tools. If it can, ignore it.
     if (invalidProps.length === 0) return "";
-    return `${quantify("NaN player property", invalidProps.length)} found:
-      ${invalidProps.join(", ")}`;
+    // This string starts with a T, which allows us to test if this error pops up. If it does, we can attempt save repairal.
+    return `There's ${quantify("broken player property", invalidProps.length)} found. Attempting to import will forcibly attempt save repairal.`;
   },
 
   // A few things in the current game state can prevent saving, which we want to do for all forms of saving
@@ -402,7 +403,9 @@ export const GameStorage = {
 
     const checkString = this.checkPlayerObject(playerObject);
     if (playerObject === Player.defaultStart || checkString !== "") {
-      if (DEV && checkString !== "") {
+      // eslint-disable-next-line no-console
+      if (checkString[0] === "T") console.log(`Save is likely severely broken: ${checkString}`);
+      if (DEV && !(checkString === "" || checkString[0] === "T")) {
         // eslint-disable-next-line no-console
         console.log(`Savefile was invalid and has been reset - ${checkString}`);
       }
@@ -431,53 +434,56 @@ export const GameStorage = {
         if (DEV) devMigrations.setLatestTestVersion(player);
         EventHub.dispatch(GAME_EVENT.SAVE_CONVERTED_FROM_PREVIOUS_VERSION);
       }
+    }
 
-      // All dev migrations are applied in-place, mutating the player object. Note that since we only want to apply dev
-      // migrations in a dev environment, this means that test saves may fail to migrate on the live version
-      if (DEV && player.options.testVersion !== undefined) {
-        devMigrations.patch(player);
-      }
+    // All dev migrations are applied in-place, mutating the player object. Note that since we only want to apply dev
+    // migrations in a dev environment, this means that test saves may fail to migrate on the live version
+    if (DEV && player.options.testVersion !== undefined) {
+      devMigrations.patch(player);
+    }
 
-      // Post-reality migrations are separated from pre-reality because they need to happen after any dev migrations,
-      // which themselves must happen after the deepmerge
+    // Post-reality migrations are separated from pre-reality because they need to happen after any dev migrations,
+    // which themselves must happen after the deepmerge
 
-      // DO NOT REMOVE
-      // The below code is critical to making sure imported saves from the be port redecimalise glyphs,
-      // since they are not handled under normal conditions.
-      if (player.version >= 83) {
-        const fixGlyph = glyph => {
-          glyph.level = new Decimal(glyph.level);
-          glyph.rawLevel = new Decimal(glyph.rawLevel);
-          glyph.strength = new Decimal(glyph.strength);
-          // eslint-disable-next-line consistent-return
-          return glyph;
-        };
-        player.celestials.teresa.bestAMSet = player.celestials.teresa.bestAMSet.map(n => fixGlyph(n));
-        player.celestials.v.runGlyphs = player.celestials.v.runGlyphs.map(n => n.map(g => fixGlyph(g)));
-        player.reality.glyphs.active = player.reality.glyphs.active.map(n => fixGlyph(n));
-        player.reality.glyphs.inventory = player.reality.glyphs.inventory.map(n => fixGlyph(n));
-        for (let i = 0; i < 7; i++) {
-          player.reality.glyphs.sets[i].glyphs = player.reality.glyphs.sets[i].glyphs.map(n => fixGlyph(n));
-        }
-        player.records.bestReality.RMSet = player.records.bestReality.RMSet?.map(n => fixGlyph(n));
-        player.records.bestReality.RMminSet = player.records.bestReality.RMminSet?.map(n => fixGlyph(n));
-        player.records.bestReality.glyphLevelSet = player.records.bestReality.glyphLevelSet?.map(n => fixGlyph(n));
-        player.records.bestReality.imCapSet = player.records.bestReality.imCapSet?.map(n => fixGlyph(n));
-        player.records.bestReality.laitelaSet = player.records.bestReality.laitelaSet?.map(n => fixGlyph(n));
-        player.records.bestReality.speedSet = player.records.bestReality.speedSet?.map(n => fixGlyph(n));
+    // DO NOT REMOVE
+    // The below code is critical to making sure imported saves from the be port redecimalise glyphs,
+    // since they are not handled under normal conditions.
+    if (player.version >= 83) {
+      const fixGlyph = glyph => {
+        glyph.level = new Decimal(glyph.level);
+        glyph.rawLevel = new Decimal(glyph.rawLevel);
+        glyph.strength = new Decimal(glyph.strength);
+        // eslint-disable-next-line consistent-return
+        return glyph;
+      };
+      player.celestials.teresa.bestAMSet = player.celestials.teresa.bestAMSet.map(n => fixGlyph(n));
+      player.celestials.v.runGlyphs = player.celestials.v.runGlyphs.map(n => n.map(g => fixGlyph(g)));
+      player.reality.glyphs.active = player.reality.glyphs.active.map(n => fixGlyph(n));
+      player.reality.glyphs.inventory = player.reality.glyphs.inventory.map(n => fixGlyph(n));
+      for (let i = 0; i < 7; i++) {
+        player.reality.glyphs.sets[i].glyphs = player.reality.glyphs.sets[i].glyphs.map(n => fixGlyph(n));
       }
-      for (const item in player.reality.glyphs.filter.types) {
-        player.reality.glyphs.filter.types[item].rarity = new Decimal(player.reality.glyphs.filter.types[item].rarity);
-      }
-      player = migrations.patchPostReality(player);
+      player.records.bestReality.RMSet = player.records.bestReality.RMSet?.map(n => fixGlyph(n));
+      player.records.bestReality.RMminSet = player.records.bestReality.RMminSet?.map(n => fixGlyph(n));
+      player.records.bestReality.glyphLevelSet = player.records.bestReality.glyphLevelSet?.map(n => fixGlyph(n));
+      player.records.bestReality.imCapSet = player.records.bestReality.imCapSet?.map(n => fixGlyph(n));
+      player.records.bestReality.laitelaSet = player.records.bestReality.laitelaSet?.map(n => fixGlyph(n));
+      player.records.bestReality.speedSet = player.records.bestReality.speedSet?.map(n => fixGlyph(n));
+    }
+    for (const item in player.reality.glyphs.filter.types) {
+      player.reality.glyphs.filter.types[item].rarity = new Decimal(player.reality.glyphs.filter.types[item].rarity);
+    }
+    player = migrations.patchPostReality(player);
+
+    if (checkString[0] === "T") {
+      dev.fixSave();
     }
 
     this.saves[this.currentSlot] = player;
     this.lastUpdateOnLoad = player.lastUpdate;
 
-    if (DEV) {
-      guardFromNaNValues(player);
-    }
+    // This is our last catch-all, assuming save repairal has not succeeded (i.e. the save is unbelievably broken)
+    guardFromNaNValues(player);
 
     ui.view.news = player.options.news.enabled;
     ui.view.newUI = player.options.newUI;
