@@ -15,17 +15,19 @@
 // Key format:
 // $$key$$ - Use key as other
 // $1aX$key$$ - Take input, and use pluralisation rules.
+// $1aX$key$$!$ - Take input, and use pluralisation rules. Lowercase the text
 // Each text has a $$$ which is what will be replaced by a number. Move this as nessecary (i.e. for value num rather than num value)
 
+// PS: We can lowercase after the fact pretty trivially, so you are better making all words capital (i.e. Replicanti Galaxy) than lower (i.e. replicanti galaxy)
 export const plurals = {
-  antimatter: { key: "AM", rules: ["$$$ antimatter"] },
-  ip: { key: "IP", rules: [{ values: [1, -1], text: "$$$ infinity point" }, "$$$ infinity point"] },
-  ep: { key: "EP", rules: [{ values: [1, -1], text: "$$$ eternity point" }, "$$$ eternity point"] },
-  glyph: { key: "GLY", rules: [{ values: [1, -1], text: "$$$ glyph" }, "$$$ glyphs"] },
-  // AG, RG and TG are all using this rule. In other languages, you may need to split these to AG, RG and TG (the code handles different plural handling in different languages, including different keys)
-  galaxy: { key: "GAL", rules: [{ values: [1, -1], text: "$$$ galaxy" }, "$$$ galaxies"] },
-  eternity: { key: "ETER", rules: [{ values: [1, -1], text: "$$$ eternity" }, "$$$ eternities"] },
-  infinity: { key: "INF", rules: [{ values: [1, -1], text: "$$$ infinity" }, "$$$ infinities"] },
-  // See note above, but AD, ID, TD and DmD here
-  dimension: { key: "DIM", rules: [{ values: [1, -1], text: "$$$ dimension" }, "$$$ dimensions"] },
+  antimatter: { key: "AM", rules: ["$$$ Antimatter"] },
+  ip: { key: "IP", rules: [{ values: [1, -1], text: "$$$ Infinity Point" }, "$$$ Infinity Point"] },
+  ep: { key: "EP", rules: [{ values: [1, -1], text: "$$$ Eternity Point" }, "$$$ Eternity Point"] },
+  glyph: { key: "GLY", rules: [{ values: [1, -1], text: "$$$ Glyph" }, "$$$ Glyphs"] },
+  ag: { key: "AGAL", rules: [{ values: [1, -1], text: "$$$ Antimatter Galaxy" }, "$$$ Antimatter Galaxies"] },
+  rg: { key: "RGAL", rules: [{ values: [1, -1], text: "$$$ Replicanti Galaxy" }, "$$$ Replicanti Galaxies"] },
+  tg: { key: "TGAL", rules: [{ values: [1, -1], text: "$$$ Tachyon Galaxy" }, "$$$ Tachyon Galaxies"] },
+  eternity: { key: "ETER", rules: [{ values: [1, -1], text: "$$$ Eternity" }, "$$$ Eternities"] },
+  infinity: { key: "INF", rules: [{ values: [1, -1], text: "$$$ Infinity" }, "$$$ Infinities"] },
+  ad: { key: "AD", rules: [{ values: [1, -1], text: "$$$ Antimatter Dimension" }, "$$$ antimatter Dimensions"] },
 };

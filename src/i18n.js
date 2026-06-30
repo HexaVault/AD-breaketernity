@@ -30,7 +30,7 @@ window.i18n = function(type, id, mods = []) {
   const plurals = Lang.current.allText.plurals;
   for (const value in plurals) {
     const key = Lang.current.allText.plurals[value];
-    text = text.replaceAll(`/\$([0-9]{1,2}aX)?\$${key.key}\$\$/g`, match => pluralHandling(match, key.rules, mods));
+    text = text.replaceAll(`/\$([0-9]{1,2}aX)?\$${key.key}\$\$(\!\$)?/g`, match => pluralHandling(match, key.rules, mods));
   }
 
   for (let i = 1; i <= mods.length; i++) {
@@ -105,7 +105,8 @@ function pluralHandling(textInput, rules, mods) {
   if (!textInput.match("/[0-9]{1,2}aX/g")) {
     // The last value in "rules" is just a string, that we treat as other
     // If there is no $0aX at the start, we just do this
-    return rules[-1];
+    const final = rules[-1].replace("$$$", "");
+    return textInput.match("/\$\$\!\$/g") ? final.toLowerCase() : final;
   }
   // [Function, data]
   let cache = [undefined, undefined];
@@ -153,11 +154,14 @@ function pluralHandling(textInput, rules, mods) {
         maxToHandle = 1e9;
       }
       rule = ruleCycle(cache[1], maxToHandle);
+      if (textInput.match("/\$\$\!\$/g")) {
+        rule = rule.toLowerCase();
+      }
       // We can just return here, since we have done what we needed to, we don't actually need to keep going
       // (there is only a single 0aX type going through here)
       return rule.replaceAll("$$$", cache[0](cache[1]));
     }
   }
 
-  return rules[-1];
+  return rules[-1].replace("$$$", "");
 }

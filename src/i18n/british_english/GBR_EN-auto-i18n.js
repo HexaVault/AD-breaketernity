@@ -78,7 +78,7 @@ export const auto = {
   eterXHighest: "X times highest EP",
   autoEter: "Automatic Eternity",
   autoAG: "Automatic Antimatter Galaxies",
-  limAG: "Limit Antimatter Gaalxies to:",
+  limAG: "Limit Antimatter Galaxies to:",
   replaceTextA: "Continuum replaces your Antimatter Dimension and Tickspeed Autobuyers, as your production multipliers",
   replaceTextB: "now automatically and continuously scale based on how many purchases you would have had otherwise.",
   autoReal: "Automatic Reality",
