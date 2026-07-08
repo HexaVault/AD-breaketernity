@@ -14,23 +14,19 @@ export default {
   },
   computed: {
     refiningSacrificingOrDeleting() {
-      if (this.isRefining) return `Refine`;
-      if (this.isSacrificing) return `Sacrifice`;
-      return `delete`;
+      if (this.isRefining) return 1;
+      return this.isSacrificing ? 0 : 2;
     },
     topLabel() {
-      return i18n("modal", "unprotGlyphPurgeLabel", [this.refiningSacrificingOrDeleting]);
+      return i18n("modal", "glyphPurgeRejectedModalTitle", [], true)[this.refiningSacrificingOrDeleting];
     },
     message() {
-      return i18n("modal", "unprotGlyphPergeMsg", [this.refiningSacrificingOrDeleting]);
+      return i18n("modal", "glyphPurgeRejectedModalMessage", [], true)[this.refiningSacrificingOrDeleting];
     },
     extraMessage() {
-      if (this.glyphsDeleted === 0) return i18n("modal", "noGlyphRemovesRSD", [this.refiningSacrificingOrDeleting]);
-      if (this.glyphsDeleted === this.glyphsTotal) {
-        return i18n("modal", "allGlyphRemovesRSD", [this.refiningSacrificingOrDeleting]);
-      }
-      return i18n("modal", "someGlyphRemovesRSD", [this.refiningSacrificingOrDeleting,
-        `${formatInt(this.glyphsDeleted)}/${formatInt(this.glyphsTotal)}`]);
+      if (this.glyphsDeleted === 0) return i18n("modal", "removesNoGlyphs", [], true)[this.refiningSacrificingOrDeleting];
+      if (this.glyphsDeleted === this.glyphsTotal) return i18n("modal", "removedAllGlyphs", [], true)[this.refiningSacrificingOrDeleting];
+      return i18n("modal", "removesSomeGlyphs", [() => formatInt(this.glyphsDeleted)], true)[this.refiningSacrificingOrDeleting];
     },
 
     // These two don't need to be reactive since the modal force-closes itself whenever glyphs change

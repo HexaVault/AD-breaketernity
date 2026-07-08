@@ -35,7 +35,8 @@ export default {
       return this.glyphId !== -1;
     },
     attrString() {
-      return this.isSymbol ? i18n("modal", "symbol") : i18n("modal", "col");
+      // Dont i18n this, it is used to access properties
+      return this.isSymbol ? "symbol" : "color";
     },
     typeObject() {
       return CosmeticGlyphTypes;
@@ -56,7 +57,7 @@ export default {
       return 17;
     },
     text() {
-      return i18n("modal", "noCustomCosmeticOptions", [this.attrString]);
+      return i18n("modal", "noCustomCoglyphCustomizationSlidingModalNotesmeticOptions", [], true)[this.isSymbol ? 0 : 1];
     }
   },
   created() {
@@ -216,7 +217,7 @@ export default {
       v-else
       class="c-no-options"
     >
-      You have no custom options for changing Glyph {{ attrString }}s.
+      {{ text }}
     </div>
   </div>
 </template>

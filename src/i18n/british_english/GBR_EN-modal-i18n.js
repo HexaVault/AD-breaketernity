@@ -5,123 +5,123 @@
 
 // All modal info, i18n support
 export const modal = {
-  confirm: "Confirm",
-  begin: "Begin",
+  // To make this easier, everything called by Modal.message will go first
+  glyphMoveModal: "The selected Glyph changed position or was otherwise changed!",
+  // Everything below here is in a vue file for itself, not the general Modal.message
   catchupModalTitleA: "Content Catch-up",
   catchupModalTitleB: "Content Summary",
-  timeStr: "It has been $1aX since you last loaded up the game.",
-  catchupModalDescA: `If you need a refresher, here is a quick summary of all the content you have unlocked so far from the beginning of
+  catchupModalBeenXTime: "It has been $1aX since you last loaded up the game.",
+  catchupModalNeedARefresher: `If you need a refresher, here is a quick summary of all the content you have unlocked so far from the beginning of
 the game, separated into different stages of progression. These are only very brief descriptions; you can check
-the related How To Play entries by clicking the contents title or $1aX icons to view more detailed information.`,
-  catchupModalDescB: `Based on your current progression, it will probably be useful to try to increase your $1aX.`,
-  eternityChallengeModalMessage: `You will Eternity (if possible) and start a new Eternity within the Challenge, with all the
+the related How To Play entries by clicking the contents title or $ icons to view more detailed information.`,
+  catchupModalBasedOnProgression: `Based on your current progression, it will probably be useful to try to increase your $1aX.`,
+  eternityChallengeModalEternityAndStart: `You will Eternity (if possible) and start a new Eternity within the Challenge, with all the
 Challenge-specific restrictions and modifiers active. To complete the Challenge$1aX, you must reach the Challenge goal of
-$2aX Infinity Points. You can complete Eternity Challenges up to $3aX times, with increasing goals and bonuses.`,
-  ecModalMsgPlaceholder: " and gain its reward",
-  ecModalEterLabel: "You are about to enter Eternity Challenge $1aX",
-  ecModalRewardText: "The reward for completing this challenge is: $1aX",
-  ecModalConditionText: "Inside this Eternity Challenge, $1aX",
-  infinityChallengeModalMessage: `You will Big Crunch (if possible) and start a new Infinity within the Challenge, with all the
+$2aX$IP$$. You can complete Eternity Challenges up to $3aX times, with increasing goals and bonuses.`,
+  // This replaces the $1aX in the string above, if the challenge has not been completed, else the $1aX is just removed
+  challengeModalInfix: " and gain its reward",
+  eternityChallengeModalAboutToEnter: "You are about to enter Eternity Challenge $1aX",
+  eternityChallengeModalRewardForCompletion: "The reward for completing this challenge is: $1aX",
+  eternityChallengeModalInsideEC: "Inside this Eternity Challenge, $1aX",
+  infinityChallengeModalInfinityAndStart: `You will Big Crunch (if possible) and start a new Infinity within the Challenge, with all the
 Challenge-specific restrictions and modifiers active. To complete the Challenge$1aX, you must reach the Challenge goal of
-$2aX Antimatter. You do not start with any Dimension Boosts or Galaxies, regardless of upgrades.`,
-  icModalMsgPlaceholder: " and gain its reward",
-  icModalEterLabel: "You are about to enter Infinity Challenge $1aX",
-  icModalRewardText: "The reward for completing this challenge is: $1aX",
-  icModalConditionText: "Inside this Infinity Challenge, $1aX",
+$2aX$AM$$ You do not start with any Dimension Boosts or Galaxies, regardless of upgrades.`,
+  // Same as EC, uses infix above
+  infinityChallengeModalAboutToEnter: "You are about to enter Infinity Challenge $1aX",
+  infinityChallengeModalRewardForCompletion: "The reward for completing this challenge is: $1aX",
+  infinityChallengeModalInsideIC: "Inside this Infinity Challenge, $1aX",
   normalChallengeModalMessage: `You will Big Crunch (if possible) and start a new Infinity within the Challenge, with all the
 Challenge-specific restrictions and modifiers active. To complete the Challenge$1aX, you must reach Infinity again.
 You do not start with any Dimension Boosts or Galaxies, regardless of upgrades.`,
-  ncModalMsgPlaceholder: " and gain its reward",
-  ncModalEterLabel: "You are about to enter Challenge $1aX",
-  ncModalRewardText: "The reward for completing this challenge is: $1aX",
-  ncModalConditionText: "Inside this Challenge, $1aX",
+  normalChallengeModalAboutToEnter: "You are about to enter Challenge $1aX",
+  normalChallengeModalRewardForCompletion: "The reward for completing this challenge is: $1aX",
+  normalChallengeModalInsideNC: "Inside this Challenge, $1aX",
   companionDeletion0: "Are you sure you want to get rid of your Companion Glyph?",
   companionDeletion1: "You will not receive any cake.",
   companionDeletion2: "This is permanent! You will not get another Companion Glyph!",
   companionDeletion3: `You deleted your faithful Companion Glyph more quickly than any other test subject on record. Congratulations.`,
-  ty: "Thank you",
-  glyphMoveModal: "The selected Glyph changed position or was otherwise changed!",
-  deletionModalMsg1: "You are about to delete a Glyph",
-  deletionModalMsg2: "Deleting a Glyph will remove the Glyph from your inventory!",
-  deletionModalMsg3: "There is no benefit in deleting a Glyph before you have unlocked Glyph Sacrifice!",
-  allGlyphPurgeLabel: "You are about to $1aX all rejected Glyphs",
-  allGlyphPergeMsg: `Are you sure you want to $1aX all rejected Glyphs? This will remove
-all Glyphs that would be rejected by your current Glyph Filter settings.$2aX`,
-  allGlyphPurgeNegWarning: `Note that some of your Effect Filter scores are negative, which may cause you to
+  thankYou: "Thank you",
+  glyphDeletionModalMsg1: "You are about to delete a Glyph",
+  glyphDeletionModalMsg2: "Deleting a Glyph will remove the Glyph from your inventory!",
+  glyphDeletionModalMsg3: "There is no benefit in deleting a Glyph before you have unlocked Glyph Sacrifice!",
+  glyphPurgeRejectedModalTitle: "You are about to Sacrifice all rejected Glyphs $ You are about to Refine all rejected Glyphs",
+  glyphPurgeRejectedModalMessage: `Are you sure you want to Sacrifice all rejected Glyphs? This will remove
+all Glyphs that would be rejected by your current Glyph Filter settings.$1aX $ Are you sure you want to Refine all rejected Glyphs? This will remove
+all Glyphs that would be rejected by your current Glyph Filter settings.$1aX `,
+  glyphPurgeRejectedModalNegativeFilter: `Note that some of your Effect Filter scores are negative, which may cause you to
 lose some Glyphs you normally want to keep.`,
-  noGlyphRemoves: "This will remove no Glyphs.",
-  allGlyphRemoves: "This will remove all your Glyphs.",
-  someGlyphRemoves: "This process will remove $1aX Glyphs.",
-  unprotGlyphPurgeLabel: "You are about to $1aX all unprotected Glyphs",
-  unprotGlyphPergeMsg: `Are you sure you want to $1aX all unprotected Glyphs in your inventory?`,
-  noGlyphRemovesRSD: "This will $1aX no Glyphs.",
-  allGlyphRemovesRSD: "This will $1aX all your Glyphs.",
-  someGlyphRemovesRSD: "This will $1aX $2aX of your Glyphs.",
-  noGlyphPurged: "This will Purge no Glyphs.",
-  allGlyphPurged: "This will Purge all your Glyphs.",
-  harshPurge: "Harsh",
-  someGlyphPurged: "$1aX will delete $2aX of your Glyphs.",
-  harshPurgeExplantion: `Harsh Purging deletes Glyphs that are strictly worse than any other Glyph in your
+  removesNoGlyphs: "This will sacrifice no Glyphs. $ This will refine no Glyphs. $ This will delete no Glyphs.",
+  removesAllGlyphs: "This will sacrifice all your Glyphs. $ This will refine all your Glyphs. $ This will delete all your Glyphs",
+  removesSomeGlyphs: "This will sacrifice $1aX$GLY$$. $ This will refine $1aX$GLY$$. $ This will delete $1aX$GLY$$",
+  glyphPurgeUnprotectedModalTitle: `You are about to Sacrifice all unprotected Glyphs $ You are about to Refine all unprotected Glyphs\
+   $ You are about to Delete all unprotected Glyphs`,
+  glyphPurgeUnprotectedModalMsg: `Are you sure you want to sacrifice all unprotected Glyphs in your inventory? $ \
+  Are you sure you want to refine all unprotected Glyphs in your inventory? $ \
+  Are you sure you want to delete all unprotected Glyphs in your inventory?`,
+  purgesNoGlyphs: "This will Purge no Glyphs. $ This will Harsh Purge no Glyphs",
+  purgesAllGlyphs: "This will Purge all your Glyphs. $ This will Harsh Purge no Glyphs.",
+  purgesSomeGlyphs: "Purge will delete $1aX$GLY$$. $ Harsh Purge will delete $1aX$GLY$$.",
+  glyphPurgeModalHarshPurgeExplantion: `Harsh Purging deletes Glyphs that are strictly worse than any other Glyph in your
 inventory. For example, if a Glyph has all the same effects as another Glyph, but the values
 of ALL of the effects are worse, then it will be deleted.`,
-  purgeExplanation: `Purging deletes Glyphs that are strictly worse than other Glyphs, while keeping enough to equip a full
+  glyphPurgeModalPurgeExplanation: `Purging deletes Glyphs that are strictly worse than other Glyphs, while keeping enough to equip a full
 set with those effects. This behaves like Harsh Purge, except that regular Purge will not delete any given
-Glyph unless it finds five Glyphs which are better (instead of only one).`,
-  aboutToPurge: "You are about to$1aX Purge your Glyphs",
-  purgeMessage: `This could delete Glyphs in your inventory that are good enough that you might want to use them
+Glyph unless it finds enough Glyphs which are better. For most glyphs, this is five, but some will only keep one.`,
+  glyphPurgeModalTitle: "You are about to Purge your Glyphs $ You are about to Harsh Purge your Glyphs",
+  glyphPurgeModalPurgeNote: `This could delete Glyphs in your inventory that are good enough that you might want to use them
 later. Purging will Purge Glyphs based on your Purge mode. Are you sure you want to do this?`,
-  aboutToRefine: "You are about to refine a Glyph",
-  refineMsgA: `Refining a Glyph will remove the Glyph from your inventory, and in return,
+  glyphRefineModalTitle: "You are about to refine a Glyph",
+  glyphRefineModalMessageUnlocked: `Refining a Glyph will remove the Glyph from your inventory, and in return,
 you will increase your $1aX Alchemy resource from $2aX to $3aX. This Glyph can raise your $4aX resource to at most $5aX.`,
-  refineMsgB: `You cannot gain any $1aX alchemy resource because you have not
+  glyphRefineModalMessageLocked: `You cannot gain any $1aX alchemy resource because you have not
 unlocked this Glyph's resource yet. You can still refine it anyway, but nothing will happen. Consider sacrificing the Glyph instead.`,
-  sacrificeConfirm: `Do you really want to sacrifice this Glyph? Your total power of sacrificed $1aX
+  glyphSacrificeModalTitle: "You are about to sacrifice a Glyph",
+  glyphSacrificeModalMessage: `Do you really want to sacrifice this Glyph? Your total power of sacrificed $1aX
 Glyphs will increase from $2aX to $3aX.`,
-  sacrificeHeader: "You are about to sacrifice a Glyph",
-  glyphCosmeticChoose: "Choose a Glyph Cosmetic Set",
-  glyphCosmeticChooseDropdown: "▼ Available Sets ▼",
-  setContains: "The \"$1aX\" Set contains the following $2aX:",
-  symbol: "symbol",
-  colScheme: "color scheme",
-  glyphModTitle: "Custom Glyph Appearance",
-  hasCustomSets: "Reset Appearances to Default:",
-  glyphModMessage: "All Types$This Type$This will not reset any individually-modified Glyphs.$Glyph Type:",
-  glyphModNotes: `Note: Some options may cause very poor color contrast or readability on certain themes with certain Glyph types.$
+  cosmeticSetChoiceModalNone: "None Selected",
+  cosmeticSetChoiceModalChooseCosmeticSet: "Choose a Glyph Cosmetic Set",
+  cosmeticSetChoiceModalDropdown: "▼ Available Sets ▼",
+  cosmeticSetChoiceModalSetContains: "The \"$1aX\" Set contains the following $2aX:",
+  glyphCosmeticChooseSymbol: "$1aX$SYM$$!$",
+  glyphCosmeticChooseColorScheme: "$1aX$CSC$$!$",
+  glyphCustomizationModalTitle: "Custom Glyph Appearance",
+  glyphCustomizationModalResetAppearance: "Reset Appearances to Default:",
+  glyphCustomizationModalMessage: `\
+  All Types $ \
+  This Type $ \
+  This will not reset any individually-modified Glyphs. $ \
+  Glyph Type:`,
+  glyphCustomizationModalOptionsNote: `Note: Some options may cause very poor color contrast or readability on certain themes with certain Glyph types.$
 You currently have no available options for changing the default appearance of your Glyphs. To unlock some, visit
 the Shop Tab or beat the game.$
 Enabling this setting will allow you to change individual Glyphs to special cosmetic types you have unlocked.$
 Enabling or disabling this option will currently do nothing.`,
-  resetCos: "Reset all individual Glyph cosmetics",
-  perGlyphCos: "Appearance Options for $1aX Glyphs",
-  noModCompanion: "Companion Glyphs cannot have their symbol modified.",
-  col: "color",
-  noCustomCosmeticOptions: "You have no custom options for changing Glyph $1aXs",
-  glyphDisplayOptionsList: `New Glyph identifier: $ Unequipped Glyph identifier: $ Always show Glyph effect dots: $ 
+  glyphCustomizationModalResetIndividualCosmetics: "Reset all individual Glyph cosmetics",
+  glyphCustomizationSingleModalAppearanceOpt: "Appearance Options for $1aX Glyphs",
+  glyphCustomizationSingleModalCannotModifyCompanion: "Companion Glyphs cannot have their symbol modified.",
+  glyphCustomizationSlidingModalNote: "You have no custom options for changing Glyph $$SYM$$. $ You have no custom options for changing Glyph colors.",
+  glyphDisplayOptionsModalGlyphBackgroundSetting: "Auto $ Light $ Dark",
+  glyphDisplayOptionsModalList: `New Glyph identifier: $ Unequipped Glyph identifier: $ Always show Glyph effect dots: $ 
   Fancy Glyph borders: $ Always show Glyph Info: $ High-cotrast rarity colors: $ Swap border and symbol colors`,
-  GDOtopLabel: "Glyph Display Options",
-  glyphBGcol: "Glyph BG color: $1aX",
-  additionalGlyphInfo: "▼ Additional Glyph Info: ▼",
-  singGlyphCosHeader: "Modifying Single Glyph Appearance",
-  resetGlyphAppear: "Reset this Glyph's appearance",
-  cantCos: "This Glyph's Cosmetic Type cannot be changed!",
-  applySpecCos: "Apply Special Cosmetic Type:",
-  dark: "Dark",
-  light: "Light",
-  auto: "Auto",
-  cannotHideCurrent: "You cannot hide the tab you are on",
-  cannotHideOption: "Options tabs cannot be hidden",
-  clickHide: "Click to hide tab",
-  clickUnhide: "Click to unhide tab",
-  cantHide: "This tab cannot be hidden",
-  modifyVisibleHeader: "Modify Visible Tabs",
-  modifyVisibleMessage: `Click a button to toggle showing a tab on/off.$
-Some tabs cannot be hidden, and you cannot hide your current tab.$
-Unhiding a tab in which all subtabs are hidden will also unhide all subtabs,
-and hiding all subtabs will also hide the tab.`,
-  cantHideNearEnd: "You cannot hide your tabs after unlocking the Galaxy Generator.",
-  namelessHideTextA: "You must... see everywhere...",
-  namelessHideTextB: "(You cannot hide your tabs within this Reality)",
-  showAllTabs: "Show all tabs",
+  glyphDisplayOptionsModalTopLabel: "Glyph Display Options",
+  glyphDisplayOptionsModalGlyphBGcol: "Glyph BG color: $1aX",
+  glyphDisplayOptionsModalAdditionalGlyphInfo: "▼ Additional Glyph Info: ▼",
+  singleGlyphAppearanceModalTitle: "Modifying Single Glyph Appearance",
+  singleGlyphAppearanceModalResetAppearance: "Reset this Glyph's appearance",
+  singleGlyphAppearanceModalCantChange: "This Glyph's Cosmetic Type cannot be changed!",
+  singleGlyphAppearanceModalApplySpecial: "Apply Special Cosmetic Type:",
+  hideSubtabsModalButtonCannotHideCurrent: "You cannot hide the tab you are on",
+  hideSubtabsModalButtonCannotHideOption: "Options tabs cannot be hidden",
+  hideSubtabsModalClickToHide: "Click to hide tab",
+  hideSubtabsModalClickToUnhide: "Click to unhide tab",
+  hideSubtabsModalCannotHide: "This tab cannot be hidden",
+  hideTabModalTitle: "Modify Visible Tabs",
+  hideTabModalMessage: `Click a button to toggle showing a tab on/off. $ Some tabs cannot be hidden, and you cannot hide your current tab. $ \
+Unhiding a tab in which all subtabs are hidden will also unhide all subtabs, and hiding all subtabs will also hide the tab.`,
+  hideTabModalAfterGalGen: "You cannot hide your tabs after unlocking the Galaxy Generator.",
+  hideTabModalNamelessA: "You must... see everywhere...",
+  hideTabModalNamelessB: "(You cannot hide your tabs within this Reality)",
+  hideTabModalShowAllTabs: "Show all tabs", // To here, so far
   AnimationOpt: "Animation Options",
   AOlist: "Big Crunch:$Eternity:$Dilation:$Tachyon particles:$Reality$Always use Blobhole:$Background:$Blobsnow:$Blobflake:",
   AwayHeader: "Away Progress Options",

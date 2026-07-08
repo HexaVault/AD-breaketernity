@@ -25,16 +25,19 @@ export default {
       // If diff is zero, that means we opened it up via the button and don't need the text for last opening
       if (!this.diff) return null;
       const string = TimeSpan.fromMilliseconds(new Decimal(this.diff)).toString();
-      return i18n("modal", "timeStr", [string]);
+      return i18n("modal", "catchupModalBeenXTime", [string]);
     },
     titleText() {
       return this.diff ? i18n("modal", "catchupModalTitleA") : i18n("modal", "catchupModalTitleB");
     },
     modalDescA() {
-      return i18n("modal", "catchupModalDescA").split("$1ax");
+      return i18n("modal", "catchupModalNeedARefresher", [], true);
     },
     modalDescB() {
-      return i18n("modal", "catchupModalDescA", [""]);
+      return i18n("modal", "catchupModalBasedOnProgression", [this.suggestedResource]);
+    },
+    confirmButton() {
+      return i18n("consts", "confirm");
     }
   },
   methods: {
@@ -66,13 +69,13 @@ export default {
       />
     </div>
     <span class="c-suggestion-text">
-      {{ modalDescB }} {{ suggestedResource }}.
+      {{ modalDescB }}
     </span>
     <div class="l-confirm-padding">
       <PrimaryButton
         @click="emitClose"
       >
-        {{ i18n("modal", "confirm") }}
+        {{ confirmButton }}
       </PrimaryButton>
     </div>
   </div>

@@ -29,7 +29,7 @@ export default {
         format(this.currentGlyphSacrifice + this.gain, 2, 2)]);
     },
     topLabel() {
-      return i18n("modal", "sacrificeHeader");
+      return i18n("modal", "glyphSacrificeModalMessage");
     }
   },
   methods: {

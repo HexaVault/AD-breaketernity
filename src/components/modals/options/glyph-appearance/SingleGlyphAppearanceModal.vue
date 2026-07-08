@@ -33,16 +33,16 @@ export default {
       return Glyphs.findById(this.glyphId);
     },
     topLabel() {
-      return i18n("modal", "singGlyphCosHeader");
+      return i18n("modal", "singleGlyphAppearanceModalTitle");
     },
     reset() {
-      return i18n("modal", "resetGlyphAppear");
+      return i18n("modal", "singleGlyphAppearanceModalResetAppearance");
     },
     cantChange() {
-      return i18n("modal", "cantCos");
+      return i18n("modal", "singleGlyphAppearanceModalCantChange");
     },
     apply() {
-      return i18n("modal", "applySpecCos");
+      return i18n("modal", "singleGlyphAppearanceModalApplySpecial");
     }
   },
   created() {
@@ -99,8 +99,10 @@ export default {
       class="c-special-type"
     >
       {{ apply }}
+      <!-- This gap exists to fix the text coloring becoming borked for some unknown reason -->
       <PrimaryButton
         v-for="type in cosmeticTypes"
+
         :key="type"
         :class="cosmeticTypeClass(type)"
         @click="setType(type)"

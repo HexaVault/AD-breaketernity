@@ -17,16 +17,15 @@ export default {
       return this.harsh ? 1 : 5;
     },
     extraMessage() {
-      if (this.glyphsDeleted === 0) return i18n("modal", "noGlyphPurged");
-      if (this.glyphsDeleted === this.glyphsTotal) return i18n("modal", "allGlyphPurged");
-      return i18n("modal", "someGlyphPurged", [this.harsh ? `Harsh` : ``,
-        `${formatInt(this.glyphsDeleted)}/${formatInt(this.glyphsTotal)}`]);
+      if (this.glyphsDeleted === 0) return i18n("modal", "purgesNoGlyphs", [], true)[Number(this.harsh)];
+      if (this.glyphsDeleted === this.glyphsTotal) return i18n("modal", "purgesAllGlyphs", [], true)[Number(this.harsh)];
+      return i18n("modal", "someGlyphPurged", [() => formatInt(this.glyphsDeleted)], true)[Number(this.harsh)];
     },
     explanation() {
-      return i18n("modal", this.harsh ? "harshPurgeExplanation" : "purgeExplanation");
+      return i18n("modal", this.harsh ? "glyphPurgeModalHarshPurgeExplanation" : "glyphPurgeModalPurgeExplanation");
     },
     topLabel() {
-      return i18n("modal", "aboutToPurge", [this.harsh ? `Harsh` : ``]);
+      return i18n("modal", "glyphPurgeModalTitle", [], true)[Number(this.harsh)];
     },
 
     // These two don't need to be reactive since the modal force-closes itself whenever glyphs change
@@ -38,7 +37,7 @@ export default {
     },
 
     message() {
-      return i18n("modal", "purgeMessage");
+      return i18n("modal", "glyphPurgeModalPurgeNote");
     }
   },
   methods: {

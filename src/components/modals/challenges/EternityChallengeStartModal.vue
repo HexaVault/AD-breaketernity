@@ -20,28 +20,28 @@ export default {
       return this.challenge.isFullyCompleted;
     },
     message() {
-      return i18n("modal", "eternityChallengeModalMessage", [this.challengeIsCompleted ? "" : () =>
-        i18n("modal", "ecModalMsgPlaceholder"), () => format(this.challenge.currentGoal), () => formatInt(5)]);
+      return i18n("modal", "eternityChallengeModalEternityAndStart", [this.challengeIsCompleted ? "" : () =>
+        i18n("modal", "challengeModalInfixA"), [format, () => this.challenge.currentGoal], () => formatInt(5)]);
     },
     entranceLabel() {
-      return i18n("modal", "ecModalEterLabel", [this.id]);
+      return i18n("modal", "eternityChallengeModalAboutToEnter", [this.id]);
     },
     reward() {
       let rewardDescription = this.challenge.config.reward.description;
       if (typeof rewardDescription === "function") {
         rewardDescription = rewardDescription();
       }
-      return i18n("modal", "ecModalRewardText", [this.rewardDescription]);
+      return i18n("modal", "eternityChallengeModalRewardForCompletion", [this.rewardDescription]);
     },
     condition() {
       let conditionOfChallenge = this.challenge.config.description;
       if (typeof conditionOfChallenge === "function") {
         conditionOfChallenge = conditionOfChallenge();
       }
-      return i18n("modal", "ecModalConditionText", [this.conditionOfChallenge]);
+      return i18n("modal", "eternityChallengeModalInsideEC", [this.conditionOfChallenge]);
     },
     begin() {
-      return i18n("modal", "begin");
+      return i18n("consts", "begin");
     }
   },
   created() {

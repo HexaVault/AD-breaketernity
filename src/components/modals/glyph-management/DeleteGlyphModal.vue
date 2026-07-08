@@ -22,13 +22,13 @@ export default {
       return Glyphs.findByInventoryIndex(this.idx);
     },
     msg1() {
-      return i18n("modal", "deletionModalMsg1");
+      return i18n("modal", "glyphDeletionModalMsg1");
     },
     msg2() {
-      return i18n("modal", "deletionModalMsg2");
+      return i18n("modal", "glyphDeletionModalMsg2");
     },
     msg3() {
-      return i18n("modal", "deletionModalMsg3");
+      return i18n("modal", "glyphDeletionModalMsg3");
     }
   },
   methods: {

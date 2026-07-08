@@ -52,7 +52,13 @@ export default {
       Glyphs.removeFromInventory(toDelete);
     },
     ty() {
-      return i18n("modal", "ty");
+      return i18n("modal", "thankYou");
+    },
+    leftButtonText() {
+      return this.messageIndex < 2 ? i18n("consts", "delete") : i18n("consts", "cancel");
+    },
+    rightButtonText() {
+      return this.messageIndex < 2 ? i18n("consts", "cancel") : i18n("consts", "delete");
     }
   },
 };
@@ -68,13 +74,13 @@ export default {
         class="o-primary-btn--width-medium c-modal-message__okay-btn"
         @click="handleLeftButtonClick"
       >
-        {{ messageIndex < 2 ? "Delete" : "Cancel" }}
+        {{ leftButtonText }}
       </PrimaryButton>
       <PrimaryButton
         class="o-primary-btn--width-medium c-modal-message__okay-btn"
         @click="handleRightButtonClick"
       >
-        {{ messageIndex >= 2 ? "Delete" : "Cancel" }}
+        {{ rightButtonText }}
       </PrimaryButton>
     </div>
     <div v-else>

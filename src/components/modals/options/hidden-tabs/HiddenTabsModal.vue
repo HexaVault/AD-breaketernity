@@ -18,12 +18,12 @@ export default {
   },
   computed: {
     tabs: () => Tabs.currentUIFormat,
-    topLabel: () => i18n("modal", "modifyVisibleHeader"),
-    message: () => i18n("modal", "modifyVisibleMessage").split("$"),
-    cantHideNearEnd: () => i18n("modal", "cantHideNearEnd"),
-    namelessA: () => i18n("modal", "namelessHideTextA"),
-    namelessB: () => i18n("modal", "namelessHideTextB"),
-    showAll: () => i18n("modal", "showAllTabs"),
+    topLabel: () => i18n("modal", "hideTabModalTitle"),
+    message: () => i18n("modal", "hideTabModalMessage", [], true),
+    cantHideNearEnd: () => i18n("modal", "hideTabModalAfterGalGen"),
+    namelessA: () => i18n("modal", "hideTabModalNamelessA"),
+    namelessB: () => i18n("modal", "hideTabModalNamelessB"),
+    showAll: () => i18n("modal", "hideTabModalShowAllTabs"),
   },
   methods: {
     update() {

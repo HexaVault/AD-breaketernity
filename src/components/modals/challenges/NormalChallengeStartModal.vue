@@ -21,23 +21,23 @@ export default {
     },
     message() {
       return i18n("modal", "normalChallengeModalMessage", [this.challengeIsCompleted ? "" : () =>
-        i18n("modal", "ncModalMsgPlaceholder")]);
+        i18n("modal", "challengeModalInfix")]);
     },
     entranceLabel() {
-      return i18n("modal", "ncModalEterLabel");
+      return i18n("modal", "normalChallengeModalAboutToEnter");
     },
     reward() {
-      return i18n("modal", "ncModalRewardText", [this.rewardDescription]);
+      return i18n("modal", "normalChallengeModalRewardForCompletion", [this.rewardDescription]);
     },
     condition() {
       let conditionOfChallenge = this.challenge.config.description;
       if (typeof conditionOfChallenge === "function") {
         conditionOfChallenge = conditionOfChallenge();
       }
-      return i18n("modal", "ncModalConditionText", [this.conditionOfChallenge]);
+      return i18n("modal", "normalChallengeModalInsideNC", [this.conditionOfChallenge]);
     },
     begin() {
-      return i18n("modal", "begin");
+      return i18n("consts", "begin");
     }
   },
   created() {

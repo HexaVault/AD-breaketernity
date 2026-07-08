@@ -106,10 +106,10 @@ export const chall = {
   Black Hole storing, discharging, pulsing, and inversion are all disabled. $3aX`,
   laidisabledmain: "Production from $1aX is disabled.",
   laidisabled: "all Dimensions$2nd and higher Dimensions$3rd and higher Dimensions$4th and higher Dimensions$5th and higher Dimensions$6th and higher Dimensions$7th and higher Dimensions$8th Dimensions",
-  laidesc: `Antimatter generates entropy inside of this Reality.\
-  At $1aX entropy, the Reality becomes destabilized\
-  and you gain a reward based on how quickly you reached $1aX.\
-  Destabilizing the Reality in less than $2aX seconds makes it become significantly more difficult,\
-  in exchange for giving a much stronger reward.\
+  laidesc: `Antimatter generates entropy inside of this Reality.
+  At $1aX entropy, the Reality becomes destabilized
+  and you gain a reward based on how quickly you reached $1aX.
+  Destabilizing the Reality in less than $2aX seconds makes it become significantly more difficult,
+  in exchange for giving a much stronger reward.
   Doing this $3aX times will also give a $4aX to Dark Energy Gain.`
 };

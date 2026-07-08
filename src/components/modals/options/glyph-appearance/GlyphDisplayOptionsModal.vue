@@ -35,23 +35,23 @@ export default {
     glyphBGStr() {
       switch (this.glyphBG) {
         case GLYPH_BG_SETTING.AUTO:
-          return i18n("modal", "auto");
+          return i18n("modal", "glyphDisplayOptionsModalGlyphBackgroundSetting", [], true)[0];
         case GLYPH_BG_SETTING.LIGHT:
-          return i18n("modal", "light");
+          return i18n("modal", "glyphDisplayOptionsModalGlyphBackgroundSetting", [], true)[1];
         case GLYPH_BG_SETTING.DARK:
-          return i18n("modal", "dark");
+          return i18n("modal", "glyphDisplayOptionsModalGlyphBackgroundSetting", [], true)[2];
         default:
           throw new Error("Unrecognized Glyph BG setting");
       }
     },
     topLabel() {
-      return i18n("modal", "GDOtopLabel");
+      return i18n("modal", "glyphDisplayOptionsModalTopLabel");
     },
     dropdownLabel() {
-      return i18n("modal", "glyphBGcol", [this.glyphBGStr]);
+      return i18n("modal", "glyphDisplayOptionsModalGlyphBGcol", [this.glyphBGStr]);
     },
     dropdownLabelB() {
-      return i18n("modal", "additionalGlyphInfo");
+      return i18n("modal", "glyphDisplayOptionsModalAdditionalGlyphInfo");
     }
   },
   watch: {
@@ -108,7 +108,7 @@ export default {
       EventHub.dispatch(GAME_EVENT.GLYPH_VISUAL_CHANGE);
     },
     getStr(val) {
-      return i18n("modal", "glyphDisplayOptionsList").split(" $ ")[val];
+      return i18n("modal", "glyphDisplayOptionsModalList", undefined, true)[val];
     },
   },
 };

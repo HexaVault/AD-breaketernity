@@ -29,10 +29,10 @@ export default {
       return GlyphAppearanceHandler.availableColors;
     },
     textA() {
-      return i18n("modal", "perGlyphCos", this.name);
+      return i18n("modal", "glyphCustomizationSingleModalAppearanceOpt", this.name);
     },
     textB() {
-      return i18n("modal", "noModCompanion");
+      return i18n("modal", "glyphCustomizationSingleModalCannotModifyCompanion");
     }
   },
 };

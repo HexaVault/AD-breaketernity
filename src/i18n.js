@@ -1,12 +1,19 @@
 /* eslint-disable no-negated-condition */
 import * as i18nText from "./i18n/exports";
 
-window.i18n = function(type, id, mods = []) {
+// eslint-disable-next-line max-params
+window.i18n = function(type, id, mods = [], split = false) {
   let text = "";
   // eslint-disable-next-line import/namespace
   // If the player is holding the "show formula" keybind, use the formula i18n
   if (Lang.showFormula) {
     text = Lang.current.allText[type][id];
+  }
+
+  // This moreorless explictly exists for testing, since I don't want to hook blind theme to this, as
+  // some people may decide that they would rather not deal with i18n, which is fair.
+  if (player.options.language === "blind") {
+    return "";
   }
 
   // Else go to language
@@ -36,6 +43,8 @@ window.i18n = function(type, id, mods = []) {
   for (let i = 1; i <= mods.length; i++) {
     text = text.replaceAll(`$${i}aX`, handlePossibleFunction(mods[i - 1]));
   }
+
+  if (split) text = text.split(" $ ");
   return text;
 };
 
@@ -45,18 +54,22 @@ class LanguageState {
   }
 
   get name() {
+    if (player.options.language === "blind") return "";
     return player.options.englishLangNames ? this.nameInEN : this.nameInLang;
   }
 
   get nameInLang() {
+    if (player.options.language === "blind") return "";
     return this.allText.options.name;
   }
 
   get nameInEN() {
+    if (player.options.language === "blind") return "";
     return this.allText.options.nameInEN;
   }
 
   get shortName() {
+    if (player.options.language === "blind") return "";
     return this.allText.shortName;
   }
 

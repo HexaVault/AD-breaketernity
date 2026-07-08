@@ -39,10 +39,10 @@ export default {
       return this.$viewModel.newUI;
     },
     current() {
-      return i18n("modal", "cannotHideCurrent");
+      return i18n("modal", "hideSubtabsModalButtonCannotHideCurrent");
     },
     option() {
-      return i18n("modal", "cannotHideOption");
+      return i18n("modal", "hideSubtabsModalButtonCannotHideOption");
     }
   },
   methods: {

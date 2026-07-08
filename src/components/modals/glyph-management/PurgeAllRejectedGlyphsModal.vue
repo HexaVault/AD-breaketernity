@@ -12,23 +12,19 @@ export default {
     };
   },
   computed: {
-    refiningOrSacrificing() {
-      if (this.isRefining) return `Refine`;
-      return `Sacrifice`;
-    },
     topLabel() {
-      return i18n("modal", "allGlyphPurgeLabel", [`${this.refiningOrSacrificing}`]);
+      return i18n("modal", "glyphPurgeRejectedModalTitle", [], true)[this.isRefining ? 1 : 0];
     },
     message() {
       const negativeWarning = AutoGlyphProcessor.hasNegativeEffectScore()
-        ? i18n("modal", "allGlyphPurgeNegWarning")
+        ? i18n("modal", "glyphPurgeRejectedModalNegativeFilter")
         : "";
-      return i18n("modal", "allGlyphPergeMsg", [`${this.refiningOrSacrificing}`, `${negativeWarning}`]);
+      return i18n("modal", "glyphPurgeRejectedModalMessage", [`${negativeWarning}`], true)[this.isRefining ? 1 : 0];
     },
     extraMessage() {
-      if (this.glyphsDeleted === 0) return i18n("modal", "noGlyphRemoves");
-      if (this.glyphsDeleted === this.glyphsTotal) return i18n("modal", "allGlyphRemoves");
-      return i18n("modal", "someGlyphRemoves", [`${this.glyphsDeleted}/${this.glyphsTotal}`]);
+      if (this.glyphsDeleted === 0) return i18n("modal", "removesNoGlyphs", [], true)[this.isRefining ? 1 : 0];
+      if (this.glyphsDeleted === this.glyphsTotal) return i18n("modal", "removesAllGlyphs", [], true)[this.isRefining ? 1 : 0];
+      return i18n("modal", "removesSomeGlyphs", [() => this.glyphsDeleted], true)[this.isRefining ? 1 : 0];
     },
 
     // These two don't need to be reactive since the modal force-closes itself whenever glyphs change

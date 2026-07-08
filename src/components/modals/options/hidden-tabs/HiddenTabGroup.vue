@@ -56,9 +56,9 @@ export default {
       };
     },
     rowVisibleIndicatorTooltip() {
-      if (this.isHidden) return i18n("modal", "clickUnhide");
-      if (!this.alwaysVisible) return i18n("modal", "clickHide");
-      return i18n("modal", "cantHide");
+      if (this.isHidden) return i18n("modal", "hideSubtabsModalClickToHide");
+      if (!this.alwaysVisible) return i18n("modal", "hideSubtabsModalClickToUnhide");
+      return i18n("modal", "hideSubtabsModalCannotHide");
     },
   },
   methods: {

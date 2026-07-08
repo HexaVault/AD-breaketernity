@@ -58,6 +58,24 @@ export default {
     },
     pelleSymbol() {
       return Pelle.symbol;
+    },
+    textA() {
+      return i18n("celTabs", "alchemyTabClickInfo");
+    },
+    textB() {
+      return i18n("celTabs", "alchemyTabToggleReactions").split(" $ ")[this.allReactionsDisabled ? 0 : 1];
+    },
+    textC() {
+      return i18n("celTabs", "alchemyTabCreateReality");
+    },
+    textD() {
+      return i18n("celTabs", "alchemyTabCanNowRefine");
+    },
+    textE() {
+      return i18n("celTabs", "alchemyTabWhenRefining", [formatX(this.capFactor)]);
+    },
+    textF() {
+      return i18n("celTabs", "alchemyTabReactionPerReality");
     }
   },
   methods: {
@@ -201,21 +219,21 @@ export default {
         class="o-primary-btn--subtab-option"
         @click="showAlchemyHowTo"
       >
-        Click for alchemy info
+        {{ textA }}
       </PrimaryButton>
       <PrimaryButton
         v-if="!isDoomed"
         class="o-primary-btn--subtab-option"
         @click="toggleAllReactions"
       >
-        {{ allReactionsDisabled ? "Enable" : "Disable" }} all reactions
+        {{ textB }}
       </PrimaryButton>
       <PrimaryButton
         v-if="realityCreationVisible"
         :class="realityGlyphCreationClass"
         onclick="Modal.realityGlyph.show()"
       >
-        View Reality Glyph creation
+        {{ textC }}
       </PrimaryButton>
     </div>
     <AlchemyResourceInfo
@@ -223,12 +241,11 @@ export default {
       :resource="infoResource"
     />
     <br>
-    Glyphs can now be refined using your Glyph filter in the Glyphs tab.
+    {{ textD }}
     <br>
-    When refining a Glyph, it will only give you resources up to a cap
-    of {{ formatX(capFactor) }} its highest refinement value.
+    {{ textE }}
     <span v-if="reactionsAvailable">
-      Reactions trigger once every time you Reality, unaffected by amplification from stored real time.
+      {{ textF }}
     </span>
     <div
       class="l-alchemy-circle"

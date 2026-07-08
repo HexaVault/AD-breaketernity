@@ -340,7 +340,10 @@ class EPMultiplierState extends GameMechanicState {
     let cur = Currency.eternityPoints.value.max(1);
     if (cur.gt(this.costIncreaseThresholds[3])) {
       cur = Decimal.log(cur.div(500), 1e3);
-      return cur.add(Math.pow(1332, 1.2)).root(1.2).floor().max(1332);
+      // This has a good enough error to suffice, simply by doing a single iteration of newton method.
+      const x0 = cur.sub(1334).div(cur.sub(1334).pow(0.2).add(1).pow(5 / 6)).add(1334);
+      const x1 = x0.sub(x0.add(x0.sub(1334).pow(1.2)).sub(cur).div(x0.sub(1334).pow(0.2).mul(1.2).add(1)));
+      return x1;
     }
     if (cur.gt(this.costIncreaseThresholds[2])) {
       bulk = this.costIncreaseThresholds[2].div(500).log(500).floor();

@@ -11,10 +11,12 @@ https://www.loc.gov/standards/iso639-2/php/code_list.php<br>
 Use ISO 639-1 where possible<br>
 ISO 639-2 otherwise<br>
 Else use whatever is reasonable and **NOT** already on that list<br>
-If you are using a regional dialect (i.e. Brazilian Portuguese vs Portuagal Portuguese) use the Alpha-3 code of the language, followed by a -, then the language code<br>
+If you are using a regional dialect (i.e. Brazilian Portuguese vs Portuguese Portuguese) use the Alpha-3 code of the language, followed by a -, then the language code<br>
 https://www.iban.com/country-codes
 
 Extra Info:
 
 \$?aX (where ? is a number, starts at 1 goes up for each occurance) is placeholder and is replaced<br>
-\$, without ?aX after it, is used to split strings into multiple without using tons of string unnecessarily
+\$, without ?aX after it, is used to split strings into multiple without using tons of string unnecessarily<br>
+If you need to split a string into multiple lines, make sure it uses backticks (\`)<br>
+If you are in backticks, and need to go to a new line, but dont want to split the string, place a \ just before the line break

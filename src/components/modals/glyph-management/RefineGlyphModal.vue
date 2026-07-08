@@ -33,16 +33,16 @@ export default {
       return this.resource.name;
     },
     topLabel() {
-      return i18n("modal", "aboutToRefine");
+      return i18n("modal", "glyphRefineModalTitle");
     },
     isUnlockedMessage() {
-      return i18n("modal", "refineMsgA", [
+      return i18n("modal", "glyphRefineModalMessageUnlocked", [
         resourceName, format(this.resourceAmount, 2, 2), format(this.after, 2, 2),
         resourceName, format(this.cap, 2, 2)
       ]);
     },
     isntUnlockedMessage() {
-      return i18n("modal", "refineMsgB", [this.resourceName]);
+      return i18n("modal", "glyphRefineModalMessageLocked", [this.resourceName]);
     }
   },
   methods: {

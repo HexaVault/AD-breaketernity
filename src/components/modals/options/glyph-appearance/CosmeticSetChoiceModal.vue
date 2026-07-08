@@ -26,15 +26,14 @@ export default {
       return CosmeticGlyphTypes.list.filter(t => t.isCosmetic && t.isUnlocked).map(t => t.id);
     },
     setName() {
-      return this.currentSet?.name ?? "None Selected";
+      return this.currentSet?.name ?? i18n("modal", "cosmeticSetChoiceModalNone");
     },
     setContents() {
       const contents = [];
-      // We explicitly pass in x => x as the formatting function in order to override END formatting; if we don't,
-      // this modal will show END symbols/colors when opened at game completion
-      if (this.symbols) contents.push(quantify(i18n("modal", "symbol"), this.symbols.length, 0, 0, x => x));
-      if (this.colors) contents.push(quantify(i18n("modal", "colScheme"), this.colors.length, 0, 0, x => x));
-      return contents.join(" and ");
+      if (this.symbols) contents.push(i18n("modal", "cosmeticSetChoiceModalSymbol", [[x => x, this.symbols.length]]));
+      if (this.colors) contents.push(i18n("modal", "cosmeticSetChoiceModalColorScheme", [[x => x, this.colors.length]]));
+      // Wwe use + here so we dont have to do weird shenanigans with and
+      return contents.join(" + ");
     },
     symbols() {
       return this.currentSet.symbol;
@@ -56,13 +55,13 @@ export default {
     GlyphAppearanceHandler.setInModal = this.initialSet;
   },
   topLabel() {
-    return i18n("modal", "glyphCosmeticChoose");
+    return i18n("modal", "cosmeticSetChoiceModalChooseCosmeticSet");
   },
   dropdown() {
-    return i18n("modal", "glyphCosmeticChooseDropdown");
+    return i18n("modal", "cosmeticSetChoiceModalDropdown");
   },
   contains() {
-    return i18n("modal", "setContains", [this.currentSet.name, this.setContents]);
+    return i18n("modal", "cosmeticSetChoiceModalSetContains", [this.currentSet.name, this.setContents]);
   },
   methods: {
     update() {

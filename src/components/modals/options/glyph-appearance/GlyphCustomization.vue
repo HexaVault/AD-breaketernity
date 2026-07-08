@@ -43,19 +43,19 @@ export default {
       return GlyphAppearanceHandler.availableTypes.length > 0;
     },
     topLabel() {
-      return i18n("modal", "glyphModTitle");
+      return i18n("modal", "glyphCustomizationModaltitle");
     },
     resetText() {
-      return i18n("modal", "hasCustomSets");
+      return i18n("modal", "glyphCustomizationModalResetAppearance");
     },
     message() {
-      return i18n("modal", "glyphModMessage").split("$");
+      return i18n("modal", "glyphCustomizationModalMessage", undefined, true);
     },
     notes() {
-      return i18n("modal", "glyphModNotes").split("$");
+      return i18n("modal", "glyphCustomizationModalOptionsNote", undefined, true);
     },
     resetCosmetics() {
-      return i18n("modal", "resetCos");
+      return i18n("modal", "glyphCustomizationModalResetIndividualCosmetics");
     }
   },
   watch: {

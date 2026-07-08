@@ -21,13 +21,15 @@
 // PS: We can lowercase after the fact pretty trivially, so you are better making all words capital (i.e. Replicanti Galaxy) than lower (i.e. replicanti galaxy)
 export const plurals = {
   antimatter: { key: "AM", rules: ["$$$ Antimatter"] },
-  ip: { key: "IP", rules: [{ values: [1, -1], text: "$$$ Infinity Point" }, "$$$ Infinity Point"] },
-  ep: { key: "EP", rules: [{ values: [1, -1], text: "$$$ Eternity Point" }, "$$$ Eternity Point"] },
+  ip: { key: "IP", rules: [{ values: [1, -1], text: "$$$ Infinity Point" }, "$$$ Infinity Points"] },
+  ep: { key: "EP", rules: [{ values: [1, -1], text: "$$$ Eternity Point" }, "$$$ Eternity Points"] },
   glyph: { key: "GLY", rules: [{ values: [1, -1], text: "$$$ Glyph" }, "$$$ Glyphs"] },
   ag: { key: "AGAL", rules: [{ values: [1, -1], text: "$$$ Antimatter Galaxy" }, "$$$ Antimatter Galaxies"] },
   rg: { key: "RGAL", rules: [{ values: [1, -1], text: "$$$ Replicanti Galaxy" }, "$$$ Replicanti Galaxies"] },
   tg: { key: "TGAL", rules: [{ values: [1, -1], text: "$$$ Tachyon Galaxy" }, "$$$ Tachyon Galaxies"] },
   eternity: { key: "ETER", rules: [{ values: [1, -1], text: "$$$ Eternity" }, "$$$ Eternities"] },
   infinity: { key: "INF", rules: [{ values: [1, -1], text: "$$$ Infinity" }, "$$$ Infinities"] },
-  ad: { key: "AD", rules: [{ values: [1, -1], text: "$$$ Antimatter Dimension" }, "$$$ antimatter Dimensions"] },
+  ad: { key: "AD", rules: [{ values: [1, -1], text: "$$$ Antimatter Dimension" }, "$$$ Antimatter Dimensions"] },
+  symbol: { key: "SYM", rules: [{ values: [1, -1], text: "$$$ Symbol" }, "$$$ Symbols"] },
+  colorScheme: { key: "CSC", rules: [{ values: [1, -1], text: "$$$ Colour Scheme" }, "$$$ Colour Schemes"] }
 };
