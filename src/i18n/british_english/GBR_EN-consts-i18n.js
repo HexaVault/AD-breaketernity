@@ -19,5 +19,6 @@ export const consts = {
   save: "Save",
   continue: "Continue",
   remain: "Remain",
-  swap: "Swap"
+  swap: "Swap",
+  reset: "Reset"
 };

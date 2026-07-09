@@ -13,7 +13,21 @@ export default {
     };
   },
   computed: {
-    resetTerm() { return i18n("modal", this.isDoomed ? "arma" : "real"); },
+    topLabel() {
+      return i18n("modal", "resetRealityModalTitles")[Number(this.isDoomed)];
+    },
+    informationNote() {
+      return i18n("modal", "resetRealityModalWillReset")[Number(this.isDoomed)];
+    },
+    areYouSure() {
+      return i18n("modal", "resetRealityModalAreYouSure");
+    },
+    canRealityNote() {
+      return i18n("modal", "resetRealityModalCanReality");
+    },
+    resetButtonLabel() {
+      return i18n("consts", "reset");
+    },
   },
   methods: {
     update() {
@@ -34,24 +48,24 @@ export default {
     @confirm="handleYesClick"
   >
     <template #header>
-      {{ i18n("modal", "aboutToReset", [resetTerm]) }}
+      {{ topLabel }}
     </template>
     <div class="c-modal-message__text">
-      {{ i18n("modal", "aboutToResetMessage", [resetTerm]) }}
+      {{ informationNote }}
       <br>
       <br>
-      {{ i18n("modal", "areYouSure") }}
+      {{ areYouSure }}
       <div
         v-if="canReality"
         class="c-has-rewards"
       >
         <br>
-        {{ i18n("modal", "canNormalReal") }}
+        {{ canRealityNote }}
       </div>
       <br>
     </div>
     <template #confirm-text>
-      Reset
+      {{ resetButtonLabel }}
     </template>
   </ModalWrapperChoice>
 </template>

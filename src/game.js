@@ -128,8 +128,9 @@ export function ratePerMinute(amount, time) {
 // eslint-disable-next-line max-params
 export function addInfinityTime(trueTime, time, realTime, ip, infinities) {
   let challenge = "";
-  if (player.challenge.normal.current) challenge = `Normal Challenge ${player.challenge.normal.current}`;
-  if (player.challenge.infinity.current) challenge = `Infinity Challenge ${player.challenge.infinity.current}`;
+  // TODO: Handle this shorthand in the tab to i18n it, since we dont want to i18n into the player object
+  if (player.challenge.normal.current) challenge = `NC${player.challenge.normal.current}`;
+  if (player.challenge.infinity.current) challenge = `IC${player.challenge.infinity.current}`;
   player.records.recentInfinities.pop();
   const lastrun = player.records.recentInfinities[0];
   const deltaip = ip.div(lastrun[3]);
@@ -160,9 +161,10 @@ export function addEternityTime(trueTime, time, realTime, ep, eternities) {
   if (player.challenge.eternity.current) {
     const currEC = player.challenge.eternity.current;
     const ec = EternityChallenge(currEC);
-    const challText = player.dilation.active ? "Dilated EC" : "Eternity Challenge";
-    challenge = `${challText} ${currEC} (${formatInt(ec.completions)}/${formatInt(ec.maxCompletions)})`;
-  } else if (player.dilation.active) challenge = "Time Dilation";
+    // TODO: Handle this shorthand in the tab to i18n it, since we dont want to i18n into the player object
+    const challText = player.dilation.active ? "DilEC" : "EC";
+    challenge = `${challText}${currEC}-${formatInt(ec.completions)}-${formatInt(ec.maxCompletions)}`;
+  } else if (player.dilation.active) challenge = "Dil";
   // If we call this function outside of dilation, it uses the existing AM and produces an erroneous number
   const gainedTP = player.dilation.active ? getTachyonGain() : DC.D0;
   player.records.recentEternities.pop();
@@ -207,6 +209,7 @@ export function addRealityTime(trueTime, time, realTime, rm, level, realities, a
   let reality = "";
   const celestials = [Teresa, Effarig, Enslaved, V, Ra, Laitela];
   for (const cel of celestials) {
+    // TODO: Give celestials codes, use code here, handle it in tab to i18n after the fact without storing i18n stuff in player
     if (cel.isRunning) reality = cel.displayName;
   }
   const shards = Currency.relicShards.gain;
@@ -1012,7 +1015,7 @@ export function simulateTime(seconds, real, fast) {
               click: () => {
                 const newRemaining = Math.clampMin(Math.floor(progress.remaining / 2), 500);
                 // We subtract the number of ticks we skipped, which is progress.remaining - newRemaining.
-                // This, and the below similar code in "SKIP", are needed or the progress bar to be accurate
+                // This, and the below similar code in "SKIP", are needed for the progress bar to be accurate
                 // (both with respect to the number of ticks it shows and with respect to how full it is).
                 progress.maxIter -= progress.remaining - newRemaining;
                 progress.remaining = newRemaining;

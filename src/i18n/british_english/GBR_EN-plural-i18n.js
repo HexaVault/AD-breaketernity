@@ -35,5 +35,10 @@ export const plurals = {
   remnants: { key: "REM", rules: [{ values: [1, -1], text: "$$$ Remnant" }, "$$$ Remnants"] },
   realityShards: { key: "REALSHARD", rules: [{ values: [1, -1], text: "$$$ Reality Shard" }, "$$$ Reality Shards"] },
   dimboosts: { key: "DB", rules: [{ values: [1, -1], text: "$$$ Dimension Boost" }, "$$$ Dimension Boosts"] },
-  completions: { key: "COMP", rules: [{ values: [1, -1], text: "$$$ Completion" }, "$$$ Completions"] }
+  completions: { key: "COMP", rules: [{ values: [1, -1], text: "$$$ Completion" }, "$$$ Completions"] },
+  tp: { key: "TP", rules: [{ values: [1, -1], text: "$$$ Tachyon Particle" }, "$$$ Tachyon Particles"] },
+  realityMachines: { key: "RM", rules: [{ values: [1, -1], text: "$$$ Reality Machines" }, "$$$ Reality Machines"] },
+  perkPoints: { key: "PP", rules: [{ values: [1, -1], text: "$$$ Perk Point" }, "$$$ Perk Points"] },
+  realities: { key: "REAL", rules: [{ values: [1, -1], text: "$$$ Reality" }, "$$$ Realities"] },
+  relicShards: { key: "RELIC", rules: [{ values: [1, -1], text: "$$$ Relic Shard" }, "$$$ Relic Shards"] },
 };

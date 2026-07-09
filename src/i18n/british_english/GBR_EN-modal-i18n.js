@@ -261,77 +261,63 @@ on the Statistics tab. You will also gain an Eternity Point and unlock various u
   eternityModalECxMaxed: "Eternity Challenge $1aX is already fully completed",
   eternityModalNoBulk: "You will gain one completion of Eternity Challenge $1aX.",
   eternityModalBulkEcs: "You will gain $1aX$COMP$$ for Eternity Challenge $2aX",
-  hasHigherLayers: "Other effects coming from higher-layer restrictions will still continue to apply.", // Got to here
-  restartingChall: "You will immediately re-enter $1aX again after confirming this modal.",
-  exitingChall: "This will place you back into a regular $1aX without any restrictions.",
-  restartLowercase: "restart",
-  exitLowercase: "exit",
-  aboutTo: "You are about to ",
-  noDoomExit: "You cannot exit Dilation while Doomed",
-  aboutToExitDilation: "You are about to exit Dilation",
-  doomedInfo: "Dilation is permanent. You will $1aX and reset your current eternity.",
-  notDoomedInfo: "If you exit Dilation now, you will $1aX.",
-  ECandDilation: "You will also exit your current Eternity Challenge as well.",
-  areYouSureProceed: "Are you sure you want to proceed?",
-  noGain: "not gain anything",
-  dilGain: "gain $1aX",
-  okay: "Okay",
-  tp: "Tachyon Particle",
-  shrek: "Shrek is love, Shrek is life",
-  hardResetHeader: "HARD RESET",
-  resetConfirmText: "Please confirm your desire to hard reset this save slot.",
-  resetNoSecret: "Deleting your save will not unlock anything secret.",
-  resetTypeInB: "Type in \"$1aX\" to confirm.",
-  resetWipe: "THIS WILL WIPE YOUR SAVE.",
-  resetRemoveNG: "This will also remove any Glyph cosmetics you have unlocked from completing the game!",
-  resetLoseSpeedrun: "You will lose the ability to do a Speedrun. To restart your run, use the \"Start Speedrun\" button instead.",
-  resetPhraseConfirmed: "Phrase confirmed - continuing will irreversibly delete your save!",
-  resetTypeIn: "Type in the correct phrase to hard reset.",
-  firstRealityText: `Reality will reset everything except Challenge records and anything under the General header on the
-Statistics tab. The first $1aX rows of Achievements are also reset,
-but you will automatically get one Achievement back every
-$2aX You will also gain Reality Machines based on your Eternity Points, a
-Glyph with a level based on your Eternity Points, Replicanti, and Dilated Time, a Perk Point to spend
-on quality of life upgrades, and unlock various upgrades.`,
-  noSTARTwarning: `You currently only have a single option for new Glyphs every
-Reality. You can unlock the ability to choose from multiple Glyphs by canceling out of this modal and
-purchasing the START Perk.`,
-  noChosenPreFilter: "You must select a Glyph in order to continuue",
-  noChosenPostFilter: "If you do not choose a Glyph, one will be automatically selected using your Glyph filter.",
-  willGainX: "You will gain $1aX",
-  pp: "Perk Point",
-  rm: "Reality Machine",
-  rs: "Relic Shard",
-  levelStat: "You will get a level $1aX Glyph on Reality, which is $1aX your best.",
-  level: "level",
-  higherThanBest: "higher than",
-  lowerThanBest: "lower than",
-  equalToBest: "equal to",
-  realityModalHeader: "You are about to Reality",
-  simRealityTextA: "After choosing this Glyph the game will simulate the rest of your Realities,",
-  simRealityTextB: "acutomtically choosing another $1aX based on your Glyph filter settings.",
-  autoPurgeTextA: "Auto-purge is currently enabled; your selected Glyph",
-  autoPurgeTextB: "may not appear in your inventory after it triggers",
-  simRealityWarning: `You will be simulating more Realities than you have open inventory space for;
+  exitChallengeModalTitle: "You are about to exit $1aX $ You are about to restart $1aX",
+  exitChallengeModalHigherLayer: "Other effects coming from higher-layer restrictions will still continue to apply.",
+  exitChallengeModalRestart: "You will immediately re-enter $1aX again after confirming this modal.",
+  exitChallengeModalExit: "This will place you back into a regular $1aX without any restrictions.",
+  exitDilModalTitle_Doomed: "You cannot exit Dilation while Doomed",
+  exitDilModalTitle: "You are about to exit Dilation",
+  exitDilModalDoomed: `Dilation is permanent. You will not gain anything, but reset your current eternity. $ \
+  Dilation is permanent. You will gain $1aX$TP$$ and reset your current eternity.`,
+  exitDilModalNotDoomed: "If you exit Dilation now, you will not gain anything. $ If you exit Dilation now, you will gain $1aX$TP$$.",
+  exitDilModalECexit: "You will also exit your current Eternity Challenge as well.",
+  exitDilModalAreYouSure: "Are you sure you want to proceed?",
+  hardResetModalTitle: "HARD RESET", // This is also used on the button that you actually click to hard reset.
+  hardResetModalResetString: "Shrek is love, Shrek is life",
+  hardResetModalConfirm: "Please confirm your desire to hard reset this save slot.",
+  hardResetModalNoSecret: "Deleting your save will not unlock anything secret.",
+  hardResetModalTypeInString: "Type in \"$1aX\" to confirm.",
+  hardResetModalWillWipe: "THIS WILL WIPE YOUR SAVE.",
+  hardResetModalRemovesCosmetics: "This will also remove any Glyph cosmetics you have unlocked from completing the game!",
+  hardResetModalLoseSpeedrun: "You will lose the ability to do a Speedrun. To restart your run, use the \"Start Speedrun\" button instead.",
+  hardResetModalConfirmedPhrase: "Phrase confirmed - continuing will irreversibly delete your save!",
+  hardResetModalTypeIn: "Type in the correct phrase to hard reset.",
+  realityModalTitle: "You are about to Reality",
+  realityModalFirstReality: `Reality will reset everything except Challenge records and anything under the General header on the \
+Statistics tab. The first $1aX rows of Achievements are also reset, but you will automatically get one Achievement back every \
+$2aX. You will also gain Reality Machines based on your Eternity Points, a Glyph with a level based on your Eternity Points, \
+Replicanti, and Dilated Time, a Perk Point to spend on quality of life upgrades, and unlock various upgrades.`,
+  realityModalNoSTART: `You currently only have a single option for new Glyphs every Reality. You can unlock the ability \
+  to choose from multiple Glyphs by canceling out of this modal and purchasing the START Perk.`,
+  realityModalChoosePreFilter: "You must select a Glyph in order to continuue",
+  realityModalChoosePostFilter: "If you do not choose a Glyph, one will be automatically selected using your Glyph filter.",
+  realityModalWillGainX: "You will gain $1aX$PP$$, $2aX$RM$$ and $3aX$REAL$$ $ You will gain $1aX$PP$$, $2aX$RM$$, $3aX$REAL$$ and $4aX$RELIC$$",
+  realityModalLevelStat: `You will get a level $1aX Glyph on Reality, which is equal to your best. $ \
+  You will get a level $1aX Glyph on Reality, which is $1aX higher than your best $ \
+  You will get a level $1aX Glyph on Reality, which is $1aX lower lower your best`,
+  realityModalSimulateNoteA: "After choosing this Glyph the game will simulate the rest of your Realities,",
+  realityModalSimulateNoteB: "acutomtically choosing another $1aX$GLY$$ based on your Glyph filter settings.",
+  realityModalAutoPurgeA: "Auto-purge is currently enabled; your selected Glyph",
+  realityModalAutoPurgeB: "may not appear in your inventory after it triggers",
+  realityModalMoreSimThanInventory: `You will be simulating more Realities than you have open inventory space for;
 this may result in some Glyphs being Sacrificed`,
-  noInvSpace: "You do not have any free inventory space - your selected Glyph will be automatically $1aX!",
-  sacrificeDelete: "Sacrificed $ deleted",
-  disablingRealityModal: "You can force this modal to appear (even if disabled) by Shift-clicking the Reality button.",
-  sacrifice: "Sacrifice",
-  glyph: "Glyph",
-  rgHeader: "You are about to purchase $1aX",
-  rg: "Replicanti Galaxy",
-  rgMessage: `A Replicanti Galaxy boosts Tickspeed the same way an Antimatter Galaxy does. However, it does not
-increase the cost of Antimatter Galaxies, nor is it affected by multipliers to Antimatter Galaxies specifically.
-It will $1aX.`,
-  rgDevideRep: "divide your Replicanti by $1aX for each Replicanti Galaxy purchased ($2aX to $3aX)",
-  rgResetRep: "reset your Replicanti to $1aX",
-  aboutToReset: "You are about to reset your $1aX",
-  aboutToResetMessage: "This will reset you to the start of your $1aX giving you no rewards from your progress in your current $1aX.",
-  canNormalReal: `You can currently complete a Reality for all its normal rewards, which you will not receive if you
-Reset here. To get rewards, use the "Make a new Reality" button.`,
-  arma: "Armageddon",
-  previewUnavail: "Preview Unavailable",
+  realityModalNoSpace: `You do not have any free inventory space - your selected Glyph will be automatically sacrificed! $ \
+  You do not have any free inventory space - your selected Glyph will be automatically refined! $ \
+  You do not have any free inventory space - your selected Glyph will be automatically deleted!`,
+  realityModalForceToShow: "You can force this modal to appear (even if disabled) by Shift-clicking the Reality button.",
+  realityModalSacrificeButton: "Sacrifice",
+  rgModalTitle: "You are about to purchase $1aX$RGAL$$",
+  rgModalMessage: `A Replicanti Galaxy boosts Tickspeed the same way an Antimatter Galaxy does. However, it does not
+increase the cost of Antimatter Galaxies, nor is it affected by multipliers to Antimatter Galaxies specifically.`,
+  rgModalDevideRep: "It will divide your Replicanti by $1aX for each Replicanti Galaxy purchased ($2aX to $3aX)",
+  rgModalResetRep: "It will reset your Replicanti to $1aX",
+  resetRealityModalTitles: "You are about to reset your Reality $ You are about to reset your Armageddon",
+  resetRealityModalWillReset: `This will reset you to the start of your Reality giving you no rewards from your progress in your current Reality. $ \
+  This will reset you to the start of your Armageddon giving you no rewards from your progress in your current Armageddon.`,
+  resetRealityModalCanReality: `You can currently complete a Reality for all its normal rewards, \
+  which you will not receive if you Reset here. To get rewards, use the "Make a new Reality" button.`,
+  resetRealityModalAreYouSure: "Are you sure you want to proceed?",
+  studyPreviewModalUnavailable: "Preview Unavailable", // Up to here
   editAuto: "Edit Autobuyers",
   noAutos: "You currently have no autobuyters which could be shown here",
   usingModalEditAuto: "Using this modal, you can edit various values inside your autobuyers.",

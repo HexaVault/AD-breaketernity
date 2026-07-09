@@ -30,49 +30,70 @@ export default {
     };
   },
   computed: {
+    topLabel() {
+      return i18n("modal", "realityModalTitle");
+    },
     firstRealityText() {
       const time = timeDisplayNoDecimals(new Decimal(30 * 60000));
-      return i18n("modal", "firstRealityText", [formatInt(13), time]);
+      return i18n("modal", "realityModalFirstReality", [formatInt(13), time]);
     },
     canSacrifice() {
       return RealityUpgrade(19).isEffectActive;
     },
+    canRefine() {
+      return Ra.unlocks.unlockGlyphAlchemy.canBeApplied;
+    },
     warnText() {
       if (!this.hasChoice) {
-        return i18n("modal", "noSTARTwarning");
+        return i18n("modal", "realityModalNoSTART");
       }
 
       if (this.hasFilter && this.selectedGlyph === undefined) {
-        return i18n("modal", "noChosenPostFilter");
+        return i18n("modal", "realityModalChoosePostFilter");
       }
       return this.selectedGlyph === undefined
-        ? i18n("modal", "noChosenPreFilter")
+        ? i18n("modal", "realityModalChoosePreFilter")
         : null;
     },
     gained() {
-      const gainedResources = [];
-      gainedResources.push(`${quantify(i18n("modal", "real"), this.simRealities)}`);
-      gainedResources.push(`${quantify(i18n("modal", "pp"), this.simRealities)}`);
-      gainedResources.push(`${quantify(i18n("modal", "rm"), this.realityMachines, 2)}`);
-      if (this.effarigUnlocked) {
-        gainedResources.push(`${quantify(i18n("modal", "rs"), this.shardsGained, 2)}`);
-      }
-      return i18n("modal", "willGainX", [makeEnumeration(gainedResources)]);
+      return i18n("modal", "realityModalWillGainX", [[formatInt, this.simRealities], [x => format(x, 2), this.realityMachines],
+        [this.simRealities, this.simRealities], [x => format(x, 2), this.shardsGained]], true)[Number(this.effarigUnlocked)];
     },
     levelStats() {
-      // Bit annoying to read due to needing >, <, and =, with = needing a different format.
-      let str = "";
-      str = i18n("modal", this.level.gt(this.bestLevel) ? "higherThanBest" : "lowerThanBest");
-      if (this.level.eq(this.bestLevel)) {
-        str = i18n("modal", "equalToBest");
-      }
-      return i18n("modal", "levelStat", [formatInt(this.level), str]);
+      // We have 3 version: equal, higher, lower
+      // eslint-disable-next-line no-nested-ternary
+      return i18n("modal", "realityModalLevelStat", [formatInt(this.level)], true)[this.level.eq(this.bestLevel) ? 0 : (this.level.gt(this.bestLevel) ? 1 : 2)];
     },
     confirmationToDisable() {
       return ConfirmationTypes.glyphSelection.isUnlocked() ? "glyphSelection" : undefined;
     },
     canConfirm() {
       return this.firstReality || this.selectedGlyph !== undefined || this.hasFilter;
+    },
+    simNoteA() {
+      return i18n("modal", "realityModalSimulateNoteA");
+    },
+    simNoteB() {
+      return i18n("modal", "realityModalSimulateNoteB", [[formatInt, simRealities.sub(1)]]);
+    },
+    autoPurgeA() {
+      return i18n("modal", "realityModalAutoPurgeA");
+    },
+    autoPurgeB() {
+      return i18n("modal", "realityModalAutoPurgeB");
+    },
+    simWarn() {
+      return i18n("modal", "realityModalMoreSimThanInventory");
+    },
+    spaceWarn() {
+      // eslint-disable-next-line no-nested-ternary
+      return i18n("modal", "realityModalNoSpace", [], true)[this.canRefine ? 1 : (this.canSacrifice ? 0 : 2)];
+    },
+    forceShowModal() {
+      return i18n("modal", "realityModalForceToShow");
+    },
+    sacrificeButtonLabel() {
+      return i18n("modal", "realityModalSacrificeButton");
     }
   },
   created() {
@@ -138,7 +159,7 @@ export default {
     @confirm="confirmModal(false)"
   >
     <template #header>
-      {{ i18n("modal", "realityModalHeader") }}
+      {{ topLabel }}
     </template>
     <div
       v-if="firstReality"
@@ -174,30 +195,30 @@ export default {
     </div>
     <div v-if="simRealities.gt(1)">
       <br>
-      {{ i18n("modal", "simRealityTextA") }}
+      {{ simNoteA }}
       <br>
-      {{ i18n("modal", "simRealityTextB", [quantify(i18n("modal", "glyph"), simRealities.sub(1))]) }}
+      {{ simNoteB }}
     </div>
     <div v-if="willAutoPurge">
       <br>
-      {{ i18n("modal", "autoPurgeTextA") }}
+      {{ autoPurgeA }}
       <br>
-      {{ i18n("modal", "autoPurgeTextB") }}
+      {{ autoPurgeB }}
     </div>
     <div
       v-if="!hasSpace"
       class="o-warning"
     >
       <span v-if="simRealities.gt(1)">
-        {{ i18n("modal", "simRealityWarning") }}
+        {{ simWarn }}
       </span>
       <span v-else>
-        {{ i18n("modal", "noInvSpace", [i18n("modal", sacrificeDelete).split(" $ ")[canSacrifice ? 1 : 0]]) }}
+        {{ spaceWarn }}
       </span>
     </div>
     <div v-if="confirmationToDisable">
       <br>
-      {{ i18n("modal", "disablingRealityModal") }}
+      {{ forceShowModal }}
     </div>
     <template
       v-if="canSacrifice && canConfirm"
@@ -207,7 +228,7 @@ export default {
         class="o-primary-btn--width-medium c-modal-message__okay-btn"
         @click="confirmModal(true)"
       >
-        {{ i18n("modal", "sacrifice") }}
+        {{ sacrificeButtonLabel }}
       </PrimaryButton>
     </template>
   </ModalWrapperChoice>

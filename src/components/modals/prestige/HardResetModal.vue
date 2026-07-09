@@ -12,14 +12,35 @@ export default {
     };
   },
   computed: {
+    topLabel() {
+      return i18n("modal", "hardResetModalTitle");
+    },
     willHardReset() {
-      return this.input === i18n("modal", "shrek");
+      return this.input === i18n("modal", "hardResetModalResetString");
     },
     hasExtraNG() {
       return player.records.fullGameCompletions > 0;
     },
     hasSpeedrun() {
       return player.speedrun.isUnlocked;
+    },
+    willLoseNGText() {
+      return i18n("modal", "hardResetModalRemovesCosmetics");
+    },
+    willLoseSpeedrunText() {
+      return i18n("modal", "hardResetModalLoseSpeedrun");
+    },
+    confirmDesire() {
+      return i18n("modal", "hardResetModalConfirm");
+    },
+    noSecrets() {
+      return i18n("modal", "hardResetModalNoSecret");
+    },
+    typeIn() {
+      return i18n("modal", "hardResetModalTypeInString", [i18n("modal", "hardResetModalResetString")]);
+    },
+    phraseNote() {
+      return this.willHardReset ? i18n("modal", "hardResetModalConfirmedPhrase") : i18n("modal", "hardResetModalTypeIn");
     }
   },
   destroyed() {
@@ -42,21 +63,21 @@ export default {
     @confirm="hardReset"
   >
     <template #header>
-      {{ i18n("modal", "hardResetHeader") }}
+      {{ topLabel }}
     </template>
     <div class="c-modal-message__text">
-      {{ i18n("modal", "resetConfirmText") }}
+      {{ confirmDesire }}
       <span class="c-modal-hard-reset-danger">{{ i18n("modal", "resetNoSecret") }}</span>
-      {{ i18n("modal", "resetTypeInB", [i18n("modal", "shrek")]) }}
+      {{ typeIn }}
       <div class="c-modal-hard-reset-danger">
-        {{ i18n("modal", "resetWipe") }}
+        {{ noSecrets }}
         <span v-if="hasExtraNG">
           <br>
-          {{ i18n("modal", "resetRemoveNG") }}
+          {{ willLoseNGText }}
         </span>
         <span v-if="hasSpeedrun">
           <br>
-          {{ i18n("modal", "resetLoseSpeedrun") }}
+          {{ willLoseSpeedrunText }}
         </span>
       </div>
     </div>
@@ -69,18 +90,10 @@ export default {
       @keyup.esc="emitClose"
     >
     <div class="c-modal-hard-reset-info">
-      <div
-        v-if="willHardReset"
-        class="c-modal-hard-reset-danger"
-      >
-        {{ i18n("modal", "resetPhraseConfirmed") }}
-      </div>
-      <div v-else>
-        {{ i18n("modal", "resetTypeIn") }}
-      </div>
+      {{ phraseNote }}
     </div>
     <template #confirm-text>
-      {{ i18n("modal", "hardResetHeader") }}
+      {{ topLabel }}
     </template>
   </ModalWrapperChoice>
 </template>

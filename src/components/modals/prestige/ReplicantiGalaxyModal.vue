@@ -15,15 +15,15 @@ export default {
   },
   computed: {
     topLabel() {
-      return i18n("modal", "rgHeader", [quantifyInt(i18n("modal", "rg"), this.canBeBought)]);
+      return i18n("modal", "rgModalTitle", [formatInt, this.canBeBought]);
     },
     message() {
       const reductionString = this.divideReplicanti
-        ? i18n("modal", "rgDevideRep", [format(Number.MAX_VALUE, 2, 2), format(this.replicanti, 2, 2),
+        ? i18n("modal", "rgModalDevideRep", [format(Number.MAX_VALUE, 2, 2), format(this.replicanti, 2, 2),
           format(this.replicanti.divide(Decimal.pow(Number.MAX_VALUE, this.canBeBought)), 2, 2)
         ])
-        : i18n("modal", "rgResetRep", [formatInt(1)]);
-      return i18n("modal", "rgMessage", [reductionString]);
+        : i18n("modal", "rgModalResetRep", [formatInt(1)]);
+      return i18n("modal", "rgModalMessage", [reductionString]);
     }
   },
   methods: {

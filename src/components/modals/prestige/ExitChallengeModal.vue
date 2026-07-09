@@ -30,7 +30,22 @@ export default {
     },
     isRestarting() {
       return this.isCelestial ? player.options.retryCelestial : player.options.retryChallenge;
-    }
+    },
+    topLabel() {
+      return i18n("modal", "exitChallengeModalTitle", [this.challengeName], true)[Number(this.isRestarting)];
+    },
+    restartText() {
+      return i18n("modal", "exitChallengeModalRestart", [challengeName]);
+    },
+    exitText() {
+      return i18n("modal", "exitChallengeModalExit", [challengeName]);
+    },
+    higherLayerNote() {
+      return i18n("modal", "exitChallengeModalHigherLayer");
+    },
+    confirmText() {
+      return this.isRestarting ? i18n("consts", "restart") : i18n("consts", "exit");
+    },
   },
   methods: {
     handleYesClick() {
@@ -47,23 +62,22 @@ export default {
     @confirm="handleYesClick"
   >
     <template #header>
-      {{ i18n("modal", "aboutTo") }} {{ isRestarting ? i18n("modal", "restartLowercase") :
-        i18n("modal", "exitLowercase") }} {{ challengeName }}
+      {{ topLabel }}
     </template>
 
     <div class="c-modal-message__text">
       <span v-if="isRestarting">
-        {{ i18n("modal", "restartingChall", [challengeName]) }}
+        {{ restartText }}
       </span>
       <span v-else>
-        {{ i18n("modal", "exitingChall", [challengeName]) }}
+        {{ exitText }}
       </span>
       <span v-if="hasHigherLayers">
-        {{ i18n("modal", "hasHigherLayers") }}
+        {{ higherLayerNote }}
       </span>
     </div>
     <template #confirm-text>
-      {{ isRestarting ? i18n("consts", "restart") : i18n("consts", "exit") }}
+      {{ confirmText }}
     </template>
   </ModalWrapperChoice>
 </template>

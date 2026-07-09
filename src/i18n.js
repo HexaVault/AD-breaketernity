@@ -12,7 +12,7 @@ window.i18n = function(type, id, mods = [], split = false) {
 
   // This moreorless explictly exists for testing, since I don't want to hook blind theme to this, as
   // some people may decide that they would rather not deal with i18n, which is fair.
-  if (player.options.language === "blind") {
+  if (typeof player !== "undefined" && (player.options.language === "blind")) {
     return "";
   }
 

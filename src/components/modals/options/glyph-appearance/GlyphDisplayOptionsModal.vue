@@ -108,7 +108,7 @@ export default {
       EventHub.dispatch(GAME_EVENT.GLYPH_VISUAL_CHANGE);
     },
     getStr(val) {
-      return i18n("modal", "glyphDisplayOptionsModalList", undefined, true)[val];
+      return i18n("modal", "glyphDisplayOptionsModalList", [], true)[val];
     },
   },
 };

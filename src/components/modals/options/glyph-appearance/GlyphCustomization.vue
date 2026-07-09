@@ -49,10 +49,10 @@ export default {
       return i18n("modal", "glyphCustomizationModalResetAppearance");
     },
     message() {
-      return i18n("modal", "glyphCustomizationModalMessage", undefined, true);
+      return i18n("modal", "glyphCustomizationModalMessage", [], true);
     },
     notes() {
-      return i18n("modal", "glyphCustomizationModalOptionsNote", undefined, true);
+      return i18n("modal", "glyphCustomizationModalOptionsNote", [], true);
     },
     resetCosmetics() {
       return i18n("modal", "glyphCustomizationModalResetIndividualCosmetics");

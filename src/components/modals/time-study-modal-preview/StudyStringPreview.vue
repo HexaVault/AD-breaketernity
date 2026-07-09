@@ -72,6 +72,9 @@ export default {
         "o-primary-btn--subtab-option": true,
         "o-primary-btn--respec-active": this.respec
       };
+    },
+    unavailableText() {
+      return i18n("modal", "studyPreviewModalUnavailable");
     }
   },
   watch: {
@@ -147,7 +150,7 @@ export default {
       v-else
       class="c-unavailable-warning"
     >
-      {{ i18n("modal", "previewUnavail") }}
+      {{ unavailableText }}
     </span>
   </div>
 </template>

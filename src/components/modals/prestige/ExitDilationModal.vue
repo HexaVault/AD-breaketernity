@@ -15,15 +15,26 @@ export default {
     };
   },
   computed: {
+    topLabel() {
+      return this.isDoomed ? i18n("modal", "exitDilModalTitle_Doomed") : i18n("modal", "exitDilModalTitle");
+    },
     gainText() {
-      if (this.tachyonGain.lte(0)) return i18n("modal", "noGain");
-      return i18n("modal", "dilGain", [quantify(i18n("modal", "tp"), this.tachyonGain, 2, 1)]);
+      let chosenStr;
+      if (this.isDoomed) chosenStr = i18n("modal", "exitDilModalDoomed", [[x => format(x, 2, 1), this.tachyonGain]]);
+      else chosenStr = i18n("modal", "exitDilModalNotDoomed", [[x => format(x, 2, 1), this.tachyonGain]]);
+      return chosenStr[[Number(this.tachyonGain.lte(0))]];
     },
     isInEC() {
       return Player.anyChallenge instanceof EternityChallengeState;
     },
     confirmText() {
-      return i18n("modal", this.isDoomed ? "okay" : "exit");
+      return i18n("consts", this.isDoomed ? "okay" : "exit");
+    },
+    ECtext() {
+      return i18n("modal", "exitDilModalECexit");
+    },
+    areYouSure() {
+      return i18n("modal", "exitDilModalAreYouSure");
     }
   },
   methods: {
@@ -53,25 +64,15 @@ export default {
     @confirm="handleYesClick"
   >
     <template #header>
-      <span v-if="isDoomed">
-        {{ i18n("modal", "noDoomExit") }}
-      </span>
-      <span v-else>
-        {{ i18n("modal", "aboutToExitDilation") }}
-      </span>
+      {{ topLabel }}
     </template>
     <div class="c-modal-message__text">
-      <span v-if="isDoomed">
-        {{ i18n("modal", "doomedInfo", [gainText]) }}
-      </span>
-      <span v-else>
-        {{ i18n("modal", "notDoomedInfo", [gainText]) }}
-      </span>
+      {{ gainText }}
       <div v-if="isInEC">
-        {{ i18n("modal", "ECandDilation") }}
+        {{ ECtext }}
       </div>
       <br>
-      {{ i18n("modal", "areYouSureProceed") }}
+      {{ areYouSure }}
     </div>
     <template #confirm-text>
       {{ confirmText }}
