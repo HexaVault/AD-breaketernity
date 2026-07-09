@@ -31,10 +31,10 @@ export default {
       return TimeStudy.preferredPaths.dimension.usePriority;
     },
     dimText() {
-      return i18n("modal", "dimSplit");
+      return i18n("modal", "preferTreeModalDim");
     },
     paceText() {
-      return i18n("modal", "paceSplit");
+      return i18n("modal", "preferTreeModalPace");
     }
   },
   created() {

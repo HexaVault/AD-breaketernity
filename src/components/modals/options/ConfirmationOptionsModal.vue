@@ -16,10 +16,10 @@ export default {
       return ConfirmationTypes.index.every(x => !x.isUnlocked());
     },
     text() {
-      return i18n("modal", "noConfirmations");
+      return i18n("modal", "confirmationOptionsTitle");
     },
     topLabel() {
-      return i18n("modal", "confirmationHeader");
+      return i18n("modal", "confirmationOptionsNothingNeedsConfirmation");
     }
   }
 };

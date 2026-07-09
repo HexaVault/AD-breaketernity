@@ -63,7 +63,7 @@ export default {
       </span>
     </div>
     <template #confirm-text>
-      {{ isRestarting ? i18n("modal", "restart") : i18n("modal", "exit") }}
+      {{ isRestarting ? i18n("consts", "restart") : i18n("consts", "exit") }}
     </template>
   </ModalWrapperChoice>
 </template>

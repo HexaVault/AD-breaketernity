@@ -14,15 +14,13 @@ export default {
   },
   computed: {
     topLabel() {
-      return i18n("modal", "dbResetHeader");
+      return i18n("modal", "dbModalTitle");
     },
     message() {
-      const keepDimensions = Perk.antimatterNoReset.canBeApplied || Achievement(111).canBeApplied ||
+      return Perk.antimatterNoReset.canBeApplied || Achievement(111).canBeApplied ||
         PelleUpgrade.dimBoostResetsNothing.isBought
-        ? i18n("modal", "dbWontReset")
-        : i18n("modal", "dbWillReset");
-
-      return i18n("modal", "thisWill", [keepDimensions]);
+        ? i18n("modal", "dbModalNoReset")
+        : i18n("modal", "dbModalReset");
     },
   },
   methods: {

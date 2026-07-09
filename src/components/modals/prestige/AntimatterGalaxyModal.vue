@@ -22,12 +22,11 @@ export default {
   },
   computed: {
     topLabel() {
-      if (this.bulk) return i18n("modal", "aboutToPurchase", [quantifyInt(i18n("modal", "ags"), this.newGalaxies)]);
-      return i18n("modal", "atpOneAG");
+      return i18n("modal", "agModalTitle", [[formatInt, this.newGalaxies]]);
     },
     message() {
       const resetResouces = [];
-      const rrTrans = i18n("modal", "resetResourcesAG");
+      const rrTrans = i18n("modal", "agModalResettableResources");
       if (Pelle.isDoomed) resetResouces.push(rrTrans[0], rrTrans[1], rrTrans[2]);
       if (!this.perkANRBought) resetResouces.push(rrTrans[1], rrTrans[2]);
       if (!this.keepDimBoost) resetResouces.push(rrTrans[3]);
@@ -35,21 +34,18 @@ export default {
       const resetList = makeEnumeration(resetResouces);
       let tickspeedFixed = "";
       if (InfinityChallenge(3).isRunning) {
-        tickspeedFixed = i18n("modal", "icN", [InfinityChallenge(3).id]);
+        tickspeedFixed = i18n("modal", "agModalICx", [InfinityChallenge(3).id]);
       } else if (Ra.isRunning) {
-        tickspeedFixed = i18n("modal", "cel5Reality", [Ra.displayName]);
+        tickspeedFixed = i18n("modal", "agModalRaReality", [Ra.displayName]);
       }
       const tickspeedInfo = (tickspeedFixed === "")
-        ? i18n("modal", "agTSboost")
-        : i18n("modal", "agNoTSboost", [tickspeedFixed]);
+        ? i18n("modal", "agModalWillBoostTickspeed")
+        : i18n("modal", "agModalWillNotBoostTickspeed", [tickspeedFixed]);
       const message = (resetList === "")
-        ? i18n("modal", "resetNothing", [tickspeedInfo])
-        : i18n("modal", "resetSome", [resetList, tickspeedInfo]);
+        ? i18n("modal", "agModalWillResetNothing", [tickspeedInfo])
+        : i18n("modal", "agModalWillResetX", [resetList, tickspeedInfo]);
 
-      if (this.bulk) {
-        return i18n("modal", "surePurchase", [quantifyInt("Antimatter Galaxy", this.newGalaxies), message]);
-      }
-      return i18n("modal", "surePurAG", [message]);
+      return i18n("modal", "agModalPurchaseConfirmation", [[formatInt, this.newGalaxies], message]);
     }
   },
   created() {

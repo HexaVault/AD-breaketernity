@@ -33,22 +33,22 @@ export default {
       };
     },
     topLabel() {
-      return i18n("modal", "notationModalHeader");
+      return i18n("modal", "notationModalTitle");
     },
     msgA() {
-      return i18n("modal", "notationModalMsgA");
+      return i18n("modal", "notationModalText");
     },
     msgB() {
-      return i18n("modal", "notationModalMsgB", [formatInt(this.commaDigits)]);
+      return i18n("modal", "notationModalMinCommas", [formatInt(this.commaDigits)]);
     },
     msgC() {
-      return i18n("modal", "notationModalMsgC", [formatInt(this.notationDigits)]);
+      return i18n("modal", "notationModalMaxCommas", [formatInt(this.notationDigits)]);
     },
     sampleText() {
-      return i18n("modal", "sample");
+      return i18n("modal", "notationModalSamples");
     },
     msgD() {
-      return i18n("modal", "notationModalMsgD", [formatInt(5), formatInt(9)]);
+      return i18n("modal", "notationModalNote", [formatInt(5), formatInt(9)]);
     }
   },
   watch: {
@@ -92,7 +92,7 @@ export default {
 <template>
   <ModalWrapper>
     <template #header>
-      {{ i18n("modal", "notationModalHeader") }}
+      {{ topLabel }}
     </template>
     {{ msgA }}
     <br>

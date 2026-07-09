@@ -9,7 +9,7 @@ export const GlyphInfoVue = {
     CURRENT_REFINE: 5,
     MAX_REFINE: 6,
   },
-  labels: () => i18n("modal", "selectGlyphLabels").split("$")
+  labels: () => i18n("modal", "glyphInfoModalOptions", [], true)
 };
 
 export default {

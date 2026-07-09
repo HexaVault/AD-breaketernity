@@ -7,6 +7,10 @@
 export const modal = {
   // To make this easier, everything called by Modal.message will go first
   glyphMoveModal: "The selected Glyph changed position or was otherwise changed!",
+  notifyBackupLoad: "Game loaded from backup slot #$1aX",
+  infAnimationModal: `This animation will occur after every manually-triggered Infinity. If \
+you would like to disable it, there is a setting to do so in the Options tab. This can be done for any \
+visual animation effect in the game after seeing it for the first time.`,
   // Everything below here is in a vue file for itself, not the general Modal.message
   catchupModalTitleA: "Content Catch-up",
   catchupModalTitleB: "Content Summary",
@@ -121,166 +125,143 @@ Unhiding a tab in which all subtabs are hidden will also unhide all subtabs, and
   hideTabModalAfterGalGen: "You cannot hide your tabs after unlocking the Galaxy Generator.",
   hideTabModalNamelessA: "You must... see everywhere...",
   hideTabModalNamelessB: "(You cannot hide your tabs within this Reality)",
-  hideTabModalShowAllTabs: "Show all tabs", // To here, so far
-  AnimationOpt: "Animation Options",
-  AOlist: "Big Crunch:$Eternity:$Dilation:$Tachyon particles:$Reality$Always use Blobhole:$Background:$Blobsnow:$Blobflake:",
-  AwayHeader: "Away Progress Options",
-  AwayNote: "Note: Selected resources will only show if they've increased.",
-  emptyInBrack: "(Empty)",
-  savesEveryOn: "Saves every $1aX online",
-  savesEveryOff: "Saves every $1aX offline",
-  savesPre: "Pre-loading save",
-  lastSave: "Last saved: $1aX ago",
-  slotNotUsed: "Slot not currently in use",
-  slotX: "Slot #$1aX",
-  load: "Load",
-  resourceNames: "Reality Shards$Imaginary Machine Cap$Reality Machines$Eternity Points$Infinity Points$Antimatter",
-  noResources: "No resources",
-  notifyBackupLoad: "Game loaded from backup slot #$1aX",
-  autoBackupHeader: "Automatic Backup Saves",
-  autoBackupTextA: `The game makes automatic backups based on time you have spent online or offline.
-Timers for online backups only run when the game is open, and offline backups only save to the slot with the longest applicable timer.
+  hideTabModalShowAllTabs: "Show all tabs",
+  animationOptionsModalTitle: "Animation Options",
+  animationOptionsModalAnimationList: `Big Crunch: $ Eternity: $ Dilation: $ Tachyon particles: $ Reality $ \
+  Always use Blobhole: $ Background: $ Blobsnow: $ Blobflake:`, // To here, so far
+  awayOptionsModalTitle: "Away Progress Options",
+  awayOptionsModalNote: "Note: Selected resources will only show if they've increased.",
+  backupEntryModalEmpty: "(Empty)",
+  backupEntryModalSavesOnline: "Saves every $1aX online",
+  backupEntryModalSavesOffline: "Saves every $1aX offline",
+  backupEntryModalSavesPreload: "Pre-loading save",
+  backupEntryModalLastSaved: "Last saved: $1aX ago",
+  backupEntryModalUnusedSlot: "Slot not currently in use",
+  backupEntryModalSlotX: "Slot #$1aX",
+  backupEntryModalResources: "Reality Shards $ Imaginary Machine Cap $ Reality Machines $ $$EP$$ $ $$IP$$ $ $$AM$$",
+  backupEntryModalNoResources: "No resources",
+  backupModalTitle: "Automatic Backup Saves",
+  backupModalInformationTextA: `The game makes automatic backups based on time you have spent online or offline. \
+Timers for online backups only run when the game is open, and offline backups only save to the slot with the longest applicable timer. \
 Additionally, your current save is saved into the last slot any time a backup from here is loaded.`,
-  autoBackupTextB: `These backups are still stored in the same place as your game save and can still be lost if you do anything
-external to the game which would delete your save itself, such as $1aX. You can import/export all backups at once as files, using these buttons:`,
-  steamUninstall: "fully uninstalling the game",
-  cookieDelete: "clearing your browser cookies",
-  loadWithNoOffline: "Load with offline progress disabled",
-  exportAsFile: "Export as file",
-  importAsFile: "Import from file",
-  autoBackupTextC: "Each of your three save slots has its own seperate set of backups",
-  confirmationHeader: "Confirmation Options",
-  noConfirmations: `You do not have anything that requires confirmation, but if you did it would appear here.`,
-  hotkeyHeader: "Hotkey List",
-  buyNdims: "Buy 1 Dimension$Buy 10 Dimensions",
-  shiftInfo: `Shift is a modifier key that shows additional information on certain things
+  backupModalInformationTextB_Steam: `These backups are still stored in the same place as your game save and can still be lost if you do anything \
+external to the game which would delete your save itself, such as deleting your AppData. You can import/export all backups at once as files, using these buttons:`,
+  backupModalInformationTextB_Brower: `These backups are still stored in the same place as your game save and can still be lost if you do anything \
+external to the game which would delete your save itself, such as clearing your browser cookies. You can import/export all backups at once as files, using these buttons:`,
+  backupModalLoadWithoutOffline: "Load with offline progress disabled",
+  backupModalExportFile: "Export as file",
+  backupModalImportFile: "Import from file",
+  backupModalSavesSeperateBackups: "Each of your three save slots has its own seperate set of backups",
+  confirmationOptionsTitle: "Confirmation Options",
+  confirmationOptionsNothingNeedsConfirmation: `You do not have anything that requires confirmation, but if you did it would appear here.`,
+  hotkeyModalTitle: "Hotkey List",
+  hotkeyModalXDimensions: "Buy 1 Dimension$Buy 10 Dimensions",
+  hotkeyModalInfoForShift: `Shift is a modifier key that shows additional information on certain things
 and adjusts the function of certain buttons.`,
-  altInfoA: `Alt is a modifier key that, when pressed in conjunction with any key that has a corresponding autobuyer, will toggle said autobuyer.`,
-  altInfoB: `When pressing both Alt and Shift, you can toggle buying singles or buying max for the Antimatter Dimension and Tickspeed Autobuyers instead.`,
-  arrowKeyInfo: `Using the Arrow Keys will cycle you through the game's pages.
-The Up and Down arrows cycle you through tabs,
+  hotkeyModalInfoAboutAlt: `Alt is a modifier key that, when pressed in conjunction with any key that has a corresponding autobuyer, will toggle said autobuyer.`,
+  hotkeyModalInfoAboutAltShift: `When pressing both Alt and Shift, you can toggle buying singles or buying max for the Antimatter Dimension and Tickspeed Autobuyers instead.`,
+  hotkeyModalInfoAboutArrows: `Using the Arrow Keys will cycle you through the game's pages. \
+The Up and Down arrows cycle you through tabs, \
 and the Left and Right arrows cycle you through that tab's subtabs.`,
-  numpadLimit: `Due to technical reasons, pressing a numpad key will purchase 10 of a Dimension if possible, but pressing
-a numpad key with $ will not buy a single Dimension. It may instead, depending on your device,
-cause the page to scroll or change game tabs. $ will still work as expected.`,
-  windowZoom: "Window Zoom",
-  zoomAdj: `To adjust zoom level, hold $ and press either $ or $ to decrease or increase zoom. $ will reset zoom to 100%.`,
-  fullscreen: "Fullscreen",
-  fullscreenInfo: "To enter or exit fullscreen, press $.",
-  moreShiftInfo: `You can hold Shift $1aX. $ while buying Time Studies to buy all up until that point $ to save Time Study Trees $ to purge Glyphs`,
-  modKeysHeader: "Modifier Keys",
-  otherHotkeyHeaders: "Modifier Key$Autobuyer Controls$Tab Movement$Numpad Support",
-  infoDisplayHeader: "Info Display Options",
-  infoDisplayTexts: `Show % gain:$Achievement IDs:$Achievement unlock state indicators:$Challenge IDs:$Time Study IDs:$
-Glyph effect dots:$Reality Upgrade names:$Perk IDs:$Alchemy resource amounts:`,
-  infoDisplayNote: "Note: All types of additional info above will always display when holding shift.",
-  on: "On",
-  off: "Off",
-  news: "News: $1aX",
-  newsModalHeader: "News Options",
-  msgRepeat: "$1aX message repeat buffer",
-  aiMsg: "$1aX AI messages",
-  scrollSpeed: "$1aX scroll speed",
-  aniEff: "Animation Effects:",
-  notationModalHeader: "Exponent Notation Settings",
-  notationModalMsgA: `You can adjust what your numbers look like when very large. With small values, the exponent will
-be directly displayed with no additional formatting. Larger values will have commas inserted into the exponent
-for clarity, and the largest values will apply notation formatting to the exponent in order to shorten it. You can
+  // The double spaces around $ are intentional, as the string " $ " is converted, not just the $ sign, but we want gaps around the symbols
+  hotkeyModalInfoAboutNumpad: `Due to technical reasons, pressing a numpad key will purchase 10 of a Dimension if possible, but pressing \
+a numpad key with $ will not buy a single Dimension. It may instead, depending on your device, \
+cause the page to scroll or change game tabs.  $  will still work as expected.`,
+  hotkeyModalWindowZoom: "Window Zoom",
+  hotkeyModalToAdjustZoom: `To adjust zoom level, hold  $  and press either  $  or $  to decrease or increase zoom.  $  will reset zoom to 100%.`,
+  hotkeyModalFullscreen: "Fullscreen",
+  hotkeyModalToEnterFullscreen: "To enter or exit fullscreen, press  $ .",
+  hotkeyModalAboutShift: `You can hold Shift: $  while buying Time Studies to buy all up until that point $ to save Time Study Trees $ to purge Glyphs`,
+  hotkeyModalModifierKeys: "Modifier Keys",
+  hotkeyModalInternalHeaders: "Modifier Key $ Autobuyer Controls $ Tab Movement $ Numpad Support",
+  infoDisplayModalTitle: "Info Display Options",
+  infoDisplayModalSettings: `Show % gain: $ Achievement IDs: $ Achievement unlock state indicators: $ Challenge IDs: $ Time Study IDs: $ \
+Glyph effect dots: $ Reality Upgrade names: $ Perk IDs: $ Alchemy resource amounts:`,
+  infoDisplayModalNote: "Note: All types of additional info above will always display when holding shift.",
+  NewsSettingModalToggle: "News: $1aX",
+  NewsSettingModalTittle: "News Options",
+  NewsSettingModalRepeatBuffer: "$1aX message repeat buffer",
+  NewsSettingModalAI: "$1aX AI messages",
+  NewsSettingModalSpeed: "$1aX scroll speed",
+  NewsSettingModalAnimations: "Animation Effects:",
+  notationModalTitle: "Exponent Notation Settings",
+  notationModalText: `You can adjust what your numbers look like when very large. With small values, the exponent will \
+be directly displayed with no additional formatting. Larger values will have commas inserted into the exponent \
+for clarity, and the largest values will apply notation formatting to the exponent in order to shorten it. You can \
 adjust the two thresholds between these regions below:`,
-  notationModalMsgB: "Minimum for commas in exponent: $1aX digits",
-  notationModalMsgC: "Minimum for notation in exponent: $1aX digits",
-  sample: "Sample numbers for exponent formatting:",
-  notationModalMsgD: `Note: The interface is generally optimized for Scientific notation with settings of $1aX
-and $2aX digits. Some text may look odd or overflow out of boxes if you
-differ significantly from these values. Additionally, these settings might not cause any visual changes
+  notationModalMinCommas: "Minimum for commas in exponent: $1aX digits",
+  notationModalMaxCommas: "Minimum for notation in exponent: $1aX digits",
+  notationModalSamples: "Sample numbers for exponent formatting:",
+  notationModalNote: `Note: The interface is generally optimized for Scientific notation with settings of $1aX \
+and $2aX digits. Some text may look odd or overflow out of boxes if you \
+differ significantly from these values. Additionally, these settings might not cause any visual changes \
 when using certain notations.`,
-  dimSplit: "Dimension Split Preference",
-  paceSplit: "Pace Split Preference",
-  selectGlyphLabels: "None$Level$Rarity$Sacrifice Value$Glyph Filter Score$Current Refinement Value$Maximum Refinement Value",
-  aboutToPurchase: "You are about to purchase $1aX",
-  ags: "Antimatter Galaxy",
-  atpOneAG: "You are about to purchase an Antimatter Galaxy",
-  resetResourcesAG: "Antimatter$Antimatter Dimensions$Tickspeed$Dimension Boosts",
-  icN: "Infinity Challlenge $1aX",
-  cel5Reality: "$1aX's Reality",
-  agTSboost: "you will receive a small boost to Tickspeed Upgrades.",
-  agNoTSboost: "you will not receive a boost to Tickspeed Upgrades, because you are in $1aX",
-  resetNothing: "This will reset nothing, and $1aX",
-  resetSome: "This will reset your $1aX. However, $2aX",
-  surePurchase: "Are you sure you want to purchase $1aX? $2aX",
-  surePurAG: "Are you sure you want to purchase an Antimatter Galaxy? $1aX",
-  aboutToDoom: "You are about to Doom your Reality",
-  armaResetHeader: "You are about to perform an Armageddon reset",
-  remants: "Remnant",
-  ArmaReset: "Armageddon will start a new Doomed Reality. You will gain $1aX $2aX",
-  ArmaFirstReset: "which will produce $1aX Reality Shards/s",
-  ArmaNotFirstReset: "which will increase your Reality Shards gain from $1aX/s to $2aX/s",
-  doomInfo: `Dooming your Reality will reset everything except Challenge records, Celestial progress and anything under
-the General and Reality header on the Statistics tab. You will not gain any rewards from your progress
+  preferTreeModalDim: "Dimension Split Preference",
+  preferTreeModalPace: "Pace Split Preference",
+  glyphInfoModalOptions: "None $ Level $ Rarity $ Sacrifice Value $ Glyph Filter Score $ Current Refinement Value $ Maximum Refinement Value",
+  agModalTitle: "You are about to purchase $1aX$AGAL$$",
+  agModalResettableResources: "$$AM$$ $ $$AD$$ $ Tickspeed $ Dimension Boosts",
+  agModalICx: "Infinity Challlenge $1aX",
+  agModalRaReality: "$1aX's Reality",
+  agModalWillBoostTickspeed: "you will receive a small boost to Tickspeed Upgrades.",
+  agModalWillNotBoostTickspeed: "you will not receive a boost to Tickspeed Upgrades, because you are in $1aX",
+  agModalWillResetNothing: "This will reset nothing, and $1aX",
+  agModalWillResetX: "This will reset your $1aX. However, $2aX",
+  agModalPurchaseConfirmation: "Are you sure you want to purchase $1aX$AGAL$$? $2aX",
+  armageddonModalAboutToDoom: "You are about to Doom your Reality",
+  armageddonModalTitle: "You are about to perform an Armageddon reset",
+  armageddonModalArmageddonReset: "Armageddon will start a new Doomed Reality. You will gain $1aX$REM$$ $2aX",
+  armageddonModalFirstReset: "which will produce $1aX$REALSHARD$$/s",
+  armageddonModalNotFirstReset: "which will increase your Reality Shards gain from $1aX/s to $2aX/s",
+  armageddonModalDoomInfo: `Dooming your Reality will reset everything except Challenge records, Celestial progress and anything under \
+the General and Reality header on the Statistics tab. You will not gain any rewards from your progress \
 in your current Reality. Dooming your Reality will also purge most of your unprotected Glyphs and disable certain game mechanics.`,
-  areYouSure: "Are you sure you want to do this?",
-  aboutToInf: "You are about to Infinity",
-  uponInfinity: "Upon Infinity, all Dimensions, Dimension Boosts, and Antimatter Galaxies are reset. $1aX",
-  firstInfinityInfo: `In return, you gain an Infinity Point (IP). This allows you to buy multiple upgrades that you can
+  armageddonModalConfirmation: "Are you sure you want to do this?",
+  infinityModalTitle: "You are about to Infinity",
+  infinityModalWillReset: "Upon Infinity, all Dimensions, Dimension Boosts, and Antimatter Galaxies are reset. $1aX",
+  infinityModalFirstInfinityInfo: `In return, you gain an Infinity Point (IP). This allows you to buy multiple upgrades that you can
 find in the Infinity tab. You will also gain one Infinity, which is the stat shown in the Statistics tab.`,
-  infGainInfo: "You will gain $1aX and $2aX.",
-  am: "Antimatter",
-  db: "Dimension Boost",
-  gal: "Galaxy",
-  ip: "Infinity Point",
-  inf: "Infinity",
-  willStartNextInf: "You will start your next Infinity with $1aX.",
-  infAnimationModal: `This animation will occur after every manually-triggered Infinity. If
-you would like to disable it, there is a setting to do so in the Options tab. This can be done for any
-visual animation effect in the game after seeing it for the first time.`,
-  dbResetHeader: "You are about to do a Dimension Boost Reset",
-  dbWillReset: "reset your Antimatter and Antimatter Dimensions. Are you sure you want to do this?",
-  dbWontReset: `not actually reset anything due to an upgrade you have which prevents Antimatter and Antimatter Dimensions
+  infinityModalInfinityGain: "You will gain $1aX$INF$$ and $2aX$IP$$.",
+  infinityModalStartNextInf: "You will start your next Infinity with $1aX$AM$$ $ $2aX$DB$$ $ $3aX$AGAL$$.",
+  dbModalTitle: "You are about to do a Dimension Boost Reset",
+  dbModalReset: "This will reset your Antimatter and Antimatter Dimensions. Are you sure you want to do this?",
+  dbModalNoReset: `This will not actually reset anything due to an upgrade you have which prevents Antimatter and Antimatter Dimensions
 from being reset in this situation. You will still gain the multiplier from the Boost, as usual.`,
-  thisWill: "This will $1aX",
-  eter: "Eternity",
-  real: "Reality",
-  celsReality: "$1aX Reality",
-  celsRealityMessageBase: "Perform a Reality reset and enter $1aX Reality, in which:",
-  teresaNotDone: `You have not unlocked the reward for Teresa's Reality yet.
+  enterCelestialModalTitle: "$1aX Reality",
+  enterCelestialModalEnterXReality: "Perform a Reality reset and enter $1aX Reality, in which:",
+  enterCelestialModalTeresaNotDone: `You have not unlocked the reward for Teresa's Reality yet.
 Unlocking the reward requires purchasing the Reality study and completing the Reality for the first time.`,
-  teresaDone: `Your highest Teresa completion was for $1aX antimatter, gaining you a $2aX multiplier to Glyph Sacrifice power.`,
-  effarigDone: "Effarig is completed!",
-  effarigOnLayer: "You are currently on the $1aX Layer.",
-  namelessNotDone: "We... can help... Let us... help...",
-  namelessDone: "Have... we... not helped enough...",
-  raMessage: `Within Ra's Reality, some resources will generate Memory Chunks for Celestial Memories based on their amounts:`,
-  laiNotThisTier: "You have not completed Lai'tela at this tier.",
-  laiThisTier: "Your fastest completions on this tier is $1aX",
-  gain: "gain $ gains",
-  has: "have $ has",
-  regainedAllMemories: "$1aX regained all Memories",
-  chunksBasedOn: "$1aX Memory Chunks based on $2aX",
-  thisFirstDilation: "This is your first Dilation",
-  dilEnterHeader: "You are about to enter Dilation",
-  dilationInfo: `Dilating time will start a new Eternity, and all Dimension multiplier's exponents and
-tickspeed multiplier's exponent will be reduced to $1aX. If you can Eternity while Dilated,
-your Tachyon Particles will be increased to a value based on your highest antimatter and any Tachyon Particle
+  enterCelestialModalTeresaDone: `Your highest Teresa completion was for $1aX$AM$$ , gaining you a $2aX multiplier to Glyph Sacrifice power.`,
+  enterCelestialModalEffarigDone: "Effarig is completed!",
+  enterCelestialModalEffarigLayerX: "You are currently on the Infinity Layer. $You are currently on the Eternity Layer. $ You are currently on the Reality Layer.",
+  enterCelestialModalEnslavedNotDone: "We... can help... Let us... help...",
+  enterCelestialModalEnslavedDone: "Have... we... not helped enough...",
+  enterCelestialModalRa: `Within Ra's Reality, some resources will generate Memory Chunks for Celestial Memories based on their amounts:`,
+  enterCelestialModalLaiThisTierNew: "You have not completed Lai'tela at this tier.",
+  enterCelestialModalLaiThisTier: "Your fastest completions on this tier is $1aX",
+  enterRaModalRegainedAllMemories: "$1aX has regained all Memories $ $1aX have regained all Memories",
+  enterRaModalChunksBasedOn: "gain Memory Chunks based on $1aX $ gains Memory Chunks based on $1aX",
+  dilationModalFirst: "This is your first Dilation",
+  dilationModalTitle: "You are about to enter Dilation",
+  dilationModalInfo: `Dilating time will start a new Eternity, and all Dimension multiplier's exponents and \
+tickspeed multiplier's exponent will be reduced to $1aX. If you can Eternity while Dilated, \
+your Tachyon Particles will be increased to a value based on your highest antimatter and any Tachyon Particle \
 multipliers you have.`,
-  maxFeasible: `You already have the maximum feasible amount of Tachyon Particles you can attain due to
+  dilationModalTeresaReward: `You already have the maximum feasible amount of Tachyon Particles you can attain due to
     Teresa's Level $1aX reward.`,
-  lastDilationAt: `You last completed Dilation at $1aX Eternity Points.`,
-  enter: "Enter",
+  dilationModalLastDilation: `You last completed Dilation at $1aX$EP$$.`,
   ep: "Eternity Point",
-  completingECheader: "Complete Eternity Challenge",
-  eterHeader: "You are about to Eternity",
-  firstEterText: `Eternity will reset everything except Achievements, Challenge records, and anything under the General header
+  eternityModalTitle_EC: "Complete Eternity Challenge",
+  eternityModalTitle: "You are about to Eternity",
+  eternityModalFirstEter: `Eternity will reset everything except Achievements, Challenge records, and anything under the General header
 on the Statistics tab. You will also gain an Eternity Point and unlock various upgrades.`,
-  eterText: "Eternity will reset everything except Achievements, Challenge records, and anything under the General header on the Statistics tab.",
-  gainedOnEter: "You will gain $1aX and $2aX on Eternity.",
-  startNextEter: "You will start your next Eternity with $1aX.",
-  ecXalreadyMaxed: "Eternity Challenge $1aX is already fully completed",
-  noBulkECcompletion: "You will gain one completion of Eternity Challenge $1aX.",
-  bulkECcompletion: "You will gain $1aX for Eternity Challenge $2aX",
-  completion: "completion",
-  restart: "Restart",
-  exit: "Exit",
-  hasHigherLayers: "Other effects coming from higher-layer restrictions will still continue to apply.",
+  eternityModalInfo: "Eternity will reset everything except Achievements, Challenge records, and anything under the General header on the Statistics tab.",
+  eternityModalEternityGain: "You will gain $1aX$ETER$$ and $2aX$EP$$ on Eternity.",
+  eternityModalStartNextEter: "You will start your next Eternity with $1aX$IP$$.",
+  eternityModalECxMaxed: "Eternity Challenge $1aX is already fully completed",
+  eternityModalNoBulk: "You will gain one completion of Eternity Challenge $1aX.",
+  eternityModalBulkEcs: "You will gain $1aX$COMP$$ for Eternity Challenge $2aX",
+  hasHigherLayers: "Other effects coming from higher-layer restrictions will still continue to apply.", // Got to here
   restartingChall: "You will immediately re-enter $1aX again after confirming this modal.",
   exitingChall: "This will place you back into a regular $1aX without any restrictions.",
   restartLowercase: "restart",
@@ -519,40 +500,40 @@ in a different run, you will get the same options for Glyphs.`,
   techReasons: "For technical reasons, the value must be non-zero to be accepted.",
   // Yes this is a modal so it goes here. It sucks. Deal with it.
   pelleNerfList: `
-  Anything unlocked through a Pelle upgrade cannot be unlocked normally$
-  All pre-Doomed IP and EP multipliers are disabled$
-  IP generation based on fastest infinity speed is disabled$
-  All pre-Doomed Replicanti speed multipliers are disabled$
-  Replicanti slows down more drastically above $1aX$
-  Most Eternity Challenges are harder$
-  All Galaxies are only $2aX as effective$
-  Antimatter Dimension Multiplier is divided by $3aX$
-  Achievement multiplier and many achievement rewards are disabled$
-  Black Holes are disabled$
-  Reality Upgrade "Temporal Transcendence" is disabled$
-  All rewards which increase your starting resources except Achievement 21 are disabled$
-  All rewards which prevent resources from being reset are disabled$
-  Perk rewards which reduce unlock costs have been disabled, excluding the ECR group$
-  Automatic Infinity and Eternity Challenges are disabled$
-  All Dimension and pre-Infinity Autobuyers are disabled until reacquired through Pelle$
-  The Time Theorem Autobuyer is disabled$
-  All Automation related to Time Dilation or later is disabled$
-  Eternity Upgrade to Time Dimensions based on days played is based on this Armageddon time$
-  All pre-Doomed Dilated Time multipliers are disabled except the $4aX buyable$
-  All Tachyon Particle multipliers are disabled$
-  All pre-Doomed Time Theorem generation effects are disabled except the Dilation upgrade$
-  Glyph equipping is disabled until reacquired$
-  Glyph levels are lowered and rarity is set to $5aX$
-  Effects from Glyph Sacrifice, Alteration, and Alchemy are all disabled$
-  You cannot enter any other Celestial Realities$
-  Music Glyphs cannot be bought$
-  All rewards from Effarig are disabled$
-  All features related to storing time are disabled$
-  All rewards from V are disabled$
-  The Teresa Level $6aX effect from Ra is disabled$
-  Infinity Upgrades cannot be charged$
-  Triad Studies and Space Theorems are disabled$
-  Imaginary Upgrades are disabled excluding those relating to DMD's and Celestial unlocks$
+  Anything unlocked through a Pelle upgrade cannot be unlocked normally $ \
+  All pre-Doomed IP and EP multipliers are disabled $ \
+  IP generation based on fastest infinity speed is disabled $ \
+  All pre-Doomed Replicanti speed multipliers are disabled $ \
+  Replicanti slows down more drastically above $1aX $ \
+  Most Eternity Challenges are harder $ \
+  All Galaxies are only $2aX as effective $ \
+  Antimatter Dimension Multiplier is divided by $3aX $ \
+  Achievement multiplier and many achievement rewards are disabled $ \
+  Black Holes are disabled $ \
+  Reality Upgrade "Temporal Transcendence" is disabled $ \
+  All rewards which increase your starting resources except Achievement 21 are disabled $ \
+  All rewards which prevent resources from being reset are disabled $ \
+  Perk rewards which reduce unlock costs have been disabled, excluding the ECR group $ \
+  Automatic Infinity and Eternity Challenges are disabled $ \
+  All Dimension and pre-Infinity Autobuyers are disabled until reacquired through Pelle $ \
+  The Time Theorem Autobuyer is disabled $ \
+  All Automation related to Time Dilation or later is disabled $ \
+  Eternity Upgrade to Time Dimensions based on days played is based on this Armageddon time $ \
+  All pre-Doomed Dilated Time multipliers are disabled except the $4aX buyable $ \
+  All Tachyon Particle multipliers are disabled $ \
+  All pre-Doomed Time Theorem generation effects are disabled except the Dilation upgrade $ \
+  Glyph equipping is disabled until reacquired $ \
+  Glyph levels are lowered and rarity is set to $5aX $ \
+  Effects from Glyph Sacrifice, Alteration, and Alchemy are all disabled $ \
+  You cannot enter any other Celestial Realities $ \
+  Music Glyphs cannot be bought $ \
+  All rewards from Effarig are disabled $ \
+  All features related to storing time are disabled $ \
+  All rewards from V are disabled $ \
+  The Teresa Level $6aX effect from Ra is disabled $ \
+  Infinity Upgrades cannot be charged $ \
+  Triad Studies and Space Theorems are disabled $ \
+  Imaginary Upgrades are disabled excluding those relating to DMD's and Celestial unlocks $ \
   Continuum and Singularity rewards are disabled`,
   listOfDisabled: "List of disabled and nerfed effects in Doomed",
   realGlyphCreation: "Reality Glyph Creation",

@@ -18,7 +18,7 @@ export default {
   computed: {
     moreShiftKeyInfo() {
       const shiftKeyFunctions = [];
-      const text = i18n("modal", "moreShiftInfo").split(" $ ");
+      const text = i18n("modal", "hotkeyModalAboutShift", [], true);
       if (this.timeStudyUnlocked) {
         shiftKeyFunctions.push(text[1]);
         shiftKeyFunctions.push(text[2]);
@@ -29,7 +29,7 @@ export default {
       const shiftKeyInfo = makeEnumeration(shiftKeyFunctions);
       return (shiftKeyInfo === "")
         ? ""
-        : i18n("modal", "moreShiftInfo", [shiftKeyInfo]).split(" $ ")[0];
+        : i18n("modal", "hotkeyModalAboutShift", [shiftKeyInfo], true).split(" $ ")[0];
     },
     hotkeyCount() {
       return shortcuts.length;
@@ -41,43 +41,43 @@ export default {
       return shortcuts.map(x => x.keys.map(key => this.format(key)));
     },
     topLabel() {
-      return i18n("modal", "hotkeyHeader");
+      return i18n("modal", "hotkeyModalTitle");
     },
     buyNdims() {
-      return i18n("modal", "buyNdims").split("$");
+      return i18n("modal", "buyNdims", [], true);
     },
     modKeysLabel() {
-      return i18n("modal", "modKeysHeader");
+      return i18n("modal", "hotkeyModalXDimensions");
     },
     shiftInfo() {
-      return i18n("modal", "shiftInfo");
+      return i18n("modal", "hotkeyModalInfoForShift");
     },
     altInfoA() {
-      return i18n("modal", "altInfoA");
+      return i18n("modal", "hotkeyModalInfoAboutAlt");
     },
     altInfoB() {
-      return i18n("modal", "altInfoB");
+      return i18n("modal", "hotkeyModalInfoAboutAltShift");
     },
     arrowKeyInfo() {
-      return i18n("modal", "arrowKeyInfo");
+      return i18n("modal", "hotkeyModalInfoAboutArrows");
     },
     numpadLimit() {
-      return i18n("modal", "numpadLimit").split("$");
+      return i18n("modal", "hotkeyModalInfoAboutNumpad", [], true);
     },
     zoomAdj() {
-      return i18n("modal", "zoomAdj").split("$");
+      return i18n("modal", "hotkeyModalToAdjustZoom", [], true);
     },
     fullscreen() {
-      return i18n("modal", "fullscreen");
+      return i18n("modal", "hotkeyModalFullscreen");
     },
     fullscreenInfo() {
-      return i18n("modal", "fullscreenInfo").split("$");
+      return i18n("modal", "hotkeyModalToEnterFullscreen", [], true);
     },
     windowZoom() {
-      return i18n("modal", "windowZoom");
+      return i18n("modal", "windowZhotkeyModalWindowZoomoom");
     },
     otherHeaders() {
-      return i18n("modal", "otherHotkeyHeaders").split("$");
+      return i18n("modal", "hotkeyModalInternalHeaders").split("$");
     }
   },
   created() {

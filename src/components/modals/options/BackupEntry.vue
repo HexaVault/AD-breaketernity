@@ -24,7 +24,7 @@ export default {
       return GameStorage.loadFromBackup(this.slotData.id);
     },
     progressStr() {
-      if (!this.save) return i18n("modal", "emptyInBrack");
+      if (!this.save) return i18n("modal", "backupEntryModalEmpty");
 
       // These will be checked in order; the first nonzero resource will be returned
       const resources = [this.save.celestials.pelle.realityShards,
@@ -34,7 +34,7 @@ export default {
         this.save.infinityPoints,
         this.save.antimatter
       ];
-      const names = i18n("modal", "resourceNames").split("$");
+      const names = i18n("modal", "backupEntryModalResources", [], true);
 
       for (let index = 0; index < resources.length; index++) {
         const val = new Decimal(resources[index]);
@@ -42,17 +42,17 @@ export default {
       }
 
       // In practice this should never happen, unless a save triggers on the same tick the very first AD1 is bought
-      return i18n("modal", "noResources");
+      return i18n("modal", "backupEntryModalNoResources");
     },
     slotType() {
       const formattedTime = this.slotData.intervalStr?.();
       switch (this.slotData.type) {
         case BACKUP_SLOT_TYPE.ONLINE:
-          return i18n("modal", "savesEveryOn", [formattedTime]);
+          return i18n("modal", "backupEntryModalSavesOnline", [formattedTime]);
         case BACKUP_SLOT_TYPE.OFFLINE:
-          return i18n("modal", "savesEveryOff", [formattedTime]);
+          return i18n("modal", "backupEntryModalSavesOffline", [formattedTime]);
         case BACKUP_SLOT_TYPE.RESERVE:
-          return i18n("modal", "savesPre");
+          return i18n("modal", "backupEntryModalSavedPreload");
         default:
           throw new Error("Unrecognized backup save type");
       }
@@ -60,13 +60,13 @@ export default {
     lastSaved() {
       const lastSave = GameStorage.lastBackupTimes[this.slotData.id]?.date ?? 0;
       return lastSave
-        ? i18n("modal", "lastSave", [TimeSpan.fromMilliseconds(new Decimal(this.currTime - lastSave))])
-        : i18n("modal", "slotNotUsed");
+        ? i18n("modal", "backupEntryModalLastSaved", [TimeSpan.fromMilliseconds(new Decimal(this.currTime - lastSave))])
+        : i18n("modal", "backupEntryModalUnusedSlot");
     },
     slotX() {
-      return i18n("modal", "slotX", [this.slotData.id]);
+      return i18n("modal", "backupEntryModalSlotX", [this.slotData.id]);
     },
-    loadTxt: () => i18n("modal", "load")
+    loadTxt: () => i18n("consts", "load")
   },
   methods: {
     update() {

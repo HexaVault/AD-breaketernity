@@ -24,7 +24,7 @@ export default {
   },
   computed: {
     newsOnOffLabel() {
-      return i18n("modal", "news", [i18n("modal", this.enabled ? "on" : "off")]);
+      return i18n("modal", "NewsSettingModalToggle", [i18n("consts", this.enabled ? "on" : "off")]);
     },
     sliderPropsRepeatBuffer() {
       return {
@@ -54,19 +54,19 @@ export default {
       };
     },
     topLabel() {
-      return i18n("modal", "newsModalHeader");
+      return i18n("modal", "NewsSettingModalTittle");
     },
     repeat() {
-      return i18n("modal", "msgRepeat", [formatInt(parseInt(this.repeatBuffer))]);
+      return i18n("modal", "NewsSettingModalRepeatBuffer", [formatInt(parseInt(this.repeatBuffer))]);
     },
     ai() {
-      return i18n("modal", "aiMsg", [formatPercents(parseInt(this.AIChance))]);
+      return i18n("modal", "NewsSettingModalAI", [formatPercents(parseInt(this.AIChance))]);
     },
     sped() {
-      return i18n("modal", "scrollSpeed", [formatPercents(parseInt(this.speed))]);
+      return i18n("modal", "NewsSettingModalSpeed", [formatPercents(parseInt(this.speed))]);
     },
     aniEff() {
-      return i18n("modal", "aniEff");
+      return i18n("modal", "NewsSettingModalAnimation");
     }
   },
   watch: {

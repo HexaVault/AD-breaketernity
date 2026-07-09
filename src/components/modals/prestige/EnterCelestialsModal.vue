@@ -37,28 +37,28 @@ export default {
       return handlePossibleFunction(GameDatabase.celestials.descriptions[this.number].description);
     },
     topLabel() {
-      return i18n("modal", "celsReality", [this.name]);
+      return i18n("modal", "enterCelestialModalTitle", [this.name]);
     },
     message() {
-      return i18n("modal", "celsRealityMessageBase", [this.name]);
+      return i18n("modal", "enterCelestialModalEnterXReality", [this.name]);
     },
     extraLine() {
       switch (this.number) {
         case 0:
           return this.teresaBestAM.eq(1)
-            ? i18n("modal", "teresaNotDone")
-            : i18n("modal", "teresaDone", [format(this.teresaBestAM, 2, 2), formatX(this.teresaRunMult, 2)]);
+            ? i18n("modal", "enterCelestialModalTeresaNotDone")
+            : i18n("modal", "enterCelestialModalTeresaDone", [[x => format(x, 2, 2), this.teresaBestAM], formatX(this.teresaRunMult, 2)]);
         case 1: return this.effarigDone
-          ? i18n("modal", "effarigDone")
-          : i18n("modal", "effarigOnLayer", [this.effarigLayer]);
+          ? i18n("modal", "enterCelestialModalEffarigDone")
+          : this.effarigLayer;
         case 2: return this.enslavedDone
-          ? i18n("modal", "namelessDone")
-          : i18n("modal", "namelessNotDone");
+          ? i18n("modal", "enterCelestialModalEnslavedNotDone")
+          : i18n("modal", "enterCelestialModalEnslavedDone");
         case 3: return "";
-        case 4: return i18n("modal", "raMessage");
+        case 4: return i18n("modal", "enterCelestialModalRa");
         case 5: return this.laitelaFastest.gte(300)
-          ? i18n("modal", "laiNotThisTier")
-          : i18n("modal", "laiThisTier", [this.laitelaTime]);
+          ? i18n("modal", "enterCelestialModalLaiThisTierNew")
+          : i18n("modal", "enterCelestialModalLaiThisTier", [this.laitelaTime]);
         case 6: return "";
         default: throw new Error(`Attempted to start an Unknown Celestial in Celestial Modal Confirmation.`);
       }
@@ -70,7 +70,7 @@ export default {
       this.teresaRunMult.copyFrom(Teresa.runRewardMultiplier);
       const effarigStage = Effarig.currentStage;
       this.effarigDone = effarigStage === EFFARIG_STAGES.COMPLETED;
-      this.effarigLayer = [null, "Infinity", "Eternity", "Reality"][effarigStage];
+      this.effarigLayer = i18n("modal", "enterCelestialModalEffarigLayerX", [], true)[effarigStage];
       this.enslavedDone = Enslaved.isCompleted;
       this.laitelaFastest.copyFrom(player.celestials.laitela.fastestCompletion);
       this.laitelaTime = TimeSpan.fromSeconds(this.laitelaFastest).toStringShort();

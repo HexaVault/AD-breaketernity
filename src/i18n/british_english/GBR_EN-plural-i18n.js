@@ -31,5 +31,9 @@ export const plurals = {
   infinity: { key: "INF", rules: [{ values: [1, -1], text: "$$$ Infinity" }, "$$$ Infinities"] },
   ad: { key: "AD", rules: [{ values: [1, -1], text: "$$$ Antimatter Dimension" }, "$$$ Antimatter Dimensions"] },
   symbol: { key: "SYM", rules: [{ values: [1, -1], text: "$$$ Symbol" }, "$$$ Symbols"] },
-  colorScheme: { key: "CSC", rules: [{ values: [1, -1], text: "$$$ Colour Scheme" }, "$$$ Colour Schemes"] }
+  colorScheme: { key: "CSC", rules: [{ values: [1, -1], text: "$$$ Colour Scheme" }, "$$$ Colour Schemes"] },
+  remnants: { key: "REM", rules: [{ values: [1, -1], text: "$$$ Remnant" }, "$$$ Remnants"] },
+  realityShards: { key: "REALSHARD", rules: [{ values: [1, -1], text: "$$$ Reality Shard" }, "$$$ Reality Shards"] },
+  dimboosts: { key: "DB", rules: [{ values: [1, -1], text: "$$$ Dimension Boost" }, "$$$ Dimension Boosts"] },
+  completions: { key: "COMP", rules: [{ values: [1, -1], text: "$$$ Completion" }, "$$$ Completions"] }
 };

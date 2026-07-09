@@ -25,11 +25,9 @@ export default {
     gainText() {
       // We need to special-case the grammar for Nameless
       const isPlural = this.pet.id === "enslaved";
-      const gain = i18n("modal", "gain").split(" $ ")[Number(isPlural)];
-      const has = i18n("modal", "has").split(" $ ")[Number(isPlural)];
       return this.pet.level === 25
-        ? i18n("modal", "regainedAllMemories", [has])
-        : i18n("modal", "chunksBasedOn", [gain, this.chunkGain]);
+        ? i18n("modal", "enterRaModalRegainedAllMemories", [], true)[Number(isPlural)]
+        : i18n("modal", "enterRaModalChunksBasedOn", [this.chunkGain, true])[Number(isPlural)];
     },
     chunkGain() {
       return this.pet.chunkGain;

@@ -22,26 +22,25 @@ export default {
   computed: {
     backupSlots: () => AutoBackupSlots,
     topLabel() {
-      return i18n("modal", "autoBackupHeader");
+      return i18n("modal", "backupModalTitle");
     },
     textA() {
-      return i18n("modal", "autoBackupTextA");
+      return i18n("modal", "backupModalInformationTextA");
     },
     textB() {
-      return i18n("modal", "autoBackupTextB",
-        [STEAM ? i18n("modal", "steamUninstall") : i18n("modal", "cookieDelete")]);
+      return i18n("modal", STEAM ? "backupModalInformationTextB_Steam" : "backupModalInformationTextB_Browser");
     },
     exportingText() {
-      return i18n("modal", "exportAsFile");
+      return i18n("modal", "backupModalExportFile");
     },
     importingText() {
-      return i18n("modal", "importAsFile");
+      return i18n("modal", "backupModalImportFile");
     },
     textC() {
-      return i18n("modal", "autoBackupTextC");
+      return i18n("modal", "backupModalSavesSeperateBackups");
     },
     noOffline() {
-      return i18n("modal", "loadWithNoOffline");
+      return i18n("modal", "loadWithNbackupModalLoadWithoutOfflineoOffline");
     }
   },
   watch: {

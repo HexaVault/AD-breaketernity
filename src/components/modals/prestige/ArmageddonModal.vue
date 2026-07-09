@@ -17,22 +17,22 @@ export default {
   },
   computed: {
     topLabel() {
-      if (!this.isDoomed) return i18n("modal", "aboutToDoom");
-      return i18n("modal", "armaResetHeader");
+      if (!this.isDoomed) return i18n("modal", "armageddonModalAboutToDoom");
+      return i18n("modal", "armageddonModalTitle");
     },
     message() {
       const isFirstReset = (Currency.remnants.eq(0))
-        ? i18n("modal", "ArmaFirstReset", [format(this.nextRealityShardGain, 2, 2)])
-        : i18n("modal", "ArmaNotFirstReset", [format(this.realityShardGain, 2, 2),
+        ? i18n("modal", "armageddonModalFirstReset", [[x => format(x, 2, 2), this.nextRealityShardGain]])
+        : i18n("modal", "armageddonModalNotFirstReset", [format(this.realityShardGain, 2, 2),
           format(this.nextRealityShardGain, 2, 2)]);
 
-      return i18n("modal", "ArmaReset", [quantify("Remnant", this.remnantsGain, 2, 0), isFirstReset]);
+      return i18n("modal", "ArmaReset", [[x => format(x, 2, 0), this.remnantsGain], isFirstReset]);
     },
     doomingText() {
-      return i18n("modal", "doomInfo");
+      return i18n("modal", "armageddonModalDoomInfo");
     },
     isSure() {
-      return i18n("modal", "areYouSure");
+      return i18n("modal", "armageddonModalConfirmation");
     }
   },
   methods: {

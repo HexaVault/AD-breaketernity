@@ -21,26 +21,24 @@ export default {
     },
     message() {
       const info = this.isFirstInfinity ? this.firstInfinityInfo : ``;
-      return i18n("modal", "uponInfinity", [info]);
+      return i18n("modal", "infinityModalWillReset", [info]);
     },
     firstInfinityInfo() {
       return i18n("modal", "firstInfinityInfo");
     },
     ipGainInfo() {
-      return i18n("modal", "infGainInfo", [quantify(i18n("modal", "inf"), this.gainedInfinities, 2, 0),
-        quantify(i18n("modal", "ip"), this.gainedInfinityPoints, 2, 0)
-      ]);
+      return i18n("modal", "infinityModalInfinityGain", [[x => format(x, 2, 0), this.gainedInfinities], [x => format(x, 2, 0), this.gainedInfinityPoints]]);
     },
     startingResources() {
-      const gainedResources = [];
-      if (this.startingAM.gte(10)) gainedResources.push(`${quantify(i18n("modal", "am"), this.startingAM, 2, 1)}`);
-      if (this.startingBoosts.gte(0)) gainedResources.push(`${quantify(i18n("modal", "db"), this.startingBoosts)}`);
-      if (this.willStartWithGalaxy) gainedResources.push(`${quantify(i18n("modal", "gal"), 1)}`);
+      const strings = i18n("modal", "infinityModalStartNextInf", [[format, this.startingAM], [formatInt, this.startingBoosts], [formatInt, 1]], true);
+      const finalString = [strings[0]];
+      if (this.startingBoosts.gte(0)) finalString.push(strings[1]);
+      if (this.willStartWithGalaxy) finalString.push(strings[2]);
 
-      return i18n("modal", "willStartNextInf", [makeEnumeration(gainedResources)]);
+      return "".concat(finalString);
     },
     aboutToInf() {
-      return i18n("modal", "aboutToInf");
+      return i18n("modal", "infinityModalTitle");
     }
   },
   methods: {

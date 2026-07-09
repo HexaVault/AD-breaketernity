@@ -10,22 +10,22 @@ export default {
   },
   computed: {
     message() {
-      return i18n("modal", "dilationInfo", [formatPow(0.75, 2, 2)]);
+      return i18n("modal", "dilationModalInfo", [formatPow(0.75, 2, 2)]);
     },
     entranceLabel() {
-      return i18n("modal", "dilEnterHeader");
+      return i18n("modal", "dilationModalTitle");
     },
     EPSinceLabel() {
       if (player.dilation.lastEP.eq(-1)) {
-        return i18n("modal", "thisFirstDilation");
+        return i18n("modal", "dilationModalFirst");
       }
       if (!isInCelestialReality() && Ra.unlocks.unlockDilationStartingTP.canBeApplied) {
-        return i18n("modal", "maxFeasible", [formatInt(25)]);
+        return i18n("modal", "dilationModalTeresaReward", [formatInt(25)]);
       }
-      return i18n("modal", "lastDiltionAt", [format(player.dilation.lastEP, 2, 2)]);
+      return i18n("modal", "dilationModalLastDilation", [[x => format(x, 2, 2), player.dilation.lastEP]]);
     },
     enter() {
-      return i18n("modal", "enter");
+      return i18n("consts", "enter");
     }
   },
   methods: {
@@ -58,7 +58,7 @@ export default {
       {{ message }}
     </div>
     <template #confirm-text>
-      Enter
+      {{ enter }}
     </template>
   </ModalWrapperChoice>
 </template>

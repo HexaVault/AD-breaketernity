@@ -44,8 +44,8 @@ export default {
     fullCompletion() {
       return player.records.fullGameCompletions > 0;
     },
-    topLabel: () => i18n("modal", "AnimationOpt"),
-    list: () => i18n("modal", "AOlist").split("$"),
+    topLabel: () => i18n("modal", "animationOptionsModalTitle"),
+    list: () => i18n("modal", "animationOptionsModalAnimationList", true),
   },
   watch: {
     bigCrunch(newValue) {

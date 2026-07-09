@@ -31,13 +31,13 @@ export default {
       return player.records.fullGameCompletions > 0;
     },
     topLabel() {
-      return i18n("modal", "infoDisplayHeader");
+      return i18n("modal", "infoDisplayModalTitle");
     },
     text() {
-      return i18n("modal", "infoDisplayTexts").split("$");
+      return i18n("modal", "infoDisplayModalSettings", [], true);
     },
     note() {
-      return i18n("modal", "infoDisplayNote");
+      return i18n("modal", "infoDisplayModalNote");
     }
   },
   watch: {

@@ -12,8 +12,8 @@ export default {
     all() {
       return AwayProgressTypes.showOption;
     },
-    topLabel: () => i18n("modal", "AwayHeader"),
-    note: () => i18n("modal", "AwayNote")
+    topLabel: () => i18n("modal", "awayOptionsModalTitle"),
+    note: () => i18n("modal", "awayOptionsModalNote")
   },
 };
 </script>
