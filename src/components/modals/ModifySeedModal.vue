@@ -20,7 +20,25 @@ export default {
   computed: {
     choiceEnum: () => SPEEDRUN_SEED_STATE,
     officialSeed: () => Speedrun.officialFixedSeed,
-    i18nA: () => i18n("modal", "cantInputZero")
+    topLabel: () => i18n("modal", "modifySeedModalTitle"),
+    topMessage: () => i18n("modal", "modifySeedModalMessageA"),
+    canSwitchMessage: () => i18n("modal", "modifySeedModalCanSwitch"),
+    OPS() {
+      return i18n("modal", "modifySeedModalOffical", [this.officialSeed]);
+    },
+    OPSInfo: () => i18n("modal", "modifySeedModalOfficalInfo"),
+    RCS: () => i18n("modal", "modifySeedModalRandom"),
+    RCSInfo: () => i18n("modal", "modifySeedModalRandomInfo"),
+    PCS: () => i18n("modal", "modifySeedModalChosen"),
+    PCSInfo: () => i18n("modal", "modifySeedModalChosenInfo"),
+    // For some reason, this gets flagged as having an invalid "this" parameter as a single-line function
+    chosenBecomes() {
+      return i18n("modal", "modifySeedModalInputBecomesX", [this.seedValue], true)[Number(this.convertedInput)];
+    },
+    chosenBecomesZero() {
+      return i18n("modal", "modifySeedModalInputBecomesZero", [], true)[Number(this.convertedInput)];
+    },
+    technicalReasons: () => i18n("modal", "modifySeedModalTechnicalReasons")
   },
   created() {
     this.seedValue = player.speedrun.initialSeed;
@@ -77,35 +95,35 @@ export default {
 <template>
   <ModalWrapper>
     <template #header>
-      {{ i18n("modal", "modGRNG") }}
+      {{ topLabel }}
     </template>
     <div>
-      {{ i18n("modal", "modGRNGTextA") }}
+      {{ topMessage }}
       <br>
       <br>
-      {{ i18n("modal", "canSwitch") }}
+      {{ canSwitchMessage }}
       <br>
-      {{ i18n("modal", "currentSetting", [seedText]) }}
+      {{ seedText }}
       <br>
       <br>
       <PrimaryButton
         :class="buttonClass(choiceEnum.FIXED)"
         @click="setMode(choiceEnum.FIXED)"
       >
-        {{ i18n("modal", "oPS") }}
+        {{ OPS }}
       </PrimaryButton>
       <br>
-      {{ i18n("modal", "thisDefault", [officialSeed]) }}
+      {{ OPSInfo }}
       <br>
       <br>
       <PrimaryButton
         :class="buttonClass(choiceEnum.RANDOM)"
         @click="setMode(choiceEnum.RANDOM)"
       >
-        {{ i18n("modal", "rS") }}
+        {{ RCS }}
       </PrimaryButton>
       <br>
-      {{ i18n("modal", "rStxt") }}
+      {{ RCSInfo }}
       <br>
       <br>
       <PrimaryButton
@@ -113,7 +131,7 @@ export default {
         :class="buttonClass(choiceEnum.PLAYER)"
         @click="setMode(choiceEnum.PLAYER, seedValue)"
       >
-        {{ i18n("modal", "pSS") }}
+        {{ PCS }}
       </PrimaryButton>
       <input
         ref="inputSeed"
@@ -123,16 +141,16 @@ export default {
         @input="handleSeedInput()"
       >
       <br>
-      {{ i18n("modal", "pSStxt") }}
+      {{ PCSInfo }}
       <br>
       <span v-if="seedValue !== 0">
-        {{ i18n("modal", "replaceInput", [i18n("modal", "convUsed").split("$")[convertedInput ? 0 : 1], seedValue]) }}
+        {{ chosenBecomes }}
       </span>
       <span v-else>
-        {{ i18n("modal", "inputDefault", [i18n("modal", "convUsedAlt").split("$")[convertedInput ? 0 : 1]]) }}
+        {{ chosenBecomesZero }}
       </span>
       <br>
-      {{ i18n("modal", "techReasons") }}
+      {{ technicalReasons }}
     </div>
   </ModalWrapper>
 </template>

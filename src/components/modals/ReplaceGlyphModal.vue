@@ -24,7 +24,8 @@ export default {
     };
   },
   computed: {
-    resetTerm() { return i18n("modal", this.isDoomed ? "arma" : "real"); },
+    topLabel() { return i18n("modal", "replaceGlyphModalTitle"); },
+    message() { return i18n("modal", "replaceGlyphModalInfo", [], true)[Number(this.isDoomed)]; },
   },
   methods: {
     update() {
@@ -46,8 +47,8 @@ export default {
     @confirm="handleYesClick"
   >
     <template #header>
-      {{ i18n("modal", "aboutToReplace") }}
+      {{ topLabel }}
     </template>
-    {{ i18n("modal", "willRestart", [resetTerm]) }}
+    {{ message }}
   </ModalWrapperChoice>
 </template>

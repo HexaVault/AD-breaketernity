@@ -13,14 +13,17 @@ export default {
     };
   },
   computed: {
+    topLabel() {
+      return i18n("modal", "sacrificeModalTitle");
+    },
     message() {
       if (Achievement(118).isUnlocked && !Pelle.isDoomed) {
-        return i18n("modal", "hasAchSacrifice");
+        return i18n("modal", "sacrificeModalAch118");
       }
-      return i18n("modal", "noAchSacrifice");
+      return i18n("modal", "sacrificeModalNo118");
     },
     multiplierText() {
-      return i18n("modal", "dsMultText", [formatX(this.currentMultiplier, 2, 2), formatX(this.nextMultiplier, 2, 2)]);
+      return i18n("modal", "sacrificeModalCurrentMultiplier", [formatX(this.currentMultiplier, 2, 2), formatX(this.nextMultiplier, 2, 2)]);
     },
   },
   methods: {
@@ -41,7 +44,7 @@ export default {
     @confirm="handleYesClick"
   >
     <template #header>
-      Dimensional Sacrifice
+      {{ topLabel }}
     </template>
     <div class="c-modal-message__text">
       {{ message }}

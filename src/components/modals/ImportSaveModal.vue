@@ -61,8 +61,8 @@ export default {
       const ms = Date.now() - this.player.lastUpdate;
       const formatms = TimeSpan.fromMilliseconds(Decimal.abs(ms)).toString();
       return this.isFromFuture
-        ? i18n("modal", "saveFromFuture", [formatms])
-        : i18n("modal", "saveFromPast", [formatms]);
+        ? i18n("modal", "importSaveModalFromFuture", [formatms])
+        : i18n("modal", "importSaveModalFromPast", [formatms]);
     },
     offlineType() {
       // We update here in the computed method instead of elsewhere because otherwise it initializes the text
@@ -71,24 +71,24 @@ export default {
 
       switch (this.offlineImport) {
         case OFFLINE_PROGRESS_TYPE.IMPORTED:
-          return i18n("modal", "opImported");
+          return i18n("modal", "importSaveModalImportedSaveSettings");
         case OFFLINE_PROGRESS_TYPE.LOCAL:
-          return i18n("modal", "opLocal");
+          return i18n("modal", "importSaveModalExistingSaveSettings");
         case OFFLINE_PROGRESS_TYPE.IGNORED:
-          return i18n("modal", "opIgnored");
+          return i18n("modal", "importSaveModalNoOffline");
         default:
-          throw new Error(i18n("modal", "opErr"));
+          throw new Error(i18n("modal", "importSaveModalOfflineSettingError"));
       }
     },
     offlineDetails() {
-      if (this.offlineImport === OFFLINE_PROGRESS_TYPE.IGNORED) return i18n("modal", "willImpWOoffline");
-      if (!GameStorage.offlineEnabled) return i18n("modal", "wontApplyOffline");
-      if (this.isFromFuture) return i18n("modal", "noOfflineFuture");
+      if (this.offlineImport === OFFLINE_PROGRESS_TYPE.IGNORED) return i18n("modal", "importSaveModalImportNoOffline");
+      if (!GameStorage.offlineEnabled) return i18n("modal", "importSaveModalImportWontOffline");
+      if (this.isFromFuture) return i18n("modal", "importSaveModalNoOfflineCauseFuture");
 
       const durationInMs = Date.now() - this.player.lastUpdate;
       const ticks = GameStorage.maxOfflineTicks(durationInMs);
       const tickLengthFormat = TimeSpan.fromMilliseconds(new Decimal(durationInMs / ticks)).toStringShort();
-      return i18n("modal", "tickCalc", [ticks, tickLengthFormat]);
+      return i18n("modal", "importSaveModalSimulatesX", [ticks, tickLengthFormat]);
     },
     willLoseCosmetics() {
       const currSets = player.reality.glyphs.cosmetics.unlockedFromNG;
@@ -100,6 +100,51 @@ export default {
     },
     isDevEnv() {
       return DEV;
+    },
+    topLabel() {
+      return i18n("modal", "importSaveModalTitle");
+    },
+    fileNameString() {
+      return i18n("modal", "importSaveModalFileName", [this.fileName]);
+    },
+    antimatterString() {
+      return i18n("modal", "importSaveModalAM", [formatPostBreak(this.antimatter, 2, 1)]);
+    },
+    infinitiesString() {
+      return i18n("modal", "importSaveModalInfinities", [formatPostBreak(this.infinities, 2)]);
+    },
+    eternitiesString() {
+      return i18n("modal", "importSaveModalEternities", [formatPostBreak(this.player.eternities, 2)]);
+    },
+    realitiesString() {
+      return i18n("modal", "importSaveModalRealities", [formatPostBreak(this.player.realities, 2)]);
+    },
+    completionsString() {
+      return i18n("modal", "importSaveModalCompletions", [formatInt(this.player.records.fullGameCompletions)]);
+    },
+    overrideString() {
+      return i18n("modal", "importSaveModalOverride");
+    },
+    offlineString() {
+      return i18n("modal", "importSaveModalOfflineProgressOption", [this.offlineType]);
+    },
+    invalidString() {
+      return i18n("modal", "importSaveModalInvalidSave");
+    },
+    cosStringA() {
+      return i18n("modal", "importSaveModalLoseCosmeticsNoteA");
+    },
+    cosStringB() {
+      return i18n("modal", "importSaveModalLoseCosmeticsNoteB");
+    },
+    speedrunString() {
+      return i18n("modal", "importSaveModalLoseSpeedrun");
+    },
+    devSaveString() {
+      return i18n("modal", "importSaveModalDevelopment");
+    },
+    buttonLabel() {
+      return i18n("consts", "import");
     }
   },
   mounted() {
@@ -146,7 +191,7 @@ export default {
     :show-confirm="false"
   >
     <template #header>
-      {{ i18n("modal", "inputSave") }}
+      {{ topLabel }}
     </template>
     <input
       ref="input"
@@ -162,25 +207,25 @@ export default {
       </div>
       <template v-else-if="inputIsValidSave">
         <div v-if="fileName">
-          {{ i18n("modal", "fileName", [fileName]) }}
+          {{ fileNameString }}
         </div>
         <div>
-          {{ i18n("modal", "saveAM", [formatPostBreak(antimatter, 2, 1)]) }}
+          {{ antimatterString }}
         </div>
         <div v-if="progress.isInfinityUnlocked">
-          {{ i18n("modal", "saveInf", [formatPostBreak(infinities, 2)]) }}
+          {{ infinitiesString }}
         </div>
         <div v-if="progress.isEternityUnlocked">
-          {{ i18n("modal", "saveEter", [formatPostBreak(player.eternities, 2)]) }}
+          {{ eternitiesString }}
         </div>
         <div v-if="progress.isRealityUnlocked">
-          {{ i18n("modal", "saveReal", [formatPostBreak(player.realities, 2)]) }}
+          {{ realitiesString }}
         </div>
         <div v-if="progress.hasFullCompletion">
-          {{ i18n("modal", "saveComps", [formatInt(player.records.fullGameCompletions)]) }}
+          {{ completionsString }}
         </div>
         <div class="c-modal-import__warning">
-          {{ i18n("modal", "willOverride") }}
+          {{ overrideString }}
         </div>
         <br>
         <div>
@@ -189,13 +234,13 @@ export default {
             class="o-primary-btn"
             @click="changeOfflineSetting"
           >
-            {{ i18n("modal", "saveOP", [offlineType]) }}
+            {{ offlineString }}
           </div>
           <span v-html="offlineDetails" />
         </div>
       </template>
       <div v-else-if="hasInput">
-        {{ i18n("modal", "invalidSave") }}
+        {{ invalidString }}
         <br>
         {{ saveCheckString }}
       </div>
@@ -204,17 +249,17 @@ export default {
         class="c-modal-hard-reset-danger"
       >
         <div v-if="!isDevEnv && player.devVersion !== undefined">
-          WARNING: This save comes from a development version. It might fail to import!
+          {{ devSaveString }}
         </div>
         <div v-if="willLoseCosmetics">
           <br>
-          {{ i18n("modal", "willLoseCosmeticsA") }}
+          {{ cosStringA }}
           <br>
-          {{ i18n("modal", "willLoseCosmeticsB") }}
+          {{ cosStringB }}
         </div>
         <div v-if="willLoseSpeedrun">
           <br>
-          {{ i18n("modal", "willLoseSpeedrun") }}
+          {{ speedrunString }}
         </div>
       </div>
     </div>
@@ -224,7 +269,7 @@ export default {
       class="o-primary-btn--width-medium c-modal-message__okay-btn c-modal__confirm-btn"
       @click="importSave"
     >
-      {{ i18n("modal", "import") }}
+      {{ buttonLabel }}
     </PrimaryButton>
   </ModalWrapperChoice>
 </template>

@@ -20,5 +20,6 @@ export const consts = {
   continue: "Continue",
   remain: "Remain",
   swap: "Swap",
-  reset: "Reset"
+  reset: "Reset",
+  ad: "Antimatter Dimensions"
 };

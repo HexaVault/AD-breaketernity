@@ -9,12 +9,14 @@ export default {
     InformationModalButton
   },
   computed: {
-    ghRepo() { return i18n("modal", "ghRepo"); },
-    adserv() { return i18n("modal", "adserv"); },
-    adgp() { return i18n("modal", "adgp"); },
-    adstm() { return i18n("modal", "adstm"); },
-    cred() { return i18n("modal", "cred"); },
-    changelog() { return i18n("modal", "changelog"); }
+    ghRepo() { return i18n("modal", "informationModalGithub"); },
+    adserv() { return i18n("modal", "informationModalDiscord"); },
+    adgp() { return i18n("modal", "informationModalGooglePlay"); },
+    adstm() { return i18n("modal", "informationModalSteam"); },
+    cred() { return i18n("modal", "informationModalCredits"); },
+    changelog() { return i18n("modal", "informationModalChangelog"); },
+    topLabel() { return i18n("modal", "informationModalTitle"); },
+    infoText() { return i18n("modal", "informationModalInfoText", [], true); },
   }
 };
 </script>
@@ -24,17 +26,17 @@ export default {
     <ModalCloseButton @click="emitClose" />
     <div class="l-h2p-header">
       <div class="c-h2p-title">
-        {{ i18n("modal", "aboutGame") }}
+        {{ topLabel }}
       </div>
     </div>
     <div class="c-info-body">
-      {{ i18n("modal", "infoModalText").split("$")[0] }}
+      {{ infoText[0] }}
       <br>
       <br>
-      {{ i18n("modal", "infoModalText").split("$")[1] }}
+      {{ infoText[1] }}
       <br>
       <br>
-      {{ i18n("modal", "infoModalText").split("$")[2] }}
+      {{ infoText[2] }}
     </div>
     <div class="l-socials">
       <InformationModalButton

@@ -22,8 +22,26 @@ export default {
     }
   },
   computed: {
-    upgradeStr() {
-      return i18n("modal", "iUrU").split("$")[this.isImaginary ? 0 : 1];
+    upgradeType() {
+      return i18n("modal", "upgradeLockModaliUrU").split("$")[this.isImaginary ? 0 : 1];
+    },
+    topLabel() {
+      return i18n("modal", "upgradeLockModalTitle", [this.upgradeType]);
+    },
+    textA() {
+      return i18n("modal", "upgradeLockModalAreYouSure", [lockEvent, upgradeStr, upgrade.name], true)[0];
+    },
+    textB() {
+      return i18n("modal", "upgradeLockModalAreYouSure", [lockEvent, upgradeStr, upgrade.name], true)[1];
+    },
+    selectCancel() {
+      return i18n("modal", "upgradeLockModalCancelNoEffect");
+    },
+    noAction() {
+      return i18n("modal", "upgradeLockModalNeitherDoesAction");
+    },
+    buttonLabel() {
+      return i18n("modal", "upgradeLockModalDisableLock");
     },
     lockEvent() {
       return this.specialLockText ?? this.upgrade.lockEvent;
@@ -42,25 +60,25 @@ export default {
     @confirm="disableLock"
   >
     <template #header>
-      {{ i18n("modal", "conditionLockHeader", [upgradeStr]) }}
+      {{ topLabel }}
     </template>
     <div class="c-modal-message__text">
-      {{ i18n("modal", "areYouSureCondition", [lockEvent, upgradeStr, upgrade.name]).split("$")[0] }}
+      {{ textA }}
       <span class="l-emphasis">
-        {{ i18n("modal", "areYouSureCondition", [lockEvent, upgradeStr, upgrade.name]).split("$")[1] }}
+        {{ textB }}
       </span>
       <span :ach-tooltip="upgrade.requirement">
         <i class="fas fa-question-circle" />
       </span>
       <br>
       <br>
-      {{ i18n("modal", "selectCancel") }}
+      {{ selectCancel }}
       <br>
       <br>
-      {{ i18n("modal", "neitherPerform") }}
+      {{ noAction }}
     </div>
     <template #confirm-text>
-      {{ i18n("modal", "disableLock") }}
+      {{ buttonLabel }}
     </template>
   </ModalWrapperChoice>
 </template>

@@ -9,15 +9,21 @@ export default {
     ModalWrapper,
   },
   computed: {
+    topLabel() {
+      return i18n("modal", "pelleEffectsModalTitle");
+    },
     nerfs() {
-      return i18n("modal", "pelleNerfList", [
+      return i18n("modal", "pelleEffectsModalListOfDisabled", [
         format(Number.MAX_VALUE, 2),
         formatPercents(0.5),
         formatInt(10),
         formatX(2),
         formatPercents(0),
         formatInt(1)
-      ]);
+      ], true);
+    },
+    buttonLabel() {
+      return i18n("consts", "okay");
     }
   }
 };
@@ -26,7 +32,7 @@ export default {
 <template>
   <ModalWrapper>
     <template #header>
-      {{ i18n("modal", "listOfDisabled") }}
+      {{ topLabel }}
     </template>
     <div class="pelle-effects-container">
       <p
@@ -40,7 +46,7 @@ export default {
       class="o-primary-btn--width-medium c-modal-message__okay-btn c-modal__confirm-btn"
       @click="emitClose"
     >
-      {{ i18n("modal", "okay") }}
+      {{ buttonLabel }}
     </PrimaryButton>
   </ModalWrapper>
 </template>

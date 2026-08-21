@@ -13,6 +13,11 @@ export default {
       required: true
     }
   },
+  computed: {
+    amntString() {
+      return i18n("modal", "STDStoreModalSTDCost", [this.amount]);
+    }
+  },
   methods: {
     purchase() {
       Payments.buyMoreSTD(this.amount, this.cost);
@@ -24,7 +29,7 @@ export default {
 <template>
   <div class="c-modal-store-btn-container">
     <div class="o-modal-store-label">
-      {{ amount }} STDs
+      {{ amntString }}
     </div>
     <button
       class="o-modal-store-btn"

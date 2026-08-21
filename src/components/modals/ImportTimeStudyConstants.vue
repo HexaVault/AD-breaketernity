@@ -19,6 +19,21 @@ export default {
       // so we replace all of those with underscores. This alone can however result in duplicate names due
       // to multiple different characters being mapped to underscores, so we also include the preset index
       return this.presets.map((p, index) => `TSPreset${index + 1}__${p.name.replaceAll(/[^a-zA-Z_0-9]/gu, "_")}`);
+    },
+    topLabel() {
+      return i18n("modal", "importTimeStudyConstModalTitle");
+    },
+    infoText() {
+      return i18n("modal", "importTimeStudyConstModalText");
+    },
+    overwitesXText() {
+      return i18n("modal", "importTimeStudyConstModalOverwrite");
+    },
+    cantImportText() {
+      return i18n("modal", "importTimeStudyConstModalCantImportX", [[formatInt, missedImports()]]);
+    },
+    buttonLabel() {
+      return i18n("modal", "importTimeStudyConstModalImportAll");
     }
   },
   methods: {
@@ -64,10 +79,10 @@ export default {
     @confirm="importConstants"
   >
     <template #header>
-      {{ i18n("modal", "importTSConstHeader") }}
+      {{ topLabel }}
     </template>
     <div class="c-modal-message__text">
-      {{ i18n("modal", "iTSCtextA") }}
+      {{ infoText }}
       <br>
       <br>
       <div
@@ -75,7 +90,7 @@ export default {
         :key="i"
         :class="{ 'l-not-imported' : !willImport[i-1] }"
       >
-        {{ i18n("modal", "nameAtoB", [presets[i-1].name, names[i-1]]) }}
+        {{ i18n("modal", "importTimeStudyConstModalNameChange", [presets[i-1].name, names[i-1]]) }}
         <br>
         {{ shortenString(presets[i-1].studies) }}
         <span
@@ -83,7 +98,7 @@ export default {
           class="l-warn-text"
         >
           <br>
-          {{ i18n("modal", "willOverwriteExistingConst") }}
+          {{ overwitesXText }}
         </span>
         <br>
         <br>
@@ -92,7 +107,7 @@ export default {
         v-if="missedImports() > 0"
         class="l-warn-text"
       >
-        {{ i18n("modal", "cantImportX", [quantify(i18n("modal", "preset"), missedImports())]) }}
+        {{ cantImportText }}
       </div>
     </div>
     <template #confirm-text>

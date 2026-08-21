@@ -99,8 +99,8 @@ export default {
       return combinedTree;
     },
     modalTitle() {
-      if (this.deleting) return i18n("modal", "delStudyPreset", [this.name]);
-      return i18n("modal", this.isImporting ? "inputTree" : "editTree", [this.name]);
+      if (this.deleting) return i18n("modal", "studyStringModalTitle_delete", [this.name]);
+      return i18n("modal", this.isImporting ? "studyStringModalTitle_input" : "studyStringModalTitle_edit", [this.name]);
     },
     invalidMessage() {
       if (!this.inputIsValidTree || this.importedTree.invalidStudies.length === 0) return null;
@@ -123,7 +123,7 @@ export default {
             break;
         }
       }
-      return i18n("modal", "invalidImportStr", [coloredString.replaceAll("#", "").replaceAll(",", ", ")]);
+      return i18n("modal", "studyStringModalInvalidStudyIDs", [coloredString.replaceAll("#", "").replaceAll(",", ", ")]);
     },
     truncatedInput() {
       return TimeStudyTree.truncateInput(this.input);
@@ -147,23 +147,32 @@ export default {
       return secretStrings.includes(sha512_256(this.input.toLowerCase()));
     },
     confirmText() {
-      if (this.deleting) return i18n("modal", "del");
-      return this.isImporting ? i18n("modal", "import") : i18n("modal", "save");
+      if (this.deleting) return i18n("consts", "delete");
+      return this.isImporting ? i18n("consts", "import") : i18n("consts", "save");
     },
     hoverTextA() {
-      return i18n("modal", "presetHas");
+      return i18n("modal", "studyStringModalPresetContains");
     },
     hoverTextB() {
-      return i18n("modal", "noLoadStatus");
+      return i18n("modal", "studyStringModalNoLoadStatus");
     },
     hoverTextC() {
-      return i18n("modal", "loadStatus");
+      return i18n("modal", "loadStastudyStringModalLoadStatustus");
     },
     hoverTextD() {
-      return i18n("modal", "formatPresetHover");
+      return i18n("modal", "studyStringModalFormatHover");
     },
     hoverTextE() {
-      return i18n("modal", "cantEterRN");
+      return i18n("modal", "studyStringModalCannotEternity");
+    },
+    invalidTreeString() {
+      return i18n("modal", "studyStringModalInvalid");
+    },
+    formatPresetString() {
+      return i18n("modal", "studyStringModalFormat");
+    },
+    respecEternityString() {
+      return i18n("modal", "studyStringModalRespecAndEternity");
     }
   },
   watch: {
@@ -214,16 +223,16 @@ export default {
     savePreset() {
       if (this.inputIsValid) {
         player.timestudy.presets[this.id].studies = this.input;
-        if (player.options.notifications.studies) GameUI.notify.eternity(i18n("modal", "successEdit", [this.name]));
+        if (player.options.notifications.studies) GameUI.notify.eternity(i18n("modal", "studyPresetEdited", [this.name]));
         this.emitClose();
       }
     },
     deletePreset() {
       const name = player.timestudy.presets[this.id].name;
-      const presetName = i18n("modal", name ? "studyNamed" : "studyUnnamed", [name]);
+      const presetName = i18n("modal", name ? "studyStringModalPresetName" : "studyStringModalPresetNoName", [name]);
       player.timestudy.presets[this.id].studies = "";
       player.timestudy.presets[this.id].name = "";
-      if (player.options.notifications.studies) GameUI.notify.eternity(i18n("modal", "presetDeleted", [presetName, this.id + 1]));
+      if (player.options.notifications.studies) GameUI.notify.eternity(i18n("modal", "studyPresetDeleted", [presetName, this.id + 1]));
     },
     studyString(study) {
       return study instanceof ECTimeStudyState ? `EC${study.id}` : `${study.id}`;
@@ -290,7 +299,7 @@ export default {
           />
         </template>
         <div v-if="!deleting && !inputIsValidTree && hasInput">
-          {{ i18n("modal", "invalidTree") }}
+          {{ invalidTreeString }}
         </div>
       </div>
       <div class="c-study-preview">
@@ -309,7 +318,7 @@ export default {
         v-tooltip="hoverTextD()"
         @click="convertInputShorthands"
       >
-        {{ i18n("modal", "formatPreset") }}
+        {{ formatPresetString }}
       </PrimaryButton>
     </div>
     <span v-if="isImporting">
@@ -331,7 +340,7 @@ export default {
           />
         </div>
         <span class="c-modal__confirmation-toggle__text">
-          {{ i18n("modal", "respecAndEter") }}
+          {{ respecEternityString }}
           <span
             v-if="!canEternity"
             class="c-modal__confirmation-toggle__warning"

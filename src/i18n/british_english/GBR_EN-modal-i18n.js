@@ -5,12 +5,17 @@
 
 // All modal info, i18n support
 export const modal = {
-  // To make this easier, everything called by Modal.message will go first
+  // To make this easier, everything called by Modal.message, or notify.info in modals, will go first
   glyphMoveModal: "The selected Glyph changed position or was otherwise changed!",
   notifyBackupLoad: "Game loaded from backup slot #$1aX",
   infAnimationModal: `This animation will occur after every manually-triggered Infinity. If \
 you would like to disable it, there is a setting to do so in the Options tab. This can be done for any \
 visual animation effect in the game after seeing it for the first time.`,
+  tempCopied: "Template copied to clipboard",
+  noSpaceForGlyphs: "No available inventory space; Sacrifice some Glyphs to free up space.",
+  glyphUndoOnlyWithReality: "Glyph Undo can only undo with a Reality!",
+  studyPresetDeleted: "$1aX deleted from slot $2aX",
+  studyPresetEdited: "Study Tree \"$1aX\" successfully edited.",
   // Everything below here is in a vue file for itself, not the general Modal.message
   catchupModalTitleA: "Content Catch-up",
   catchupModalTitleB: "Content Summary",
@@ -317,175 +322,188 @@ increase the cost of Antimatter Galaxies, nor is it affected by multipliers to A
   resetRealityModalCanReality: `You can currently complete a Reality for all its normal rewards, \
   which you will not receive if you Reset here. To get rewards, use the "Make a new Reality" button.`,
   resetRealityModalAreYouSure: "Are you sure you want to proceed?",
-  studyPreviewModalUnavailable: "Preview Unavailable", // Up to here
-  editAuto: "Edit Autobuyers",
-  noAutos: "You currently have no autobuyters which could be shown here",
-  usingModalEditAuto: "Using this modal, you can edit various values inside your autobuyers.",
-  cantGenTemplate: "Cannot generate template (You have $1aX)",
-  invIn: "invalid input",
-  automatorNTemlate: "$1aX Template",
-  reqInfo: "Required Information:",
-  usePresetST: "Use a preset Study Tree:",
-  currentTree: "Current Tree",
-  possibleConsider: "Possible things to consider:",
-  ifSomethingWrong: "(If something seems wrong with the template inputs, it will show up here)",
-  tempCopied: "Template copied to clipboard",
-  yourXactivatedY: "Your $1aX activated $2aX",
-  expo: "exponent ", // Space here is important
-  xIncreased: "$1aX $2aXincreased from $3aX to $4aX", // Lack of space between $2aX and text is important
-  time: "time",
-  whileAwayFor: "While you were away for $1aX:",
-  whileAwayForAlt: "While you were away for $1aX... Nothing happened.",
-  hideNote: "Note: Click an entry to hide it in the future",
-  breakInfHeader: "You are Breaking Infinity",
-  breakInfBaseText: `Breaking Infinity will allow you to gain antimatter past $1aX$2aX
-Dimensions and Tickspeed Upgrades will scale in cost faster after $1aX antimatter.
-You will gain additional Infinity Points on Big Crunch based on antimatter produced over $1aX.$3aX`,
-  breakInfExtraA: ".$, and allow you to read numbers past $1aX",
-  breakInfExtraB: "\nIt will also unlock Break Infinity Upgrades and max all Normal Challenge Autobuyers.",
-  break: "Break",
-  changelog: "Changelog",
-  xUpd: "\"$1aX\" update",
-  changeNameHeader: "Change your Speedrun Player Name",
-  changeNameTextA: "This can no longer be changed once the timer starts, and there is a limit of $1aX characters.",
-  changeNameTextB: "Your new name will be $1aX",
-  changeName: "Change Name",
-  delConst: "Deleting Automator Constants",
-  delConstTextA: "Are you sure you wish to delete all of your currently-defined automator constants?",
-  delConstTextB: "This will irreversibly delete $1aX!",
-  constant: "constant",
-  delAll: "Delete All",
-  ad: "Antimatter Dimensions",
-  delScript: "Delete this script",
-  delScriptText: "Please confirm your desire to delete this Automator script.",
-  del: "Delete",
-  year: "year",
-  namelessCracks: "Cracks in The Nameless Ones' Reality",
-  realityResist: "This Reality seems to be resisting your efforts to complete it. So far you have done the following:",
-  haveNotFigured: "You have not figured out what this hint means yet.",
-  foundCrack: "You have exposed a crack in the Reality:",
-  canSpendTime: `You can spend some time looking for some more cracks in the Reality, but every hint you spend Stored Time on
-will increase the Stored Time needed for the next by a factor of $1aX. This cost bump will
-gradually go away over $2aX hours and figuring out what the hint means will immediately
-divide the cost by $3aX. The cost can't be reduced below $4aX years.`,
-  nextHint: "The next hint will cost $1aX of Stored Time. You currently have $2aX.",
-  timeToReach: "You will reach this if you charge your Black Hole for $1aX.",
-  getRealityHint: "Get a hint about the Reality itself ($1aX left)",
-  getGlyphHint: "Get a hint on what Glyphs to use ($1aX left)",
-  noHints: "There are no more hints left!",
-  delGlyphSet: "Delete this Glyph Set",
-  confirmDelGlyphSet: "Please confirm your desire to delete this Glyph Set:",
-  willNotDelGlyphs: "This will not affect your actual Glyphs, only the saved preset.",
-  projGlyphLevel: "Projected Glyph Level: $1aX",
-  h2p: "How To Play",
-  importASD: "Import Automator Script Data",
-  newScript: "This will create a new Automator script at the end of your list.",
-  newScriptExtraData: "This will also import additional data related to the script.",
-  scriptName: "Script name: $1aX",
-  lineCount: "Line count: $1aX",
-  studyPresets: "Study Presets:",
-  presetSlotX: "Preset slot #$1aX",
-  presetSlotXAlt: `"$1aX" (slot $2aX)`,
-  overwrittenPresets: "$1aX of your existing presets will be overwritten by imported presets!",
-  consts: "Constants:",
-  overwrittenConsts: "Some of your existing constants will be overwritten!",
-  constLim: "$1aX will not be imported due to the $2aX constant limit.",
-  scriptHasErrors: "This script has errors which need to be fixed before it can be run!",
-  someErrFix: "Some errors may be fixed with the additional data being imported.",
-  invalidADS: "Invalid Automator data string",
-  ignorePresets: "Will Ignore Presets",
-  ignoreConst: "Will Ignore Constants",
-  impPresets: "Will Import Presets",
-  impConst: "Will Import Constants",
-  import: "Import",
-  impGFS: "Import Glyph filter settings",
-  GFSoverwrite: "Note: Importing Glyph filter options will overwrite settings$in all filter modes, not just the currently-selected one",
-  mouseover: "Mouseover each box for more details. ✔ and ✘ symbols denote an effect selected/unselected for Specified Effect mode.",
-  selMode: "Selection mode:",
-  effCount: `Effect Count ("Number of Effects"):`,
-  rejGlyph: "Rejected Glyphs:",
-  typeSpec: "Type-specific Settings",
-  invalidGFS: "Not a valid Glyph filter string",
-  minEff: "Minimum Effects: $1aX",
-  score: "Score: $1aX",
-  noChanges: "(No changes)",
-  rarityFilterTT: "Setting for Rarity Threshold and Specified Effect",
-  effectCountFilterTT: "Number of effects in Specified Effect",
-  scoreFilterTT: "Threshold for Effect Score",
-  saveFromFuture: "This save is from $1aX in the future.",
-  saveFromPast: "This save was last opened $1aX ago.",
-  opImported: "Using imported save settings",
-  opLocal: "Using existing save settings",
-  opIgnored: "Will not simulate offline time",
-  opErr: "Unrecognised offline progress setting for importing",
-  willImpWOoffline: "Save will be imported without offline progress",
-  wontApplyOffline: "This setting will not apply any offline progress after importing.",
-  noOfflineFuture: "Offline progress cannot be simulated due an inconsistent system clock time.",
-  tickCalc: "After importing, will simulate $1aX ticks of duration $2aX each.",
-  fileName: "File name: $1aX",
-  saveAM: "Antimatter: $1aX",
-  saveInf: "Infinities: $1aX",
-  saveEter: "Eternities: $1aX",
-  saveReal: "Realities: $1aX",
-  saveComps: "Full game completions: $1aX",
-  willOverride: "(Your current save file will be overwritten!)",
-  saveOP: "Offline Progress: $1aX",
-  invalidSave: "Not a valid save:",
-  willLoseCosmeticsA: "Glyph cosmetic sets form compeleting the game are tied to your save.",
-  willLoseCosmeticsB: "Importing this save will cause you to lose some sets.",
-  willLoseSpeedrun: "You will lose the ability to do a Speedrun, as this save does not have it unlocked.",
-  inputSave: "Input your save",
-  importTSConstHeader: "Importing Time Study Presets as Constants",
-  iTSCtextA: `Confirming this modal will import all of your saved Time Study presets as new Automator constants.
-Below are all the valid presets which will be imported, with the beginning and end of their contained
+  studyPreviewModalUnavailable: "Preview Unavailable",
+  autobuyerEditModalTitle: "Edit Autobuyers",
+  autobuyerEditModalNone: "You currently have no autobuyters which could be shown here",
+  autobuyerEditModalUsingModal: "Using this modal, you can edit various values inside your autobuyers.",
+  tomatoTemplateModalCannotGenerate: "Cannot generate template (You have $1aX$INVINP$$!$)",
+  tomatoTemplateModalCopyAndClose: "Copy this template to your clipboard and close this modal",
+  tomatoTemplateModalTitle: "$1aX Template",
+  tomatoTemplateModalRequiredInfo: "Required Information:",
+  tomatoTemplateModalUsePresetStudy: "Use a preset Study Tree:",
+  tomatoTemplateModalCurrentTree: "Current Tree",
+  tomatoTemplateModalToConsider: "Possible things to consider:",
+  tomatoTemplateModalIfWrongInputs: "(If something seems wrong with the template inputs, it will show up here)",
+  awayProgressModalBlackhole: "Your $1aX activated $2aX$TIME$$!$",
+  awayProgressModalXIncreased: "$1aX increased from $2aX to $3aX $ $1aX exponent increased from $2aX to $3aX",
+  awayProgressModalTitle: "While you were away for $1aX:",
+  awayProgressModalTitle_Nothing: "While you were away for $1aX... Nothing happened.",
+  awayProgressModalHideNote: "Note: Click an entry to hide it in the future",
+  breakModalTitle: "You are Breaking Infinity",
+  breakModalText: `Breaking Infinity will allow you to gain antimatter past $1aX, and allow you to read numbers past $1aX. $ \
+  Dimensions and Tickspeed Upgrades will scale in cost faster after $2aX$AM$$!$. $ 
+  You will gain additional Infinity Points on Big Crunch based on antimatter produced over $1aX $ \
+  It will also unlock Break Infinity Upgrades and max all Normal Challenge Autobuyers.`,
+  breakModalTextHasEternitied: `Breaking Infinity will allow you to gain antimatter past $1aX. $ \
+  Dimensions and Tickspeed Upgrades will scale in cost faster after $2aX$AM$$!$. $ 
+  You will gain additional Infinity Points on Big Crunch based on antimatter produced over $1aX`,
+  breakModalButton: "Break",
+  changelogModalTitle: "Changelog",
+  changelogModalUpdate: "\"$1aX\" update",
+  changeNameModalTitle: "Change your Speedrun Player Name",
+  // The "characters" here is 40.
+  changeNameModalCannotChange: "This can no longer be changed once the timer starts, and there is a limit of $1aX characters.",
+  changeNameModalNewName: "Your new name will be $1aX",
+  changeNameModalButtonLabel: "Change Name",
+  delConstsModalTitle: "Deleting Automator Constants",
+  delConstsModalWishToDelete: "Are you sure you wish to delete all of your currently-defined automator constants?",
+  delConstsModalWillDeleteXConsts: "This will irreversibly delete $1aX$CONST$$!",
+  delConstsModalButtonLabel: "Delete All",
+  delScriptModalTitle: "Delete this script",
+  delScriptModalMessage: "Please confirm your desire to delete this Automator script.",
+  enslavedHintModalTitle: "Cracks in The Nameless Ones' Reality",
+  enslavedHintModalResisting: "This Reality seems to be resisting your efforts to complete it. So far you have done the following:",
+  enslavedHintModalNotFiguredOut: "You have not figured out what this hint means yet.",
+  enslavedHintModalExposedCrack: "You have exposed a crack in the Reality:",
+  enslavedHintModalSpendTime: `You can spend some time looking for some more cracks in the Reality, but every hint you spend Stored Time on \
+will increase the Stored Time needed for the next by a factor of $1aX. This cost bump will \
+gradually go away over $2aX$HOUR$$!$ and figuring out what the hint means will immediately \
+divide the cost by $3aX. The cost can't be reduced below $4aX$YEAR$$!$.`,
+  enslavedHintModalNextHint: "The next hint will cost $1aX$YEAR$$!$ of Stored Time. You currently have $2aX.",
+  enslavedHintModalWillReachIf: "You will reach this if you charge your Black Hole for $1aX.",
+  enslavedHintModalRealityHint: "Get a hint about the Reality itself ($1aX left)",
+  enslavedHintModalGlyphHint: "Get a hint on what Glyphs to use ($1aX left)",
+  enslavedHintModalNoHints: "There are no more hints left!",
+  delGlyphSetModalTitle: "Delete this Glyph Set",
+  delGlyphSetModalConfirm: "Please confirm your desire to delete this Glyph Set:",
+  delGlyphSetModalNotGlyphs: "This will not affect your actual Glyphs, only the saved preset.",
+  glyphShowcaseModalProjected: "Projected Glyph Level: $1aX",
+  h2pModalTitle: "How To Play",
+  importTomatoScriptModalTitle: "Import Automator Script Data",
+  importTomatoScriptModalNewScript: "This will create a new Automator script at the end of your list.",
+  importTomatoScriptModalExtraData: "This will also import additional data related to the script.",
+  importTomatoScriptModalName: "Script name: $1aX",
+  importTomatoScriptModalLines: "Line count: $1aX",
+  importTomatoScriptModalPresets: "Study Presets:",
+  importTomatoScriptModalPresetX: "Preset slot #$1aX",
+  importTomatoScriptModalPresetXAlt: `"$1aX" (slot $2aX)`,
+  importTomatoScriptModalOverwittenPresets: "$1aX of your existing presets will be overwritten by imported presets!",
+  importTomatoScriptModalConstants: "Constants:",
+  importTomatoScriptModalOverwrittenConsts: "Some of your existing constants will be overwritten!",
+  importTomatoScriptModalConstLimit: "$1aX$CONST$$!$ will not be imported due to the $2aX constant limit.",
+  importTomatoScriptModalHasError: "This script has errors which need to be fixed before it can be run!",
+  importTomatoScriptModalDataMayFix: "Some errors may be fixed with the additional data being imported.",
+  importTomatoScriptModalInvalidADS: "Invalid Automator data string",
+  importTomatoScriptModalIgnorePresets: "Will Ignore Presets",
+  importTomatoScriptModalIgnoreConst: "Will Ignore Constants",
+  importTomatoScriptModalImportPresets: "Will Import Presets",
+  importTomatoScriptModalImportConstants: "Will Import Constants",
+  importGlyphFilterModalTitle: "Import Glyph filter settings",
+  importGlyphFilterModalOverwrite: "Note: Importing Glyph filter options will overwrite settings $ in all filter modes, not just the currently-selected one",
+  importGlyphFilterModalMouseover: "Mouseover each box for more details. ✔ and ✘ symbols denote an effect selected/unselected for Specified Effect mode.",
+  importGlyphFilterModalSelection: "Selection mode:",
+  importGlyphFilterModalCount: `Effect Count ("Number of Effects"):`,
+  importGlyphFilterModalRejected: "Rejected Glyphs:",
+  importGlyphFilterModalTypeSpecific: "Type-specific Settings",
+  importGlyphFilterModalInvalidFilter: "Not a valid Glyph filter string",
+  importSingleGlyphFilterModalMinimumEffects: "Minimum Effects: $1aX",
+  importSingleGlyphFilterModalScore: "Score: $1aX",
+  importGlyphFilterModalNoChange: "(No changes)",
+  // These are a bit different to most, since the code that uses this (getTooltip) uses preset string names, so we work around them
+  importSingleGlyphFilterModalTYPE_rarity: "Setting for Rarity Threshold and Specified Effect",
+  importSingleGlyphFilterModalTYPE_effectCount: "Number of effects in Specified Effect",
+  importSingleGlyphFilterModalTYPE_score: "Threshold for Effect Score",
+  importOptionsModalTitle: "Import Settings",
+  importOptionsModalFilename: "File Name: $1aX",
+  importOptionsModalNotation: "Notation: $1aX",
+  importOptionsModalLNotation: "Large Notation: $1aX",
+  importOptionsModalTheme: "Theme: $1aX",
+  importOptionsModalUI: "UI Type: $1aX",
+  importOptionsModalLanguage: "Language: $1aX ($2aX)",
+  importOptionsModalOverride: "(Your current settings will be overwritten!)",
+  importOptionsModalInvalidSettings: "Invalid settings import:",
+  importOptionsModalFailStrings: ` \
+  $ Import does not contain a save file name \
+  $ Import does not choose a notation \
+  $ Import does not choose a large notation \
+  $ Import does not choose a UI \
+  $ Import does not have valid Classic or Modern Themes \
+  $ Import does not specify a language \
+  $ Invalid import\
+  `,
+  importSaveModalFromFuture: "This save is from $1aX in the future.",
+  importSaveModalFromPast: "This save was last opened $1aX ago.",
+  importSaveModalImportedSaveSettings: "Using imported save settings",
+  importSaveModalExistingSaveSettings: "Using existing save settings",
+  importSaveModalNoOffline: "Will not simulate offline time",
+  importSaveModalOfflineSettingError: "Unrecognised offline progress setting for importing",
+  importSaveModalImportNoOffline: "Save will be imported without offline progress",
+  importSaveModalImportWontOffline: "This setting will not apply any offline progress after importing.",
+  importSaveModalNoOfflineCauseFuture: "Offline progress cannot be simulated due an inconsistent system clock time.",
+  importSaveModalSimulatesX: "After importing, will simulate $1aX ticks of duration $2aX each.",
+  // These 2 are also used in LoadGameEntry.vue in the same usecase, fyi.
+  importSaveModalFileName: "File name: $1aX",
+  importSaveModalAM: "Antimatter: $1aX",
+  importSaveModalInfinities: "Infinities: $1aX",
+  importSaveModalEternities: "Eternities: $1aX",
+  importSaveModalRealities: "Realities: $1aX",
+  importSaveModalCompletions: "Full game completions: $1aX",
+  importSaveModalOverride: "(Your current save file will be overwritten!)",
+  importSaveModalOfflineProgressOption: "Offline Progress: $1aX",
+  importSaveModalInvalidSave: "Not a valid save:",
+  importSaveModalLoseCosmeticsNoteA: "Glyph cosmetic sets form compeleting the game are tied to your save.",
+  importSaveModalLoseCosmeticsNoteB: "Importing this save will cause you to lose some sets.",
+  importSaveModalLoseSpeedrun: "You will lose the ability to do a Speedrun, as this save does not have it unlocked.",
+  importSaveModalTitle: "Input your save",
+  importSaveModalDevelopment: "WARNING: This save comes from a development version. It might fail to import, or worse!",
+  importTimeStudyConstModalTitle: "Importing Time Study Presets as Constants",
+  importTimeStudyConstModalText: `Confirming this modal will import all of your saved Time Study presets as new Automator constants. \
+Below are all the valid presets which will be imported, with the beginning and end of their contained \
 studies shown. Some names may be changed due to restrictions on constant name formatting.`,
-  nameAtoB: "Name: $1aX ➜ $2aX",
-  willOverwriteExistingConst: "This will overwrite an existing constant!",
-  cantImportX: "$1aX in this list cannot be imported due to the limit on constant count",
-  impAll: "Import All",
-  preset: "preset",
-  aboutGame: "About the game",
-  infoModalText: `Antimatter Dimensions is an Idle Incremental game created by Finnish developer Hevipelle. Originating as a solo
-project in 2016, it was expanded upon by a large team of developers and testers from then on.$The
-game has unfolding gameplay and multiple prestige layers. The "How to Play" button contains useful information about
-progressing.$The Break Eternity port is a port intended to allow modders to extend the vanilla game beyond e9e15 by using a new
-library aswell as other changes, such as better glyph handing. The repository link here has been changed
-appropriately.`,
-  ghRepo: "GitHub repository",
-  adserv: "Antimatter Dimensions Discord Server",
-  adgp: "Antimatter Dimensions on Google Play",
-  adstm: "Antimatter Dimensions on Steam",
-  cred: "Credits",
-  changelog: "Game Changelog",
-  saveX: "Save #$1aX:",
-  selected: "(selected)",
-  saveSelect: "Save Selection",
-  message: "Message",
-  dontShowAgain: "Don't show this message again",
-  remaining: "Remaining: $1aX",
-  cancel: "Cancel",
-  modGRNG: "Modifying Glyph RNG Seed",
-  modGRNGTextA: `All Glyph options beyond the first Reality for an entire playthrough are randomly determined from the very
-beginning, based on the value of an initial seed number. The role of this seed is that it chooses a single,
-particular set of Glyph options for your playthrough. If you or anyone else chooses the same seed
+  importTimeStudyConstModalNameChange: "Name: $1aX ➜ $2aX",
+  importTimeStudyConstModalOverwrite: "This will overwrite an existing constant!",
+  importTimeStudyConstModalCantImportX: "$1aX$PRESET$$!$ in this list cannot be imported due to the limit on constant count",
+  importTimeStudyConstModalImportAll: "Import All",
+  informationModalTitle: "About the game",
+  informationModalInfoText: `Antimatter Dimensions is an Idle Incremental game created by Finnish developer Hevipelle. Originating as a \
+  solo project in 2016, it was expanded upon by a large team of developers and testers from then on. $ The game has unfolding \
+  gameplay and multiple prestige layers. The "How to Play" button contains useful information about progressing. $ The Break \
+  Eternity port is a port intended to allow modders to extend the vanilla game beyond e9e15 by using a new library aswell as \
+  other changes, such as a more friendly codebase. The repository link here has been changed appropriately.`,
+  informationModalGithub: "GitHub repository",
+  informationModalDiscord: "Antimatter Dimensions Discord Server",
+  informationModalGooglePlay: "Antimatter Dimensions on Google Play",
+  informationModalSteam: "Antimatter Dimensions on Steam",
+  informationModalCredits: "Credits",
+  informationModalChangelog: "Game Changelog",
+  loadGameEntrySave: "Save #$1aX: $ Save #$1aX (selected)",
+  loadGameModalTitle: "Save Selection",
+  // S12 (Aero) obviously uses the windows 7/vista popup boxes, which use a title, defaulting to message, which this game also uses.
+  messageModalS12Case: "Message",
+  modalConfirmationText: "Disable the $1aX confirmation $ Reenable the $1aX confirmation",
+  modalConfirmationDontShowAgain: "Don't show this message again",
+  modalProgressBarRemaining: "Remaining: $1aX",
+  modifySeedModalTitle: "Modifying Glyph RNG Seed",
+  modifySeedModalMessageA: `All Glyph options beyond the first Reality for an entire playthrough are randomly determined from the very \
+beginning, based on the value of an initial seed number. The role of this seed is that it chooses a single, \
+particular set of Glyph options for your playthrough. If you or anyone else chooses the same seed \
 in a different run, you will get the same options for Glyphs.`,
-  canSwitch: "You can switch between these three options any point before you generate your first Glyph.",
-  currentSetting: "Current Setting: $1aX",
-  oPS: "Official Preset Seed",
-  thisDefault: "This is the default option which chooses the seed $1aX. Anyone who chooses to not modify the seed at all will get these Glyph options.",
-  rS: "Randomized Seed",
-  rStxt: `This selects a completely randomized seed value, producing Glyph options which are very likely to be different from anyone else's
+  modifySeedModalCanSwitch: "You can switch between these three options any point before you generate your first Glyph.",
+  modifySeedModalCurrentSetting: "Current Setting: $1aX",
+  modifySeedModalOffical: "Official Preset Seed",
+  modifySeedModalOfficalInfo: "This is the default option which chooses the seed $1aX. Anyone who chooses to not modify the seed at all will get these Glyph options.",
+  modifySeedModalRandom: "Randomized Seed",
+  modifySeedModalRandomInfo: `This selects a completely randomized seed value, producing Glyph options which are very likely to be different from anyone else's \
   playthrough unless they intentionally chose the same value.`,
-  cantInputZero: "Input seed cannot be zero!",
-  pSS: "Player-selected Seed:",
-  pSStxt: "This option sets your seed to the value you type into the text box.",
-  replaceInput: "Your current input will be $1aX the number $2aX",
-  convUsed: "converted to$used as",
-  inputDefualt: "Your current input $1aX 0; the seed will default to Official Preset.",
-  convUsedAlt: "converts to$is equal to",
-  techReasons: "For technical reasons, the value must be non-zero to be accepted.",
+  modifySeedModalCannotInputZero: "Input seed cannot be zero!",
+  modifySeedModalChosen: "Player-selected Seed:",
+  modifySeedModalChosenInfo: "This option sets your seed to the value you type into the text box.",
+  // So both a number and text that converts to a number needs to be handled here, leading to a bit of jankiness in this text.
+  modifySeedModalInputBecomesX: "Your current input will be converted to the number $1aX $ Your current input is equal to the number $1aX",
+  modifySeedModalInputBecomesZero: "Your current input converts to 0; the seed will default to Official Preset. $ Your current input converts to 0; the seed will default to Official Preset.",
+  modifySeedModalTechnicalReasons: "For technical reasons, the value must be non-zero to be accepted.",
   // Yes this is a modal so it goes here. It sucks. Deal with it.
-  pelleNerfList: `
+  pelleEffectsModalListOfDisabled: `\
   Anything unlocked through a Pelle upgrade cannot be unlocked normally $ \
   All pre-Doomed IP and EP multipliers are disabled $ \
   IP generation based on fastest infinity speed is disabled $ \
@@ -521,113 +539,126 @@ in a different run, you will get the same options for Glyphs.`,
   Triad Studies and Space Theorems are disabled $ \
   Imaginary Upgrades are disabled excluding those relating to DMD's and Celestial unlocks $ \
   Continuum and Singularity rewards are disabled`,
-  listOfDisabled: "List of disabled and nerfed effects in Doomed",
-  realGlyphCreation: "Reality Glyph Creation",
-  rgcText: `Create a level $1aX Reality Glyph. Rarity will always be $2aX and
-  level scales on your current Reality Resource amount (which is all consumed). All other Alchemy Resources will
-  be unaffected. Reality Glyphs have unique effects, some of which are only available with higher level Glyphs.
-  Reality Glyphs can also be sacrificed to increase all Memory Chunk gain. Like Effarig Glyphs,
+  pelleEffectsModalTitle: "List of disabled and nerfed effects in Doomed",
+  realityGlyphCreationModalTitle: "Reality Glyph Creation",
+  realityGlyphCreationModalInfo: `Create a level $1aX Reality Glyph. Rarity will always be $2aX and \
+  level scales on your current Reality Resource amount (which is all consumed). All other Alchemy Resources will \
+  be unaffected. Reality Glyphs have unique effects, some of which are only available with higher level Glyphs. \
+  Reality Glyphs can also be sacrificed to increase all Memory Chunk gain. Like Effarig Glyphs, \
   you cannot equip more than one at the same time.`,
-  availableEffects: "Available Effects:",
-  noRealDoomed: "You cannot create Reality Glyphs while Doomed",
-  makeReal: "Create a Reality Glyph!",
-  gtZero: "Reality Glyph level must be higher than $1aX",
-  noInvSpaceB: "No available inventory space; Sacrifice some Glyphs to free up space.",
-  reqGlX: "(Requires Glyph level $1aX)",
-  aboutToReplace: "You are about to replace a Glyph",
-  willRestart: "Replacing a Glyph will restart this $1aX",
-  dimSac: "Dimensional Sacrifice",
-  hasAchSacrifice: `Dimensional Sacrifice will give you a boost to the 8th Antimatter Dimension based on the amount of
+  realityGlyphCreationModalListOfEffects: "Available Effects:",
+  realityGlyphCreationModalCantMakeDoomed: "You cannot create Reality Glyphs while Doomed",
+  realityGlyphCreationModalMakeGlyph: "Create a Reality Glyph!",
+  realityGlyphCreationModalCantMakeLevelZero: "Reality Glyph level must be higher than $1aX",
+  realityGlyphCreationModalRequiresLevelX: "(Requires Glyph level $1aX)",
+  replaceGlyphModalTitle: "You are about to replace a Glyph",
+  replaceGlyphModalInfo: "Replacing a Glyph will restart this Reality $ Replacing a Glyph will restart this Armageddon",
+  respecIAPModalTitle: "You are about to respec your Shop Purchases",
+  // The $ exists since the STD image is placed there
+  respecIAPModalAreYouSure: `Are you sure you want to respec your Shop Purchases? This will not cost anything and return \
+  the $1aX $ you spent on all purchases which give permanent multipliers.`,
+  respecIAPModalNotAllRefund: `Anything spent on offline progress and Glyph cosmetics will not be refunded. Glyph cosmetic \
+  sets are permanent and will not be lost or respeced once purchased.`,
+  respecIAPModalBuyMoreToRespec: "You will not be able to respec again unless you purchase more STD coins.",
+  sacrificeModalTitle: "Dimensional Sacrifice",
+  sacrificeModalAch118: `Dimensional Sacrifice will give you a boost to the 8th Antimatter Dimension based on the amount of \
   1st Antimatter Dimensions you had at the time of Sacrificing.`,
-  noAchSacrifice: `Dimensional Sacrifice will remove all of your 1st through 7th Antimatter Dimensions
-  (with the cost and multiplier unchanged), for a boost to the 8th Antimatter Dimension based on the total
+  sacrificeModalNo118: `Dimensional Sacrifice will remove all of your 1st through 7th Antimatter Dimensions \
+  (with the cost and multiplier unchanged), for a boost to the 8th Antimatter Dimension based on the total \
   amount of 1st Antimatter Dimensions sacrificed. It will take time to regain production.`,
-  dsMultText: "Multiplier is currently $1aX and will increase to $2aX on Dimensional Sacrifice",
-  singMilestoneGroupResource: "Singularity Count$Condense Count$Manual Time$Auto Time",
-  singMilestoneGroupSort: "Singularities needed$Current Completions$Progress to full completion$Final Singularities$Most Recent",
-  singMilestoneGroupCompleted: "First$Last$Don't move",
-  ascDesc: "Ascending$Descending",
-  singMile: "Singularity Milestones",
-  toggleGlow: "Make button glow when new milestones have been reached",
-  toMile: "To Milestone:",
-  sortBy: "Sort By:",
-  compMile: "Completed Milestones:",
-  sortOrder: "Sort Order:",
-  enterSpeedrun: "Entering Speedrun Mode",
-  speedrunTextA: `This will start a save with additional statistics tracking for when you reach certain points of
+  sacrificeModalCurrentMultiplier: "Multiplier is currently $1aX and will increase to $2aX on Dimensional Sacrifice",
+  singMilestoneModalGroupResource: "Singularity Count $ Condense Count $ Manual Time $ Auto Time",
+  singMilestoneModalGroupSort: "Singularities needed$Current Completions $ Progress to full completion $ Final Singularities $ Most Recent",
+  singMilestoneModalGroupCompleted: "First $ Last $ Don't move",
+  singMilestoneModalSortOrder: "Ascending $ Descending",
+  singMilestoneModalTitle: "Singularity Milestones",
+  singMilestoneModalGlow: "Make button glow when new milestones have been reached",
+  singMilestoneModalToMilestoneInfo: "To Milestone:",
+  singMilestoneModalSortBy: "Sort By:",
+  singMilestoneModalCompletedPlacement: "Completed Milestones:",
+  singMilestoneModalSortingOrder: "Sort Order:",
+  // Speedrun gives alot of info, so we need alot of text here. Sorry.
+  // Because of the amount of text, these are just alphabetized, rather than giving more informative names,
+  // This is because you are probably best thinking of the whole thing as 1 big info string, rather than 7 split ones.
+  speedunModalTitle: "Entering Speedrun Mode",
+  speedrunModalTextA: `This will start a save with additional statistics tracking for when you reach certain points of \
   the game. These will be visible in the bottom-right of the screen and on a dedicated subtab of Statistics.`,
-  speedrunTextB: `Almost all animations and confirmations are disabled by default, but you can change any of these settings before
-  you reach their required progression. When you begin the run, the game remains paused until
-  your antimatter changes, allowing you to configure all your settings before starting. In order to avoid having
+  speedrunModalTextB: `Almost all animations and confirmations are disabled by default, but you can change any of these settings before \
+  you reach their required progression. When you begin the run, the game remains paused until \
+  your antimatter changes, allowing you to configure all your settings before starting. In order to avoid having \
   to wait for a long time before actually starting an optimized run, a few achievements are given for free.`,
-  speedrunTextC: "There is no additional content in Speedrun Mode.",
-  speedrunTextD: `You can type in text below to name your speedrun save. This will have no effects on gameplay and only identifies
-  this particular save as yours. If no name is given, a random name will be generated instead. This name can be
+  speedrunModalTextC: "There is no additional content in Speedrun Mode.",
+  speedrunModalTextD: `You can type in text below to name your speedrun save. This will have no effects on gameplay and only identifies \
+  this particular save as yours. If no name is given, a random name will be generated instead. This name can be \
   changed by clicking your name in the speedrun info box, as long as the timer has not started yet.`,
-  speedrunTextE: `Speedrun saves can be imported and exported like regular saves. Importing a speedrun save will mark it as a
-  Segmented run, as importing and exporting allows for optimization of individual segments of the game.
+  speedrunModalTextE: `Speedrun saves can be imported and exported like regular saves. Importing a speedrun save will mark it as a \
+  Segmented run, as importing and exporting allows for optimization of individual segments of the game. \
   Without importing, saves will remain as Single-segment runs.`,
-  speedrunTextF: "You can modify the Glyph RNG seed in the Options tab before starting your run, if desired.",
-  speedrunTextG: `Starting a speedrun will reset your save to the beginning of the game. Some things will remain, such as
-  full-game completion stats, visual settings, automator scripts, and Glyph cosmetics, but otherwise it
-  will be as if you had just finished the entire game and chose to restart at the credits screen. Type
-  in "Gotta Go Fast!" below to confirm and (re)start the run.`,
-  continue: "Continue",
-  startRun: "Start Run!",
-  emptyCurrent: "into an empty Tree$with your current Tree",
-  notPurchase: "Importing this $1aX will not purchase any new Time Studies.",
-  importWill: "Importing $1aX will purchase:",
-  cost: "(Cost: $1aX)",
-  delStudyPreset: "Deleting Study Preset \"$1aX\"",
-  invalidImportStr: "Your import string has invalid study IDs: $1aX <br><br>",
-  inputTree: "Input your tree",
-  editTree: "Editing Study Preset \"$1aX\"",
-  save: "Save",
-  successEdit: "Study Tree \"$1aX\" successfully edited.",
-  presetNamed: "Study preset \"$1aX\"",
-  presetUnnamed: "Study preset",
-  presetDeleted: "$1aX deleted from slot $2aX",
-  presetHas: "Study Preset contains:",
-  noLoadStatus: "Status after loading with <b>no studies</b>:",
-  loadStatus: "Status after loading with <b>current tree</b>:",
-  invalidTree: "Not a valid tree",
-  formatPreset: "Format Preset Text",
-  formatPresetHover: "This will format the study preset text, for example, changing 'a,b,c|d' to 'a, b, c | d'.",
-  cantEterRN: "You are currently unable to eternity, so this will only do a normal load.",
-  respecAndEter: "Also respec tree and eternity",
-  dimSplit: "Dimension Split: $1aX",
-  paceSplit: "Pace Split: $1aX",
-  ec: "Eternity Challenge $1aX",
-  willStart: " (will start)",
-  UImodalEntries: `
-  Many more game events now have animations. If these impact your performance or gameplay, they can be disabled in the Visual Options tab.$
-  New confirmation windows have replaced the default Javascript alert windows. These can be disabled in the Gameplay Options tab.$
+  speedrunModalTextF: "You can modify the Glyph RNG seed in the Options tab before starting your run, if desired.",
+  speedrunModalTextG: `Starting a speedrun will reset your save to the beginning of the game. Some things will remain, such as \
+  full-game completion stats, visual settings, automator scripts, and Glyph cosmetics, but otherwise it \
+  will be as if you had just finished the entire game and chose to restart at the credits screen. Type \
+  in "$1aX" below to confirm and (re)start the run.`,
+  speedrunModalConfirmationPhrase: "Gotta Go Fast!",
+  speedrunModalStartRun: "Start Run!",
+  STDStoreModalTitle: "Support The Developer - coins",
+  STDStoreModalConfirm: "Confirm Purchase to Receive STDs",
+  STDStoreModalRequiredOnMac: "(Required on Mac)",
+  // Unlike most other things, this should EXPLICITLY use 1 string.
+  // This is because this should not be notation affected, which would mean we need to edgecase stuff in plural handling.
+  STDStoreModalSTDCost: "$1aX STDs",
+  studyStringModalLineNotPurchaseNew: "Importing this into an empty Tree will not purchase any new Time Studies. $ Importing this with your current Tree will not purchase any new Time Studies.",
+  studyStringModalLineWillPurchaseX: "Importing this into an empty Tree will purchase: $ Importing this with your current Tree will purchase:",
+  studyStringModalLineCostsX: "(Cost: $1aX)",
+  studyStringModalTitle_delete: "Deleting Study Preset \"$1aX\"",
+  studyStringModalTitle_input: "Input your tree",
+  studyStringModalTitle_edit: "Editing Study Preset \"$1aX\"",
+  studyStringModalInvalidStudyIDs: "Your import string has invalid study IDs: $1aX <br><br>",
+  studyStringModalPresetName: "Study preset \"$1aX\"",
+  studyStringModalPresetNoName: "Study preset",
+  studyStringModalPresetContains: "Study Preset contains:",
+  studyStringModalNoLoadStatus: "Status after loading with <b>no studies</b>:",
+  studyStringModalLoadStatus: "Status after loading with <b>current tree</b>:",
+  studyStringModalInvalid: "Not a valid tree",
+  studyStringModalFormat: "Format Preset Text",
+  studyStringModalFormatHover: "This will format the study preset text, for example, changing 'a,b,c|d' to 'a, b, c | d'.",
+  studyStringModalCannotEternity: "You are currently unable to eternity, so this will only do a normal load.",
+  studyStringModalRespecAndEternity: "Also respec tree and eternity",
+  studyStringModalInfoDimensionSplit: "Dimension Split: $1aX",
+  studyStringModalInfoPaceSplit: "Pace Split: $1aX",
+  studyStringModalInfoECText: "Eternity Challenge $1aX $ Eternity Challenge $1aX (will start)",
+  UIChoiceModalEntries: `
+  Many more game events now have animations. If these impact your performance or gameplay, they can be disabled in the Visual Options tab. $ \
+  New confirmation windows have replaced the default Javascript alert windows. These can be disabled in the Gameplay Options tab. $ \
   The game now also has a new sleek layout which was designed with more Modern design practices in mind.`,
-  visualChanges: "Visual Changes",
-  oldSaveLoad: "We noticed that you've loaded an old save; a few visual changes have been made since older versions of the game:",
-  changeAnytine: `You can change between the Classic UI which older versions of the game used and the newer Modern UI in the Visual
+  UIChoiceModalTitle: "Visual Changes",
+  UIChoiceModalOldSaveLoad: "We noticed that you've loaded an old save; a few visual changes have been made since older versions of the game:",
+  UIChoiceModalChangeAnytime: `You can change between the Classic UI which older versions of the game used and the newer Modern UI in the Visual
   Options tab at any time. Would you like to swap to the Modern UI now?`,
-  remain: "Remain",
-  swap: "Swap",
-  aboutToUndo: "You are about to undo equipping a Glyph",
-  lastRemoved: "The last equipped Glyph will be removed. Reality will be reset, but some things will be restored to what they were when it was equipped:",
-  undoList: `<br>- Antimatter, Infinity Points, and Eternity Points$
-  <br>- Dilation Upgrades, Tachyon Particles, and Dilated Time$
-  <br>- Time Theorems and Eternity Challenge completions$
-  <br>- Time Dimension and Reality unlocks$
-  <br>- Time in current Infinity/Eternity/Reality$
-  <br>- Stored game time`,
-  invalidStayInvalid: `Note that if you invalidate special requirements for certain things (such as the achievement for completing
+  undoGlyphModalTitle: "You are about to undo equipping a Glyph",
+  undoGlyphModalLastRemoved: "The last equipped Glyph will be removed. Reality will be reset, but some things will be restored to what they were when it was equipped:",
+  undoGlyphModalUndoList: `\
+  - Antimatter, Infinity Points, and Eternity Points $ \
+  - Dilation Upgrades, Tachyon Particles, and Dilated Time $ \
+  - Time Theorems and Eternity Challenge completions $ \
+  - Time Dimension and Reality unlocks $ \
+  - Time in current Infinity/Eternity/Reality $ \
+  - Stored game time`,
+  undoGlyphModalSpecialInvalid: `Note that if you invalidate special requirements for certain things (such as the achievement for completing
   a Reality without producing antimatter), they will remain invalid even after undoing. In those cases, you will
   need to complete the conditions in a single Reality without using undo.`,
-  conditionLockHeaader: "$1aX Condition Lock",
-  areYouSureCondition: "Are you sure you wish to $1aX? Doing this right now will cause you to$fail the requirement for the $2aX \"$3aX\"",
-  selectCancel: `Selecting "Cancel" will close this modal with no effect, while selecting "Disable Lock" will disable the
+  // I cant see a world where rU and iU need unique strings, so theyre just use $#aX replacement
+  upgradeLockModalTitle: "$1aX Condition Lock",
+  upgradeLockModalAreYouSure: "Are you sure you wish to $1aX? Doing this right now will cause you to $ fail the requirement for the $2aX \"$3aX\"",
+  upgradeLockModalCancelNoEffect: `Selecting "Cancel" will close this modal with no effect, while selecting "Disable Lock" will disable the
   requirement check for this upgrade and prevent this message from reappearing unless you turn it back on.`,
-  neitherPerform: "Neither of these options will perform the action you just attempted, so you will need to try again",
-  disableLock: "Disable Lock",
-  iUrU: "Imaginary Upgrade$Reality Upgrade",
+  upgradeLockModalNeitherDoesAction: "Neither of these options will perform the action you just attempted, so you will need to try again",
+  upgradeLockModalDisableLock: "Disable Lock",
+  upgradeLockModaliUrU: "Imaginary Upgrade$Reality Upgrade",
   glyphUndoOnly: "Glyph Undo can only undo with a Reality!",
+  // Everything beyond this point are "false modals" in that they dont have their own files, and so will eventually go to the top.
+  // Since I am only doing the modals folder in components so far, these remain here as legacy strings. Do not touch them, please.
+  // Unless you are changing them to the new format. Then do change them, probably.
   noChangeSeed: "You cannot modify your seed any more. Glyph RNG has already been used to generate at least one Glyph on this run.",
   tsNoStudies: "This Time Study lists currently contains no Time Studies",
   crash: "$1aX<br>Check the console for more details",
@@ -660,21 +691,4 @@ in a different run, you will get the same options for Glyphs.`,
   rmLimited: `Reality Machine gain for your first Reality is reduced above $1aX Eternity Points and capped at $2aX Eternity Points.
   This is due to balance changes made in the Reality update which affect the difficulty of reaching those amounts,
   such as the increased Time Dimension cost scaling above $3aX.`,
-  importOptionsFilename: "File Name: $1aX",
-  importOptionsNotation: "Notation: $1aX",
-  importOptionsLNotation: "Large Notation: $1aX",
-  importOptionsTheme: "Theme: $1aX",
-  importOptionsUI: "UI Type: $1aX",
-  importOptionsLanguage: "Language: $1aX ($2aX)",
-  importOptionsOverride: "(Your current settings will be overwritten!)",
-  importOptionsInvalidSettings: "Invalid settings import:",
-  importOptionsFailStrings: `
-  $Import does not contain a save file name
-  $Import does not choose a notation
-  $Import does not choose a large notation
-  $Import does not choose a UI
-  $Import does not have valid Classic or Modern Themes
-  $Import does not specify a language
-  $Invalid import
-  `
 };

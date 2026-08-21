@@ -11,6 +11,17 @@ export default {
       required: true,
     },
   },
+  computed: {
+    dimSplitText() {
+      return i18n("modal", "studyStringModalInfoDimensionSplit", [treeStatus.firstPaths]);
+    },
+    paceSplitText() {
+      return i18n("modal", "studyStringModalInfoPaceSplit", [treeStatus.secondPaths]);
+    },
+    ecText() {
+      return i18n("modal", "studyStringModalInfoECText", [`${treeStatus.ec}`], true)[Number(treeStatus.startEC)];
+    }
+  }
 };
 </script>
 
@@ -24,19 +35,19 @@ export default {
       v-if="treeStatus.firstPaths"
       class="l-modal-import-tree__tree-info-line"
     >
-      {{ i18n("modal", "dimSplit", [treeStatus.firstPaths]) }}
+      {{ dimSplitText }}
     </div>
     <div
       v-if="treeStatus.secondPaths"
       class="l-modal-import-tree__tree-info-line"
     >
-      {{ i18n("modal", "paceSplit", [treeStatus.secondPaths]) }}
+      {{ paceSplitText }}
     </div>
     <div
       v-if="treeStatus.ec > 0"
       class="l-modal-import-tree__tree-info-line"
     >
-      {{ i18n("modal", "ec", [`${treeStatus.ec}${treeStatus.startEC ? i18n("modal", "willStart") : ""}`]) }}
+      {{ ecText }}
     </div>
   </div>
 </template>

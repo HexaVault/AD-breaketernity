@@ -21,10 +21,10 @@ export default {
   },
   computed: {
     hintCost() {
-      return `${quantify(i18n("modal", "year"), TimeSpan.fromMilliseconds(this.nextHintCost).totalYears, 2)}`;
+      return i18n("plurals", "year", [x => format(x, 2), TimeSpan.fromMilliseconds(this.nextHintCost).totalYears]);
     },
     formattedStored() {
-      return `${quantify(i18n("modal", "year"), TimeSpan.fromMilliseconds(this.currentStored).totalYears, 2)}`;
+      return i18n("plurals", "year", [x => format(x, 2), TimeSpan.fromMilliseconds(this.currentStored).totalYears]);
     },
     hasProgress(id) {
       return this.progressEntries.some(entry => entry.id === id);
@@ -54,7 +54,37 @@ export default {
       const x = Decimal.ln(K).mul(Decimal.pow(K, alreadyWaited)).mul(decaylessTime);
       const timeToGoal = decimalProductLog(x).div(Decimal.ln(K).sub(alreadyWaited));
       return `${TimeSpan.fromSeconds(timeToGoal).toStringShort(true)}`;
-    }
+    },
+    topLabel() {
+      return i18n("modal", "enslavedHintModalTitle");
+    },
+    topString() {
+      return i18n("modal", "enslavedHintModalResisting");
+    },
+    notFiguredString() {
+      return i18n("modal", "enslavedHintModalNotFiguredOut");
+    },
+    exposedCrackString() {
+      return i18n("modal", "enslavedHintModalExposedCrack");
+    },
+    spendTimeString() {
+      return i18n("modal", "enslavedHintModalSpendTime", [formatInt(3), [formatInt, 24], formatInt(2), [format, 40]]);
+    },
+    nextHintString() {
+      return i18n("modal", "enslavedHintModalNextHint", [[format, this.hintCost], this.formattedStored]);
+    },
+    ttrString() {
+      return i18n("modal", "enslavedHintModalWillReachIf", [this.timeEstimate]);
+    },
+    realityHintString() {
+      return i18n("modal", "enslavedHintModalRealityHint", [this.realityHintsLeft]);
+    },
+    glyphHintString() {
+      return i18n("modal", "enslavedHintModalGlyphHint", [this.glyphHintsLeft]);
+    },
+    noHintsString() {
+      return i18n("modal", "enslavedHintModalNoHints");
+    },
   },
   methods: {
     update() {
@@ -95,11 +125,11 @@ export default {
 <template>
   <ModalWrapper>
     <template #header>
-      {{ i18n("modal", "namelessCracks") }}
+      {{ topLabel }}
     </template>
     <div class="c-enslaved-hint-modal c-modal--short">
       <div>
-        {{ i18n("modal", "realityResist") }}
+        {{ topString }}
       </div>
       <br>
       <div
@@ -109,11 +139,11 @@ export default {
         <div v-if="!entry[0]">
           <span v-if="entry[1].hasHint && !entry[1].hasProgress">
             <i class="c-icon-wrapper fas fa-question-circle" />
-            <b>{{ i18n("modal", "haveNotFigured") }}</b>
+            <b>{{ notFiguredString }}</b>
           </span>
           <span v-else>
             <i class="c-icon-wrapper fa-solid fa-house-crack" />
-            <b>{{ i18n("modal", "foundCrack") }}</b>
+            <b>{{ exposedCrackString }}</b>
           </span>
           <br>
           - {{ entry[1].hintInfo }}
@@ -128,11 +158,11 @@ export default {
         <br>
       </div>
       <div v-if="realityHintsLeft + glyphHintsLeft > 0">
-        {{ i18n("modal", "canSpendTime", [formatInt(3), formatInt(24), formatInt(2), format(1e40)]) }}
+        {{ spendTimeString }}
         <br><br>
-        {{ i18n("modal", "nextHint", [hintCost, formattedStored]) }}
+        {{ nextHintString }}
         <span v-if="currentStored.lt(nextHintCost)">
-          {{ i18n("modal", "timeToReach", [timeEstimate]) }}
+          {{ ttrString }}
         </span>
         <br><br>
         <PrimaryButton
@@ -140,7 +170,7 @@ export default {
           class="l-enslaved-hint-button"
           @click="giveRealityHint(realityHintsLeft)"
         >
-          {{ i18n("modal", "getRealityHint", [realityHintsLeft]) }}
+          {{ realityHintString }}
         </PrimaryButton>
         <br>
         <PrimaryButton
@@ -148,11 +178,11 @@ export default {
           class="l-enslaved-hint-button"
           @click="giveGlyphHint(glyphHintsLeft)"
         >
-          {{ i18n("modal", "getGlyphHint", [glyphHintsLeft]) }}
+          {{ glyphHintString }}
         </PrimaryButton>
       </div>
       <div v-else>
-        <b>{{ i18n("modal", "noHints") }}</b>
+        <b>{{ noHintsString }}</b>
       </div>
     </div>
   </ModalWrapper>

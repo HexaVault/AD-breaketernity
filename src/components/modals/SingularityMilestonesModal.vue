@@ -19,22 +19,40 @@ export default {
     };
   },
   computed: {
+    topLabel() {
+      return i18n("modal", "singMilestoneModalTitle");
+    },
     resourceStr() {
-      const states = i18n("modal", "singMilestoneGroupResource");
+      const states = i18n("modal", "singMilestoneModalGroupResource", [], true);
       return states[this.resourceVal];
     },
     sortStr() {
-      const states = i18n("modal", "singMilestoneGroupSort");
+      const states = i18n("modal", "singMilestoneModalGroupSort", [], true);
       return states[this.sortVal];
     },
     completedStr() {
-      const states = i18n("modal", "singMilestoneGroupCompleted");
+      const states = i18n("modal", "singMilestoneModalGroupCompleted", [], true);
       return states[this.completedVal];
     },
     orderStr() {
-      const states = i18n("modal", "ascDesc");
+      const states = i18n("modal", "singMilestoneModalSortOrder", [], true);
       return states[this.orderVal];
     },
+    glowSettingText() {
+      return i18n("modal", "singMilestoneModalGlow");
+    },
+    resourceSettingText() {
+      return i18n("modal", "singMilestoneModalToMilestoneInfo");
+    },
+    sortSettingText() {
+      return i18n("modal", "singMilestoneModalSortBy");
+    },
+    completedSettingText() {
+      return i18n("modal", "singMilestoneModalCompletedPlacement");
+    },
+    orderSettingText() {
+      return i18n("modal", "singMilestoneModalSortingOrder");
+    }
   },
   watch: {
     resourceVal(newValue) {
@@ -106,7 +124,7 @@ export default {
 <template>
   <ModalWrapper>
     <template #header>
-      {{ i18n("modal", "singMile") }}
+      {{ topLabel }}
     </template>
     <div
       class="c-modal__confirmation-toggle"
@@ -119,7 +137,7 @@ export default {
         />
       </div>
       <span class="c-modal__confirmation-toggle__text">
-        {{ i18n("modal", "toggleGlow") }}
+        {{ glowSettingText }}
       </span>
     </div>
     <div class="l-singularity-milestone-modal-container-outer">
@@ -136,7 +154,7 @@ export default {
         class="c-singularity-milestone-modal-sort-button"
         @click="cycleButton(0)"
       >
-        {{ i18n("modal", "toMile") }}
+        {{ resourceSettingText }}
         <br>
         {{ resourceStr }}
       </button>
@@ -144,7 +162,7 @@ export default {
         class="c-singularity-milestone-modal-sort-button"
         @click="cycleButton(1)"
       >
-        {{ i18n("modal", "toMile") }}
+        {{ sortSettingText }}
         <br>
         {{ sortStr }}
       </button>
@@ -152,7 +170,7 @@ export default {
         class="c-singularity-milestone-modal-sort-button"
         @click="cycleButton(2)"
       >
-        {{ i18n("modal", "compMile") }}
+        {{ completedSettingText }}
         <br>
         {{ completedStr }}
       </button>
@@ -160,7 +178,7 @@ export default {
         class="c-singularity-milestone-modal-sort-button"
         @click="cycleButton(3)"
       >
-        {{ i18n("modal", "sortOrder") }}
+        {{ orderSettingText }}
         <br>
         {{ orderStr }}
       </button>

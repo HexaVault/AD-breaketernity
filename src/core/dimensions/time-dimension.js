@@ -47,9 +47,14 @@ export function toggleAllTimeDims() {
 }
 
 export function calcHighestPurchaseableTD(tier, currency) {
-  const logC = currency.max(1).log10().mul(PelleRifts.paradox.milestones[0] ? 2 : 1);
-  const logBase = TimeDimension(tier)._baseCost.max(1).log10().sub(PelleRifts.paradox.milestones[0] ? 2250 : 0).div(PelleRifts.paradox.milestones[0] ? 2 : 1);
+  let logC = currency.max(1).log10();
+  let logBase = TimeDimension(tier)._baseCost.max(1).log10();
   let logMult = Decimal.log10(TimeDimension(tier)._costMultiplier);
+
+  if (PelleRifts.paradox.milestones[0].canBeApplied && tier > 4) {
+    logC = logC.mul(2);
+    logBase = logBase.sub(2250);
+  }
 
   if (tier > 4 && currency.lt(DC.E6000)) {
     return Decimal.max(0, logC.sub(logBase).div(logMult)).ceil();

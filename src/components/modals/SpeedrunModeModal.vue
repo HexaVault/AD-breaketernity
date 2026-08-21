@@ -17,8 +17,41 @@ export default {
   },
   computed: {
     willStartRun() {
-      return this.confirmPhrase === "Gotta Go Fast!";
+      return this.confirmPhrase === i18n("modal", "speedunModalConfirmationPhrase");
     },
+    topLabel() {
+      return i18n("modal", "speedrunModalTitle");
+    },
+    textA() {
+      return i18n("modal", "speedrunModalTextA");
+    },
+    textB() {
+      return i18n("modal", "speedrunModalTextB");
+    },
+    textC() {
+      return i18n("modal", "speedrunModalTextC");
+    },
+    textD() {
+      return i18n("modal", "speedrunModalTextD");
+    },
+    textE() {
+      return i18n("modal", "speedrunModalTextE");
+    },
+    textF() {
+      return i18n("modal", "speedrunModalTextF");
+    },
+    textG() {
+      return i18n("modal", "speedrunModalTextG", [i18n("modal", "speedrunModalConfirmationPhrase")]);
+    },
+    buttonALabel() {
+      return i18n("consts", "continue");
+    },
+    buttonBLabel() {
+      return i18n("modal", "speedrunModalStartRun");
+    },
+    buttonCLabel() {
+      return i18n("consts", "cancel");
+    }
   },
   methods: {
     nextPage() {
@@ -41,20 +74,20 @@ export default {
     @confirm="startRun"
   >
     <template #header>
-      {{ i18n("modal", "enterSpeedrun") }}
+      {{ topLabel }}
     </template>
     <div
       v-if="onInfoPage"
       class="c-modal-message__text"
     >
-      {{ i18n("modal", "speedrunTextA") }}
+      {{ TextA }}
       <br>
       <br>
-      {{ i18n("modal", "speedrunTextB") }}
+      {{ TextB }}
       <br>
       <br>
       <i>
-        {{ i18n("modal", "speedrunTextC") }}
+        {{ TextC }}
       </i>
       <br>
       <br>
@@ -62,14 +95,14 @@ export default {
         class="o-primary-btn--width-medium c-modal-hard-reset-btn c-modal__confirm-btn"
         @click="nextPage"
       >
-        {{ i18n("modal", "continue") }}
+        {{ buttonALabel }}
       </PrimaryButton>
     </div>
     <div
       v-else
       class="c-modal-message__text"
     >
-      {{ i18n("modal", "speedrunTextD") }}
+      {{ TextD }}
       <input
         ref="name"
         v-model="name"
@@ -79,14 +112,14 @@ export default {
       >
       <br>
       <br>
-      {{ i18n("modal", "speedrunTextE") }}
+      {{ TextE }}
       <br>
       <br>
-      {{ i18n("modal", "speedrunTextF") }}
+      {{ TextF }}
       <br>
       <br>
       <div class="c-modal-hard-reset-danger">
-        {{ i18n("modal", "speedrunTextG") }}
+        {{ TextG }}
       </div>
       <input
         ref="confirmPhrase"
@@ -97,10 +130,10 @@ export default {
       >
     </div>
     <template #confirm>
-      {{ i18n("modal", "startRun") }}
+      {{ buttonBLabel }}
     </template>
     <template #cancel>
-      {{ i18n("modal", "cancel") }}
+      {{ buttonCLabel }}
     </template>
   </ModalWrapperChoice>
 </template>

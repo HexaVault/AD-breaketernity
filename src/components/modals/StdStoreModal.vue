@@ -13,6 +13,17 @@ export default {
       macPurchaser: false,
     };
   },
+  computed: {
+    topLabel() {
+      return i18n("modal", "STDStoreModalTitle");
+    },
+    confirmPurchase() {
+      return i18n("modal", "STDStoreModalConfirm");
+    },
+    mac() {
+      return i18n("modal", "STDStoreModalRequiredOnMac");
+    },
+  },
   methods: {
     update() {
       this.macPurchaser = false;
@@ -28,11 +39,16 @@ export default {
 <template>
   <ModalWrapper class="c-shop-modal">
     <template #header>
-      Support The Developer - coins
+      {{ topLabel }}
     </template>
     <span v-if="macPurchaser">
-      <button class="o-shop-button-button" @click="macConfirm()">Confirm Purchase to Receive STDs</button>
-      <br><span>(Required on Mac)</span><br>
+      <button
+        class="o-shop-button-button"
+        @click="macConfirm()"
+      >
+        {{ confirmPurchase }}
+      </button>
+      <br><span>{{ mac }}</span><br>
     </span>
     <div class="l-modal-store-content">
       <img src="/images/std_coin.png">

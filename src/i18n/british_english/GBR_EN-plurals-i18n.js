@@ -41,4 +41,16 @@ export const plurals = {
   perkPoints: { key: "PP", rules: [{ values: [1, -1], text: "$$$ Perk Point" }, "$$$ Perk Points"] },
   realities: { key: "REAL", rules: [{ values: [1, -1], text: "$$$ Reality" }, "$$$ Realities"] },
   relicShards: { key: "RELIC", rules: [{ values: [1, -1], text: "$$$ Relic Shard" }, "$$$ Relic Shards"] },
+  invalidInput: { key: "INVINP", rules: [{ values: [1, -1], text: "$$$ Invalid Input" }, "$$$ Invalid Inputs"] },
+  times: { key: "TIME", rules: [{ values: [1, -1], text: "$$$ Time" }, "$$$ Times"] },
+  constants: { key: "CONST", rules: [{ values: [1, -1], text: "$$$ Constant" }, "$$$ Constants"] },
+  years: { key: "YEAR", rules: [{ values: [1, -1], text: "$$$ Year" }, "$$$ Years"] },
+  days: { key: "DAY", rules: [{ values: [1, -1], text: "$$$ Day" }, "$$$ Days"] },
+  hours: { key: "HOUR", rules: [{ values: [1, -1], text: "$$$ Hour" }, "$$$ Hours"] },
+  minutes: { key: "MIN", rules: [{ values: [1, -1], text: "$$$ Minute" }, "$$$ Minutes"] },
+  seconds: { key: "SEC", rules: [{ values: [1, -1], text: "$$$ Second" }, "$$$ Seconds"] },
+  presets: { key: "PRESET", rules: [{ values: [1, -1], text: "$$$ Preset" }, "$$$ Presets"] },
+  // There might be a small case where "TT" is different for pluralisation soooooo
+  ttShort: { key: "TTSHORT", rules: ["SSS TT"] },
+  stShort: { key: "STSHORT", rules: ["SSS ST"] }
 };

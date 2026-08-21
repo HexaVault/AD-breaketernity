@@ -7,6 +7,11 @@ export default {
   components: {
     ModalWrapperOptions,
     LoadGameEntry
+  },
+  computed: {
+    topLabel() {
+      return i18n("modal", "loadGameModalTitle");
+    }
   }
 };
 </script>
@@ -14,7 +19,7 @@ export default {
 <template>
   <ModalWrapperOptions>
     <template #header>
-      {{ i18n("modal", "saveSelect") }}
+      {{ topLabel }}
     </template>
     <LoadGameEntry
       v-for="id in 3"

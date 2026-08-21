@@ -34,11 +34,13 @@ export default {
     offlineStats() {
       return AwayProgressTypes.appearsInAwayModal;
     },
-    headerText() {
+    topLabel() {
       const timeDisplay = TimeSpan.fromSeconds(new Decimal(this.seconds)).toString();
-      return i18n("modal",
-        this.nothingHappened || !this.somethingHappened ? "whileAwayForAlt" : "whileAwayFor", [timeDisplay]);
+      return i18n("modal", this.nothingHappened || !this.somethingHappened ? "awayProgressModalTitle" : "awayProgressModalTitle_Nothing", [timeDisplay]);
     },
+    hideNote() {
+      return i18n("modal", "awayProgressModalHideNote");
+    }
   },
   mounted() {
     this.$nextTick(() => {
@@ -52,7 +54,7 @@ export default {
 <template>
   <ModalWrapper class="c-modal-away-progress">
     <div class="c-modal-away-progress__header">
-      {{ headerText }}
+      {{ topLabel }}
     </div>
     <div
       v-if="!nothingHappened"
@@ -67,7 +69,7 @@ export default {
         @something-happened="somethingHappened = true"
       />
     </div>
-    <span v-if="!nothingHappened && somethingHappened">{{ i18n("modal", "hideNote") }}</span>
+    <span v-if="!nothingHappened && somethingHappened">{{ hideNote }}</span>
   </ModalWrapper>
 </template>
 

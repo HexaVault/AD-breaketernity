@@ -12,15 +12,16 @@ export default {
     }
   },
   computed: {
-    importDestString() {
-      return i18n("modal", "emptyCurrent").split("$")[this.intoEmpty ? 0 : 1];
-    }
-  },
-  methods: {
-    formatTheoremCost(tt, st) {
-      const strTT = `${formatWithCommas(tt)} TT`;
-      const strST = `${formatWithCommas(st)} ST`;
-      return st === 0 ? strTT : `${strTT} + ${strST}`;
+    notPurchaseString() {
+      return i18n("modal", "studyStringModalLineNotPurchaseNew", [], true)[this.intoEmpty ? 0 : 1];
+    },
+    purchaseString() {
+      return i18n("modal", "studyStringModalLineWillPurchaseX", [], true)[this.intoEmpty ? 0 : 1];
+    },
+    formatTheoremCost() {
+      const strTT = i18n("plurals", "TTSHORT", [[formatWithCommas, this.tree.timeTheorems]]);
+      const strST = i18n("plurals", "STSHORT", [[formatWithCommas, this.tree.spaceTheorems]]);
+      return i18n("modal", "studyStringModalLineCostsX", [this.tree.spaceTheorems.eq(0) ? strTT : `${strTT} + ${strST}`]);
     }
   },
 };
@@ -28,14 +29,14 @@ export default {
 
 <template>
   <div class="l-modal-import-tree__tree-info-line">
-    <div v-if="tree.timeTheorems === 0 && tree.spaceTheorems === 0">
-      <i>{{ i18n("modal", "notPurchase", [importDestString]) }}</i>
+    <div v-if="tree.timeTheorem.eq(0) && tree.spaceTheorems.eq(0)">
+      <i>{{ notPurchaseString }}</i>
     </div>
     <div v-else>
-      {{ i18n("modal", "importWill", [importDestString]) }}
+      {{ purchaseString }}
       <br>
       {{ tree.newStudies }}
-      {{ i18n("modal", "cost" [formatTheoremCost(tree.timeTheorems, tree.spaceTheorems)]) }}
+      {{ formatTheoremCost }}
     </div>
     <br>
   </div>

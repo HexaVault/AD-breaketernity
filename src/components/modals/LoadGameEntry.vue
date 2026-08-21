@@ -22,6 +22,18 @@ export default {
   computed: {
     isSelected() {
       return GameStorage.currentSlot === this.saveId;
+    },
+    saveString() {
+      return i18n("modal", "loadGameEntrySave", [this.saveId + 1], true)[Number(this.isSelected)];
+    },
+    fileNameString() {
+      return i18n("modal", "importSaveModalFileName", [this.fileName]);
+    },
+    antimatterString() {
+      return i18n("modal", "importSaveModalAM", [formatAntimatter(this.antimatter)]);
+    },
+    buttonLabel() {
+      return i18n("consts", "load");
     }
   },
   methods: {
@@ -35,21 +47,21 @@ export default {
       if (this.isSelected) {
         this.antimatter.copyFrom(Currency.antimatter);
       }
-    }
+    },
   },
 };
 </script>
 
 <template>
   <div class="l-modal-options__save-record">
-    <h3>{{ i18n("modal", "saveX", [saveId + 1]) }}<span v-if="isSelected"> {{ i18n("modal", "selected") }}</span></h3>
-    <span v-if="fileName">{{ i18n("modal", "fileName", [fileName]) }}</span>
-    <span>{{ i18n("modal", "saveAM", [formatAntimatter(antimatter)]) }}</span>
+    <h3>{{ saveString }}</h3>
+    <span v-if="fileName">{{ fileNameString }}</span>
+    <span>{{ antimatterString }}</span>
     <PrimaryButton
       class="o-primary-btn--width-medium"
       @click="load"
     >
-      {{ i18n("modal", "load") }}
+      {{ buttonLabel }}
     </PrimaryButton>
   </div>
 </template>

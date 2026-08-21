@@ -16,6 +16,22 @@ export default {
       possibleEffects: [],
     };
   },
+  computed: {
+    topLabel() {
+      return i18n("modal", "realityGlyphCreationModalTitle");
+    },
+    creationMessage() {
+      return i18n("modal", "realityGlyphCreationModalInfo", [formatInt(realityGlyphLevel), formatPercents(1)]);
+    },
+    buttonLabel() {
+      if (this.isDoomed) return i18n("modal", "realityGlyphCreationModalCantMakeDoomed");
+      if (this.realityGlyphLevel.eq(0)) return i18n("modal", "realityGlyphCreationModalCantMakeLevelZero");
+      return i18n("modal", "realityGlyphCreationModalMakeGlyph");
+    },
+    availableEffects() {
+      return i18n("modal", "realityGlyphCreationModalListOfEffects");
+    }
+  },
   methods: {
     update() {
       this.isDoomed = Pelle.isDoomed;
@@ -29,7 +45,7 @@ export default {
     },
     createRealityGlyph() {
       if (GameCache.glyphInventorySpace.value === 0) {
-        Modal.message.show(i18n("modal", "noInvSpaceB"),
+        Modal.message.show(i18n("modal", "noSpaceForGlyphs"),
           { closeEvent: GAME_EVENT.GLYPHS_CHANGED });
         return;
       }
@@ -39,11 +55,11 @@ export default {
       this.emitClose();
     },
     formatGlyphEffect(effect) {
-      if (this.realityGlyphLevel.lt(effect[0])) return i18n("modal", "reqGlX", [formatInt(effect[0])]);
+      if (this.realityGlyphLevel.lt(effect[0])) return i18n("modal", "realityGlyphCreationModalRequiresLevelX", [formatInt(effect[0])]);
       const config = GlyphEffects[effect[1]];
       const value = config.primary.effectValueForInput(this.realityGlyphLevel);
       return config.singleDesc.replace("{value}", config.primary.formatEffect(value));
-    }
+    },
   },
 };
 </script>
@@ -51,15 +67,15 @@ export default {
 <template>
   <ModalWrapper>
     <template #header>
-      {{ i18n("modal", "realGlyphCreation") }}
+      {{ topLabel }}
     </template>
     <div class="c-reality-glyph-creation">
       <div>
-        {{ i18n("modal", "rgcText", [formatInt(realityGlyphLevel), formatPercents(1)]) }}
+        {{ creationMessage }}
       </div>
       <div class="o-available-effects-container">
         <div class="o-available-effects">
-          {{ i18n("modal", "availableEffects") }}
+          {{ availableEffects }}
         </div>
         <div
           v-for="(effect, index) in possibleEffects"
@@ -69,22 +85,9 @@ export default {
         </div>
       </div>
       <PrimaryButton
-        v-if="isDoomed"
-        :enabled="false"
+        :enabled="!isDoomed && realityGlyphLevel.neq(0)"
       >
-        {{ i18n("modal", "noRealDoomed") }}
-      </PrimaryButton>
-      <PrimaryButton
-        v-else-if="realityGlyphLevel.neq(0)"
-        @click="createRealityGlyph"
-      >
-        {{ i18n("modal", "makeReal") }}
-      </PrimaryButton>
-      <PrimaryButton
-        v-else
-        :enabled="false"
-      >
-        {{ i18n("modal", "gtZero", [formatInt(0)]) }}
+        {{ buttonLabel }}
       </PrimaryButton>
     </div>
   </ModalWrapper>

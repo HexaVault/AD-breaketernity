@@ -12,6 +12,17 @@ export default {
       required: true
     }
   },
+  computed: {
+    topLabel() {
+      return i18n("modal", "delScriptModalTitle");
+    },
+    message() {
+      return i18n("modal", "delScriptModalMessage");
+    },
+    buttonLabel() {
+      return i18n("consts", "delete");
+    }
+  },
   methods: {
     handleYesClick() {
       const script = this.scriptID;
@@ -39,13 +50,13 @@ export default {
 <template>
   <ModalWrapperChoice @confirm="handleYesClick">
     <template #header>
-      {{ i18n("modal", "delScript") }}
+      {{ topLabel }}
     </template>
     <div class="c-modal-message__text">
-      {{ i18n("modal", "delScriptText") }}
+      {{ message }}
     </div>
     <template #confirm-text>
-      {{ i18n("modal", "del") }}
+      {{ buttonLabel }}
     </template>
   </ModalWrapperChoice>
 </template>

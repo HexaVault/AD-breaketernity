@@ -44,6 +44,30 @@ export default {
     templateScript() {
       if (this.invalidInputCount !== 0) return null;
       return new ScriptTemplate(this.templateProps, this.name);
+    },
+    topLabel() {
+      return i18n("modal", "tomatoTemplateModalTitle", [this.name]);
+    },
+    buttonLabelInvalidInputs() {
+      return i18n("modal", "tomatoTemplateModalCannotGenerate", [formatInt, this.invalidInputCount]);
+    },
+    buttonLabelValidInputs() {
+      return i18n("modal", "tomatoTemplateModalCopyAndClose");
+    },
+    textLabelA() {
+      return i18n("modal", "tomatoTemplateModalRequiredInfo");
+    },
+    textLabelB() {
+      return i18n("modal", "tomatoTemplateModalUsePresetStudy");
+    },
+    textLabelC() {
+      return i18n("modal", "tomatoTemplateModalCurrentTree");
+    },
+    textLabelD() {
+      return i18n("modal", "tomatoTemplateModalIfWrongInputs");
+    },
+    textLabelE() {
+      return i18n("modal", "tomatoTemplateModalToConsider");
     }
   },
   // Many props in this component are generated dynamically from a GameDB entry, but Vue can only give reactive
@@ -79,6 +103,9 @@ export default {
         : "c-automator-template-textbox--invalid";
     },
     loadPreset(name, id) {
+      // DO NOT CHANGE FOR I18N
+      // This is used for internal stuff and this is for automator scripts, which do not have i18n.
+      // Do not convert it to i18n, because it will just cause more problems.
       this.templateInputs.treeStudies = name ? `NAME ${name}` : `ID ${id}`;
       this.updateTemplateProps();
     },
@@ -128,15 +155,15 @@ export default {
 <template>
   <ModalWrapper class="c-automator-template-container">
     <template #header>
-      {{ i18n("modal", "automatorNTemlate", [name]) }}
+      {{ topLabel }}
     </template>
     <div class="c-automator-template-description">
       {{ description }}
     </div>
     <div class="c-automator-template-inputs">
-      <b>{{ i18n("modal", "reqInfo") }}</b>
+      <b>{{ textLabelA }}</b>
       <br>
-      {{ i18n("modal", "usePresetST") }}
+      {{ textLabelB }}
       <button
         v-for="(preset, presetNumber) in presets"
         :key="preset.name"
@@ -149,7 +176,7 @@ export default {
         class="o-primary-btn o-load-preset-button-margin"
         @click="loadCurrent"
       >
-        <i>{{ i18n("modal", "currentTree") }}</i>
+        <i>{{ textLabelC }}</i>
       </button>
       <div
         v-for="input in inputs"
@@ -178,7 +205,7 @@ export default {
       </div>
     </div>
     <div class="c-automator-template-warnings">
-      <b>{{ i18n("modal", "possibleConsider") }}</b>
+      <b>{{ textLabelE }}</b>
       <div v-if="validWarnings.length !== 0">
         <div
           v-for="warning in validWarnings"
@@ -189,7 +216,7 @@ export default {
         </div>
       </div>
       <div v-else>
-        {{ i18n("modal", "ifSomethingWrong") }}
+        {{ textLabelD }}
       </div>
       <br>
       <br>
@@ -199,13 +226,13 @@ export default {
       class="o-primary-btn"
       @click="copyAndClose"
     >
-      Copy this template to your clipboard and close this modal
+      {{ buttonLabelValidInputs }}
     </button>
     <button
       v-else
       class="o-primary-btn o-primary-btn--disabled"
     >
-      Cannot generate template (You have {{ quantifyInt("invalid input", invalidInputCount) }})
+      {{ buttonLabelInvalidInputs }}
     </button>
   </ModalWrapper>
 </template>

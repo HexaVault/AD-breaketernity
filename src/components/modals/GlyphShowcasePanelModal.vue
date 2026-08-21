@@ -53,6 +53,9 @@ export default {
         "c-glyph-choice-container": true,
         "c-glyph-choice-container-single": this.glyphs.length === 1,
       };
+    },
+    glyphSelectionLevel() {
+      return i18n("modal", "glyphShowcaseModalProjected", [formatInt(this.gainedLevel)]);
     }
   },
   methods: {
@@ -83,7 +86,7 @@ export default {
       {{ name }}
     </template>
     <div v-if="isGlyphSelection">
-      {{ i18n("modal", "projGlyphLevel", [formatInt(gainedLevel)]) }}
+      {{ glyphSelectionLevel }}
     </div>
     <GlyphSetName
       v-if="showSetName"

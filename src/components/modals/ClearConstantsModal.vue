@@ -11,6 +11,20 @@ export default {
       constantCount: 0,
     };
   },
+  computed: {
+    topLabel() {
+      return i18n("modal", "delConstsModalTitle");
+    },
+    noteA() {
+      return i18n("modal", "delConstsModalWishToDelete");
+    },
+    noteB() {
+      return i18n("modal", "delConstsModalWillDeleteXConsts", [[formatInt, this.constantCount]]);
+    },
+    buttonLabel() {
+      return i18n("modal", "delConstsModalButtonLabel");
+    }
+  },
   methods: {
     update() {
       this.constantCount = Object.keys(player.reality.automator.constants).length;
@@ -29,17 +43,17 @@ export default {
     @confirm="deleteConstants"
   >
     <template #header>
-      {{ i18n("modal", "delConst") }}
+      {{ topLabel }}
     </template>
     <div class="c-modal-message__text">
-      {{ i18n("modal", "delConstTextA") }}
+      {{ noteA }}
       <br>
       <span class="l-lost-text">
-        {{ i18n("modal", "delConstTextB", [quantify(i18n("modal", "constant"), constantCount)]) }}
+        {{ noteB }}
       </span>
     </div>
     <template #confirm-text>
-      {{ i18n("modal", "delAll") }}
+      {{ buttonLabel }}
     </template>
   </ModalWrapperChoice>
 </template>

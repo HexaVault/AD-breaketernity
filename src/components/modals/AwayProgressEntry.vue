@@ -69,12 +69,15 @@ export default {
     },
     formatBlackHoleActivations() {
       const activations = this.after.sub(this.before);
-      return quantifyInt(i18n("modal", "time"), activations);
+      return i18n("modal", "awayProgressModalBlackhole", [this.formattedName, [formatInt, activations]]);
     },
     isVeryLarge() {
       return this.isBlackHole
         ? false
         : Decimal.gt(this.before, Decimal.pow10(1e9));
+    },
+    textLabel() {
+      return i18n("modal", "awayProgressModalXIncreased", [this.formattedName, this.formatBefore, this.formatAfter], true)[this.isVeryLarge ? 1 : 0];
     }
   },
   methods: {
@@ -103,11 +106,10 @@ export default {
     @click="hideEntry"
   >
     <span v-if="isBlackHole">
-      {{ i18n("modal", "yourXactivatedY") }}
+      {{ formatBlackHoleActivations }}
     </span>
     <span v-else>
-      {{ i18n("modal", "xIncreased",
-              [formattedName, isVeryLarge ? i18n("modal", "expo") : "", formatBefore, formatAfter]) }}
+      {{ textLabel }}
     </span>
   </div>
 </template>

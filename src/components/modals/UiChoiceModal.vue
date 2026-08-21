@@ -8,7 +8,22 @@ export default {
   },
   computed: {
     listEntries() {
-      return i18n("modal", "UImodalEntries").split("$");
+      return i18n("modal", "UIChoiceModalEntries", [], true);
+    },
+    topLabel() {
+      return i18n("modal", "UIChoiceModalTitle");
+    },
+    oldSaveLoaded() {
+      return i18n("modal", "UIChoiceModalOldSaveLoad");
+    },
+    changeAnytime() {
+      return i18n("modal", "UIChoiceModalChangeAnytime");
+    },
+    buttonLabelA() {
+      return i18n("consts", "remain");
+    },
+    buttonLabelB() {
+      return i18n("consts", "swap");
     }
   },
   methods: {
@@ -22,10 +37,10 @@ export default {
 <template>
   <ModalWrapperChoice @confirm="handleYesClick">
     <template #header>
-      {{ i18n("modal", "visualChanges") }}
+      {{ topLabel }}
     </template>
     <div class="c-modal-message__text">
-      {{ i18n("modal", "oldSaveLoad") }}
+      {{ oldSaveLoaded }}
       <br>
       <br>
       <div class="c-visual-change-list">
@@ -40,13 +55,13 @@ export default {
       </div>
       <br>
       <br>
-      {{ i18n("modal", "changeAnytime") }}
+      {{ changeAnytime }}
     </div>
     <template #cancel-text>
-      {{ i18n("modal", "remain") }}
+      {{ buttonLabelA }}
     </template>
     <template #confirm-text>
-      {{ i18n("modal", "swap") }}
+      {{ buttonLabelB }}
     </template>
   </ModalWrapperChoice>
 </template>

@@ -77,10 +77,43 @@ export default {
       return this.constantCountAfterImport - this.maxConstantCount;
     },
     presetButtonText() {
-      return this.ignorePresets ? i18n("modal", "ignorePresets") : i18n("modal", "impPresets");
+      return this.ignorePresets ? i18n("modal", "importTomatoScriptModalIgnorePresets") : i18n("modal", "importTomatoScriptModalImportPresets");
     },
     constantButtonText() {
-      return this.ignoreConstants ? i18n("modal", "ignoreConst") : i18n("modal", "impConst");
+      return this.ignoreConstants ? i18n("modal", "importTomatoScriptModalIgnoreConst") : i18n("modal", "importTomatoScriptModalImportConstants");
+    },
+    topLabel() {
+      return i18n("modal", "importTomatoScriptModalTitle");
+    },
+    stringA() {
+      return i18n("modal", "importTomatoScriptModalNewScript");
+    },
+    stringAExtra() {
+      return i18n("modal", "importTomatoScriptModalExtraData");
+    },
+    scriptNameString() {
+      return i18n("modal", "importTomatoScriptModalName", [this.scriptName]);
+    },
+    scriptLinesString() {
+      return i18n("modal", "importTomatoScriptModalLines", [this.lineCount]);
+    },
+    constantLimitText() {
+      return i18n("modal", "importTomatoScriptModalConstLimit", [[formatInt, this.extraConstants]]);
+    },
+    overwriteConstantText() {
+      return i18n("modal", "importTomatoScriptModalOverwrittenConsts");
+    },
+    hasErrorsText() {
+      return i18n("modal", "importTomatoScriptModalHasError");
+    },
+    dataMightFix() {
+      return i18n("modal", "importTomatoScriptModalDataMayFix");
+    },
+    invalidData() {
+      return i18n("modal", "importTomatoScriptModalInvalidADS");
+    },
+    buttonLabel() {
+      return i18n("consts", "import");
     }
   },
   mounted() {
@@ -123,6 +156,10 @@ export default {
       }
       this.emitClose();
     },
+    scriptPresetString(preset) {
+      if (!preset.name) return i18n("modal", "importTomatoScriptModalPresetX", [preset.id + 1]);
+      return i18n("modal", "importTomatoScriptModalPresetX", [preset.name, preset.id + 1]);
+    }
   },
 };
 </script>
@@ -134,10 +171,10 @@ export default {
     @confirm="importSave"
   >
     <template #header>
-      {{ i18n("modal", "importASD") }}
+      {{ topLabel }}
     </template>
-    {{ i18n("modal", "newScript") }}
-    <span v-if="isImportingExtraData">{{ i18n("modal", "newScriptExtraData") }}</span>
+    {{ stringA }}
+    <span v-if="isImportingExtraData">{{ stringAExtra }}</span>
     <input
       ref="input"
       v-model="input"
@@ -147,9 +184,9 @@ export default {
       @keyup.esc="emitClose"
     >
     <div v-if="isValid">
-      {{ i18n("modal", "scriptName", [scriptName]) }}
+      {{ scriptNameString }}
       <br>
-      {{ i18n("modal", "lineCount", [lineCount]) }}
+      {{ scriptLinesString }}
       <div v-if="hasPresets">
         <br>
         {{ i18n("modal", "studyPresets") }}
@@ -158,8 +195,7 @@ export default {
           :key="id"
           class="c-import-data-name"
         >
-          <span v-if="preset.name">"{{ i18n("modal", "presetSlotXAlt", [preset.name, preset.id + 1]) }}</span>
-          <span v-else>{{ i18n("modal", "presetSlotX", [preset.id + 1]) }}</span>
+          {{ scriptPresetString(preset) }}
         </span>
         <div
           v-if="!ignorePresets && overwrittenPresetCount > 0"
@@ -189,10 +225,10 @@ export default {
           v-if="!ignoreConstants && (willOverwriteConstant || extraConstants > 0)"
           class="l-has-errors"
         >
-          <span v-if="willOverwriteConstant">{{ i18n("modal", "overwrittenConsts") }}</span>
+          <span v-if="willOverwriteConstant">{{ overwriteConstantText }}</span>
           <br v-if="willOverwriteConstant && extraConstants > 0">
           <span v-if="extraConstants > 0">
-            {{ i18n("modal", "constLim", [quanitfyInt(i18n("modal, const"), extraConstants), maxConstantCount]) }}
+            {{ constantLimitText }}
           </span>
         </div>
         <br>
@@ -208,17 +244,17 @@ export default {
         v-if="hasErrors"
         class="l-has-errors"
       >
-        {{ i18n("modal", "scriptHasErrors") }}
+        {{ hasErrorsText }}
       </div>
       <div v-if="hasErrors && isImportingExtraData">
-        <i>{{ i18n("modal", "someErrFix") }}</i>
+        <i>{{ dataMightFix }}</i>
       </div>
     </div>
     <div v-else-if="input.length !== 0">
-      {{ i18n("modal", "invalidADS") }}
+      {{ invalidData }}
     </div>
     <template #confirm-text>
-      {{ i18n("modal", "import") }}
+      {{ buttonLabel }}
     </template>
   </ModalWrapperChoice>
 </template>

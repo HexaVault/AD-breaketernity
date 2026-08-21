@@ -8,6 +8,11 @@ export default {
     CreditsDisplay,
     ModalWrapper
   },
+  computed: {
+    topLabel() {
+      return i18n("consts", "ad");
+    }
+  }
 };
 </script>
 
@@ -15,7 +20,7 @@ export default {
   <ModalWrapper class="l-credits-modal c-credits-modal">
     <template #header>
       <h1 class="c-game-header__antimatter">
-        {{ i18n("modal", "ad") }}
+        {{ topLabel }}
       </h1>
     </template>
     <div class="c-credits-modal__body">

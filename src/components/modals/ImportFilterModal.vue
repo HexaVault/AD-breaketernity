@@ -66,13 +66,40 @@ export default {
       return this.changedValue(this.parsedSettings.trash, this.currentSettings.trash,
         x => AutoGlyphProcessor.trashModeDesc(x));
     },
-    // Hide effarig if it hasn't been unlocked yet
+    // Hide glyphs if they haven't been unlocked yet
     availableTypes() {
       // eslint-disable-next-line max-len
-      return GlyphInfo.alchemyGlyphTypes.filter(t => GlyphInfo[t.type].isGenerated && GlyphInfo[t.type].generationRequirement);
+      return GlyphInfo.generatedGlyphTypes.filter(t => GlyphInfo[t.type].isGenerated && GlyphInfo[t.type].generationRequirement);
     },
     settingTooltipText() {
-      return i18n("modal", "mouseover");
+      return i18n("modal", "importGlyphFilterModalMouseover");
+    },
+    topLabel() {
+      return i18n("modal", "importGlyphFilterModalTitle");
+    },
+    stringA() {
+      return i18n("modal", "importGlyphFilterModalOverwrite", [], true)[0];
+    },
+    stringB() {
+      return i18n("modal", "importGlyphFilterModalOverwrite", [], true)[1];
+    },
+    selectionMode() {
+      return i18n("modal", "importGlyphFilterModalSelection");
+    },
+    effectCount() {
+      return i18n("modal", "importGlyphFilterModalCount");
+    },
+    rejectedGlyphs() {
+      return i18n("modal", "importGlyphFilterModalRejected");
+    },
+    typeSpecific() {
+      return i18n("modal", "importGlyphFilterModalTypeSpecific");
+    },
+    invalidGFS() {
+      return i18n("modal", "importGlyphFilterModalInvalidFilter");
+    },
+    buttonLabel() {
+      return i18n("consts", "import");
     }
   },
   mounted() {
@@ -83,7 +110,7 @@ export default {
       this.currentSettings = JSON.parse(JSON.stringify(player.reality.glyphs.filter));
     },
     changedValue(oldVal, newVal, applyFn) {
-      if (oldVal === newVal) return "(No change)";
+      if (oldVal === newVal) return i18n("modal", "importGlyphFilterModalNoChange");
       return `${applyFn(oldVal)} ➜ ${applyFn(newVal)}`;
     },
     importFilter() {
@@ -101,11 +128,11 @@ export default {
     :show-confirm="false"
   >
     <template #header>
-      {{ i18n("modal", "impGFS") }}
+      {{ topLabel }}
     </template>
-    {{ i18n("modal", "GFSoverwrite").split("$")[0] }}
+    {{ stringA }}
     <br>
-    {{ i18n("modal", "GFSoverwrite").split("$")[1] }}
+    {{ stringB }}
     <input
       ref="input"
       v-model="input"
@@ -117,13 +144,13 @@ export default {
     <div class="c-modal-import__save-info">
       <div v-if="!input" />
       <div v-else-if="inputIsValid">
-        <b>{{ i18n("modal", "selMode") }}</b> {{ selectStr }}
+        <b>{{ selectionMode }}</b> {{ selectStr }}
         <br>
-        <b>{{ i18n("modal", "effCount") }}</b> {{ basicCountStr }}
+        <b>{{ effectCount }}</b> {{ basicCountStr }}
         <br>
-        <b>{{ i18n("modal", "rejGlph") }}</b> {{ trashStr }}
+        <b>{{ rejectedGlyphs }}</b> {{ trashStr }}
         <br>
-        <u><b>{{ i18n("modal", "typeSpec") }}</b></u> <span :ach-tooltip="settingTooltipText">
+        <u><b>{{ typeSpecific }}</b></u> <span :ach-tooltip="settingTooltipText">
           <i class="fas fa-question-circle" />
         </span>
         <br>
@@ -137,7 +164,7 @@ export default {
         />
       </div>
       <div v-else>
-        {{ i18n("modal", "invalidGFS") }}
+        {{ invalidGFS }}
       </div>
     </div>
 
@@ -146,7 +173,7 @@ export default {
       class="o-primary-btn--width-medium c-modal-message__okay-btn c-modal__confirm-btn"
       @click="importFilter"
     >
-      {{ i18n("modal", "import") }}
+      {{ buttonLabel }}
     </PrimaryButton>
   </ModalWrapperChoice>
 </template>

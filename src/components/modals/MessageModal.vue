@@ -19,6 +19,12 @@ export default {
     },
     isThemeS12() {
       return this.$viewModel.theme === "S12";
+    },
+    buttonLabel() {
+      return i18n("consts", "okay");
+    },
+    s12TopLabel() {
+      return i18n("modal", "messageModalS12Case");
     }
   },
   created() {
@@ -59,13 +65,13 @@ export default {
       class="o-primary-btn--width-medium c-modal-message__okay-btn c-modal__confirm-btn"
       @click="handleClick"
     >
-      {{ i18n("modal", "okay") }}
+      {{ buttonLabel }}
     </PrimaryButton>
     <div
       v-if="isThemeS12"
       class="c-modal__title"
     >
-      {{ i18n("modal", "message") }}
+      {{ s12TopLabel }}
     </div>
   </div>
 </template>

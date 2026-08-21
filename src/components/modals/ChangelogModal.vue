@@ -22,6 +22,12 @@ export default {
     },
     entries() {
       return GameDatabase.changelog;
+    },
+    topLabel() {
+      return i18n("modal", "changelogModalTitle");
+    },
+    secondLabel() {
+      return i18n("modal", "changelogModalUpdate", [this.shownEntry.name]);
     }
   },
   methods: {
@@ -30,6 +36,7 @@ export default {
       this.$refs.changelogBody.scrollTop = 0;
     },
     formatDate(date) {
+      // TODO: Maybe i18n this?
       return date.map(n => (Math.log10(n) >= 2 ? n : `0${n}`.slice(-2))).join("-");
     }
   },
@@ -41,7 +48,7 @@ export default {
     <ModalCloseButton @click="emitClose" />
     <div class="l-changelog-header">
       <div class="c-changelog-title">
-        {{ i18n("modal", "changelog") }}
+        {{ topLabel }}
       </div>
     </div>
     <div class="l-changelog-container">
@@ -63,7 +70,7 @@ export default {
       <div class="l-changelog-info">
         <div class="c-changelog-body--title">
           {{ formatDate(shownEntry.date) }}<span v-if="shownEntry.name">:
-            {{ i18n("modal", "xUpd", [shownEntry.name]) }}</span>
+            {{ secondLabel }}</span>
         </div>
         <div
           ref="changelogBody"

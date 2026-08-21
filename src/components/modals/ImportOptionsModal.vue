@@ -17,16 +17,18 @@ export default {
   computed: {
     saveCheckString() {
       const save = GameSaveSerializer.deserialize(this.input, "settings");
+      // eslint-disable-next-line no-console
       console.log(save);
       function checkOptionsObject(data) {
-        if (data === undefined) return i18n("modal", "importOptionsFailStrings").split("$")[7];
+        const failStrings = i18n("modal", "importOptionsModalFailStrings", [], true);
+        if (data === undefined) return failStrings[7];
         // Check for save file name, UI, theme, notation, large notation and language.
-        if (!(data.saveFileName) && data.saveFileName !== "") return i18n("modal", "importOptionsFailStrings").split("$")[1];
-        if (!data.notation) return i18n("modal", "importOptionsFailStrings").split("$")[2];
-        if (!data.lnotation) return i18n("modal", "importOptionsFailStrings").split("$")[3];
-        if (!data.themeModern || !data.themeClassic) return i18n("modal", "importOptionsFailStrings").split("$")[4];
-        if (!data.newUI) return i18n("modal", "importOptionsFailStrings").split("$")[5];
-        if (!data.language) return i18n("modal", "importOptionsFailStrings").split("$")[6];
+        if (!(data.saveFileName) && data.saveFileName !== "") return failStrings[1];
+        if (!data.notation) return failStrings[2];
+        if (!data.lnotation) return failStrings[3];
+        if (!data.themeModern || !data.themeClassic) return failStrings[4];
+        if (!data.newUI) return failStrings[5];
+        if (!data.language) return failStrings[6];
         return "";
       }
       const rawString = checkOptionsObject(save);
@@ -67,23 +69,35 @@ export default {
       return DEV;
     },
     fileText() {
-      return i18n("modal", "fileName", [this.fileName]);
+      return i18n("modal", "importOptionsModalFilename", [this.fileName]);
     },
     themeText() {
-      return i18n("modal", "importOptionsTheme", [this.theme]);
+      return i18n("modal", "importOptionsModalTheme", [this.theme]);
     },
     uiText() {
-      return i18n("modal", "importOptionsUI", [this.ui]);
+      return i18n("modal", "importOptionsModalUI", [this.ui]);
     },
     notationText() {
-      return i18n("modal", "importOptionsNotation", [this.notation]);
+      return i18n("modal", "importOptionsModalNotation", [this.notation]);
     },
     lnotationText() {
-      return i18n("modal", "importOptionsLNotation", [this.lnotation]);
+      return i18n("modal", "importOptionsModalLNotation", [this.lnotation]);
     },
     languageText() {
-      return i18n("modal", "importOptionsLanguage", [this.language, this.languageTranslated]);
+      return i18n("modal", "importOptionsModalLanguage", [this.language, this.languageTranslated]);
     },
+    overrideWarning() {
+      return i18n("modal", "importOptionsModalOverride");
+    },
+    invalidString() {
+      return i18n("modal", "importOptionsModalInvalidSettings");
+    },
+    topLabel() {
+      return i18n("modal", "importOptionsModalTitle");
+    },
+    buttonLabel() {
+      return i18n("modal", "import");
+    }
   },
   mounted() {
     this.$refs.input.select();
@@ -101,6 +115,7 @@ export default {
       player.settings = GameSaveSerializer.deserialize(this.input, "settings");
     },
     update() {
+      // eslint-disable-next-line no-console
       console.log(this.inputIsValid);
     }
   },
@@ -113,7 +128,7 @@ export default {
     :show-confirm="false"
   >
     <template #header>
-      {{ i18n("modal", "inputSave") }}
+      {{ topLabel }}
     </template>
     <input
       ref="input"
@@ -145,12 +160,12 @@ export default {
           {{ languageText }}
         </div>
         <div class="c-modal-import__warning">
-          {{ i18n("modal", "importOptionsOverride") }}
+          {{ overrideWarning }}
         </div>
         <br>
       </div>
       <div v-else-if="hasInput">
-        {{ i18n("modal", "importOptionsInvalidSettings") }}
+        {{ invalidString }}
         <br>
         {{ saveCheckString }}
       </div>
@@ -161,7 +176,7 @@ export default {
       class="o-primary-btn--width-medium c-modal-message__okay-btn c-modal__confirm-btn"
       @click="importSave"
     >
-      {{ i18n("modal", "import") }}
+      {{ buttonLabel }}
     </PrimaryButton>
   </ModalWrapperChoice>
 </template>

@@ -11,13 +11,29 @@ export default {
       showStoredGameTime: false,
     };
   },
+  computed: {
+    topLabel() {
+      return i18n("modal", "undoGlyphModalTitle");
+    },
+    infoText() {
+      return i18n("modal", "undoGlyphModalLastRemoved");
+    },
+    undoList() {
+      const list = i18n("modal", "undoGlyphModalUndoList", [], true);
+      if (!this.showStoredGameTime) list.pop(5);
+      return list;
+    },
+    specialConditions() {
+      return i18n("modal", "undoGlyphModalSpecialInvalid");
+    }
+  },
   methods: {
     update() {
       this.showStoredGameTime = Enslaved.isUnlocked;
     },
     realityInvalidate() {
       this.emitClose();
-      Modal.message.show(i18n("modal", "glyphUndoOnly"),
+      Modal.message.show(i18n("modal", "glyphUndoOnlyWithReality"),
         { closeEvent: GAME_EVENT.REALITY_RESET_AFTER });
     },
     handleYesClick() {
@@ -34,23 +50,23 @@ export default {
     @confirm="handleYesClick"
   >
     <template #header>
-      {{ i18n("modal", "aboutToUndo") }}
+      {{ topLabel }}
     </template>
     <div
       class="c-modal-message__text c-text-wrapper"
     >
-      {{ i18n("modal", "lastRemoved") }}
+      {{ infoText }}
       <br>
       <div class="c-text-wrapper">
-        {{ i18n("modal", "undoList").split("$")[0] }}
-        {{ i18n("modal", "undoList").split("$")[1] }}
-        {{ i18n("modal", "undoList").split("$")[2] }}
-        {{ i18n("modal", "undoList").split("$")[3] }}
-        {{ i18n("modal", "undoList").split("$")[4] }}
-        <span v-if="showStoredGameTime">{{ i18n("modal", "undoList").split("$")[5] }}</span>
+        <span
+          v-for="(undoneItem, idx) in undoList"
+          :key="idx"
+        >
+          <br>{{ undoneItem }}
+        </span>
       </div>
       <br>
-      {{ i18n("modal", "invalidStayInvalid") }}
+      {{ specialConditions }}
     </div>
   </ModalWrapperChoice>
 </template>

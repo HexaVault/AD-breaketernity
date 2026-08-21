@@ -23,8 +23,11 @@ export default {
       };
     },
     tooltipText() {
-      return `${this.setting ? "Disable" : "Reenable"} the ${this.confirmation.name} confirmation`;
+      return i18n("modal", "modalConfirmationText", [this.confirmation.name], true)[Number(this.setting)];
     },
+    buttonLabel() {
+      return i18n("modal", "modalConfirmationDontShowAgain");
+    }
   },
   created() {
     this.setting = this.confirmation.option;
@@ -53,7 +56,7 @@ export default {
       </div>
     </div>
     <span class="c-modal__confirmation-toggle__text">
-      {{ i18n("modal", "dontShowAgain") }}
+      {{ buttonLabel }}
     </span>
   </div>
 </template>

@@ -22,6 +22,9 @@ export default {
     },
     buttons() {
       return this.progress.buttons || [];
+    },
+    remainingText() {
+      return i18n("modal", "modalProgressBarRemaining", [this.remainingTime]);
     }
   },
 };
@@ -44,7 +47,7 @@ export default {
             {{ progress.progressName }}: {{ formatInt(progress.current) }}/{{ formatInt(progress.max) }}
           </div>
           <div>
-            {{ i18n("modal", "remaining", [remainingTime]) }}
+            {{ remainingText }}
           </div>
           <div class="modal-progress-bar__hbox">
             <div class="modal-progress-bar__bg">

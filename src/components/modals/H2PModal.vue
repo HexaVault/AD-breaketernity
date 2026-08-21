@@ -26,6 +26,9 @@ export default {
     },
     topThreshold() {
       return Math.min(this.matchingTabs[Math.min(this.matchingTabs.length - 1, 4)].relevance + 0.01, 0.5);
+    },
+    topLabel() {
+      return i18n("modal", "h2pModalTitle");
     }
   },
   created() {
@@ -64,7 +67,7 @@ export default {
     <ModalCloseButton @click="emitClose" />
     <div class="l-h2p-header">
       <div class="c-h2p-title">
-        {{ i18n("modal", "h2p") }}
+        {{ topLabel }}
       </div>
     </div>
     <div class="l-h2p-container">

@@ -19,6 +19,20 @@ export default {
       glyphSet: []
     };
   },
+  computed: {
+    topLabel() {
+      return i18n("modal", "delGlyphSetModalTitle");
+    },
+    stringText() {
+      return i18n("modal", "delGlyphSetModalConfirm");
+    },
+    notDeletingGlyphs() {
+      return i18n("modal", "delGlyphSetModalNotGlyphs");
+    },
+    buttonLabel() {
+      return i18n("consts", "delete");
+    }
+  },
   methods: {
     update() {
       this.glyphSet = cloneDeep(Glyphs.copyForRecords(player.reality.glyphs.sets[this.glyphSetId].glyphs));
@@ -37,18 +51,18 @@ export default {
     @confirm="handleYesClick"
   >
     <template #header>
-      {{ i18n("modal", "delGlyphSet") }}
+      {{ topLabel }}
     </template>
     <div class="c-modal-message__text">
-      {{ i18n("modal", "confirmDelGlyphSet") }}
+      {{ stringText }}
       <GlyphSetPreview
         :is-in-modal="true"
         :glyphs="glyphSet"
       />
-      {{ i18n("modal", "willNotDelGlyphs") }}
+      {{ notDeletingGlyphs }}
     </div>
     <template #confirm-text>
-      {{ i18n("modal", "del") }}
+      {{ buttonLabel }}
     </template>
   </ModalWrapperChoice>
 </template>

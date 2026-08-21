@@ -12,6 +12,20 @@ export default {
       actualName: ""
     };
   },
+  computed: {
+    topLabel() {
+      return i18n("modal", "changeNameModalTitle");
+    },
+    noteA() {
+      return i18n("modal", "changeNameModalCannotChange", [formatInt(40)]);
+    },
+    noteB() {
+      return i18n("modal", "changeNameModalNewName", [this.actualName]);
+    },
+    buttonLabel() {
+      return i18n("modal", "changeNameModalButtonLabel");
+    }
+  },
   created() {
     this.input = player.speedrun.name;
     this.actualName = Speedrun.generateName(this.input);
@@ -34,7 +48,7 @@ export default {
 <template>
   <ModalWrapperChoice @confirm="confirmChange">
     <template #header>
-      {{ i18n("modal", "changeNameHeader") }}
+      {{ topLabel }}
     </template>
     <input
       ref="input"
@@ -46,13 +60,13 @@ export default {
       @keyup.esc="emitClose"
     >
     <i>
-      {{ i18n("modal", "changeNameTextA", [formatInt(40)]) }}
+      {{ noteA }}
     </i>
     <div>
-      {{ i18n("modal", "changeNameTextB", [actualName]) }}
+      {{ noteB }}
     </div>
     <template #confirm-text>
-      {{ i18n("modal", "changeName") }}
+      {{ buttonLabel }}
     </template>
   </ModalWrapperChoice>
 </template>

@@ -47,6 +47,14 @@ export default {
       default: undefined
     }
   },
+  computed: {
+    buttonALabel() {
+      return i18n("consts", "cancel");
+    },
+    buttonBLabel() {
+      return i18n("consts", "confirm");
+    }
+  },
   created() {
     this.on$(GAME_EVENT.ENTER_PRESSED, this.doConfirm);
   },
@@ -99,7 +107,7 @@ export default {
         @click="doCancel"
       >
         <slot name="cancel-text">
-          {{ i18n("modal", "cancel") }}
+          {{ buttonALabel }}
         </slot>
       </PrimaryButton>
 
@@ -111,7 +119,7 @@ export default {
         @click="doConfirm"
       >
         <slot name="confirm-text">
-          {{ i18n("modal", "confirm") }}
+          {{ buttonBLabel }}
         </slot>
       </PrimaryButton>
     </div>

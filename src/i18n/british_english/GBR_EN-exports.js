@@ -9,7 +9,7 @@ export * from "./GBR_EN-inf-i18n";
 export * from "./GBR_EN-modal-i18n";
 export * from "./GBR_EN-options-i18n";
 export * from "./GBR_EN-other-i18n";
-export * from "./GBR_EN-plural-i18n";
+export * from "./GBR_EN-plurals-i18n";
 export * from "./GBR_EN-quotes-i18n";
 export * from "./GBR_EN-real-i18n";
 export * from "./GBR_EN-secret-i18n";

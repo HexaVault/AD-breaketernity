@@ -4,26 +4,44 @@ import * as i18nText from "./i18n/exports";
 // eslint-disable-next-line max-params
 window.i18n = function(type, id, mods = [], split = false) {
   let text = "";
-  // eslint-disable-next-line import/namespace
-  // If the player is holding the "show formula" keybind, use the formula i18n
-  if (Lang.showFormula) {
-    text = Lang.current.allText[type][id];
-  }
 
-  // This moreorless explictly exists for testing, since I don't want to hook blind theme to this, as
-  // some people may decide that they would rather not deal with i18n, which is fair.
-  if (typeof player !== "undefined" && (player.options.language === "blind")) {
-    return "";
-  }
+  if (type !== "plurals") {
+    // eslint-disable-next-line import/namespace
+    // If the player is holding the "show formula" keybind, use the formula i18n
+    if (Lang.showFormula) {
+      text = Lang.current.allText[type][id];
+    }
 
-  // Else go to language
-  if (text === undefined || text === "") {
-    text = Lang.current.allText[type][id];
-  }
+    // This moreorless explictly exists for testing, since I don't want to hook blind theme to this, as
+    // some people may decide that they would rather not deal with i18n, which is fair.
+    if (typeof player !== "undefined" && (player.options.language === "blind")) {
+      return "";
+    }
 
-  // If it's not defined for that language, default to English
-  if (text === undefined || text === "") {
-    text = Lang.GBR_EN.allText[type][id];
+    // Else go to language
+    if (text === undefined || text === "") {
+      text = Lang.current.allText[type][id];
+    }
+
+    // If it's not defined for that language, default to English
+    if (text === undefined || text === "") {
+      text = Lang.GBR_EN.allText[type][id];
+    }
+  // If someone calls a plural directly through i18n, its easiest to make it in the "plural" format then handle it seperately.
+  // This does result in having to do this text manipulation, but its fine.
+  } else {
+    text = "$";
+    let store = Lang.current.allText.plurals[id];
+    // If we are using mods, put them in
+    if (mods.length) text += "1aX";
+    if (text !== undefined) {
+      text = `$$${store.key}$$`;
+    } else {
+      store = Lang.GBR_EN.allText.plurals[id];
+      if (text !== undefined) text = `$$${store.key}$$`;
+    }
+    // Since we arent using split here, we can reuse it as the "use as lowercase" condition
+    if (split) text += "!$";
   }
 
   // If it's not defined for English, default to "Placeholder"

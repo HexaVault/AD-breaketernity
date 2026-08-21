@@ -6,6 +6,23 @@ export default {
   components: {
     ModalWrapperChoice
   },
+  computed: {
+    topLabel() {
+      return i18n("modal", "respecIAPModalTitle");
+    },
+    messageA() {
+      return i18n("modal", "respecIAPModalAreYouSure", [this.returnedSTDCount()], true)[0];
+    },
+    messageB() {
+      return i18n("modal", "respecIAPModalAreYouSure", [this.returnedSTDCount()], true)[1];
+    },
+    notCompleteRefund() {
+      return i18n("modal", "respecIAPModalNotAllRefund");
+    },
+    warningLabel() {
+      return i18n("modal", "respecIAPModalBuyMoreToRespec");
+    },
+  },
   methods: {
     returnedSTDCount() {
       let std = DC.D0;
@@ -29,22 +46,20 @@ export default {
     @confirm="handleYesClick"
   >
     <template #header>
-      You are about to respec your Shop Purchases
+      {{ topLabel }}
     </template>
     <div class="c-modal-message__text">
-      Are you sure you want to respec your Shop Purchases? This will not cost anything and
-      return the {{ returnedSTDCount() }}
+      {{ messageA }}
       <img
         src="images/std_coin.png"
         class="o-shop-button-button__img"
-      > you spent on all purchases which give permanent multipliers.
+      > {{ messageB }}
       <br>
       <br>
-      Anything spent on offline progress and Glyph cosmetics will not be refunded. Glyph cosmetic sets are
-      permanent and will not be lost or respeced once purchased.
+      {{ notCompleteRefund }}
       <br>
       <br>
-      <b class="o-warning">You will not be able to respec again unless you purchase more STD coins.</b>
+      <b class="o-warning">{{ warningLabel }}</b>
     </div>
   </ModalWrapperChoice>
 </template>

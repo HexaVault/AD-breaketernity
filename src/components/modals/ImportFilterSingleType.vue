@@ -29,10 +29,10 @@ export default {
       return this.changedValue(this.currSettings.rarity, this.newSettings.rarity, x => formatPercents(x / 100));
     },
     effectStr() {
-      return this.changedValue(this.currSettings.effectCount, this.newSettings.effectCount, formatInt);
+      return i18n("modal", "importSingleGlyphFilterModalMinimumEffects", [this.changedValue(this.currSettings.effectCount, this.newSettings.effectCount, formatInt)]);
     },
     scoreStr() {
-      return this.changedValue(this.currSettings.score, this.newSettings.score, formatInt);
+      return i18n("modal", "importSingleGlyphFilterModalScore", [this.changedValue(this.currSettings.score, this.newSettings.score, formatInt)]);
     },
     effectData() {
       const changes = [];
@@ -47,6 +47,9 @@ export default {
         });
       }
       return changes;
+    },
+    noChange() {
+      return i18n("modal", "importGlyphFilterModalNoChange");
     }
   },
   methods: {
@@ -81,7 +84,7 @@ export default {
       return GlyphEffects.all.find(e => e.intID === effectEntry.intID && e.isGenerated).genericDesc;
     },
     getTooltip(effectEntry) {
-      return i18n("modal", `${effectEntry}FilterTT`);
+      return i18n("modal", `importSingleGlyphFilterModalTYPE_${effectEntry}`);
     }
   },
 };
@@ -104,14 +107,14 @@ export default {
           :class="topLevelClassObject('effectCount')"
           :ach-tooltip="getTooltip('effectCount')"
         >
-          {{ i18n("modal", "minEff", [effectStr]) }}
+          {{ effectStr }}
         </span>
         <span
           class="c-target-score"
           :class="topLevelClassObject('score')"
           :ach-tooltip="getTooltip('score')"
         >
-          {{ i18n("modal", "score", [scoreStr]) }}
+          {{ scoreStr }}
         </span>
       </span>
       <br>
@@ -143,7 +146,7 @@ export default {
       </span>
     </span>
     <span v-else>
-      {{ i18n("modal", "noChanges") }}
+      {{ noChange }}
     </span>
   </div>
 </template>

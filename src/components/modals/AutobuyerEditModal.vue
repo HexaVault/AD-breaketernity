@@ -18,12 +18,12 @@ export default {
   },
   computed: {
     header() {
-      return i18n("modal", "editAuto");
+      return i18n("modal", "autobuyerEditModalTitle");
     },
     message() {
       // We have to have this edge-case due to a weird happening where you could open this modal
       // during the Reality animation, which would then show an empty modal.
-      return i18n("modal", Autobuyers.hasAutobuyersForEditModal ? "usingModalEditAuto" : "noAutos");
+      return i18n("modal", Autobuyers.hasAutobuyersForEditModal ? "autobuyerEditModalUsingModal" : "autobuyerEditModalNone");
     },
   },
 };
