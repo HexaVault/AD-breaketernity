@@ -21,7 +21,7 @@ export default {
     },
     message() {
       return i18n("modal", "eternityChallengeModalEternityAndStart", [this.challengeIsCompleted ? "" : () =>
-        i18n("modal", "challengeModalInfixA"), [format, () => this.challenge.currentGoal], () => formatInt(5)]);
+        i18n("modal", "challengeModalInfix"), [format, () => this.challenge.currentGoal], () => formatInt(5)]);
     },
     entranceLabel() {
       return i18n("modal", "eternityChallengeModalAboutToEnter", [this.id]);
