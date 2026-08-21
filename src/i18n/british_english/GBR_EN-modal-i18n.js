@@ -469,9 +469,9 @@ studies shown. Some names may be changed due to restrictions on constant name fo
   solo project in 2016, it was expanded upon by a large team of developers and testers from then on. $ The game has unfolding \
   gameplay and multiple prestige layers. The "How to Play" button contains useful information about progressing. $ The Break \
   Eternity port is a port intended to allow modders to extend the vanilla game beyond e9e15 by using a new library aswell as \
-  other changes, such as a more friendly codebase. The repository link here has been changed appropriately.`,
+  other changes, such as a more friendly codebase and i18n support. Some links here have been changed appropriately.`,
   informationModalGithub: "GitHub repository",
-  informationModalDiscord: "Antimatter Dimensions Discord Server",
+  informationModalDiscord: "Antimatter Dimensions Modding Discord Server",
   informationModalGooglePlay: "Antimatter Dimensions on Google Play",
   informationModalSteam: "Antimatter Dimensions on Steam",
   informationModalCredits: "Credits",

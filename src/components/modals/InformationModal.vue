@@ -52,7 +52,7 @@ export default {
       <InformationModalButton
         :name="adserv"
         icon="fa-brands fa-discord"
-        link="https://discord.gg/ST9NaXa"
+        link="https://discord.gg/9p9DknraUr"
       />
       <InformationModalButton
         :name="adgp"
