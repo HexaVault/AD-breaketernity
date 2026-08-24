@@ -105,6 +105,7 @@ export const chall = {
   laiMain: `Infinity Point and Eternity Point gain are Dilated. Game speed is reduced to $1aX and gradually comes back over $2aX minutes.
   Black Hole storing, discharging, pulsing, and inversion are all disabled. $3aX`,
   laidisabledmain: "Production from $1aX is disabled.",
+  // We can hardcode these values, since its only like, 8 options, and doing it elsewise would be weird.
   laidisabled: "all Dimensions$2nd and higher Dimensions$3rd and higher Dimensions$4th and higher Dimensions$5th and higher Dimensions$6th and higher Dimensions$7th and higher Dimensions$8th Dimensions",
   laidesc: `Antimatter generates entropy inside of this Reality.
   At $1aX entropy, the Reality becomes destabilized

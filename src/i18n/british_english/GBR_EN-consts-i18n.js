@@ -21,5 +21,10 @@ export const consts = {
   remain: "Remain",
   swap: "Swap",
   reset: "Reset",
-  ad: "Antimatter Dimensions"
+  ad: "Antimatter Dimensions",
+  active: "Active",
+  inactive: "Inactive",
+  effect: "Effect",
+  capped: "Capped",
+  current: "Current"
 };

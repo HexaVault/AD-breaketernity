@@ -64,13 +64,37 @@ export default {
       return formatFloat(this.cap, 1);
     },
     formattedFlow() {
-      const sign = this.flow.gte(0) ? "+" : "-";
-      if (Decimal.abs(this.flow).lt(0.01)) return "None";
-      const resourceText = `${sign}${format(Decimal.abs(this.flow), 2, 2)}/sec`;
+      const strings = i18n("celTabs", "alchemyTabNodeFormattedGeneration", [format(Decimal.abs(this.flow), 2, 2)], true);
+      if (Decimal.abs(this.flow).lt(0.01)) return strings[0];
+      const resourceText = this.flow.gte(0) ? strings[1] : strings[2];
       const color = this.flow.gt(0) ? "9CCC65" : "CC6666";
       return `<span style="color:#${color}">${resourceText}</span>`;
     },
     isDoomed: () => Pelle.isDoomed,
+    destroyedText() {
+      return i18n("celTabs", "alchemyTabNodeInfoDestroyed");
+    },
+    recentChangeA() {
+      return i18n("celTabs", "alchemyTabNodeInfoRecentChange", [], true)[0];
+    },
+    recentChangeB() {
+      return i18n("celTabs", "alchemyTabNodeInfoRecentChange", [], true)[1];
+    },
+    currentGenText() {
+      return i18n("consts", "alchemyTabNodeInfoCappedCurrent", [this.resourceAmount, this.resourceCap], true)[this.capped ? 0 : 1];
+    },
+    baseResourceText() {
+      return i18n("celTabs", "alchemyTabNodeInfoBaseResource");
+    },
+    activeReactionText() {
+      return i18n("celTabs", "alchemyTabNodeInfoActiveReaction", [this.reactionText], true)[this.isReactionActive ? 0 : 1];
+    },
+    effecti18n() {
+      return i18n("consts", "effect");
+    },
+    unlockReqText() {
+      return i18n("celTabs", "alchemyTabNodeInfoUnlockReq", [this.unlockRequirement]);
+    }
   },
   methods: {
     update() {
@@ -99,17 +123,17 @@ export default {
       {{ resource.symbol }} {{ resource.name }} {{ resource.symbol }}
     </span>
     <span v-if="isDoomed">
-      Destroyed by Pelle
+      {{ destroyedText }}
     </span>
     <span v-else>
-      {{ capped ? "Capped" : "Current" }}: {{ resourceAmount }}/{{ resourceCap }}
-      (Recent change: <span v-html="formattedFlow" />)
+      {{ currentGenText }}
+      {{ recentChangeA }}<span v-html="formattedFlow" />{{ recentChangeB }}
     </span>
-    <span v-if="isBaseResource">Base Resource</span>
-    <span v-else>Reaction: {{ isReactionActive ? "Active" : "Inactive" }} ({{ reactionText }})</span>
+    <span v-if="isBaseResource">{{ baseResourceText }}</span>
+    <span v-else>{{ activeReactionText }}</span>
     <span :class="{ 'o-pelle-disabled': isDoomed }">
       <EffectDisplay
-        label="Effect"
+        :label="effecti18n"
         :config="effectConfig"
       />
     </span>
@@ -118,7 +142,7 @@ export default {
     v-else
     :class="classObject"
   >
-    Unlock requirement: {{ unlockRequirement }}
+    {{ unlockReqText }}
   </div>
 </template>
 

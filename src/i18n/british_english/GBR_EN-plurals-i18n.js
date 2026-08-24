@@ -50,6 +50,7 @@ export const plurals = {
   minutes: { key: "MIN", rules: [{ values: [1, -1], text: "$$$ Minute" }, "$$$ Minutes"] },
   seconds: { key: "SEC", rules: [{ values: [1, -1], text: "$$$ Second" }, "$$$ Seconds"] },
   presets: { key: "PRESET", rules: [{ values: [1, -1], text: "$$$ Preset" }, "$$$ Presets"] },
+  // TODO: Remove these - These are the same in english, and pluralisation works on a per-language basis so these keys dont need to exist
   // There might be a small case where "TT" is different for pluralisation soooooo
   ttShort: { key: "TTSHORT", rules: ["SSS TT"] },
   stShort: { key: "STSHORT", rules: ["SSS ST"] }
