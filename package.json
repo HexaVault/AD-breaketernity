@@ -2,7 +2,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "serve": "echo serve is now deprecated in favor of dev && npm run dev",
+    "serve": "echo serve is now deprecated in favor of dev",
     "dev": "vite",
     "build": "node build/pre-build.js && vite build && node build/post-build.js",
     "build:steam-development": "node build/pre-build.js && vite build --mode steam-development",
