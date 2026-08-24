@@ -418,7 +418,7 @@ export const normalAchievements = [
     id: 73,
     // Check i18n note
     name: "THIS ACHIEVEMENT DOESN'T EXIST",
-    get description() { return i18n("ach", "ach73desc", [formatPostBreak(DC.D9_9999E9999, 5)]); },
+    get description() { return i18n("ach", "ach73desc", [formatPostBreak(DC.D9_9999E9999, 4)]); },
     checkRequirement: () => Currency.antimatter.gte(DC.D9_9999E9999),
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     get reward() { return i18n("ach", "ach73reward"); },
