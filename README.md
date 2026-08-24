@@ -9,7 +9,7 @@ to "main" in settings -> default branch.
 
 
 The main branch will remain unmodified until refactor is considered complete, at which point
-this branch will be merged into main, and this branch will be deleted in favor of main.]
+this branch will be merged into main, and this branch will be deleted in favor of main.
 
 Interested in modding AD? Here's the [discord](https://discord.gg/9p9DknraUr)
 
@@ -39,6 +39,20 @@ This repository is worked on using Visual Studio Code and if you don't know what
     - If there are conflicts, you will need to resolve them by hand
   - You can then go to "Source Control" -> "Pull" or run `git pull` to pull any changes
     - This will pull changes from **your** repository, not this repository, so sync first.
+
+## Stance on LLM-generated code / issues
+
+For the sake of all development, you are strictly prohibited from making pull requests or issues directly from any LLM-based coding.
+You may use LLMs to support your coding or issue detection, but not rely on it solely.
+
+
+False issues or pull requests will be put against you, not your LLM, and repeated misuse will lead to a direct block from this repository.
+
+
+This is also your one warning, that all sockpuppetry is stricly forbidden, and will result in an immediate, 
+permenant block for all related accounts if you are found to be participating in such activities.
+
+All code written by us is not done so with the assistance of any modern LLM-based agentic coding.
 
 ## Run
 
