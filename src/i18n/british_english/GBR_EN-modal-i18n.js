@@ -160,7 +160,7 @@ external to the game which would delete your save itself, such as clearing your 
   confirmationOptionsTitle: "Confirmation Options",
   confirmationOptionsNothingNeedsConfirmation: `You do not have anything that requires confirmation, but if you did it would appear here.`,
   hotkeyModalTitle: "Hotkey List",
-  hotkeyModalXDimensions: "Buy 1 Dimension$Buy 10 Dimensions",
+  hotkeyModalXDimensions: "Buy 1 Dimension $ Buy 10 Dimensions",
   hotkeyModalInfoForShift: `Shift is a modifier key that shows additional information on certain things
 and adjusts the function of certain buttons.`,
   hotkeyModalInfoAboutAlt: `Alt is a modifier key that, when pressed in conjunction with any key that has a corresponding autobuyer, will toggle said autobuyer.`,

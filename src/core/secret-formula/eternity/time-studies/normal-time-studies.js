@@ -67,7 +67,7 @@ export const normalTimeStudies = [
     cost: DC.D2,
     requirement: [11],
     reqType: TS_REQUIREMENT_TYPE.AT_LEAST_ONE,
-    description: () => i18n("studies", "ts22", formatInt(50), formatInt(1)),
+    description: () => i18n("studies", "ts22", [formatInt(50), formatInt(1)]),
     effect: 1
   },
   {

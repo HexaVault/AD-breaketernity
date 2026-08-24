@@ -49,19 +49,19 @@ export default {
         "text-proportion": 0.66,
       };
     },
+    topLabel() {
+      return i18n("modal", "cosmeticSetChoiceModalChooseCosmeticSet");
+    },
+    dropdown() {
+      return i18n("modal", "cosmeticSetChoiceModalDropdown");
+    },
+    contains() {
+      return i18n("modal", "cosmeticSetChoiceModalSetContains", [this.currentSet.name, this.setContents]);
+    },
   },
   created() {
     this.initialSet = GlyphAppearanceHandler.chosenFromModal;
     GlyphAppearanceHandler.setInModal = this.initialSet;
-  },
-  topLabel() {
-    return i18n("modal", "cosmeticSetChoiceModalChooseCosmeticSet");
-  },
-  dropdown() {
-    return i18n("modal", "cosmeticSetChoiceModalDropdown");
-  },
-  contains() {
-    return i18n("modal", "cosmeticSetChoiceModalSetContains", [this.currentSet.name, this.setContents]);
   },
   methods: {
     update() {

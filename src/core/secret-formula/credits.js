@@ -16,8 +16,8 @@ export const credits = {
     13: "Lurker Tester",
     14: "Web Tester",
     15: "Android Tester",
-    16: "Break Eternity Port Developers",
-    17: "Translators"
+    16: "Break Eternity Port Developer",
+    17: "Translator"
   },
 
   // Each person must have a name and at least one role (the index of the desired role in roles). They can also have a

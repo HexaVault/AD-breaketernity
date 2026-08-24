@@ -68,7 +68,7 @@ export default {
       class="o-primary-btn--subtab-option"
       @click="toggleAllAutobuyers()"
     >
-      {{ allAutobuyersDisabled ? i18n("auto", "enabledisable").split("$")[0] : i18n("auto", "enabledisable").split("$")[1] }}
+      {{ allAutobuyersDisabled ? i18n("consts", "disable") : i18n("consts", "enable") }}
     </PrimaryButton>
     <PrimaryButton
       class="o-primary-btn--subtab-option"

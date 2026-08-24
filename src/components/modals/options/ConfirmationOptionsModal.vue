@@ -15,10 +15,10 @@ export default {
     noConfirmations() {
       return ConfirmationTypes.index.every(x => !x.isUnlocked());
     },
-    text() {
+    topLabel() {
       return i18n("modal", "confirmationOptionsTitle");
     },
-    topLabel() {
+    text() {
       return i18n("modal", "confirmationOptionsNothingNeedsConfirmation");
     }
   }

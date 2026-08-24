@@ -66,7 +66,7 @@ export default {
       return i18n("modal", "NewsSettingModalSpeed", [formatPercents(parseInt(this.speed))]);
     },
     aniEff() {
-      return i18n("modal", "NewsSettingModalAnimation");
+      return i18n("modal", "NewsSettingModalAnimations");
     }
   },
   watch: {

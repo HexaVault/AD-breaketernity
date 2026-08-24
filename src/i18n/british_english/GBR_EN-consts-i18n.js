@@ -26,5 +26,7 @@ export const consts = {
   inactive: "Inactive",
   effect: "Effect",
   capped: "Capped",
-  current: "Current"
+  current: "Current",
+  enable: "Enable",
+  disable: "Disable"
 };

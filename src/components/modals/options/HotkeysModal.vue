@@ -44,10 +44,7 @@ export default {
       return i18n("modal", "hotkeyModalTitle");
     },
     buyNdims() {
-      return i18n("modal", "buyNdims", [], true);
-    },
-    modKeysLabel() {
-      return i18n("modal", "hotkeyModalXDimensions");
+      return i18n("modal", "hotkeyModalXDimensions", [], true);
     },
     shiftInfo() {
       return i18n("modal", "hotkeyModalInfoForShift");

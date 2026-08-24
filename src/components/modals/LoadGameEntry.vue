@@ -30,7 +30,7 @@ export default {
       return i18n("modal", "importSaveModalFileName", [this.fileName]);
     },
     antimatterString() {
-      return i18n("modal", "importSaveModalAM", [formatAntimatter(this.antimatter)]);
+      return i18n("modal", "importSaveModalAM", [this.formatAntimatter(this.antimatter)]);
     },
     buttonLabel() {
       return i18n("consts", "load");

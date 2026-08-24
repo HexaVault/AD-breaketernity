@@ -103,7 +103,7 @@ export const formulae = {
       } else if (V.isRunning) {
         ip = ip.pow(2);
       } else if (Laitela.isRunning) {
-        ip = stackedLogPower(ep, 1, dilatedPenalty);
+        ip = stackedLogPower(ip, 1, dilatedPenalty);
       }
       return Decimal.pow10(Decimal.log(ip, 5).plus(0.7).times(308))
         .clampMin(Number.MAX_VALUE);
