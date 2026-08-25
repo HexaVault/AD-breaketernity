@@ -34,14 +34,15 @@ window.i18n = function(type, id, mods = [], split = false) {
     let store = Lang.current.allText.plurals[id];
     // If we are using mods, put them in
     if (mods.length) text += "1aX";
-    if (text !== undefined) {
-      text = `$$${store.key}$$`;
+    if (store !== undefined) {
+      text += `$${store.key}$$`;
     } else {
       store = Lang.GBR_EN.allText.plurals[id];
-      if (text !== undefined) text = `$$${store.key}$$`;
+      if (store !== undefined) text = `$$${store.key}$$`;
     }
     // Since we arent using split here, we can reuse it as the "use as lowercase" condition
     if (split) text += "!$";
+    if (store === undefined) text = "";
   }
 
   // If it's not defined for English, default to "Placeholder"
@@ -55,7 +56,10 @@ window.i18n = function(type, id, mods = [], split = false) {
   const plurals = Lang.current.allText.plurals;
   for (const value in plurals) {
     const key = Lang.current.allText.plurals[value];
-    text = text.replaceAll(`/\$([0-9]{1,2}aX)?\$${key.key}\$\$(\!\$)?/g`, match => pluralHandling(match, key.rules, mods));
+    // Requiring unicode will break this regex key.
+    // eslint-disable-next-line require-unicode-regexp
+    const regexp = new RegExp(`\\$([0-9]{1,2}aX)?\\$${key.key}\\$\\$(\\!\\$)?`, "g");
+    text = text.replaceAll(regexp, match => pluralHandling(match, key.rules, mods));
   }
 
   for (let i = 1; i <= mods.length; i++) {
@@ -131,13 +135,14 @@ Object.defineProperty(Lang, "showFormula", {
 function pluralHandling(textInput, rules, mods) {
   // We dont wan't to modify inputs, so we'll redefine here.
   let text = textInput;
+  const lastStr = rules.last();
   // First off, we need to check whether we have a $0aX. If we do, then we need to replace it
   // and we need to store it the function and values for later checks.
-  if (!textInput.match("/[0-9]{1,2}aX/g")) {
+  if (!textInput.match("[0-9]{1,2}aX")) {
     // The last value in "rules" is just a string, that we treat as other
     // If there is no $0aX at the start, we just do this
-    const final = rules[-1].replace("$$$", "");
-    return textInput.match("/\$\$\!\$/g") ? final.toLowerCase() : final;
+    const final = lastStr.replace("$$$", "");
+    return textInput.match("\$\$\!\$") ? final.toLowerCase() : final;
   }
   // [Function, data]
   let cache = [undefined, undefined];
@@ -150,7 +155,7 @@ function pluralHandling(textInput, rules, mods) {
       console.log("Expected an array of [function, number/decimal] for modifier input, but recieved otherwise.");
       // eslint-disable-next-line no-console
       console.log(`For info: ${textToReplace} and ${modHandle}`);
-      return `${rules[-1].replace("$$$", handlePossibleFunction(modHandle[i - 1]))}`;
+      return `${lastStr.replace("$$$", handlePossibleFunction(modHandle[i - 1]))}`;
       // This should be as robust as possible for a given system
     }
     cache = [modHandle[0], modHandle[1]];
@@ -160,39 +165,44 @@ function pluralHandling(textInput, rules, mods) {
 
   // eslint-disable-next-line consistent-return
   function ruleCycle(number, maxValue) {
-    if (new Decimal(number).gt(maxValue)) return rules[-1];
-    for (value of rules) {
+    if (Decimal.gt(number, maxValue)) return lastStr;
+    for (const value of rules) {
       // We need to ensure x is decimal not number
       if (value?.condition && value.condition(new Decimal(number))) {
         return value.text;
       }
+
       // We need to ensure x is a number not a decimal
-      if (value?.values && value.includes(Decimal.toNumber(number))) {
+      // This is stupid code, am aware
+      // TODO: When adding toNumber to Decimal scope, change this back to what it shouldve been
+      if (value?.values && value.values.includes(new Decimal(number).toNumber())) {
         return value.text;
       }
-      return value;
+      if (!value?.values && !value?.condition) return value;
     }
-    return value;
   }
 
   for (let i = 1; i <= mods.length; i++) {
-    regex = `/\$${i}aX/g`;
+    // eslint-disable-next-line require-unicode-regexp
+    const regex = new RegExp(`\\$${i}aX`);
+    const lmods = mods;
     while (text.match(regex)) {
       let maxToHandle = 1e4;
-      text = text.replace(regex, n => pseudoReplace(n, mods[i - 1]));
+      text = text.replace(regex, n => pseudoReplace(n, lmods[i - 1]));
       // eslint-disable-next-line eqeqeq
       if (cache[0] == formatInt) {
         maxToHandle = 1e9;
       }
-      rule = ruleCycle(cache[1], maxToHandle);
-      if (textInput.match("/\$\$\!\$/g")) {
+      let rule = ruleCycle(cache[1], maxToHandle);
+      if (textInput.match("\$\$\!\$")) {
         rule = rule.toLowerCase();
       }
       // We can just return here, since we have done what we needed to, we don't actually need to keep going
       // (there is only a single 0aX type going through here)
+      if (rule.text) rule = rule.text;
       return rule.replaceAll("$$$", cache[0](cache[1]));
     }
   }
 
-  return rules[-1].replace("$$$", "");
+  return lastStr.replace("$$$", "");
 }

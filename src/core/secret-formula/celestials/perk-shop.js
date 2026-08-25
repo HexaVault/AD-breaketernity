@@ -48,7 +48,7 @@ export const perkShop = {
     effect: bought => Decimal.pow(2, bought),
     formatEffect: value => formatX(value, 2),
     formatCost: value => format(value, 2),
-    costCap: () => (Ra.unlocks.perkShopIncrease.canBeApplied ? 1638400 : 1600),
+    costCap: () => (Ra.unlocks.perkShopIncrease.canBeApplied ? 1638399 : 1599),
     cap: () => (Ra.unlocks.perkShopIncrease.canBeApplied ? 16384 : 16),
   }),
   autoSpeed: rebuyable({
@@ -60,7 +60,7 @@ export const perkShop = {
     effect: bought => Decimal.pow(2, bought).toNumber(),
     formatEffect: value => formatX(value, 2),
     formatCost: value => format(value, 2),
-    costCap: () => (Ra.unlocks.perkShopIncrease.canBeApplied ? 64000 : 4000),
+    costCap: () => (Ra.unlocks.perkShopIncrease.canBeApplied ? 63999 : 3999),
     cap: () => (Ra.unlocks.perkShopIncrease.canBeApplied ? 64 : 4)
   }),
   musicGlyph: rebuyable({

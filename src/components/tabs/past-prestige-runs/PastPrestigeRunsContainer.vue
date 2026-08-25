@@ -137,7 +137,7 @@ export default {
 
       const cells = [name, this.gameTime(run)];
       if (this.hasRealTime) cells.push(this.realTime(run));
-      if (this.hasRealTime) cells.push(this.trueTime(run));
+      if (this.hasTrueTime) cells.push(this.trueTime(run));
 
       const resources = [this.prestigeCurrencyGain(run), this.prestigeCurrencyRate(run), this.prestigeCountGain(run),
         this.prestigeCountRate(run), this.prestigeCurrencyDelta(run), this.prestigeCountDelta(run)];
@@ -156,9 +156,10 @@ export default {
       return cells;
     },
     infoCol() {
-      const cells = ["Run", this.hasRealTime ? "Game Time" : "Time in Run"];
-      if (this.hasRealTime) cells.push("Real Time");
+      const cells = ["Run"];
       if (this.hasTrueTime) cells.push("True Time");
+      cells.push(this.hasRealTime ? "Game Time" : "Time in Run");
+      if (this.hasRealTime) cells.push("Real Time");
       cells.push(...this.resourceTitles);
       if (this.hasChallenges) cells.push("Challenge");
 

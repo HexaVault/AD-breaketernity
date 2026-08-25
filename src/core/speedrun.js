@@ -95,7 +95,7 @@ export const Speedrun = {
 
     // This needs to be calculated "live" because using spentSTD includes any offline progress purchases too
     let currentSpent = DC.D0;
-    for (const purchase of ShopPurchases) {
+    for (const purchase of ShopPurchase.all) {
       if (purchase.config.instantPurchase) continue;
       currentSpent = currentSpent.add(purchase.purchases.times(purchase.cost));
     }

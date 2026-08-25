@@ -14,10 +14,10 @@ export default {
   },
   computed: {
     topLabel() {
-      return i18n("modal", "resetRealityModalTitles")[Number(this.isDoomed)];
+      return i18n("modal", "resetRealityModalTitles", [], true)[Number(this.isDoomed)];
     },
     informationNote() {
-      return i18n("modal", "resetRealityModalWillReset")[Number(this.isDoomed)];
+      return i18n("modal", "resetRealityModalWillReset", [], true)[Number(this.isDoomed)];
     },
     areYouSure() {
       return i18n("modal", "resetRealityModalAreYouSure");

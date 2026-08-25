@@ -1,5 +1,5 @@
 function roundAndStr(decimal, amnt = 4) {
-  return decimal.toString().substring(0, amnt + Math.ceil(decimal.log10().toNumber()));
+  return decimal.toString().substring(0, amnt + Math.ceil(decimal.log10().max(0).toNumber()));
 }
 
 export const MatterScale = {
@@ -14,7 +14,7 @@ export const MatterScale = {
     }
     if (matter.gt(DC.E1_5E12)) {
       return [
-        `It would take ${roundAndStr(matter.log10().div(2437102080 * 3))}%`,
+        `It would take ${roundAndStr(matter.log10().div(13.8e9 * 86400 * 3), 6)}%`,
         "of the current age of the Universe to write out your antimatter count"
       ];
     }

@@ -29,7 +29,7 @@ export default {
       const shiftKeyInfo = makeEnumeration(shiftKeyFunctions);
       return (shiftKeyInfo === "")
         ? ""
-        : i18n("modal", "hotkeyModalAboutShift", [shiftKeyInfo], true).split(" $ ")[0];
+        : i18n("modal", "hotkeyModalAboutShift", [shiftKeyInfo], true)[0];
     },
     hotkeyCount() {
       return shortcuts.length;

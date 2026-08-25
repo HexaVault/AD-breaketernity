@@ -293,10 +293,10 @@ export default {
         Dimension Boost
       </div>
       <div>
-        You have {{ boostCountString }}<span v-if="galaxy.isUnlocked"> this Galaxy</span>.
+        You have {{ boostCountString }}<span v-if="boost.isUnlocked"> this Galaxy</span>.
       </div>
       <div v-if="boost.hasBest">
-        Your fastest Boost was {{ galaxy.best.toStringShort() }}.
+        Your fastest Boost was {{ boost.best.toStringShort() }}.
       </div>
       <div v-else>
         You have no fastest Boost<span v-if="boost.isUnlocked"> this Galaxy</span>.

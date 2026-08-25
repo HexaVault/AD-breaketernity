@@ -77,6 +77,7 @@ export const normalChallenges = [
     legacyId: 11,
     isQuickResettable: false,
     description: () => i18n("chall", "nc8"),
+    name: "8th Antimatter Dimension Autobuyer",
     reward: () => i18n("chall", "nc8rew"),
     lockedAt: DC.D0,
   },

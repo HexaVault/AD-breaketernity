@@ -987,7 +987,6 @@ export function simulateTime(seconds, real, fast) {
     afterSimulation(seconds, playerStart);
   } else {
     const progress = {};
-    debugger;
     ui.view.modal.progressBar = {};
     Async.run(loopFn,
       ticks,

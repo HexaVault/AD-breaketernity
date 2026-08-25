@@ -409,11 +409,13 @@ export const GameStorage = {
         // eslint-disable-next-line no-console
         console.log(`Savefile was invalid and has been reset - ${checkString}`);
       }
-      player = deepmergeAll([{}, Player.defaultStart]);
-      player.records.gameCreatedTime = Date.now();
-      player.lastUpdate = Date.now();
-      if (DEV) {
-        devMigrations.setLatestTestVersion(player);
+      if (!(checkString[0] === "T")) {
+        player = deepmergeAll([{}, Player.defaultStart]);
+        player.records.gameCreatedTime = Date.now();
+        player.lastUpdate = Date.now();
+        if (DEV) {
+          devMigrations.setLatestTestVersion(player);
+        }
       }
     } else {
       // We want to support importing from versions much older than the newest pre-reality version, but we also want
