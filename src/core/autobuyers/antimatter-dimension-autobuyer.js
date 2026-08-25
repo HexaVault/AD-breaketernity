@@ -13,6 +13,10 @@ export class AntimatterDimensionAutobuyerState extends UpgradeableAutobuyerState
     return i18n("auto", "adXauto", [this.name]);
   }
 
+  get strID() {
+    return `ad${this.name}`;
+  }
+
   get data() {
     return player.auto.antimatterDims.all[this.tier - 1];
   }
@@ -20,6 +24,7 @@ export class AntimatterDimensionAutobuyerState extends UpgradeableAutobuyerState
   get baseInterval() {
     return Player.defaultStart.auto.antimatterDims.all[this.tier - 1].interval;
   }
+
 
   get isUnlocked() {
     if (Pelle.isDisabled(`antimatterDimAutobuyer${this.tier}`)) return false;

@@ -37,8 +37,8 @@ export default {
       this.showContinuum = Laitela.isUnlocked;
       this.disableContinuum = player.auto.disableContinuum;
       this.allAutobuyersDisabled = Autobuyers.unlocked.every(autobuyer => !autobuyer.isActive);
-      this.allAutobuyersSingle = Autobuyers.unlocked.filter(n => n.fullName?.splice(0, 4, "") === i18n("auto", "adXauto")
-        .splice(0, 4, "")).every(autobuyer => autobuyer.mode === 1);
+      this.allAutobuyersSingle = Autobuyers.unlocked.filter(autobuyer => autobuyer.strID && autobuyer.strID.substr(0, 2) === "ad")
+        .every(autobuyer => autobuyer.mode === 1);
     },
     toggleAllAutobuyers() {
       for (const autobuyer of Autobuyers.unlocked) {
@@ -47,7 +47,7 @@ export default {
     },
     toggleSingleADauto() {
       for (const autobuyer of Autobuyers.unlocked) {
-        if (autobuyer.fullName.splice(0, 4, "") === i18n("auto", "adXauto").splice(0, 4, "")) {
+        if (autobuyer.strID && autobuyer.strID.substr(0, 2) === "ad") {
           autobuyer.mode = this.allAutobuyersSingle ? 10 : 1;
         }
       }

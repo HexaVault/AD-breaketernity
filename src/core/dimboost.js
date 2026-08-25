@@ -202,6 +202,9 @@ export function softReset(tempBulk, forcedADReset = false, forcedAMReset = false
     Decimal.min(player.records.bestBoost.time, player.records.thisBoost.time);
   player.records.bestBoost.realTime =
     Decimal.min(player.records.bestBoost.realTime, player.records.thisBoost.realTime);
+  player.records.thisBoost.trueTime = 0;
+  player.records.thisBoost.time = DC.D0;
+  player.records.thisBoost.realTime = DC.D0;
   EventHub.dispatch(GAME_EVENT.DIMBOOST_AFTER, bulk);
 }
 

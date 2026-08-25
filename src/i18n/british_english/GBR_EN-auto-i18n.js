@@ -57,7 +57,7 @@ export const auto = {
   autoTabTextF: "Autobuyers with \"Instant\" interval will trigger every game tick ($1aX)",
   nMs: "$1ax ms",
   enableddisable: "Enable all autobuyers$Disable all autobuyers",
-  buy10buy1: "Antimatter Dimension autobuyers to Buy 10$Set autobuyers to Buy 1",
+  buy10buy1: "Set autobuyers  to Buy 10$Set autobuyers to Buy 1",
   continuum: "Continuum is disabled",
   autoBC: "Automatic Big Crunch",
   autoSettingList: "▼ Current Setting: ▼",
