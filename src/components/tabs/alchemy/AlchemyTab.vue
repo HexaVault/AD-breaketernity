@@ -63,7 +63,7 @@ export default {
       return i18n("celTabs", "alchemyTabClickInfo");
     },
     textB() {
-      return i18n("celTabs", "alchemyTabToggleReactions").split(" $ ")[this.allReactionsDisabled ? 0 : 1];
+      return i18n("celTabs", "alchemyTabToggleReactions", [], true)[this.allReactionsDisabled ? 0 : 1];
     },
     textC() {
       return i18n("celTabs", "alchemyTabCreateReality");
