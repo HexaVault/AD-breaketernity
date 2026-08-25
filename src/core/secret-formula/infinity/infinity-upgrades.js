@@ -189,7 +189,7 @@ export const infinityUpgrades = {
     id: "skipResetGalaxy",
     cost: 300,
     checkRequirement: () => InfinityUpgrade.skipReset3.isBought,
-    get description() { return i18n("inf", "iU44", [formatInt(44)]); },
+    get description() { return i18n("inf", "iU44", [formatInt(4)]); },
   },
   ipOffline: {
     id: "ipOffline",

@@ -26,7 +26,7 @@ export default {
     },
     message() {
       const resetResouces = [];
-      const rrTrans = i18n("modal", "agModalResettableResources");
+      const rrTrans = i18n("modal", "agModalResettableResources", [], true);
       if (Pelle.isDoomed) resetResouces.push(rrTrans[0], rrTrans[1], rrTrans[2]);
       if (!this.perkANRBought) resetResouces.push(rrTrans[1], rrTrans[2]);
       if (!this.keepDimBoost) resetResouces.push(rrTrans[3]);

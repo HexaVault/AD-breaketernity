@@ -40,7 +40,7 @@ export default {
   computed: {
     isDoomed: () => Pelle.isDoomed,
     name() {
-      return `${AntimatterDimension(this.tier).shortDisplayName} Antimatter Dimension`;
+      return i18n("other", "adRow_nthAD", [AntimatterDimension(this.tier).shortDisplayName]);
     },
     amountText() {
       if (this.formattedAmount) return this.formattedAmount;
