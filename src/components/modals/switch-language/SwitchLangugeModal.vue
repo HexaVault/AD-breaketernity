@@ -18,10 +18,12 @@ export default {
     languages: () => {
       const languages = Lang.all;
       delete languages.form;
+      return languages;
     },
     langChange: () => i18n("options", "langChange"),
-    showLangIn: () => i18n("options", "showLang",
-      [player.options.englishLangNames ? Lang.EN.name : Lang.current.name]),
+    showLangIn() {
+      return i18n("options", "showLang", [], true)[player.options.englishLangNames ? 0 : 1]
+    }
   },
   methods: {
     setLanguage(language) {
@@ -32,6 +34,7 @@ export default {
     },
     toggleLangIn() {
       player.options.englishLangNames = !player.options.englishLangNames;
+      this.$recompute("showLangIn");
     },
   },
 };

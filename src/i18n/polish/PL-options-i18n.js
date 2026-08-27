@@ -6,5 +6,5 @@ export const options = {
   langChange: "Zmień jezyk",
   name: "Polski",
   nameInEN: "Polish",
-  showLang: "Pokaż jezyk w: $1aX",
+  showLang: "Pokaż jezyk w: Angielski $ Pokaż jezyk w: jezyk",
 };

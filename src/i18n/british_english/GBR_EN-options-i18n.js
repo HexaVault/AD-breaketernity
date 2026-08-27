@@ -4,7 +4,7 @@
 export const options = {
   language: "Language: $1aX",
   langChange: "Change Language",
-  name: "English",
-  nameInEN: "English",
-  showLang: "Show language in: $1aX"
+  name: "English (UK)",
+  nameInEN: "English (UK)",
+  showLang: "Show language in: English $ Show language in: Language"
 };
