@@ -48,19 +48,20 @@ export default {
       return `${amount} (${formatInt(this.boughtBefore10)})`;
     },
     singleText() {
-      if (this.isCapped) return "Capped";
-      const prefix = this.showCostTitle(this.singleCost) ? "Cost: " : "";
-      const suffix = this.isCostsAD ? `${this.costUnit}` : "AM";
-      return `${prefix} ${format(this.singleCost)} ${suffix}`;
+      if (this.isCapped) return i18n("consts", "capped");
+      return i18n("other", this.showCostTitle(this.singleCost) ? "adRow_ADcost" : "adRow_ADcostNoPrefix",
+        [format(this.singleCost), i18n("consts", "nth", [], true)[Math.max(1, this.tier - 2)]], true)
+        [this.isCostsAD ? 1 : 0];
     },
     until10Text() {
-      if (this.isCapped) return "Shattered by Nameless";
-      if (this.isContinuumActive) return `Continuum: ${this.continuumString}`;
+      if (this.isCapped) return i18n("other", "adRow_shattered");
+      if (this.isContinuumActive) return i18n("other", "adRow_contValue", [this.continuumString]);
 
-      const prefix = `Until ${formatInt(10)},${this.showCostTitle(this.until10Cost) ? " Cost" : ""}`;
-      const suffix = this.isCostsAD ? `${this.costUnit}` : "AM";
-      const additional = this.costJumps.gt(0) ? ` (+${formatInt(this.costJumps)})` : "";
-      return `${prefix} ${format(this.until10Cost)} ${suffix}${additional}`;
+      const string = i18n("other", this.showCostTitle(this.until10Cost) ? "adRow_ADcost10" : "adRow_ADcost10NoPrefix",
+        [formatInt(10), format(this.until10Cost), i18n("consts", "nth", [], true)[Math.max(1, this.tier - 2)]], true)
+        [this.isCostsAD ? 1 : 0];
+
+      return this.costJumps.gt(0) ? `${string} (+${formatInt(this.costJumps)})` : string;
     },
     continuumString() {
       return formatFloat(this.continuumValue, 2);
@@ -69,9 +70,9 @@ export default {
       return this.isShown || this.isUnlocked || this.amount.gt(0);
     },
     boughtTooltip() {
-      if (this.isCapped) return `Nameless prevents the purchase of more than ${format(1)} 8th Antimatter Dimension`;
-      if (this.isContinuumActive) return "Continuum produces all your Antimatter Dimensions";
-      return `Purchased ${quantifyInt("time", this.bought)}`;
+      if (this.isCapped) return i18n("other", "adRow_nameless", [formatInt(1)]);
+      if (this.isContinuumActive) return i18n("other", "adRow_continuum");
+      return i18n("other", "adRow_purchased", [[formatInt, this.bought]]);
     },
     costUnit() {
       return `${AntimatterDimension(this.tier - 2).shortDisplayName} AD`;
@@ -117,7 +118,7 @@ export default {
       this.isCostsAD = NormalChallenge(6).isRunning && tier > 2 && !this.isContinuumActive;
       this.hasTutorial = (tier === 1 && Tutorial.isActive(TUTORIAL_STATE.DIM1)) ||
         (tier === 2 && Tutorial.isActive(TUTORIAL_STATE.DIM2));
-      this.costJumps.copyFrom(dimension.costJumps);
+      this.costJumps.copyFrom(dimension.costBumps);
     },
     buySingle() {
       if (this.isContinuumActive) return;

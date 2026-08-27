@@ -22,7 +22,7 @@ export default {
     },
     langChange: () => i18n("options", "langChange"),
     showLangIn() {
-      return i18n("options", "showLang", [], true)[player.options.englishLangNames ? 0 : 1]
+      return i18n("options", "showLang", [], true)[player.options.englishLangNames ? 0 : 1];
     }
   },
   methods: {

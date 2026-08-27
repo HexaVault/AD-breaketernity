@@ -194,7 +194,7 @@ function pluralHandling(textInput, rules, mods) {
         maxToHandle = 1e9;
       }
       let rule = ruleCycle(cache[1], maxToHandle);
-      if (textInput.match("\$\$\!\$")) {
+      if (textInput.match("\!\\$")) {
         rule = rule.toLowerCase();
       }
       // We can just return here, since we have done what we needed to, we don't actually need to keep going
