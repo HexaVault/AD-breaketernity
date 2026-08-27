@@ -43,7 +43,7 @@ export default {
       this.multiplierText = `Buy 10 Dimension purchase multiplier: ${formatX(this.buy10Mult, 2, 2)}${sacText}`;
     },
     quickReset() {
-      softReset(-1, true, true);
+      softReset(-1, true, true, false);
     }
   }
 };

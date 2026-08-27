@@ -22,7 +22,7 @@ function addReplicantiGalaxies(newGalaxies) {
       : EternityMilestone.replicantiNoReset.isReached;
     if (!keepResources) {
       player.dimensionBoosts = DC.D0;
-      softReset(0, true, true);
+      softReset(0, true, true, false, false);
     }
   }
 }

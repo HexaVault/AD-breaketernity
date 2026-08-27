@@ -11,7 +11,7 @@ export function updateNormalAndInfinityChallenges(diff) {
     }
     if (Currency.matter.gt(Currency.antimatter.value) && NormalChallenge(11).isRunning && !Player.canCrunch) {
       const values = [Currency.antimatter.value, Currency.matter.value];
-      softReset(0, true, true);
+      softReset(0, true, true, false, false);
       Modal.message.show(i18n("modal", "amAnnihilation", [format(values[0], 2, 2), format(values[1], 2, 2)]),
         { closeEvent: GAME_EVENT.BIG_CRUNCH_AFTER }, 1);
     }

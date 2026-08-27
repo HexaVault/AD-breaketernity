@@ -197,7 +197,7 @@ export function galaxyReset() {
   if (!Achievement(143).isUnlocked || (Pelle.isDoomed && !PelleUpgrade.galaxyNoResetDimboost.canBeApplied)) {
     player.dimensionBoosts = DC.D0;
   }
-  softReset(0);
+  softReset(0, false, false, false, false);
   if (Notations.current === Notation.emoji) player.requirementChecks.permanent.emojiGalaxies =
   player.requirementChecks.permanent.emojiGalaxies.add(1);
   // This is specifically reset here because the check is actually per-galaxy and not per-infinity
@@ -206,10 +206,14 @@ export function galaxyReset() {
   // Timings
   player.records.bestGalaxy.trueTime =
     Math.min(player.records.bestGalaxy.trueTime, player.records.thisGalaxy.trueTime);
-  player.records.bestGalaxy.time =
-    Decimal.min(player.records.bestGalaxy.time, player.records.thisGalaxy.time);
   player.records.bestGalaxy.realTime =
     Decimal.min(player.records.bestGalaxy.realTime, player.records.thisGalaxy.realTime);
+  player.records.bestGalaxy.time =
+    Decimal.min(player.records.bestGalaxy.time, player.records.thisGalaxy.time);
+
+  player.records.thisGalaxy.trueTime = 0;
+  player.records.thisGalaxy.realTime = DC.D0;
+  player.records.thisGalaxy.time = DC.D0;
 
   EventHub.dispatch(GAME_EVENT.GALAXY_RESET_AFTER);
 }

@@ -14,7 +14,7 @@ export const normalChallenges = [
         : i18n("chall", "nc1noeter");
     },
     name: "1st Antimatter Dimension Autobuyer",
-    reward: () => i18n("chall", "nc1rew"),
+    reward: () => i18n("chall", "nc1rew", [], true),
     lockedAt: DC.D0,
   },
   {
@@ -23,7 +23,7 @@ export const normalChallenges = [
     isQuickResettable: false,
     description: () => i18n("chall", "nc2", [() => formatInt(3)]),
     name: "2nd Antimatter Dimension Autobuyer",
-    reward: () => i18n("chall", "nc2rew"),
+    reward: () => i18n("chall", "nc2rew", [], true),
     lockedAt: DC.D0,
   },
   {
@@ -32,7 +32,7 @@ export const normalChallenges = [
     isQuickResettable: false,
     description: () => i18n("chall", "nc3"),
     name: "3rd Antimatter Dimension",
-    reward: () => i18n("chall", "nc3rew"),
+    reward: () => i18n("chall", "nc3rew", [], true),
     lockedAt: DC.D0,
   },
   {
@@ -41,7 +41,7 @@ export const normalChallenges = [
     isQuickResettable: false,
     description: () => i18n("chall", "nc4"),
     name: "4th Antimatter Dimension Autobuyer",
-    reward: () => i18n("chall", "nc4rew"),
+    reward: () => i18n("chall", "nc4rew", [], true),
     lockedAt: DC.D0,
   },
   {
@@ -50,7 +50,7 @@ export const normalChallenges = [
     isQuickResettable: false,
     description: () => i18n("chall", "nc5", [() => formatX(1.080, 0, 3), () => formatX(1.1245, 0, 3)]),
     name: "5th Antimatter Dimension Autobuyer",
-    reward: () => i18n("chall", "nc5rew"),
+    reward: () => i18n("chall", "nc5rew", [], true),
     lockedAt: DC.D0,
   },
   {
@@ -59,7 +59,7 @@ export const normalChallenges = [
     isQuickResettable: false,
     description: () => i18n("chall", "nc6", [() => formatInt(2)]),
     name: "6th Antimatter Dimension Autobuyer",
-    reward: () => i18n("chall", "nc6rew"),
+    reward: () => i18n("chall", "nc6rew", [], true),
     lockedAt: DC.D0,
   },
   {
@@ -69,7 +69,7 @@ export const normalChallenges = [
     description: () => i18n("chall", "nc7", [() => formatInt(10), () => formatX(1),
       () => formatX(0.2, 1, 1), () => formatX(2)]),
     name: "7th Antimatter Dimension Autobuyer",
-    reward: () => i18n("chall", "nc7rew"),
+    reward: () => i18n("chall", "nc7rew", [], true),
     lockedAt: DC.D0,
   },
   {
@@ -78,7 +78,7 @@ export const normalChallenges = [
     isQuickResettable: false,
     description: () => i18n("chall", "nc8"),
     name: "8th Antimatter Dimension Autobuyer",
-    reward: () => i18n("chall", "nc8rew"),
+    reward: () => i18n("chall", "nc8rew", [], true),
     lockedAt: DC.D0,
   },
   {
@@ -87,7 +87,7 @@ export const normalChallenges = [
     isQuickResettable: true,
     description: () => i18n("chall", "nc9", [() => formatInt(10)]),
     name: "Tickspeed Autobuyer",
-    reward: () => i18n("chall", "nc9rew"),
+    reward: () => i18n("chall", "nc9rew", [], true),
     lockedAt: DC.D0,
   },
   {
@@ -96,7 +96,7 @@ export const normalChallenges = [
     isQuickResettable: false,
     description: () => i18n("chall", "nc10", [() => formatInt(6)]),
     name: "Automated Dimension Boosts",
-    reward: () => i18n("chall", "nc10rew"),
+    reward: () => i18n("chall", "nc10rew", [], true),
     lockedAt: DC.D16,
   },
   {
@@ -105,7 +105,7 @@ export const normalChallenges = [
     isQuickResettable: true,
     description: () => i18n("chall", "nc11", [() => formatInt(1)]),
     name: "Automated Antimatter Galaxies",
-    reward: () => i18n("chall", "nc11rew"),
+    reward: () => i18n("chall", "nc11rew", [], true),
     lockedAt: DC.D16,
   },
   {
@@ -114,7 +114,7 @@ export const normalChallenges = [
     isQuickResettable: false,
     description: () => i18n("chall", "nc12", [() => formatInt(2), () => formatInt(2)]),
     name: "Automated Big Crunches",
-    reward: () => i18n("chall", "nc12rew"),
+    reward: () => i18n("chall", "nc12rew", [], true),
     lockedAt: DC.D16,
   }
 ];

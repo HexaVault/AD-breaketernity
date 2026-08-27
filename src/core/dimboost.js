@@ -172,7 +172,7 @@ export class DimBoost {
 }
 
 // eslint-disable-next-line max-params
-export function softReset(tempBulk, forcedADReset = false, forcedAMReset = false, enteringAntimatterChallenge = false) {
+export function softReset(tempBulk, forcedADReset = false, forcedAMReset = false, enteringAntimatterChallenge = false, resetTimings = true) {
   if (Currency.antimatter.gt(Player.infinityLimit)) return;
   const bulk = Decimal.min(tempBulk, DimBoost.maxBoosts.sub(player.dimensionBoosts));
   EventHub.dispatch(GAME_EVENT.DIMBOOST_BEFORE, bulk);
@@ -195,16 +195,20 @@ export function softReset(tempBulk, forcedADReset = false, forcedAMReset = false
   } else {
     Currency.antimatter.reset();
   }
+
   // Timings
-  player.records.bestBoost.trueTime =
-    Math.min(player.records.bestBoost.trueTime, player.records.thisBoost.trueTime);
-  player.records.bestBoost.time =
-    Decimal.min(player.records.bestBoost.time, player.records.thisBoost.time);
-  player.records.bestBoost.realTime =
-    Decimal.min(player.records.bestBoost.realTime, player.records.thisBoost.realTime);
-  player.records.thisBoost.trueTime = 0;
-  player.records.thisBoost.time = DC.D0;
-  player.records.thisBoost.realTime = DC.D0;
+  if (resetTimings) {
+    player.records.bestBoost.trueTime =
+      Math.min(player.records.bestBoost.trueTime, player.records.thisBoost.trueTime);
+    player.records.bestBoost.time =
+      Decimal.min(player.records.bestBoost.time, player.records.thisBoost.time);
+    player.records.bestBoost.realTime =
+      Decimal.min(player.records.bestBoost.realTime, player.records.thisBoost.realTime);
+    player.records.thisBoost.trueTime = 0;
+    player.records.thisBoost.time = DC.D0;
+    player.records.thisBoost.realTime = DC.D0;
+  }
+
   EventHub.dispatch(GAME_EVENT.DIMBOOST_AFTER, bulk);
 }
 

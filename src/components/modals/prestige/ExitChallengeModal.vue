@@ -35,10 +35,10 @@ export default {
       return i18n("modal", "exitChallengeModalTitle", [this.challengeName], true)[Number(this.isRestarting)];
     },
     restartText() {
-      return i18n("modal", "exitChallengeModalRestart", [challengeName]);
+      return i18n("modal", "exitChallengeModalRestart", [this.challengeName]);
     },
     exitText() {
-      return i18n("modal", "exitChallengeModalExit", [challengeName]);
+      return i18n("modal", "exitChallengeModalExit", [this.normalName]);
     },
     higherLayerNote() {
       return i18n("modal", "exitChallengeModalHigherLayer");

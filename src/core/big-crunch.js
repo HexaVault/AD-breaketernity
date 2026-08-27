@@ -159,7 +159,7 @@ export function secondSoftReset(enteringAntimatterChallenge) {
   player.galaxies = DC.D0;
   player.records.thisInfinity.maxAM = DC.D0;
   Currency.antimatter.reset();
-  softReset(0, true, true, enteringAntimatterChallenge);
+  softReset(0, true, true, enteringAntimatterChallenge, false);
   InfinityDimensions.resetAmount();
   if (player.replicanti.unl) Replicanti.amount = DC.D1;
   player.replicanti.galaxies = DC.D0;

@@ -75,7 +75,7 @@ export default {
       <DescriptionDisplay :config="descriptionDisplayConfig" />
     </template>
     <template #bottom>
-      <span :class="{ 'o-pelle-disabled': isDisabled }"><DescriptionDisplay :config="challenge.config.reward" /></span>
+      <span :class="{ 'o-pelle-disabled': isDisabled }"><DescriptionDisplay :config="challenge.config.reward()[0]" /></span>
     </template>
   </ChallengeBox>
 </template>

@@ -54,6 +54,7 @@ export default {
   },
   methods: {
     update() {
+      this.newGalaxies = new Decimal(1);
       if (this.bulk) {
         const req = Galaxy.requirement;
         const dim = AntimatterDimension(req.tier);

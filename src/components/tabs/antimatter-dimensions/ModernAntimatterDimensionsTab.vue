@@ -144,7 +144,7 @@ export default {
       <PrimaryButton
         v-if="isQuickResetAvailable"
         class="o-primary-btn--quick-reset"
-        onclick="softReset(-1, true, true)"
+        onclick="softReset(-1, true, true, false)"
       >
         Perform a Dimension Boost reset
         <span v-if="hasDimensionBoosts"> but lose a Dimension Boost</span>

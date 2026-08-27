@@ -24,17 +24,17 @@ export default {
         i18n("modal", "challengeModalInfix")]);
     },
     entranceLabel() {
-      return i18n("modal", "normalChallengeModalAboutToEnter");
+      return i18n("modal", "normalChallengeModalAboutToEnter", [this.id]);
     },
     reward() {
-      return i18n("modal", "normalChallengeModalRewardForCompletion", [this.rewardDescription]);
+      return i18n("modal", "normalChallengeModalRewardForCompletion", [this.challenge.config.reward()[1]]);
     },
     condition() {
       let conditionOfChallenge = this.challenge.config.description;
       if (typeof conditionOfChallenge === "function") {
         conditionOfChallenge = conditionOfChallenge();
       }
-      return i18n("modal", "normalChallengeModalInsideNC", [this.conditionOfChallenge]);
+      return i18n("modal", "normalChallengeModalInsideNC", [this.challenge.config.description()]);
     },
     begin() {
       return i18n("consts", "begin");
