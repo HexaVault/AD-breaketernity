@@ -38,12 +38,10 @@ export default {
     },
     buttonText() {
       if (this.lockText !== null) return this.lockText;
-      const reset = [];
-      if (!Achievement(111).canBeApplied) reset.push("Dimensions");
-      if (!Achievement(143).canBeApplied) reset.push("Dimension Boosts");
-      return reset.length === 0
-        ? `Increase the power of Tickspeed upgrades`
-        : `Reset your ${makeEnumeration(reset)} to increase the power of Tickspeed upgrades`;
+      let strToUse = 0;
+      if (!Achievement(111).canBeApplied) strToUse += 1;
+      if (!Achievement(143).canBeApplied) strToUse += 2;
+      return i18n("other", "adGalaxyClassic_incPower", [], true)[strToUse];
     },
     sumText() {
       const parts = [Decimal.max(this.galaxies.normal, 0)];

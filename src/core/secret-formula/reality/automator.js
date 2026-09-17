@@ -7,6 +7,7 @@ export const automator = {
     "Alter Settings",
     "Information",
     "Script Flow",
+    "Advanced Automation"
   ],
   commands: [
     {
@@ -616,6 +617,51 @@ export const automator = {
           pause 10s<br>
           eternity respec</blockquote>
         }`
+      ]
+    },
+    {
+      id: 20,
+      isUnlocked: () => true,
+      keyword: "Variables",
+      category: 5,
+      syntax: `<b>Depends on usage</b>`,
+      description: `The automator also allows the definition and usage of variables.<br>
+      There are 3 types of variables: String, Number, Study Tree.
+      Variables can be defined using the "state" command, followed by the variable name, and then the variable value.
+      This value may be from data (i.e. "space theorems") or another variable.
+      In order to modify variables, you may use the following commands (Number only unless specified): <br><ul>
+      <li>add (works with strings/study trees, appends to end)</li>
+      <li>sub (works with strings/study trees, subtracts from end, negative to go from start)</li>
+      <li>mul</li>
+      <li>div</li>
+      <li>pow</li>
+      <li>root</li>
+      <li>log</li>
+      <li>invpow</li>
+      <li>slog</li>
+      </ul>`,
+      examples: [
+        `state hello "Hello World"`,
+        `notify hello`,
+        `state bestEP EP`,
+        `mul bestEP 1e400`,
+        `log bestEP 10`,
+        `if pending EP > bestEP`,
+        `state studytree 11, 22, 32, 42|5!`,
+        `studies purchase studytree`
+      ]
+    },
+    {
+      id: 21,
+      isUnlocked: () => true,
+      keyword: "Variables",
+      category: 5,
+      syntax: `<b>define NAME(INPUTS)</b>`,
+      description: `The automator also allows the usage of functions.<br>
+      Each function may have up to 5 inputs, and you may go up to 3 functions deep at any time.
+      When calling a function, its code will be run, with the inputs you give it.`,
+      examples: [
+        `define myFunc(study)`
       ]
     },
   ],

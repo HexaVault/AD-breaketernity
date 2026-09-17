@@ -18,11 +18,20 @@ export default {
   },
   computed: {
     sacrificeTooltip() {
-      if (this.isFullyAutomated) {
-        return "Sacrifice Autobuyer is enabled and Achievement 118 is unlocked and active";
-      }
-      return `Boosts 8th Antimatter Dimension by ${formatX(this.sacrificeBoost, 2, 2)}`;
+      return i18n("other", "adTabHeadClassic_BoostTooltip", [formatX(this.sacrificeBoost, 2, 2)], true)[Number(this.isFullyAutomated)];
     },
+    fullAutoSac() {
+      return i18n("other", "adTabHeadClassic_BoostAuto");
+    },
+    sacText() {
+      return i18n("other", "adTabHeadClassic_BoostNormal", [formatX(this.sacrificeBoost, 2, 2)]);
+    },
+    disabledSac() {
+      return i18n("other", "adTabHeadClassic_BoostDisabled", [this.disabledCondition]);
+    },
+    maxAllLabel() {
+      return i18n("other", "adTabHeadClassic_Max");
+    }
   },
   methods: {
     update() {
@@ -56,16 +65,16 @@ export default {
       @click="sacrifice"
     >
       <span v-if="isFullyAutomated">
-        Dimensional Sacrifice is Automated (Achievement 118)
+        {{ fullAutoSac }}
       </span>
-      <span v-else-if="isSacrificeAffordable">Dimensional Sacrifice ({{ formatX(sacrificeBoost, 2, 2) }})</span>
-      <span v-else>Dimensional Sacrifice Disabled ({{ disabledCondition }})</span>
+      <span v-else-if="isSacrificeAffordable">{{ sacText }}</span>
+      <span v-else>{{ disabledSac }}</span>
     </PrimaryButton>
     <PrimaryButton
       class="o-primary-btn--buy-max"
       @click="maxAll"
     >
-      Max all (M)
+      {{ maxAllLabel }}
     </PrimaryButton>
   </div>
 </template>

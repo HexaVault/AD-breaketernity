@@ -5,12 +5,21 @@ export default {
     modal: {
       type: Object,
       required: true,
+    },
+    modalid: {
+      type: Number,
+      required: false,
+      default: 0
     }
   },
   data() {
     return {
       showModal: false,
       positionStyle: {},
+      x: 50,
+      y: 50,
+      initalDragX: 0,
+      initalDragY: 0
     };
   },
   created() {
@@ -51,6 +60,22 @@ export default {
       if (!this.modal.isOpen) return;
       if (this.modal.hide) this.modal.hide();
       else Modal.hide();
+    },
+    style() {
+      return { "left": `${this.x}vw`, "top": `${this.y}vh` };
+    },
+    changeOnDrag(dragData) {
+      // This occurs on the last call when dragging ends. Best to disallow this edge-case then edge-case the bug.
+      if (dragData.screenX === 0) return;
+      this.x += ((dragData.pageX - this.initalDragX) / window.innerWidth) * 100;
+      this.y += ((dragData.pageY - this.initalDragY) / window.innerHeight) * 100;
+      this.initalDragX = dragData.pageX;
+      this.initalDragY = dragData.pageY;
+    },
+    removeDragImage(event) {
+      event.dataTransfer.setDragImage(event.target, -99999, -99999);
+      this.initalDragX = event.pageX;
+      this.initalDragY = event.pageY;
     }
   },
 };
@@ -60,8 +85,11 @@ export default {
   <div
     v-if="showModal"
     ref="modal"
-    class="c-modal l-modal"
-    :style="positionStyle"
+    class="l-modal c-modal"
+    :style="style()"
+    draggable="true"
+    @drag="changeOnDrag($event)"
+    @dragstart="removeDragImage($event)"
   >
     <component
       :is="modal.component"

@@ -49,15 +49,15 @@ export default {
     },
     singleText() {
       if (this.isCapped) return i18n("consts", "capped");
-      return i18n("other", this.showCostTitle(this.singleCost) ? "adRow_ADcost" : "adRow_ADcostNoPrefix",
+      return i18n("other", this.showCostTitle(this.singleCost) ? "adRow_ADcost" : "adRowClassic_ADcostNoPrefix",
         [format(this.singleCost), i18n("consts", "nth", [], true)[Math.max(1, this.tier - 2)]], true)
         [this.isCostsAD ? 1 : 0];
     },
     until10Text() {
-      if (this.isCapped) return i18n("other", "adRow_shattered");
-      if (this.isContinuumActive) return i18n("other", "adRow_contValue", [this.continuumString]);
+      if (this.isCapped) return i18n("other", "adRowClassic_shattered");
+      if (this.isContinuumActive) return i18n("other", "adRowClassic_contValue", [this.continuumString]);
 
-      const string = i18n("other", this.showCostTitle(this.until10Cost) ? "adRow_ADcost10" : "adRow_ADcost10NoPrefix",
+      const string = i18n("other", this.showCostTitle(this.until10Cost) ? "adRowClassic_ADcost10" : "adRowClassic_ADcost10NoPrefix",
         [formatInt(10), format(this.until10Cost), i18n("consts", "nth", [], true)[Math.max(1, this.tier - 2)]], true)
         [this.isCostsAD ? 1 : 0];
 
@@ -70,9 +70,9 @@ export default {
       return this.isShown || this.isUnlocked || this.amount.gt(0);
     },
     boughtTooltip() {
-      if (this.isCapped) return i18n("other", "adRow_nameless", [formatInt(1)]);
-      if (this.isContinuumActive) return i18n("other", "adRow_continuum");
-      return i18n("other", "adRow_purchased", [[formatInt, this.bought]]);
+      if (this.isCapped) return i18n("other", "adRowClassic_nameless", [formatInt(1)]);
+      if (this.isContinuumActive) return i18n("other", "adRowClassic_continuum");
+      return i18n("other", "adRowClassic_purchased", [[formatInt, this.bought]]);
     },
     costUnit() {
       return `${AntimatterDimension(this.tier - 2).shortDisplayName} AD`;

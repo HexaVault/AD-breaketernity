@@ -29,6 +29,11 @@ export default {
       multiplierText: ""
     };
   },
+  computed: {
+    performReset() {
+      return i18n("other", "adTabClassic_DBResetNoReset", [], true)[Number(this.hasDimensionBoosts)];
+    }
+  },
   methods: {
     update() {
       this.hasDimensionBoosts = player.dimensionBoosts.gt(0);
@@ -37,10 +42,8 @@ export default {
       this.buy10Mult.copyFrom(AntimatterDimensions.buyTenMultiplier);
       this.currentSacrifice.copyFrom(Sacrifice.totalBoost);
       this.hasRealityButton = PlayerProgress.realityUnlocked() || TimeStudy.reality.isBought;
-      const sacText = this.isSacrificeUnlocked
-        ? ` | Dimensional Sacrifice multiplier: ${formatX(this.currentSacrifice, 2, 2)}`
-        : "";
-      this.multiplierText = `Buy 10 Dimension purchase multiplier: ${formatX(this.buy10Mult, 2, 2)}${sacText}`;
+      this.multiplierText = i18n("other", "adTabClassic_TopStrings",
+        [formatInt(10), formatX(this.buy10Mult, 2, 2), formatX(this.currentSacrifice, 2, 2)], true)[Number(this.isSacrificeUnlocked)];
     },
     quickReset() {
       softReset(-1, true, true, false, false);
@@ -68,9 +71,7 @@ export default {
       class="o-primary-btn--quick-reset"
       @click="quickReset"
     >
-      Perform a Dimension Boost reset
-      <span v-if="hasDimensionBoosts"> but lose a Dimension Boost</span>
-      <span v-else> for no gain</span>
+      {{ performReset }}
     </PrimaryButton>
     <div class="l-flex" />
     <AntimatterDimensionProgressBar class="l-antimatter-dim-tab__progress_bar" />
