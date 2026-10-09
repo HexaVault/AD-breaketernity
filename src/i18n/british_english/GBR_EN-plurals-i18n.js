@@ -27,6 +27,7 @@ export const plurals = {
   ag: { key: "AGAL", rules: [{ values: [1, -1], text: "$$$ Antimatter Galaxy" }, "$$$ Antimatter Galaxies"] },
   rg: { key: "RGAL", rules: [{ values: [1, -1], text: "$$$ Replicanti Galaxy" }, "$$$ Replicanti Galaxies"] },
   tg: { key: "TGAL", rules: [{ values: [1, -1], text: "$$$ Tachyon Galaxy" }, "$$$ Tachyon Galaxies"] },
+  splitTG: { key: "splitTGAL", rules: [{ values: [1, -1], text: "$$$ $ Tachyon Galaxy" }, "$$$ $ Tachyon Galaxies"] },
   eternity: { key: "ETER", rules: [{ values: [1, -1], text: "$$$ Eternity" }, "$$$ Eternities"] },
   infinity: { key: "INF", rules: [{ values: [1, -1], text: "$$$ Infinity" }, "$$$ Infinities"] },
   ad: { key: "AD", rules: [{ values: [1, -1], text: "$$$ Antimatter Dimension" }, "$$$ Antimatter Dimensions"] },

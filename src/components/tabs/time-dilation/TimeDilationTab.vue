@@ -85,6 +85,13 @@ export default {
       upgradeRows.push([this.ttGenerator]);
       return upgradeRows;
     },
+    youHaveDT() {
+      return i18n("eter", "timeDilationTabHaveDT", [], true);
+    },
+    timeDilationTabNextGalaxyAtX() {
+      return i18n("eter", "timeDilationTabNextGalaxyAtX", [[x => format(x, 3, 0), this.tachyonGalaxyGain], format(this.galaxyThreshold, 2, 1),
+        [x => format(x, 3, 0), this.totalGalaxies]], true);
+    }
   },
   methods: {
     maxPurchaseDilationUpgrades() {
@@ -140,24 +147,20 @@ export default {
       <DilationButton />
     </div>
     <span>
-      {{ i18n("eter", "youhavedt", [`<span class="c-dilation-tab__dilated-time">${format(dilatedTime, 2, 1)}</span>`]) }}
+      {{ youHaveDT[0] }} <span class="c-dilation-tab__dilated-time">{{ format(dilatedTime, 2, 1) }}</span> {{ youHaveDT[1] }}
       <span class="c-dilation-tab__dilated-time-income">{{ dilatedTimeGainText }}/s</span>
     </span>
     <span>
-      {{ i18n("eter", "nextAatB", [
-        `<span v-if="tachyonGalaxyGain.gt(1)">${format(tachyonGalaxyGain, 3, 0)}</span>
-      ${pluralize(i18n("eter", "tg"), tachyonGalaxyGain)}`,
-        `<span
+      {{ timeDilationTabNextGalaxyAtX[0] }} <span
         class="c-dilation-tab__galaxy-threshold"
         :ach-tooltip="galaxyTimeEstimate"
-      >${format(galaxyThreshold, 2, 1)}</span>`,
-        `<span
+      >{{ timeDilationTabNextGalaxyAtX[1] }}</span>
+      {{ timeDilationTabNextGalaxyAtX[2] }}
+      <span
         class="c-dilation-tab__galaxies"
         :ach-tooltip="baseGalaxyText"
-      >${format(totalGalaxies, 3, 0)}</span>
-      ${pluralize(i18n("eter", "tg"), totalGalaxies)}
-    </span>`
-      ]) }}
+      >{{ timeDilationTabNextGalaxyAtX[3] }}</span>
+      {{ timeDilationTabNextGalaxyAtX[4] }}
     </span>
     <span v-if="hasMaxText">
       {{ i18n("eter", "maxdt") }}

@@ -169,7 +169,7 @@ export function getDilationGainPerSecond() {
     GlyphEffects.dilationDT.primary,
   );
   dtRate = dtRate.times(
-    Replicanti.amount.add(1).log10().times(GlyphEffects.replicationdtgain.primary.effectValue.clampMin(1)));
+    Replicanti.amount.add(1).log10().times(GlyphEffects.replicationdtgain.primary.effectValue).clampMin(1));
   if (Enslaved.isRunning && !dtRate.eq(0)) dtRate = dtRate.plus(1).log10().pow(0.85).sub(1).pow10();
   if (V.isRunning) dtRate = dtRate.pow(0.5);
   return dtRate;
