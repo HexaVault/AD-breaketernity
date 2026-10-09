@@ -166,7 +166,7 @@ export function addEternityTime(trueTime, time, realTime, ep, eternities) {
     challenge = `${challText}${currEC}-${formatInt(ec.completions)}-${formatInt(ec.maxCompletions)}`;
   } else if (player.dilation.active) challenge = "Dil";
   // If we call this function outside of dilation, it uses the existing AM and produces an erroneous number
-  const gainedTP = player.dilation.active ? getTachyonGain() : DC.D0;
+  const gainedTP = player.dilation.active ? getTachyonGain(true) : DC.D0;
   player.records.recentEternities.pop();
   const lastrun = player.records.recentEternities[0];
   const deltaep = ep.div(lastrun[3]);
