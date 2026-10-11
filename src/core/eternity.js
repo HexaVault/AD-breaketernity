@@ -333,17 +333,54 @@ class EPMultiplierState extends GameMechanicState {
     return true;
   }
 
+  get preCalculatedValues() {
+    // https://www.desmos.com/calculator/p6p5wjnuh5
+    // At the bottom you will see a k(500, 8000, 200).
+    // Change 8000 to be the logs of costIncreaseThresholds[3] and 2x costIncreaseThresholds[3] if you change these values.
+    // Then, update lower and upper with the respective numbers.
+    // This just allows the linear stuff to work effectively
+    const costAtlower = new Decimal(4002);
+    const valueAtCap = new Decimal(8000);
+    // This above value may seem weird, but at 1334 the cost is e4002 not e4000, so we need to actually adjust this.
+    // Do note this edegecase if you adjust the formulas, or reduce costIncreaseThresholds[3] BELOW 4002.
+    // If you move it above, this shouldnt apply i dont think?
+    // If it does, just snap it to the lowest value which causes cost to be above costIncreaseThresholds[3]
+    const lower = new Decimal(1334);
+    const higher = new Decimal(1653.6533);
+    return [costAtlower, valueAtCap, lower, higher];
+  }
+
   // eslint-disable-next-line consistent-return
   costInv() {
     let tempVal = DC.D0;
     let bulk = DC.D1;
     let cur = Currency.eternityPoints.value.max(1);
-    if (cur.gt(this.costIncreaseThresholds[3])) {
-      cur = Decimal.log(cur.div(500), 1e3);
+    if (cur.gt(this.costIncreaseThresholds[3].pow10().cbrt())) {
+      // At this point, any inaccuracy is pointless.
+      return Decimal.log10(cur).root(1.2);
+    }
+    if (cur.gt(this.costIncreaseThresholds[3].pow(2))) {
+      // 4 newton iterations is close enough
+      cur = Decimal.log10(cur);
       // This has a good enough error to suffice, simply by doing a single iteration of newton method.
-      const x0 = cur.sub(1334).div(cur.sub(1334).pow(0.2).add(1).pow(5 / 6)).add(1334);
-      const x1 = x0.sub(x0.add(x0.sub(1334).pow(1.2)).sub(cur).div(x0.sub(1334).pow(0.2).mul(1.2).add(1)));
-      return x1;
+      let estimate = cur.root(1.2);
+      const x0 = () => cur.sub(Decimal.mul(3, estimate.add(estimate.sub(1334).pow(1.2))));
+      const x1 = () => estimate.sub(1334).pow(0.2).mul(-3);
+      // This is ultimately a recursive function, but the formulas are pretty fast, and this is still much better than a binary search.
+      for (let i = 0; i < 8; i++) {
+        estimate = estimate.sub(x0().div(x1()));
+      }
+      return estimate;
+    }
+    // Between these 2 values, the newtons method seems to fall off.
+    // To fix this, we will just linearly extrapolate, which will underestimate a bit.
+    // Instead of fixing this, we will just make the cost follow this formula.
+    if (cur.gt(this.costIncreaseThresholds[3])) {
+      // 4 newton iterations is close enough
+      cur = Decimal.log10(cur);
+      const final8k = this.preCalculatedValues[3];
+      const final4k = this.preCalculatedValues[2];
+      return final4k.add(final8k.sub(final4k).mul(cur.sub(this.preCalculatedValues[0]).div(this.preCalculatedValues[1] - this.preCalculatedValues[0])));
     }
     if (cur.gt(this.costIncreaseThresholds[2])) {
       bulk = this.costIncreaseThresholds[2].div(500).log(500).floor();
@@ -410,8 +447,16 @@ class EPMultiplierState extends GameMechanicState {
       const cost = Decimal.pow(multPerUpgrade[i], count).times(500);
       if (cost.lt(costThresholds[i])) return cost;
     }
-    // This formula is slightly weaker than base AD
-    return DC.E3.pow(count.pow(1.2).sub(Math.pow(1332, 1.2))).times(500);
+    // This formula is slightly stronger than base AD till 8k (at base values), but by very little.
+    if (count < this.preCalculatedValues[1]) {
+      const v4k = this.preCalculatedValues[0];
+      const v8k = this.preCalculatedValues[1];
+      const vChange = this.preCalculatedValues[3].sub(this.preCalculatedValues[2]);
+      const countChange = count.sub(this.preCalculatedValues[2]).div(vChange);
+      const costChange = v8k.sub(v4k);
+      return v4k.add(countChange.mul(costChange));
+    }
+    return DC.E3.pow(count.sub(1334).clampMin(0).pow(1.2).add(count)).times(500);
   }
 }
 
