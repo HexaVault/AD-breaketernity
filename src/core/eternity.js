@@ -337,6 +337,7 @@ class EPMultiplierState extends GameMechanicState {
     // https://www.desmos.com/calculator/p6p5wjnuh5
     // At the bottom you will see a k(500, 8000, 200).
     // Change 8000 to be the logs of costIncreaseThresholds[3] and 2x costIncreaseThresholds[3] if you change these values.
+    // Also, change 500 to be the middle value ^1/1.2, else the estimate will be wayyyy off.
     // Then, update lower and upper with the respective numbers.
     // This just allows the linear stuff to work effectively
     const costAtlower = new Decimal(4002);
