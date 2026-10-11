@@ -33,9 +33,6 @@ export const simpleCur = {
   tachyonParticles: {
     loc: ["dilation", "tachyonParticles"],
   },
-  dilatedTime: {
-    loc: ["dilation", "dilatedTime"],
-  },
   realities: {
     loc: ["realities"],
   },

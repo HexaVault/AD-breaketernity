@@ -361,6 +361,14 @@ Currency.timeTheorems = new class extends DecimalCurrency {
   }
 }();
 
+Currency.dilatedTime = new class extends DecimalCurrency {
+  get value() { return player.dilation.dilatedTime; }
+  set value(value) {
+    player.dilation.dilatedTime = value;
+    player.records.thisReality.maxDT = player.records.thisReality.maxDT.max(value);
+  }
+}();
+
 Currency.realityMachines = new class extends DecimalCurrency {
   get value() { return player.reality.realityMachines; }
   set value(value) {
