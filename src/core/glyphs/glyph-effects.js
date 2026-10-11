@@ -100,7 +100,7 @@ export class GlyphEffectConfig {
   get glyphTypes() {
     const glyphs = [];
     if (this._glyphTypes.length === 0) return glyphs;
-    for (const item of glyphs) {
+    for (const item of this._glyphTypes) {
       let isValid;
       try {
         isValid = handlePossibleFunction(item[0]);

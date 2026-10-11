@@ -57,7 +57,7 @@ export default {
     },
     gained() {
       return i18n("modal", "realityModalWillGainX", [[formatInt, this.simRealities], [x => format(x, 2), this.realityMachines],
-        [this.simRealities, this.simRealities], [x => format(x, 2), this.shardsGained]], true)[Number(this.effarigUnlocked)];
+        [formatInt, this.simRealities], [x => format(x, 2), this.shardsGained]], true)[Number(this.effarigUnlocked)];
     },
     levelStats() {
       // We have 3 version: equal, higher, lower

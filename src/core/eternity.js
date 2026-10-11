@@ -449,13 +449,13 @@ class EPMultiplierState extends GameMechanicState {
       if (cost.lt(costThresholds[i])) return cost;
     }
     // This formula is slightly stronger than base AD till 8k (at base values), but by very little.
-    if (count < this.preCalculatedValues[1]) {
+    if (count.lt(this.preCalculatedValues[3].floor())) {
       const v4k = this.preCalculatedValues[0];
       const v8k = this.preCalculatedValues[1];
       const vChange = this.preCalculatedValues[3].sub(this.preCalculatedValues[2]);
       const countChange = count.sub(this.preCalculatedValues[2]).div(vChange);
       const costChange = v8k.sub(v4k);
-      return v4k.add(countChange.mul(costChange));
+      return v4k.add(countChange.mul(costChange)).pow10();
     }
     return DC.E3.pow(count.sub(1334).clampMin(0).pow(1.2).add(count)).times(500);
   }
