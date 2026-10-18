@@ -3,8 +3,8 @@
 // All studies, including triad, i18n support
 export const studies = {
   ts11: "Tickspeed affects 1st Time Dimension with reduced effect",
-  ts21: "Imrpove Replicanti multiplier formula to (log2(x)$1aX)+x$2aX",
-  ts22: "Base Replicanti interval limit $1aX ➜ $2aX",
+  ts21: "Improve Replicanti multiplier formula to (log2(x)$1aX)+x$2aX",
+  ts22: "Base Replicanti interval limit $1aXms ➜ $2aXms",
   ts31: "Powers up multipliers that are based on your Infinities (Bonuses$1aX)",
   ts32: "You gain more Infinities based on Dimension Boosts",
   ts33: "You keep half of your Replicanti Galaxies on Infinity",
@@ -58,7 +58,7 @@ export const studies = {
   ts221: "Time Dimension multiplier based on Dimension Boosts",
   ts222: "Dimension Boost costs scale by another $1aX less",
   ts223: "Distant Galaxy cost scaling starts $1aX Galaxies later",
-  ts224: "Distant Galaxy cost scaling stats $1aX later ($2aX$GAL$$ per $3aX$DBspt$$)",
+  ts224: "Distant Galaxy cost scaling starts $1aX$GAL$$ later ($2aX$GAL$$ per $3aX$DBspt$$)",
   ts225: "You gain extra Replicanti Galaxies based on Replicanti amount",
   ts226: "You gain extra Replicanti Galaxies based on their max",
   ts227: "Dimensional Sacrifice affects 4th Time Dimension with reduced effect",

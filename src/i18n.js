@@ -2,13 +2,11 @@
 import * as i18nText from "./i18n/exports";
 
 function handleArrayFunctionConglomerate(modifier) {
-  let formatting = format;
-  let input = modifier;
-  if (Array.isArray()) {
-    formatting = modifier[0];
-    input = modifier[1];
+  const lmodifier = handlePossibleFunction(modifier);
+  if (Array.isArray(lmodifier)) {
+    return lmodifier[0](lmodifier[1]);
   }
-  return formatting(input);
+  return lmodifier;
 }
 
 // eslint-disable-next-line max-params
@@ -168,7 +166,7 @@ function pluralHandling(textInput, rules, mods) {
       console.log("Expected an array of [function, number/decimal] for modifier input, but recieved otherwise.");
       // eslint-disable-next-line no-console
       console.log(`For info: ${textToReplace} and ${modHandle}`);
-      return `${lastStr.replace("$$$", handlePossibleFunction(modHandle[i - 1]))}`;
+      return `${lastStr.replace("$$$", "")}`;
       // This should be as robust as possible for a given system
     }
     cache = [modHandle[0], modHandle[1]];

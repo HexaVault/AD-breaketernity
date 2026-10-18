@@ -537,7 +537,7 @@ export const normalTimeStudies = [
     requiresST: [223],
     description() {
       const effect = TimeStudy(224).effectValue;
-      return i18n("studies", "ts224", [[formatInt, effect], formatInt(1), [formatInt, 2000]]);
+      return i18n("studies", "ts224", [[formatInt, effect], [formatInt, 1], [formatInt, 2000]]);
     },
     effect: () => DimBoost.totalBoosts.div(2000).floor()
   },
