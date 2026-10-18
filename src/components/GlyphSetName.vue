@@ -210,7 +210,7 @@ export default {
       // Also, if the max equipped is less than 6, multiply the perc accordingly. Yes we use stacked ??, but that's
       // how it goes ig.
       if (name === undefined) return 0;
-      const eachSlotEquiv = name === "music" ? 1 : (GlyphInfo[name].maxEquipped ?? (this.slotCount ?? 1));
+      const eachSlotEquiv = name === "music" ? 1 : (Math.min(GlyphInfo[name].maxEquipped, this.slotCount));
       // eslint-disable-next-line max-len
       return this.glyphSet.filter(i => i.type === name).length * percentPerGlyph * ((this.slotCount / eachSlotEquiv) ?? 0);
     },

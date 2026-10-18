@@ -118,10 +118,10 @@ export default {
         return;
       }
       const glyphFactors = getGlyphLevelInputs();
-      this.perkShopVisible = glyphFactors.perkShop !== 1;
+      this.perkShopVisible = glyphFactors.perkShop.neq(1) || PlayerProgress.gameBeaten();
       this.rowVisible = glyphFactors.rowFactor > 0;
       this.achievementVisible = glyphFactors.achievementFactor.gt(0);
-      if (glyphFactors.scalePenalty !== 1) {
+      if (glyphFactors.scalePenalty.neq(1) || PlayerProgress.gameBeaten()) {
         this.penaltyVisible = true;
         this.lastInstability = Date.now();
       } else if (this.penaltyVisible) {
@@ -477,7 +477,7 @@ function roundPreservingSum(data) {
       :style="rowStyle('level')"
       class="l-glyph-levels-and-weights__factor-val"
     >
-      {{ formatLevel(factors) }}
+      {{ formatLevel(factors.scaledLevel) }}
     </div>
     <div
       :style="rowStyle('info')"

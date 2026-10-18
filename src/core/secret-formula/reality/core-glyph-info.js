@@ -208,7 +208,7 @@ export const glyphTypes = {
     regularGlyphSymbol: "♥",
     cancerGlyphSymbol: "³",
     pelleUniqueEffect: {
-      effect: 1.34,
+      effect: new Decimal(1.34),
       formatEffect: effect => formatPercents(effect.sub(1)),
       description: "You feel {value} better",
       combine: GlyphCombiner.addExponents,
@@ -254,7 +254,7 @@ export const glyphTypes = {
     },
     alchemyResource: "power",
     pelleUniqueEffect: {
-      effect: 1.02,
+      effect: new Decimal(1.02),
       formatEffect: effect => formatPercents(effect.sub(1)),
       description: "Galaxies are {value} stronger",
       combine: GlyphCombiner.addExponents,

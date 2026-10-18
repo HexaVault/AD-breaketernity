@@ -350,6 +350,7 @@ export function getGlyphLevelInputs() {
     achievementFactor: staticFactors.achievements,
     shardFactor,
     singularityEffect,
+    scaledLevel
   };
 }
 

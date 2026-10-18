@@ -28,14 +28,14 @@ export default {
       if (!this.isColored) return { };
       const typeObject = this.effectConfig.effectCol;
 
-      let glyphColor = typeObject.currentColor.border;
+      let glyphColor = typeObject;
       if (typeObject.id === "cursed") glyphColor = "var(--color-celestials)";
 
       return {
         color: glyphColor,
         "text-shadow": `-1px 1px 1px var(--color-text-base), 1px 1px 1px var(--color-text-base),
                             -1px -1px 1px var(--color-text-base), 1px -1px 1px var(--color-text-base),
-                            0 0 3px ${typeObject.currentColor.border}`,
+                            0 0 3px ${glyphColor}`,
         animation: typeObject.id === "reality" ? "a-reality-glyph-description-cycle 10s infinite" : undefined,
       };
     },

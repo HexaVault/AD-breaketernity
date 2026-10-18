@@ -6,6 +6,7 @@ import PrimaryToggleButton from "@/components/PrimaryToggleButton";
 import SelectAMGainDisplayDropdown from "./SelectAMGainDisplayDropdown";
 import SelectLargeNotationDropdown from "./SelectLargeNotationDropdown";
 import SelectNotationDropdown from "@/components/tabs/options-visual/SelectNotationDropdown";
+import SelectNotificationPositionDropdown from "@/components/tabs/options-visual/SelectNotificationPositionDropdown";
 import SelectSidebarDropdown from "@/components/tabs/options-visual/SelectSidebarDropdown";
 import SelectThemeDropdown from "@/components/tabs/options-visual/SelectThemeDropdown";
 import UpdateRateSlider from "./UpdateRateSlider";
@@ -23,6 +24,7 @@ export default {
     SelectSidebarDropdown,
     SelectLargeNotationDropdown,
     SelectAMGainDisplayDropdown,
+    SelectNotificationPositionDropdown,
   },
   data() {
     return {
@@ -32,6 +34,7 @@ export default {
       sidebarResource: "",
       headerTextColored: true,
       amGainDisplayType: "",
+      notificationPosition: 0,
     };
   },
   computed: {
@@ -56,6 +59,9 @@ export default {
     },
     amGainDisplayLabel() {
       return `Antimatter Gain Display: ${this.amGainDisplayType}`;
+    },
+    notificationPositionLabel() {
+      return `Notification Position: ${["Top Right", "Top Left", "Bottom Left", "Bottom Right"][this.notificationPosition]}`;
     }
   },
   watch: {
@@ -70,6 +76,7 @@ export default {
       this.notation = options.notation;
       this.lnotation = options.lnotation;
       this.amGainDisplayType = options.amGainDisplayType;
+      this.notificationPosition = options.notificationDisplay;
       this.sidebarResource = player.options.sidebarResourceID === 0
         ? "Latest Resource"
         : this.sidebarDB.find(e => e.id === player.options.sidebarResourceID).optionName;
@@ -211,7 +218,22 @@ export default {
           </template>
         </ExpandingControlBox>
       </div>
+      <div
+        class="l-options-grid__row"
+        :style="styles(0)"
+      >
+        <ExpandingControlBox
+          class="l-options-grid__button c-options-grid__notations"
+          button-class="o-primary-btn o-primary-btn--option l-options-grid__notations-header"
+          :label="notificationPositionLabel"
+        >
+          <template #dropdown>
+            <SelectNotificationPositionDropdown />
+          </template>
+        </ExpandingControlBox>
+      </div>
       <OpenModalHotkeysButton />
+      Changing Language or Notification Position will save and reload for it to take effect.
     </div>
   </div>
 </template>

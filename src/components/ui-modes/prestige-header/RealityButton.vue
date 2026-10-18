@@ -65,7 +65,7 @@ export default {
   methods: {
     percentToNextGlyphLevelText() {
       const glyphState = getGlyphLevelInputs();
-      let level = glyphState;
+      let level = glyphState.scaledLevel;
       if (!level.isFinite()) level = new Decimal();
       const decimalPoints = this.glyphLevel.gt(1e3) ? 0 : 1;
       return `${formatPercents(level.sub(level.floor()).clampMax(0.999), decimalPoints)}`;

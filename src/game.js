@@ -105,7 +105,7 @@ export function breakInfinity() {
 
 export function gainedGlyphLevel() {
   const glyphState = getGlyphLevelInputs();
-  const actualLevel = glyphState.floor();
+  const actualLevel = glyphState.scaledLevel.floor();
   return actualLevel;
 }
 

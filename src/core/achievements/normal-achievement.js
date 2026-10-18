@@ -33,7 +33,7 @@ class AchievementState extends GameMechanicState {
 
   get isEffectActive() {
     // We !== false since ?. can return undefined if effectCondition is undefined, which it is for alot
-    return this.isUnlocked && !this.isDisabled && (this?._config.effectCondition() !== false);
+    return this.isUnlocked && !this.isDisabled && (this._config?.effectCondition() !== false);
   }
 
   get isObscured() {

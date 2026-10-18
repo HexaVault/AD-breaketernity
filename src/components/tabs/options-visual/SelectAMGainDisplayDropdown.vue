@@ -1,6 +1,6 @@
 <script>
 export default {
-  name: "SelectNotationDropdown",
+  name: "SelectAMGainDisplayDropdown",
   data() {
     return {
       options: ["Off", "Compact", "Normal"],
