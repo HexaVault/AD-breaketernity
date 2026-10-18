@@ -90,7 +90,7 @@ export class RealityAutobuyerState extends AutobuyerState {
       const gainedLevel = gainedGlyphLevel();
       const checkModes = [AUTO_REALITY_MODE.GLYPH, AUTO_REALITY_MODE.EITHER, AUTO_REALITY_MODE.BOTH];
       const levelToCheck = checkModes.includes(this.mode)
-        ? { actualLevel: Decimal.min(this.glyph, Glyphs.levelCap), rawLevel: DC.D1 }
+        ? Decimal.min(this.glyph, Glyphs.levelCap)
         : gainedLevel;
       const choices = GlyphSelection.glyphList(GlyphSelection.choiceCount, levelToCheck,
         { isChoosingGlyph: false });
@@ -107,7 +107,7 @@ export class RealityAutobuyerState extends AutobuyerState {
     // account for that and make the automation trigger based on the actual displayed values
     const ampFactor = simulatedRealityCount(false).add(1);
     const rmProc = Currency.realityMachines.gain.times(ampFactor).gte(this.rm);
-    const glyphProc = gainedGlyphLevel().actualLevel.gte(this.glyph);
+    const glyphProc = gainedGlyphLevel().gte(this.glyph);
     switch (this.mode) {
       case AUTO_REALITY_MODE.RM:
         proc = rmProc;

@@ -67,7 +67,7 @@ export const normalTimeStudies = [
     cost: DC.D2,
     requirement: [11],
     reqType: TS_REQUIREMENT_TYPE.AT_LEAST_ONE,
-    description: () => i18n("studies", "ts22", [formatInt(50), formatInt(1)]),
+    description: () => i18n("studies", "ts22", [[formatInt, 50], [formatInt, 1]]),
     effect: 1
   },
   {
@@ -75,7 +75,7 @@ export const normalTimeStudies = [
     cost: DC.D3,
     requirement: [21],
     reqType: TS_REQUIREMENT_TYPE.AT_LEAST_ONE,
-    description: () => i18n("studies", "ts31", formatPow(4)),
+    description: () => i18n("studies", "ts31", [formatPow(4)]),
     effect: 4
   },
   {
@@ -116,7 +116,7 @@ export const normalTimeStudies = [
     cost: DC.D3,
     requirement: [41, 42],
     reqType: TS_REQUIREMENT_TYPE.AT_LEAST_ONE,
-    description: () => i18n("studies", "ts51", (formatX(1e15))),
+    description: () => i18n("studies", "ts51", [formatX(1e15)]),
     effect: 1e15
   },
   {
@@ -132,7 +132,7 @@ export const normalTimeStudies = [
     cost: DC.D3,
     requirement: [42, () => Perk.bypassEC5Lock.isBought || EternityChallenge(5).completions > 0],
     reqType: TS_REQUIREMENT_TYPE.ALL,
-    description: () => i18n("studies", "ts62", formatInt(3)),
+    description: () => i18n("studies", "ts62", [formatInt(3)]),
     effect: 3
   },
   {
@@ -537,7 +537,7 @@ export const normalTimeStudies = [
     requiresST: [223],
     description() {
       const effect = TimeStudy(224).effectValue;
-      return i18n("studies", "ts224", [quantifyInt(i18n("studies", "ts224gal"), effect), formatInt(1), formatInt(2000)]);
+      return i18n("studies", "ts224", [[formatInt, effect], formatInt(1), [formatInt, 2000]]);
     },
     effect: () => DimBoost.totalBoosts.div(2000).floor()
   },

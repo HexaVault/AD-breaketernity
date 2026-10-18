@@ -64,7 +64,7 @@ export default {
         ? GlyphSelection.glyphList(GlyphSelection.choiceCount, gainedGlyphLevel(), { isChoosingGlyph: false })
         : this.glyphSet.filter(x => x);
       this.sortGlyphs();
-      this.gainedLevel = gainedGlyphLevel().actualLevel;
+      this.gainedLevel = gainedGlyphLevel();
       // There should only be one reality glyph; this picks one pseudo-randomly if multiple are cheated/glitched in
       const realityGlyph = this.glyphs.filter(g => g.type === "reality")[0];
       this.realityGlyphBoost = realityGlyph

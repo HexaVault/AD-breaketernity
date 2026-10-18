@@ -106,7 +106,7 @@ export default {
       this.hasChoice = Perk.firstPerk.isEffectActive;
       this.effarigUnlocked = TeresaUnlocks.effarig.canBeApplied;
       this.hasFilter = EffarigUnlock.glyphFilter.isUnlocked;
-      this.level.copyFrom(gainedGlyphLevel().actualLevel);
+      this.level.copyFrom(gainedGlyphLevel());
       this.simRealities = simulatedRealityCount(false).add(1);
       this.hasSpace = Decimal.fromNumber(GameCache.glyphInventorySpace.value).gte(this.simRealities);
       const simRMGained = Currency.realityMachines.gain.times(this.simRealities);

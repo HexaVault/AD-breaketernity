@@ -26,7 +26,7 @@ export default {
       // and due to pre-selected first glyph might well be incorrect anyway.
       this.isVisible = !Pelle.isDoomed && PlayerProgress.realityUnlocked();
       this.canPeek = TimeStudy.reality.isBought;
-      if (gainedGlyphLevel().actualLevel !== this.level) {
+      if (gainedGlyphLevel() !== this.level) {
         this.refreshGlyphs();
       }
     },
@@ -34,7 +34,7 @@ export default {
       this.canRefresh = true;
       this.glyphs = GlyphSelection.upcomingGlyphs;
       for (const glyph of this.glyphs) Glyphs.addGuarenteedEffects(glyph);
-      this.level = gainedGlyphLevel().actualLevel;
+      this.level = gainedGlyphLevel();
     },
     showModal() {
       Modal.glyphShowcasePanel.show({

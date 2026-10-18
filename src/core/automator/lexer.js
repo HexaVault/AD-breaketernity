@@ -142,7 +142,7 @@ createInCategory(AutomatorCurrency, "PendingRM", /pending[ \t]+rm/i, {
 });
 createInCategory(AutomatorCurrency, "PendingGlyphLevel", /pending[ \t]+glyph[ \t]+level/i, {
   $autocomplete: "pending Glyph level",
-  $getter: () => new Decimal(isRealityAvailable() ? gainedGlyphLevel().actualLevel : 0),
+  $getter: () => new Decimal(isRealityAvailable() ? gainedGlyphLevel() : 0),
 });
 
 createInCategory(AutomatorCurrency, "Rep", /rep(licanti)?/i, {

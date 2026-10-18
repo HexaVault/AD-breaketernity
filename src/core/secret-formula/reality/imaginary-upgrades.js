@@ -118,7 +118,7 @@ export const imaginaryUpgrades = [
     ${formatInt(100)}`,
     hasFailed: () => false,
     checkRequirement: () => Object.values(player.celestials.effarig.glyphWeights).some(w => w === 100) &&
-      gainedGlyphLevel().actualLevel.gte(9000),
+      gainedGlyphLevel().gte(9000),
     checkEvent: GAME_EVENT.REALITY_RESET_BEFORE,
     description: "Gain free Dimboosts based on Imaginary rebuyable count",
     effect: () => ImaginaryUpgrades.totalRebuyables.mul(2e4),
@@ -276,7 +276,7 @@ export const imaginaryUpgrades = [
       at most ${formatInt(0)} Glyphs equipped`,
     hasFailed: () => !Ra.isRunning || player.requirementChecks.reality.maxGlyphs > 0,
     checkRequirement: () => Ra.isRunning && player.requirementChecks.reality.maxGlyphs <= 0 &&
-      gainedGlyphLevel().actualLevel.gte(20000),
+      gainedGlyphLevel().gte(20000),
     checkEvent: GAME_EVENT.GAME_TICK_AFTER,
     description: "Increase free Dimboost count based on Tesseract count",
     effect: () => Tesseracts.effectiveCount.pow(2).div(4).floor(),

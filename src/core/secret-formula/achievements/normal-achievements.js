@@ -1091,7 +1091,7 @@ export const normalAchievements = [
     id: 165,
     get name() { return i18n("ach", "ach165title"); },
     get description() { return i18n("ach", "ach165desc", [formatInt(5000)]); },
-    checkRequirement: () => gainedGlyphLevel().actualLevel.gte(5000) &&
+    checkRequirement: () => gainedGlyphLevel().gte(5000) &&
       ["repl", "dt", "eternities"].every(
         i => player.celestials.effarig.glyphWeights[i] === player.celestials.effarig.glyphWeights.ep),
     checkEvent: GAME_EVENT.REALITY_RESET_BEFORE,
@@ -1101,7 +1101,7 @@ export const normalAchievements = [
     id: 166,
     get name() { return i18n("ach", "ach166title"); },
     get description() { return i18n("ach", "ach166desc", [formatInt(6969)]); },
-    checkRequirement: () => gainedGlyphLevel().actualLevel.eq(6969),
+    checkRequirement: () => gainedGlyphLevel().eq(6969),
     checkEvent: GAME_EVENT.REALITY_RESET_BEFORE,
     get reward() { return i18n("ach", "ach166reward", [formatInt(69)]); },
     effect: 69

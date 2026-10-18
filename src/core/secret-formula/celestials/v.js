@@ -183,7 +183,7 @@ export const v = {
       description: value => `Reach a Glyph of level ${formatInt(value)}.`,
       values: [6500, 7000, 8000, 9000, 10000],
       condition: () => V.isRunning,
-      currentValue: () => gainedGlyphLevel().actualLevel,
+      currentValue: () => gainedGlyphLevel(),
       formatRecord: x => formatInt(x),
       shardReduction: tiers => Math.floor(500 * tiers),
       maxShardReduction: () => 500,

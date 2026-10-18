@@ -54,7 +54,9 @@ export const plurals = {
   galaxies: { key: "GAL", rules: [{ values: [1, -1], text: "$$$ Galaxy" }, "$$$ Galaxies"] },
   // TODO: Remove these - These are the same in english, and pluralisation works on a per-language basis so these keys dont need to exist
   // Note we will need to add handling for pluralisation cases where the output is only plural in some languages
-  // There might be a small case where "TT" is different for pluralisation soooooo
+  // There might be a small case where "TT" or "ST" are different for pluralisation soooooo
   ttShort: { key: "TTSHORT", rules: ["SSS TT"] },
-  stShort: { key: "STSHORT", rules: ["SSS ST"] }
+  stShort: { key: "STSHORT", rules: ["SSS ST"] },
+  gal: { key: "GAL", rules: [{ values: [1, -1], text: "$$$ Galaxy" }, "$$$ Galaxies"] },
+  dimBoostsSplit: { key: "DBspt", rules: [{ values: [1, -1], text: "$$$ Dim Boost" }, "$$$ Dim Boosts"] },
 };

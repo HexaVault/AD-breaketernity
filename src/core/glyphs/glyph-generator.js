@@ -104,8 +104,7 @@ export const GlyphGenerator = {
       type: "power",
       // The initial strength is very slightly above average.
       strength: initialStrength,
-      level: level.actualLevel,
-      rawLevel: level.rawLevel,
+      level,
       effects: ["powerpow"],
     };
   },
@@ -115,8 +114,8 @@ export const GlyphGenerator = {
     const rng = rngIn || new GlyphGenerator.RealGlyphRNG();
     const type = typeIn || this.randomType(rng);
     const strength = this.randomStrength(type, rng);
-    let numEffects = this.randomNumberOfEffects(type, strength, level.actualLevel, rng);
-    let actualLevel = level.actualLevel;
+    let numEffects = this.randomNumberOfEffects(type, strength, level, rng);
+    let actualLevel = level;
     if (GlyphInfo[type].levelOverride) actualLevel = GlyphInfo[type].levelOverride(actualLevel);
     const maxEffects = GlyphInfo[type].effects.length;
     if (type !== "effarig" && numEffects > maxEffects) numEffects = maxEffects;
@@ -128,7 +127,6 @@ export const GlyphGenerator = {
       type,
       strength,
       level: actualLevel,
-      rawLevel: level.rawLevel,
       effects,
     };
   },
@@ -144,7 +142,6 @@ export const GlyphGenerator = {
       type: "reality",
       strength: str,
       level,
-      rawLevel: level,
       effects,
     };
   },
@@ -158,7 +155,6 @@ export const GlyphGenerator = {
       type: "cursed",
       strength: str,
       level: new Decimal(6666),
-      rawLevel: new Decimal(6666),
       effects,
     };
   },
@@ -176,7 +172,6 @@ export const GlyphGenerator = {
       type,
       strength: 3.5,
       level: glyphLevel,
-      rawLevel: glyphLevel,
       effects,
     };
   },
@@ -191,7 +186,6 @@ export const GlyphGenerator = {
       type: "companion",
       strength: str,
       level: DC.D1,
-      rawLevel: DC.D1,
       effects,
     };
   },
@@ -199,7 +193,7 @@ export const GlyphGenerator = {
   musicGlyph() {
     const rng = new GlyphGenerator.MusicGlyphRNG();
     const glyph =
-      this.randomGlyph({ actualLevel: player.records.bestReality.glyphLevel.mul(0.8).floor(), rawLevel: DC.D1 }, rng);
+      this.randomGlyph(player.records.bestReality.glyphLevel.mul(0.8).floor(), rng);
     rng.finalize();
     glyph.cosmetic = "music";
     glyph.fixedCosmetic = "music";

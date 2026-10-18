@@ -105,12 +105,8 @@ export function breakInfinity() {
 
 export function gainedGlyphLevel() {
   const glyphState = getGlyphLevelInputs();
-  const rawLevel = glyphState.rawLevel.floor();
-  const actualLevel = glyphState.actualLevel.floor();
-  return {
-    rawLevel,
-    actualLevel
-  };
+  const actualLevel = glyphState.floor();
+  return actualLevel;
 }
 
 export function resetChallengeStuff() {

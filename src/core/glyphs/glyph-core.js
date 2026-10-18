@@ -821,34 +821,11 @@ export const Glyphs = {
 };
 
 export function recalculateAllGlyphs() {
-  for (let i = 0; i < player.reality.glyphs.active.length; i++) {
-    calculateGlyph(player.reality.glyphs.active[i]);
-  }
   // Delete any glyphs that are in overflow spots:
   player.reality.glyphs.inventory = player.reality.glyphs.inventory.filter(
     glyph => glyph.idx < Glyphs.totalSlots);
-  for (let i = 0; i < player.reality.glyphs.inventory.length; i++) {
-    calculateGlyph(player.reality.glyphs.inventory[i]);
-  }
   Glyphs.updateRealityGlyphEffects();
   Glyphs.refresh();
-}
-
-// Makes sure level is a positive whole number and rarity is >0% (retroactive fixes) and recalculates effects
-export function calculateGlyph(glyph) {
-  if (glyph.color === undefined && glyph.symbol === undefined) {
-    glyph.level = Decimal.round(glyph.level).clampMin(1);
-    if (glyph.rawLevel === undefined) {
-      // Only correct below the second round of instability, but it only matters for glyphs produced before
-      // this was merged, so it's not a big deal.
-      glyph.rawLevel = glyph.level.lt(1000) ? glyph.level
-        : (Decimal.pow(glyph.level.times(0.004).min(3), 2) - 1).times(125).add(1000);
-    }
-    // Used to randomly generate strength in this case; I don't think we actually care.
-    // TODO: make glyph.strength and glyph.level decimals by default and not strings/numbers
-    if (Decimal.eq(glyph.strength, 1)) glyph.strength = new Decimal(1.5);
-    glyph.strength = rarityToStrength(100).clampMax(glyph.strength);
-  }
 }
 
 export function getRarity(x) {

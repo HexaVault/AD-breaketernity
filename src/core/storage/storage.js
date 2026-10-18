@@ -453,7 +453,6 @@ export const GameStorage = {
     if (player.version >= 83) {
       const fixGlyph = glyph => {
         glyph.level = new Decimal(glyph.level);
-        glyph.rawLevel = new Decimal(glyph.rawLevel);
         glyph.strength = new Decimal(glyph.strength);
         // eslint-disable-next-line consistent-return
         return glyph;

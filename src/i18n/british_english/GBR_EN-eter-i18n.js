@@ -90,7 +90,7 @@ export const eter = {
   offlineGen: "Offline generation milestones are only active under certain conditions, mouse-over to see these conditions",
   epxsource: "Multiply Eternity Points from all sources by $1aX",
   current: "Currently: $1aX",
-  cost: "Cost: $1aX",
+  cost: "Cost: $1aX$EP$$",
   ep: "Eternity Point",
   maxepx: "Max Eternity Point mult",
   autoep: "Autobuy EP mult",

@@ -477,7 +477,7 @@ function roundPreservingSum(data) {
       :style="rowStyle('level')"
       class="l-glyph-levels-and-weights__factor-val"
     >
-      {{ formatLevel(factors.actualLevel) }}
+      {{ formatLevel(factors) }}
     </div>
     <div
       :style="rowStyle('info')"

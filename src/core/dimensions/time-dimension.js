@@ -62,29 +62,29 @@ export function calcHighestPurchaseableTD(tier, currency) {
 
   if (currency.gte(DC.E6000)) {
     logMult = TimeDimension(tier)._costMultiplier.mul(tier <= 4 ? 2.2 : 1).max(1).log10();
-    const preInc = Decimal.log10(DC.E6000).sub(logBase).div(logMult);
-    const postInc = logC.sub(6000).div(logMult).div(TimeDimensions.scalingPast1e6000).clampMin(0);
-    return postInc.add(preInc).ceil();
+    const preInc = Decimal.log10(DC.E6000).sub(logBase).div(logMult).ceil();
+    const postInc = logC.sub(6000).div(logMult).div(TimeDimensions.scalingPast1e6000).clampMin(0).floor();
+    return postInc.add(preInc);
   }
 
   if (currency.lt(DC.NUMMAX)) {
-    return Decimal.max(0, logC.sub(logBase).div(logMult).add(1)).ceil();
+    return Decimal.max(0, logC.sub(logBase).div(logMult).add(1)).floor();
   }
 
   if (currency.lt(DC.E1300)) {
-    const preInc = Decimal.log10(DC.NUMMAX).sub(logBase).div(logMult).floor();
+    const preInc = Decimal.log10(DC.NUMMAX).sub(logBase).div(logMult).ceil();
     logMult = TimeDimension(tier)._costMultiplier.mul(1.5).max(1).log10();
     const decCur = logC.sub(preInc.mul(logMult));
-    const postInc = decCur.div(logMult).clampMin(0).ceil();
+    const postInc = decCur.div(logMult).clampMin(0).floor();
     return Decimal.add(preInc, postInc);
   }
 
   if (currency.lt(DC.E6000)) {
     logMult = TimeDimension(tier)._costMultiplier.mul(1.5).max(1).log10();
-    const preInc = Decimal.log10(DC.E1300).sub(logBase).div(logMult).floor();
+    const preInc = Decimal.log10(DC.E1300).sub(logBase).div(logMult).ceil();
     logMult = TimeDimension(tier)._costMultiplier.mul(2.2).max(1).log10();
     const decCur = logC.sub(preInc.mul(logMult));
-    const postInc = decCur.div(logMult).clampMin(0).ceil();
+    const postInc = decCur.div(logMult).clampMin(0).floor();
     return Decimal.add(preInc, postInc);
   }
   throw new Error("calcHighestPurchasableTD reached too far in code");

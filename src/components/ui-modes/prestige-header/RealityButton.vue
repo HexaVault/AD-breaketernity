@@ -65,7 +65,7 @@ export default {
   methods: {
     percentToNextGlyphLevelText() {
       const glyphState = getGlyphLevelInputs();
-      let level = glyphState.actualLevel;
+      let level = glyphState;
       if (!level.isFinite()) level = new Decimal();
       const decimalPoints = this.glyphLevel.gt(1e3) ? 0 : 1;
       return `${formatPercents(level.sub(level.floor()).clampMax(0.999), decimalPoints)}`;
@@ -96,7 +96,7 @@ export default {
       this.machinesGained = this.projectedRM.clampMax(Currency.realityMachines.hardcap
         .sub(Currency.realityMachines.gain));
       this.realityTime.copyFrom(Time.thisRealityRealTime.totalMinutes);
-      this.glyphLevel.copyFrom(gainedGlyphLevel().actualLevel);
+      this.glyphLevel.copyFrom(gainedGlyphLevel());
       this.nextGlyphPercent = this.percentToNextGlyphLevelText();
       this.nextMachineEP.copyFrom(EPforRM(this.machinesGained.plus(1)));
       this.ppGained.copyFrom(multiplier);

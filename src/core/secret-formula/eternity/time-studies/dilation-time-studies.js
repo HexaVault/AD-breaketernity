@@ -37,7 +37,7 @@ export const dilationTimeStudies = [
   },
   {
     id: 5,
-    description: () => i18n("studies", "ds4"),
+    description: () => i18n("studies", "ds5"),
     cost: DC.E9,
     requirement: () => TimeStudy.timeDimension(7).isBought
   },

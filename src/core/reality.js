@@ -65,15 +65,10 @@ export const GlyphSelection = {
 
   update(level) {
     if (this.realityProps === undefined) return;
-    if (level.rawLevel.gt(this.realityProps.gainedGlyphLevel.rawLevel)) {
-      this.realityProps.gainedGlyphLevel.rawLevel = level.rawLevel;
-      for (const glyph of this.glyphs) glyph.rawLevel = level.rawLevel;
-    }
-    if (level.actualLevel.gt(this.realityProps.gainedGlyphLevel.actualLevel)) {
-      this.realityProps.gainedGlyphLevel.actualLevel = level.actualLevel;
+    if (level.gt(this.realityProps.gainedGlyphLevel)) {
+      this.realityProps.gainedGlyphLevel = level;
       for (const glyph of this.glyphs) {
-        glyph.level = level.actualLevel;
-        calculateGlyph(glyph);
+        glyph.level = level;
       }
     }
   },
@@ -283,8 +278,8 @@ function updateRealityRecords(realityProps) {
     player.records.bestReality.RMmin = thisRunRMmin;
     player.records.bestReality.RMminSet = Glyphs.copyForRecords(Glyphs.active.filter(g => g !== null));
   }
-  if (player.records.bestReality.glyphLevel.lt(realityProps.gainedGlyphLevel.actualLevel)) {
-    player.records.bestReality.glyphLevel = realityProps.gainedGlyphLevel.actualLevel;
+  if (player.records.bestReality.glyphLevel.lt(realityProps.gainedGlyphLevel)) {
+    player.records.bestReality.glyphLevel = realityProps.gainedGlyphLevel;
     player.records.bestReality.glyphLevelSet = Glyphs.copyForRecords(Glyphs.active.filter(g => g !== null));
   }
   player.records.bestReality.time = player.records.thisReality.time.clampMax(player.records.bestReality.time);
@@ -307,7 +302,7 @@ function giveRealityRewards(realityProps) {
     player.records.thisReality.time,
     player.records.thisReality.realTime,
     gainedRM,
-    realityProps.gainedGlyphLevel.actualLevel,
+    realityProps.gainedGlyphLevel,
     realityAndPPMultiplier,
     multiplier,
     Currency.imaginaryMachines.projCap);

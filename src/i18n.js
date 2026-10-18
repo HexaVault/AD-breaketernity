@@ -1,6 +1,16 @@
 /* eslint-disable no-negated-condition */
 import * as i18nText from "./i18n/exports";
 
+function handleArrayFunctionConglomerate(modifier) {
+  let formatting = format;
+  let input = modifier;
+  if (Array.isArray()) {
+    formatting = modifier[0];
+    input = modifier[1];
+  }
+  return formatting(input);
+}
+
 // eslint-disable-next-line max-params
 window.i18n = function(type, id, mods = [], split = false) {
   let text = "";
@@ -31,16 +41,17 @@ window.i18n = function(type, id, mods = [], split = false) {
   // This does result in having to do this text manipulation, but its fine.
   } else {
     text = "$";
-    let store = Lang.current.allText.plurals[id];
+    let store = Lang.current.allText.plurals.find(n => n.key === id);
     // If we are using mods, put them in
     if (mods.length) text += "1aX";
     if (store !== undefined) {
       text += `$${store.key}$$`;
     } else {
       store = Lang.GBR_EN.allText.plurals[id];
-      if (store !== undefined) text = `$$${store.key}$$`;
+      if (store !== undefined) text = `$$${id}$$`;
     }
-    // Since we arent using split here, we can reuse it as the "use as lowercase" condition
+    // Since we (probably) arent using split here, we can reuse it as the "use as lowercase" condition.
+    // If for whatever reason you need to split here, just manually do it with .split(" $ ")
     if (split) text += "!$";
     if (store === undefined) text = "";
   }
@@ -63,7 +74,9 @@ window.i18n = function(type, id, mods = [], split = false) {
   }
 
   for (let i = 1; i <= mods.length; i++) {
-    text = text.replaceAll(`$${i}aX`, handlePossibleFunction(mods[i - 1]));
+    // In some cases, a value may be stored as [func, value] for pluralisation purposes but not apply to pluralisation in this language.
+    // In that case, it goes through this function, so we need to handle it here
+    text = text.replaceAll(`$${i}aX`, handleArrayFunctionConglomerate(mods[i - 1]));
   }
 
   if (split) text = text.split(" $ ");
@@ -203,6 +216,6 @@ function pluralHandling(textInput, rules, mods) {
       return rule.replaceAll("$$$", cache[0](cache[1]));
     }
   }
-
-  return lastStr.replace("$$$", "");
+  // Get rid of the space nex to the $$$ aswell. We check on both sides, since rtl and ltr languages.
+  return lastStr.replace("$$$ ", "").replace(" $$$", "");
 }

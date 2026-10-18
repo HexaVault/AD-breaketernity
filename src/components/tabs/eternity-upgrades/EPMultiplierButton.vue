@@ -76,7 +76,7 @@ export default {
         {{ i18n("eter", "current", [formatX(multiplier, 2, 0)]) }}
       </div>
       <br>
-      {{ i18n("eter", "cost", [quantify(i18n("eter", "ep"), cost, 2, 0)]) }}
+      {{ i18n("eter", "cost", [[format, cost]]) }}
     </button>
     <PrimaryButton
       class="l--spoon-btn-group__little-spoon o-primary-btn--small-spoon"

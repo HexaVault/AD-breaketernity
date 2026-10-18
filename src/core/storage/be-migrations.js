@@ -17,7 +17,6 @@ function updateGlyphs(glyph) {
   glyph.effects = effectList;
   delete glyph.isGenerated;
   glyph.level = D(glyph.level);
-  glyph.rawLevel = D(glyph.rawLevel);
   glyph.strength = D(glyph.strength);
   // eslint-disable-next-line consistent-return
   return glyph;

@@ -350,8 +350,6 @@ export function getGlyphLevelInputs() {
     achievementFactor: staticFactors.achievements,
     shardFactor,
     singularityEffect,
-    rawLevel: baseLevel,
-    actualLevel: Decimal.max(1, scaledLevel),
   };
 }
 
