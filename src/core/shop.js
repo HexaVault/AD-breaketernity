@@ -44,7 +44,7 @@ export const ShopPurchaseData = {
   },
 
   get canRespec() {
-    return this.respecAvailable || this.timeUntilRespec.totalDays.lte(0);
+    return this.respecAvailable || this.timeUntilRespec.toStringShort() === "Now";
   },
 
   resetSTD() {
