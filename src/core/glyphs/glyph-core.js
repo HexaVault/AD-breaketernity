@@ -745,13 +745,13 @@ export const Glyphs = {
   copyForRecords(glyphList) {
     // Sorting by effect ensures consistent ordering by type, based on how the effect bitmasks are structured
     // eslint-disable-next-line max-len
+    const getIntIDFromEffect = value => GlyphEffects.all.filter(e => e.id === value)[0]?.intID;
     function sort(val) {
-      // AQc console.log(val);
+      // Zie console.log(val);
       // eslint-disable-next-line no-negated-condition
-      return !(val.effects instanceof Array) ? val.effects
-        : val.effects.toSorted((c, d) => getIntIDFromEffect(c) - getIntIDFromEffect(d))[0];
+      if (!(val.effects instanceof Array)) return val.effects;
+      return val.effects.toSorted((c, d) => getIntIDFromEffect(c) - getIntIDFromEffect(d))[0];
     }
-    const getIntIDFromEffect = value => GlyphEffects.all.filter(e => e.id === value)[0].intID;
     const newList = glyphList.map(g => ({
       type: g.type,
       level: g.level,
