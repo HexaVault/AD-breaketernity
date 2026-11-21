@@ -381,7 +381,7 @@ class EPMultiplierState extends GameMechanicState {
       cur = Decimal.log10(cur);
       const final8k = this.preCalculatedValues[3];
       const final4k = this.preCalculatedValues[2];
-      return final4k.add(final8k.sub(final4k).mul(cur.sub(this.preCalculatedValues[0]).div(this.preCalculatedValues[1] - this.preCalculatedValues[0])));
+      return final4k.add(final8k.sub(final4k).mul(cur.sub(this.preCalculatedValues[0]).div(this.preCalculatedValues[1].sub(this.preCalculatedValues[0]))));
     }
     if (cur.gt(this.costIncreaseThresholds[2])) {
       bulk = this.costIncreaseThresholds[2].div(500).log(500).floor();
