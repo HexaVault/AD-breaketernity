@@ -5,9 +5,25 @@ import Payments from "./payments";
 export const shop = {};
 
 export const ShopPurchaseData = {
-  respecAvailable: false,
-  lastRespec: DC.D0,
   unlockedCosmetics: [],
+
+  get respecAvailable() {
+    return player.IAP.hasRespec;
+  },
+
+  set respecAvailable(value) {
+    // You can't spend more STDs then you have
+    player.IAP.hasRespec = value;
+  },
+
+  get lastRespec() {
+    return player.IAP.lastRespec;
+  },
+
+  set lastRespec(value) {
+    // You can't spend more STDs then you have
+    player.IAP.lastRespec = value;
+  },
 
   get currentSTD() {
     return player.IAP.std;
@@ -32,14 +48,14 @@ export const ShopPurchaseData = {
   },
 
   get isIAPEnabled() {
-    return this.availableSTD.gt(0) && player.IAP.enabled;
+    return this.currentSTD.gt(0) && player.IAP.enabled;
   },
 
   // We also allow for respecs if it's been at least 3 days since the last one
   get timeUntilRespec() {
     // Since we aren't actually doing payments, this is linked to the games realtime factor. Change if necessary.
     const msSinceLast = player.records.realTimePlayed.sub(ShopPurchaseData.lastRespec);
-    if (msSinceLast.gt(2592e5)) return { toStringShort: () => "Now" };
+    if (msSinceLast.gt(2592e5) || this.respecAvailable) return { toStringShort: () => "Now" };
     return TimeSpan.fromMilliseconds(msSinceLast.sub(2592e5).neg().max(0));
   },
 
@@ -71,12 +87,17 @@ export const ShopPurchaseData = {
       if (player.options.notifications.shop) GameUI.notify.error("You do not have a respec available", 10000);
       return;
     }
-    if (player.options.notifications.studies) {
-      if (stdData.success) GameUI.notify.info("STD respec successful!", 10000);
-      else GameUI.notify.error("No purchases to respec!", 10000);
+    if (player.options.notifications.shop) {
+      if (this.spentSTD.gt(0)) {
+        GameUI.notify.info("STD respec successful!", 10000);
+        ShopPurchaseData.lastRespec = player.records.realTimePlayed;
+        this.respecAvailable = false;
+      } else GameUI.notify.error("No purchases to respec!", 10000);
     }
     this.spentSTD = DC.D0;
-    for (const key of Object.keys(GameDatabase.shopPurchases)) this[key] = DC.D0;
+    for (const key of Object.keys(player.IAP.purchases)) {
+      player.IAP.purchases[key] = DC.D0;
+    }
   },
 };
 

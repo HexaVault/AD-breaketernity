@@ -74,7 +74,7 @@ export function calcHighestPurchaseableTD(tier, currency) {
   if (currency.lt(DC.E1300)) {
     const preInc = Decimal.log10(DC.NUMMAX).sub(logBase).div(logMult).ceil();
     logMult = TimeDimension(tier)._costMultiplier.mul(1.5).max(1).log10();
-    const decCur = logC.sub(preInc.mul(logMult));
+    const decCur = logC.sub(preInc.mul(logMult)).sub(logBase);
     const postInc = decCur.div(logMult).clampMin(0).floor();
     return Decimal.add(preInc, postInc);
   }
@@ -83,7 +83,7 @@ export function calcHighestPurchaseableTD(tier, currency) {
     logMult = TimeDimension(tier)._costMultiplier.mul(1.5).max(1).log10();
     const preInc = Decimal.log10(DC.E1300).sub(logBase).div(logMult).ceil();
     logMult = TimeDimension(tier)._costMultiplier.mul(2.2).max(1).log10();
-    const decCur = logC.sub(preInc.mul(logMult));
+    const decCur = logC.sub(preInc.mul(logMult)).sub(logBase);
     const postInc = decCur.div(logMult).clampMin(0).floor();
     return Decimal.add(preInc, postInc);
   }

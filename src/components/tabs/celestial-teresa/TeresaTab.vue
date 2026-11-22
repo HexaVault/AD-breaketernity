@@ -35,6 +35,7 @@ export default {
       raisedPerkShop: false,
       isRunning: false,
       canUnlockNextPour: false,
+      isUnlocked: false,
     };
   },
   computed: {
@@ -68,7 +69,7 @@ export default {
         "o-teresa-shop-button": true,
         "c-teresa-pour": true,
         "o-teresa-shop-button--available": !this.isPouredAmountCapped,
-        "o-teresa-shop-button--unavailable": !this.isPouredAmountCapped,
+        "o-teresa-shop-button--unavailable": !this.isUnlocked,
         "o-teresa-shop-button--capped": this.isPouredAmountCapped,
         "c-teresa-pour--unlock-available": this.canUnlockNextPour,
         "c-disabled-pour": this.isPouredAmountCapped,
@@ -122,6 +123,7 @@ export default {
       this.isRunning = Teresa.isRunning;
       this.canUnlockNextPour = TeresaUnlocks.all
         .filter(unlock => this.rm.plus(this.pouredAmount).gte(unlock.price) && !unlock.isUnlocked).length > 0;
+      this.isUnlocked = Teresa.isUnlocked;
     },
     startRun() {
       if (this.isDoomed) return;

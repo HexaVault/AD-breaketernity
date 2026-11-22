@@ -56,8 +56,6 @@ export function replicantiGalaxyRequest() {
 // Returns the remaining unused gain factor
 function fastReplicantiBelow308(log10GainFactor, isAutobuyerActive) {
   const shouldBuyRG = isAutobuyerActive && !RealityUpgrade(6).isLockingMechanics;
-  // More than e308 galaxies per tick causes the game to die, and I don't think it's worth the performance hit of
-  // Decimalifying the entire calculation.  And yes, this can and does actually happen super-lategame.
   const uncappedAmount = DC.E1.pow(log10GainFactor.plus(Replicanti.amount.max(1).log10()));
   // Checking for uncapped equaling zero is because Decimal.pow returns zero for overflow for some reason
   if (log10GainFactor.gt(Number.MAX_VALUE) || uncappedAmount.eq(0)) {
@@ -88,6 +86,23 @@ function fastReplicantiBelow308(log10GainFactor, isAutobuyerActive) {
   return remainingGain;
 }
 
+// When we are buying Replicanti Galaxies, we should buy them based on pre-scaling speed.
+// We can then take the leftover replicanti, if there is any, and apply speed scaling then
+function fastPurchaseReplicantiGalaxies(preScalingGain, l10rep) {
+  const maxRG = Replicanti.galaxies.max.sub(player.replicanti.galaxies);
+  if (!(Replicanti.galaxies.areBeingBought && !RealityUpgrade(6).isLockingMechanics)) return { remaining: preScalingGain, base: l10rep };
+  const perRG = DC.NUMMAX.log10();
+  // This is log10.
+  const maxBuyableRGs = preScalingGain.add(l10rep).div(perRG).clampMax(maxRG).floor();
+  addReplicantiGalaxies(maxBuyableRGs);
+  const cost = maxBuyableRGs.mul(perRG);
+  if (cost.gt(preScalingGain)) {
+    const totalRep = l10rep.add(preScalingGain).sub(cost);
+    return { remaining: DC.D0, base: totalRep };
+  }
+  addReplicantiGalaxies(maxBuyableRGs);
+  return { remaining: preScalingGain.sub(cost), base: l10rep };
+}
 // When the amount is exactly the cap, there are two cases: the player can go
 // over cap (in which case interval should be as if over cap) or the player
 // has just crunched and is still at cap due to "Is this safe?" reward
@@ -200,7 +215,10 @@ export function replicantiLoop(diff) {
     }
 
     // Note that remainingGain is in log10 terms.
-    let remainingGain = tickCount.times(player.replicanti.chance.add(1).ln()).times(LOG10_E);
+    let remainingGain = tickCount.times(player.replicanti.chance.add(1).log10());
+    const repGain = fastPurchaseReplicantiGalaxies(remainingGain, Replicanti.amount.log10());
+    Replicanti.amount = repGain.base.pow10();
+    remainingGain = repGain.remaining;
     // It is intended to be possible for both of the below conditionals to trigger.
     if (!isUncapped || Replicanti.amount.lte(replicantiCap())) {
       // Some of the gain is "used up" below e308, but if replicanti are uncapped

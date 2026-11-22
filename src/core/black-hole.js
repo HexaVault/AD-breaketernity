@@ -369,7 +369,7 @@ export const BlackHoles = {
     // eslint-disable-next-line no-nested-ternary
     const pauseType = player.blackHolePause ? (BlackHoles.areNegative ? "inverted" : "paused") : "unpaused";
     const automaticString = automatic ? "automatically " : "";
-    if (player.options.notifications.bh1 && (!BlackHoles[1].isUnlocked || player.options.notifications.bh2)) {
+    if (player.options.notifications.bh1 && (!BlackHoles.list[1].isUnlocked || player.options.notifications.bh2)) {
       GameUI.notify.blackHole(`${blackHoleString} ${automaticString}${pauseType}`);
     }
   },

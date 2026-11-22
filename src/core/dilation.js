@@ -59,6 +59,16 @@ const DIL_UPG_NAMES = [
   "dtGainPelle", "galaxyMultiplier", "tickspeedPower", "galaxyThresholdPelle", "flatDilationMult"
 ];
 
+function getMaxPurchases(id, currency, max = Infinity) {
+  const upgrade = DilationUpgrade[DIL_UPG_NAMES[id]];
+  const upgAmount = player.dilation.rebuyables[id];
+  const canBuy = Decimal.affordGeometricSeries(currency,
+    upgrade.config.initialCost, upgrade.config.increment, upgAmount).clampMax(max);
+  const cost = Decimal.sumGeometricSeries(canBuy, upgrade.config.initialCost, upgrade.config.increment, upgAmount);
+  return { canBuy, cost, canBuyDelta: canBuy.sub(upgAmount).clampMin(0) };
+
+}
+
 export function buyDilationUpgrade(id, bulk = 1) {
   if (GameEnd.creditsEverClosed) return false;
   // Upgrades 1-3 are rebuyable, and can be automatically bought in bulk with a perk shop upgrade
@@ -68,77 +78,64 @@ export function buyDilationUpgrade(id, bulk = 1) {
     if (!Currency.dilatedTime.purchase(upgrade.cost)) return false;
     player.dilation.upgrades.add(id);
     if (id === 4) player.dilation.totalTachyonGalaxies = player.dilation.totalTachyonGalaxies.mul(2);
-  } else {
-    const upgAmount = player.dilation.rebuyables[id];
-    if (Currency.dilatedTime.lt(upgrade.cost) || upgAmount.gte(upgrade.config.purchaseCap)) return false;
+    return true;
+  }
 
-    let buying = Decimal.affordGeometricSeries(Currency.dilatedTime.value,
-      upgrade.config.initialCost, upgrade.config.increment, upgAmount);
-    buying = Decimal.clampMax(buying, bulk);
-    buying = Decimal.clampMax(buying, upgrade.config.purchaseCap.sub(upgAmount));
-    const cost = Decimal.sumGeometricSeries(buying, upgrade.config.initialCost, upgrade.config.increment, upgAmount);
-    Currency.dilatedTime.subtract(cost);
-    player.dilation.rebuyables[id] = player.dilation.rebuyables[id].add(buying);
-    if (id === 2) {
-      if (!Perk.bypassTGReset.isBought || Pelle.isDoomed) Currency.dilatedTime.reset();
-      player.dilation.baseTachyonGalaxies = DC.D0;
-      player.dilation.totalTachyonGalaxies = DC.D0;
-    }
+  const upgAmount = player.dilation.rebuyables[id];
+  if (Currency.dilatedTime.lt(upgrade.cost) || upgAmount.gte(upgrade.config.purchaseCap)) return false;
 
-    if (id === 3 && !Pelle.isDisabled("tpMults")) {
-      let retroactiveTPFactor = Effects.max(
-        DC.D1,
-        Perk.retroactiveTP1,
-        Perk.retroactiveTP2,
-        Perk.retroactiveTP3,
-        Perk.retroactiveTP4
-      );
-      if (Enslaved.isRunning) {
-        retroactiveTPFactor = Decimal.pow(retroactiveTPFactor, Enslaved.tachyonNerf);
-      }
-      Currency.tachyonParticles.multiply(Decimal.pow(retroactiveTPFactor, buying));
+  let buying = Decimal.affordGeometricSeries(Currency.dilatedTime.value,
+    upgrade.config.initialCost, upgrade.config.increment, upgAmount);
+  buying = Decimal.clampMax(buying, bulk);
+  buying = Decimal.clampMax(buying, upgrade.config.purchaseCap.sub(upgAmount));
+  const cost = Decimal.sumGeometricSeries(buying, upgrade.config.initialCost, upgrade.config.increment, upgAmount);
+  Currency.dilatedTime.subtract(cost);
+  player.dilation.rebuyables[id] = player.dilation.rebuyables[id].add(buying);
+  if (id === 2) {
+    if (!Perk.bypassTGReset.isBought || Pelle.isDoomed) Currency.dilatedTime.reset();
+    player.dilation.baseTachyonGalaxies = DC.D0;
+    player.dilation.totalTachyonGalaxies = DC.D0;
+  }
+
+  if (id === 3 && !Pelle.isDisabled("tpMults")) {
+    let retroactiveTPFactor = Effects.max(
+      DC.D1,
+      Perk.retroactiveTP1,
+      Perk.retroactiveTP2,
+      Perk.retroactiveTP3,
+      Perk.retroactiveTP4
+    );
+    if (Enslaved.isRunning) {
+      retroactiveTPFactor = Decimal.pow(retroactiveTPFactor, Enslaved.tachyonNerf);
     }
+    Currency.tachyonParticles.multiply(Decimal.pow(retroactiveTPFactor, buying));
   }
   return true;
 }
 
 export function maxPurchaseDilationUpgrades() {
-  if (Pelle.isDoomed) return false;
-  const dtQuikBuy = Currency.dilatedTime.value.div(1000);
-  // Insta buy everything costing up to 0.1% of DT, without even worrying about subtracting DT
-  let didBuy = false;
-  const UpgPurchased = player.dilation.rebuyables[1];
-  player.dilation.rebuyables[1] = Decimal.max(player.dilation.rebuyables[1], dtQuikBuy.div(1e3).log(10).floor());
-  if (UpgPurchased.neq(player.dilation.rebuyables[1])) didBuy = true;
-  // eslint-disable-next-line max-len
-  const tpUpgPurchased = Decimal.max(player.dilation.rebuyables[3], dtQuikBuy.div(1e4).log(20).floor()).sub(player.dilation.rebuyables[3]);
-  player.dilation.rebuyables[3] = player.dilation.rebuyables[3].add(tpUpgPurchased);
-  if (tpUpgPurchased.gt(0)) didBuy = didBuy || true;
-  if (Perk.bypassTGReset.isBought) {
-    // Just call the above function, since it handles caps and everything for us already
-    didBuy = didBuy || buyDilationUpgrade(2, 123456);
-  }
+  if (Pelle.isDoomed || GameEnd.creditsEverClosed) return false;
+  const dtQuikBuy = Currency.dilatedTime.value.div(100);
+  const ug2CanBulk = Perk.bypassTGReset.isBought && !Pelle.isDoomed;
+  const ug1 = getMaxPurchases(1, dtQuikBuy);
+  const ug2 = getMaxPurchases(1, dtQuikBuy, DilationUpgrade.galaxyThreshold.config.purchaseCap);
+  const ug3 = getMaxPurchases(1, dtQuikBuy);
+  let bought = Decimal.add(ug1.canBuyDelta, ug3.canBuyDelta);
+  if (ug2CanBulk) bought = bought.add(ug2.canBuyDelta);
+  player.dilation.rebuyables[1] = player.dilation.rebuyables[1].add(ug1.canBuyDelta);
+  player.dilation.rebuyables[3] = player.dilation.rebuyables[3].add(ug3.canBuyDelta);
+  if (ug2CanBulk) player.dilation.rebuyables[2] = player.dilation.rebuyables[2].add(ug2.canBuyDelta);
+  Currency.dilatedTime.sub(Decimal.add(ug1.cost, ug3.cost));
+  if (ug2CanBulk) Currency.dilatedTime.sub(ug2CanBulk);
 
-  function allrebuyablesLayer() {
-    let bool = true;
-    if (player.dilation.rebuyables[1].layer !== 0) bool = false;
-    // eslint-disable-next-line max-len
-    if (player.dilation.rebuyables[2].layer !== 0 || player.dilation.rebuyables[1].gt(DilationUpgrade.galaxyThreshold.config.purchaseCap)) bool = false;
-    if (player.dilation.rebuyables[3].layer !== 0) bool = false;
-    return bool;
+  if (Currency.dilatedTime.value.gt("ee9")) return bought.gt(0);
+  for (let i = 0; i < 4; i++) {
+    if (buyDilationUpgrade(3, 1)) bought = bought.add(1);
+    if (buyDilationUpgrade(1, 1)) bought = bought.add(1);
+    if (ug2CanBulk && buyDilationUpgrade(2, 1)) bought = bought.add(1);
   }
-
-  let didBuyLastIter = false;
-  for (let i = 0; i < 50 && allrebuyablesLayer(); i++) {
-    didBuyLastIter = buyDilationUpgrade(1, 1);
-    if (Perk.bypassTGReset.isBought) {
-      didBuyLastIter = didBuyLastIter || buyDilationUpgrade(2, 1);
-    }
-    didBuyLastIter = didBuyLastIter || buyDilationUpgrade(3, 1);
-    didBuy = didBuy || didBuyLastIter;
-  }
-  didBuy = didBuy || buyDilationUpgrade(2, 1);
-  return didBuy;
+  if (!ug2CanBulk) bought = bought.add(buyDilationUpgrade(2, 1) ? 1 : 0);
+  return bought.gt(0);
 }
 
 export function getTachyonGalaxyMult(thresholdUpgrade) {

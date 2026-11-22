@@ -337,7 +337,7 @@ class EPMultiplierState extends GameMechanicState {
     // https://www.desmos.com/calculator/p6p5wjnuh5
     // At the bottom you will see a k(500, 8000, 200).
     // Change 8000 to be the logs of costIncreaseThresholds[3] and 2x costIncreaseThresholds[3] if you change these values.
-    // Also, change 500 to be the middle value ^1/1.2, else the estimate will be wayyyy off.
+    // Also, change 500 to be the middle value ^(1/1.2), else the estimate will be wayyyy off.
     // Then, update lower and upper with the respective numbers.
     // This just allows the linear stuff to work effectively
     const costAtlower = new Decimal(4002);
@@ -363,7 +363,7 @@ class EPMultiplierState extends GameMechanicState {
     if (cur.gt(this.costIncreaseThresholds[3].pow(2))) {
       // 4 newton iterations is close enough
       cur = Decimal.log10(cur);
-      // This has a good enough error to suffice, simply by doing a single iteration of newton method.
+      // This has a good enough error to suffice, simply by doing a few iterations of newton method.
       let estimate = cur.root(1.2);
       const x0 = () => cur.sub(Decimal.mul(3, estimate.add(estimate.sub(1334).pow(1.2))));
       const x1 = () => estimate.sub(1334).pow(0.2).mul(-3);
@@ -371,7 +371,9 @@ class EPMultiplierState extends GameMechanicState {
       for (let i = 0; i < 8; i++) {
         estimate = estimate.sub(x0().div(x1()));
       }
-      return estimate;
+      estimate = estimate.floor();
+      // From testing, this estimate always seems to be barely too high, so this should fix it
+      return estimate.sub(1);
     }
     // Between these 2 values, the newtons method seems to fall off.
     // To fix this, we will just linearly extrapolate, which will underestimate a bit.

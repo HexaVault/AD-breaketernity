@@ -9,7 +9,10 @@ const Payments = {
   // Note: If you actually want this to be functional, you'll need to do something here.
   // For most cases? Probably just add these to player.IAP
   // eslint-disable-next-line no-unused-vars
-  buyMoreSTD: STD => player.IAP.std = player.IAP.std.add(STD),
+  buyMoreSTD: STD => {
+    player.IAP.std = player.IAP.std.add(STD);
+    ShopPurchaseData.respecAvailable = true;
+  },
 
   // Since we aren't actually contacting any database, this code is different to normal
   // eslint-disable-next-line no-unused-vars
@@ -18,7 +21,7 @@ const Payments = {
     if (!player.IAP.std.gt(cost)) {
       if (player.options.notifications.studies) GameUI.notify.info(`Could not purchase upgrade (Not enough STD)`);
     }
-    player.IAP.std = player.IAP.std.sub(cost);
+    player.IAP.spentSTD = player.IAP.spentSTD.add(cost);
     player.IAP.purchases[upgradeKey] = player.IAP.purchases[upgradeKey].add(1);
     if (player.options.notifications.studies) GameUI.notify.info(`Successfully spent ${format(cost, 2)} STD coins`, 10000);
   },

@@ -357,6 +357,8 @@ export function getRealSpeedupFactor(effectsToConsider) {
   // eslint-disable-next-line prefer-const
   let factor = DC.D1;
 
+  factor = factor.mul(ShopPurchase.realspeedMultiplier.currentMult);
+
   return factor;
 }
 
@@ -468,6 +470,8 @@ export function gameLoop(passedDiff, options = {}) {
   if (diff === undefined || Enslaved.isReleaseTick) {
     diff = new Decimal(Enslaved.nextTickDiff);
   }
+
+  realDiff = realDiff.mul(getRealSpeedupFactor());
   // Run all the functions which only depend on real time and not game time, skipping the rest of the loop if needed
   if (realTimeMechanics(realDiff)) return;
 
