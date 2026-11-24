@@ -72,8 +72,7 @@ export default {
         : new Decimal();
     },
     sortGlyphs() {
-      const standardOrder = ["reality", "effarig", "power", "infinity", "replication", "time", "dilation",
-        "cursed", "companion"];
+      const standardOrder = GlyphInfo.glyphTypes;
       this.glyphs.sort((a, b) => standardOrder.indexOf(a.type) - standardOrder.indexOf(b.type));
     }
   },
