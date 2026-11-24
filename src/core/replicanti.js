@@ -54,35 +54,18 @@ export function replicantiGalaxyRequest() {
 
 // Produces replicanti quickly below e308, will auto-bulk-RG if production is fast enough
 // Returns the remaining unused gain factor
-function fastReplicantiBelow308(log10GainFactor, isAutobuyerActive) {
-  const shouldBuyRG = isAutobuyerActive && !RealityUpgrade(6).isLockingMechanics;
+function fastReplicantiBelow308(log10GainFactor) {
   const uncappedAmount = DC.E1.pow(log10GainFactor.plus(Replicanti.amount.max(1).log10()));
   // Checking for uncapped equaling zero is because Decimal.pow returns zero for overflow for some reason
   if (log10GainFactor.gt(Number.MAX_VALUE) || uncappedAmount.eq(0)) {
-    if (shouldBuyRG) {
-      addReplicantiGalaxies(Replicanti.galaxies.max.sub(player.replicanti.galaxies));
-    }
     Replicanti.amount = replicantiCap();
     // Basically we've used nothing.
     return log10GainFactor;
   }
 
-  if (!shouldBuyRG) {
-    const remainingGain = log10GainFactor.minus(replicantiCap().max(1).log10()
-      .sub(Replicanti.amount.max(1).log10())).clampMin(0);
-    Replicanti.amount = Decimal.min(uncappedAmount, replicantiCap());
-    return remainingGain;
-  }
-
-  const gainNeededPerRG = DC.NUMMAX.max(1).log10();
-  const replicantiExponent = log10GainFactor.add(Replicanti.amount.max(1).log10());
-  const toBuy = Decimal.floor(Decimal.min(replicantiExponent.div(gainNeededPerRG),
-    Replicanti.galaxies.max.sub(player.replicanti.galaxies)));
-  const maxUsedGain = gainNeededPerRG.times(toBuy).add(replicantiCap().max(1).log10()).sub(Replicanti.amount.max(1).log10());
-  const remainingGain = log10GainFactor.minus(maxUsedGain).clampMin(0);
-  Replicanti.amount = Decimal.pow10(replicantiExponent.sub(gainNeededPerRG.times(toBuy)))
-    .clampMax(replicantiCap());
-  addReplicantiGalaxies(toBuy);
+  const remainingGain = log10GainFactor.minus(replicantiCap().max(1).log10()
+    .sub(Replicanti.amount.max(1).log10())).clampMin(0);
+  Replicanti.amount = Decimal.min(uncappedAmount, replicantiCap());
   return remainingGain;
 }
 
@@ -223,7 +206,7 @@ export function replicantiLoop(diff) {
     if (!isUncapped || Replicanti.amount.lte(replicantiCap())) {
       // Some of the gain is "used up" below e308, but if replicanti are uncapped
       // then some may be "left over" for increasing replicanti beyond their cap.
-      remainingGain = fastReplicantiBelow308(remainingGain, areRGsBeingBought);
+      remainingGain = fastReplicantiBelow308(remainingGain);
     }
     if (isUncapped && Replicanti.amount.gte(replicantiCap()) && remainingGain.gt(0)) {
       // Recalculate the interval (it may have increased due to additional replicanti, or,
