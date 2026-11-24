@@ -54,12 +54,9 @@ export default {
       return sum;
     },
     typeName() {
-      switch (this.type) {
-        case GALAXY_TYPE.NORMAL: return "Antimatter Galaxies";
-        case GALAXY_TYPE.DISTANT: return "Distant Antimatter Galaxies";
-        case GALAXY_TYPE.REMOTE: return "Remote Antimatter Galaxies";
-      }
-      return undefined;
+      const strings = i18n("other", "adGalaxyClassic_typeName", [], true);
+      if (this.type > strings.length) return "???";
+      return strings[this.type];
     },
     hasIncreasedScaling() {
       return this.type !== GALAXY_TYPE.NORMAL;
@@ -67,14 +64,15 @@ export default {
     costScalingText() {
       switch (this.type) {
         case GALAXY_TYPE.DISTANT:
-          return `Each Galaxy is more expensive past ${quantifyInt("Galaxy", this.distantStart)}`;
+          return i18n("other", "adGalaxyClassic_moreExpensive", [this.distantStart]);
         case GALAXY_TYPE.REMOTE: {
+          const str = i18n("other", "adGalaxyClassic_moreExpensiveTypes", [this.distantStart, this.remoteStart], true);
           const scalings = [
-            { type: "distant", function: "quadratic", amount: this.distantStart },
-            { type: "remote", function: "exponential", amount: this.remoteStart }
+            { text: str[1], amount: this.distantStart },
+            { text: str[2], amount: this.remoteStart }
           ];
-          return `Increased Galaxy cost scaling: ${scalings.sort((a, b) => a.amount.compare(b.amount))
-            .map(scaling => `${scaling.function} scaling past ${this.formatGalaxies(scaling.amount)} (${scaling.type})`)
+          return `${str[0]} ${scalings.sort((a, b) => a.amount.compare(b.amount))
+            .map(scaling => `${scaling.text}`)
             .join(", ").capitalize()}`;
         }
       }
@@ -86,6 +84,9 @@ export default {
         "tutorial--glow": this.canBeBought && this.hasTutorial,
         "o-pelle-disabled-pointer": this.creditsClosed,
       };
+    },
+    reqText() {
+      return i18n("other", "adGalaxyClassic_requiresNDim", [formatInt(this.requirement.amount), this.dimName()]);
     }
   },
   methods: {
@@ -122,7 +123,7 @@ export default {
       class="l-dim-row__prestige-text c-dim-row__label c-dim-row__label--amount l-text-wrapper"
     >
       {{ typeName }} ({{ sumText }}):
-      requires {{ formatInt(requirement.amount) }} {{ dimName }} Dimensions
+      {{ reqText }}
       <div class="l-scaling-text-wrapper">
         {{ hasIncreasedScaling ? costScalingText : "" }}
       </div>

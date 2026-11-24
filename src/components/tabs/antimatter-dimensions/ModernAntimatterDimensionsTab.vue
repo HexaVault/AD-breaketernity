@@ -35,11 +35,19 @@ export default {
   },
   computed: {
     sacrificeTooltip() {
-      if (this.isFullyAutomated) {
-        return "Sacrifice Autobuyer is enabled and Achievement 118 is unlocked and active";
-      }
-      return `Boosts 8th Antimatter Dimension by ${formatX(this.sacrificeBoost, 2, 2)}`;
+      return i18n("other", "adTabModern_BoostTooltip", [formatX(this.sacrificeBoost, 2, 2)], true)[Number(this.isFullyAutomated)];
     },
+    sacrificeButtonLabel() {
+      return i18n("other", "adTabModern_sacButtonText", [formatX(this.sacrificeBoost, 2, 2), this.disabledCondition],
+        // eslint-disable-next-line no-nested-ternary
+        true)[this.isFullyAutomated ? 0 : (this.isSacrificeAffordable ? 1 : 2)];
+    },
+    noGainResetLabel() {
+      return i18n("other", "hasDimensionBoosts", [], true)[Number(this.hasDimensionBoosts)];
+    },
+    maxLabel() {
+      return i18n("other", "adTabModern_max");
+    }
   },
   methods: {
     maxAll() {
@@ -69,8 +77,8 @@ export default {
       }
     },
     getUntil10Display() {
-      if (this.isContinuumActive) return "Continuum";
-      return this.buyUntil10 ? "Until 10" : "Buy 1";
+      if (this.isContinuumActive) return i18n("other", "adTabModern_buyMode", [formatInt(10), formatInt(1)], true)[0];
+      return i18n("other", "adTabModern_buyMode", [formatInt(10), formatInt(1)], true)[this.buyUntil10 ? 1 : 2];
     },
     update() {
       this.hasDimensionBoosts = player.dimensionBoosts.gt(0);
@@ -84,7 +92,8 @@ export default {
 
       this.buy10Mult.copyFrom(AntimatterDimensions.buyTenMultiplier);
 
-      this.multiplierText = `Buy 10 Dimension purchase multiplier: ${formatX(this.buy10Mult, 2, 2)}`;
+      this.multiplierText = i18n("other", "adTabModern_multiplierText",
+        [formatInt(10), formatX(this.buy10Mult, 2, 2), formatX(this.currentSacrifice, 2, 2)], true)[Number(this.isSacrificeUnlocked)];
       if (!isSacrificeUnlocked) return;
       this.isSacrificeAffordable = Sacrifice.canSacrifice;
       this.isFullyAutomated = Autobuyer.sacrifice.isActive && Achievement(118).isEffectActive &&
@@ -92,9 +101,6 @@ export default {
       this.currentSacrifice.copyFrom(Sacrifice.totalBoost);
       this.sacrificeBoost.copyFrom(Sacrifice.nextBoost);
       this.disabledCondition = Sacrifice.disabledCondition;
-      const sacText = this.isSacrificeUnlocked
-        ? ` | Dimensional Sacrifice multiplier: ${formatX(this.currentSacrifice, 2, 2)}`
-        : "";
       this.multiplierText += sacText;
     }
   }
@@ -117,17 +123,13 @@ export default {
         class="o-primary-btn--sacrifice"
         @click="sacrifice"
       >
-        <span v-if="isFullyAutomated">
-          Dimensional Sacrifice is Automated (Achievement 118)
-        </span>
-        <span v-else-if="isSacrificeAffordable">Dimensional Sacrifice ({{ formatX(sacrificeBoost, 2, 2) }})</span>
-        <span v-else>Dimensional Sacrifice Disabled ({{ disabledCondition }})</span>
+        <span>{{ sacrificeButtonLabel }}</span>
       </PrimaryButton>
       <button
         class="o-primary-btn l-button-container"
         @click="maxAll"
       >
-        Max All (M)
+        {{ maxLabel }}
       </button>
     </div>
     <span>{{ multiplierText }}</span>
@@ -146,9 +148,7 @@ export default {
         class="o-primary-btn--quick-reset"
         onclick="softReset(-1, true, true, false)"
       >
-        Perform a Dimension Boost reset
-        <span v-if="hasDimensionBoosts"> but lose a Dimension Boost</span>
-        <span v-else> for no gain</span>
+        {{ noGainResetLabel }}
       </PrimaryButton>
       <AntimatterGalaxyRow />
     </div>

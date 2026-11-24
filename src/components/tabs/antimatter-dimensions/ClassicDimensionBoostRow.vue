@@ -45,6 +45,12 @@ export default {
         "tutorial--glow": this.isBuyable && this.hasTutorial,
         "o-pelle-disabled-pointer": this.creditsClosed
       };
+    },
+    baseText() {
+      return i18n("other", "adDimboostClassic_dimboost", [this.boostCountText()]);
+    },
+    reqText() {
+      return i18n("other", "adDimboostClassic_dbCost", [formatInt(this.requirement.amount), this.dimName()]);
     }
   },
   methods: {
@@ -72,8 +78,8 @@ export default {
 <template>
   <div class="c-dimension-row c-antimatter-dim-row c-antimatter-prestige-row">
     <div class="l-dim-row__prestige-text c-dim-row__label c-dim-row__label--amount">
-      Dimension Boost ({{ boostCountText }}):
-      requires {{ formatInt(requirement.amount) }} {{ dimName }} Dimensions
+      {{ baseText }}
+      {{ reqText }}
     </div>
     <PrimaryButton
       :enabled="isBuyable"

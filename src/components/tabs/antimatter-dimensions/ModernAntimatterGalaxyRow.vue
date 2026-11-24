@@ -33,12 +33,10 @@ export default {
     },
     buttonText() {
       if (this.lockText !== null) return this.lockText;
-      const reset = [];
-      if (!Achievement(111).canBeApplied) reset.push("Dimensions");
-      if (!Achievement(143).canBeApplied) reset.push("Dimension Boosts");
-      return reset.length === 0
-        ? `Increase the power of Tickspeed upgrades`
-        : `Reset your ${makeEnumeration(reset)} to increase the power of Tickspeed upgrades`;
+      let strToUse = 0;
+      if (!Achievement(111).canBeApplied) strToUse += 1;
+      if (!Achievement(143).canBeApplied) strToUse += 2;
+      return i18n("other", "adGalaxyModern_incPower", [], true)[strToUse];
     },
     sumText() {
       const parts = [Decimal.max(this.galaxies.normal, 0)];
@@ -51,12 +49,9 @@ export default {
       return sum;
     },
     typeName() {
-      switch (this.type) {
-        case GALAXY_TYPE.NORMAL: return "Antimatter Galaxies";
-        case GALAXY_TYPE.DISTANT: return "Distant Antimatter Galaxies";
-        case GALAXY_TYPE.REMOTE: return "Remote Antimatter Galaxies";
-      }
-      return undefined;
+      const strings = i18n("other", "adGalaxyModern_typeName", [], true);
+      if (this.type > strings.length) return "???";
+      return strings[this.type];
     },
     hasIncreasedScaling() {
       return this.type !== GALAXY_TYPE.NORMAL;
@@ -64,14 +59,15 @@ export default {
     costScalingText() {
       switch (this.type) {
         case GALAXY_TYPE.DISTANT:
-          return `Each Galaxy is more expensive past ${quantifyInt("Galaxy", this.distantStart)}`;
+          return i18n("other", "adGalaxyModern_moreExpensive", [this.distantStart]);
         case GALAXY_TYPE.REMOTE: {
+          const str = i18n("other", "adGalaxyModern_moreExpensiveTypes", [this.distantStart, this.remoteStart], true);
           const scalings = [
-            { type: "distant", function: "quadratic", amount: this.distantStart },
-            { type: "remote", function: "exponential", amount: this.remoteStart }
+            { text: str[1], amount: this.distantStart },
+            { text: str[2], amount: this.remoteStart }
           ];
-          return `Increased Galaxy cost scaling: ${scalings.sort((a, b) => a.amount.compare(b.amount))
-            .map(scaling => `${scaling.function} scaling past ${this.formatGalaxies(scaling.amount)} (${scaling.type})`)
+          return `${str[0]} ${scalings.sort((a, b) => a.amount.compare(b.amount))
+            .map(scaling => `${scaling.text}`)
             .join(", ").capitalize()}`;
         }
       }
@@ -84,6 +80,9 @@ export default {
         "o-primary-btn--disabled": !this.canBeBought,
         "o-pelle-disabled-pointer": this.creditsClosed
       };
+    },
+    reqText() {
+      return i18n("other", "adGalaxyModern_requiresNDim", [formatInt(this.requirement.amount), this.dimName()]);
     }
   },
   methods: {
@@ -123,7 +122,7 @@ export default {
 <template>
   <div class="reset-container galaxy">
     <h4>{{ typeName }} ({{ sumText }})</h4>
-    <span>Requires: {{ formatInt(requirement.amount) }} {{ dimName }} Antimatter D</span>
+    <span>{{ reqText }}</span>
     <span v-if="hasIncreasedScaling">{{ costScalingText }}</span>
     <button
       :class="classObject"

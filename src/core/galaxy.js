@@ -1,3 +1,4 @@
+// Please keep these numerically in order, ty
 export const GALAXY_TYPE = {
   NORMAL: 0,
   DISTANT: 1,

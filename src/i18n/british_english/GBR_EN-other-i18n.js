@@ -41,6 +41,42 @@ export const other = {
   adGalaxyClassic_incPower: `Increase the power of Tickspeed upgrades $ \
   Reset your Dimensions to increase the power of Tickspeed upgrades $ \
   Reset your Dimension Boosts to increase the power of Tickspeed upgrades $ \
-  Reset your Dimensions and Dimension Boosts to increase the power of Tickspeed upgrades`
-  // TODO: Continue from src/components/tabs/antimatter-dimensions/ClassicAntimatterGalaxyRow.vue
+  Reset your Dimensions and Dimension Boosts to increase the power of Tickspeed upgrades`,
+  adGalaxyClassic_typeName: "Antimatter Galaxies $ Distant Antimatter Galaxies $ Remote Antimatter Galaxies",
+  adGalaxyClassic_moreExpensive: "Each Galaxy is more expensive past $1aX$GAL$$",
+  adGalaxyClassic_moreExpensiveTypes: `Increased Galaxy cost scaling: $ \
+  Quadratic scaling past $1aX$GAL$$ (Distant) $ \
+  Exponential scaling past $2aX$GAL$$ (Remote)`,
+  // We just assume $1aX is greater than 1, because it is annoying otherwise.
+  adGalaxyClassic_requiresNDim: `requires $1aX $2aX Dimensions`,
+  adDimboostClassic_dimboost: `Dimension Boost ($1aX):`,
+  adDimboostClassic_dbCost: `requires $1aX $2aX Dimensions`,
+  adRowModern_nthAD: "$1aX Antimatter Dimension",
+  adRowModern_ADcost: "Cost: $1aX AM $ Cost: $1aX $2aX AD",
+  adRowModern_ADcostNoPrefix: "$1aX AM $ $1aX $2aX AD",
+  adRowModern_buyX: "Buy $1aX",
+  adRowModern_shattered: "Shattered by Nameless",
+  adRowModern_contValue: "Continuum:",
+  adRowModern_nameless: "Nameless prevents the purchase of more than $1aX 8th Antimatter Dimension",
+  adRowModern_continuum: "Continuum produces all your Antimatter Dimensions",
+  adRowModern_purchased: "Purchased $1aX$TIME$$!$",
+  adTabModern_BoostTooltip: "Boosts 8th Antimatter Dimension by $1aX $ Sacrifice Autobuyer is enabled and Achievement 118 is unlocked and active",
+  adTabModern_buyMode: "Continuum $ Until $1aX $ Buy $2aX",
+  adTabModern_multiplierText: "Buy $1aX Dimension purchase multiplier: $2aX $ Buy $1aX Dimension purchase multiplier: $2aX | Dimensional Sacrifice multiplier: $3aX",
+  adTabModern_sacButtonText: "Dimensional Sacrifice is Automated (Achievement 118) $ Dimensional Sacrifice ($1aX) $ Dimensional Sacrifice Disabled ($2aX)",
+  adTabModern_max: "Max all (M)",
+  adTabModern_DBResetNoReset: "Perform a Dimension Boost reset for no gain $ Perform a Dimension Boost reset but lose a Dimension Boost",
+  adGalaxyModern_incPower: `Increase the power of Tickspeed upgrades $ \
+  Reset your Dimensions to increase the power of Tickspeed upgrades $ \
+  Reset your Dimension Boosts to increase the power of Tickspeed upgrades $ \
+  Reset your Dimensions and Dimension Boosts to increase the power of Tickspeed upgrades`,
+  adGalaxyModern_typeName: "Antimatter Galaxies $ Distant Antimatter Galaxies $ Remote Antimatter Galaxies",
+  adGalaxyModern_moreExpensive: "Each Galaxy is more expensive past $1aX$GAL$$",
+  adGalaxyModern_moreExpensiveTypes: `Increased Galaxy cost scaling: $ \
+  Quadratic scaling past $1aX$GAL$$ (Distant) $ \
+  Exponential scaling past $2aX$GAL$$ (Remote)`,
+  adGalaxyModern_requiresNDim: `requires $1aX $2aX Antimatter D`,
+  adDimboostModern_dimboost: `Dimension Boost ($1aX):`,
+  adDimboostModern_dbCost: `Requires: $1aX $2aX Antimatter D`,
+  // TODO: Continue from src/components/tabs/antimatter-dimensions/TickspeedRow.vue
 };

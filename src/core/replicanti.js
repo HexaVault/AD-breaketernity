@@ -83,7 +83,6 @@ function fastPurchaseReplicantiGalaxies(preScalingGain, l10rep) {
     const totalRep = l10rep.add(preScalingGain).sub(cost);
     return { remaining: DC.D0, base: totalRep };
   }
-  addReplicantiGalaxies(maxBuyableRGs);
   return { remaining: preScalingGain.sub(cost), base: l10rep };
 }
 // When the amount is exactly the cap, there are two cases: the player can go

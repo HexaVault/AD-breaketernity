@@ -40,7 +40,7 @@ export default {
   computed: {
     isDoomed: () => Pelle.isDoomed,
     name() {
-      return i18n("other", "adRow_nthAD", [AntimatterDimension(this.tier).shortDisplayName]);
+      return i18n("other", "adRowClassic_nthAD", [AntimatterDimension(this.tier).shortDisplayName]);
     },
     amountText() {
       if (this.formattedAmount) return this.formattedAmount;
@@ -49,7 +49,7 @@ export default {
     },
     singleText() {
       if (this.isCapped) return i18n("consts", "capped");
-      return i18n("other", this.showCostTitle(this.singleCost) ? "adRow_ADcost" : "adRowClassic_ADcostNoPrefix",
+      return i18n("other", this.showCostTitle(this.singleCost) ? "adRowClassic_ADcost" : "adRowClassic_ADcostNoPrefix",
         [format(this.singleCost), i18n("consts", "nth", [], true)[Math.max(1, this.tier - 2)]], true)
         [this.isCostsAD ? 1 : 0];
     },

@@ -38,7 +38,7 @@ export default {
   computed: {
     isDoomed: () => Pelle.isDoomed,
     name() {
-      return `${AntimatterDimension(this.tier).shortDisplayName} Antimatter Dimension`;
+      return i18n("other", "adRowModern_nthAD", [AntimatterDimension(this.tier).shortDisplayName]);
     },
     costDisplay() {
       return this.buyUntil10 ? format(this.until10Cost) : format(this.singleCost);
@@ -50,26 +50,22 @@ export default {
       return this.isShown || this.isUnlocked || this.amount.gt(0);
     },
     boughtTooltip() {
-      if (this.isCapped) return `Nameless prevents the purchase of more than ${format(1)} 8th Antimatter Dimension`;
-      if (this.isContinuumActive) return "Continuum produces all your Antimatter Dimensions";
-      return `Purchased ${quantifyInt("time", this.bought)}`;
-    },
-    costUnit() {
-      return `${AntimatterDimension(this.tier - 2).shortDisplayName} AD`;
+      if (this.isCapped) return i18n("other", "adRowModern_nameless", [formatInt(1)]);
+      if (this.isContinuumActive) return i18n("other", "adRowModern_continuum");
+      return i18n("other", "adRowModern_purchased", [[formatInt, this.bought]]);
     },
     buttonPrefix() {
-      if (!this.isUnlocked) return "Locked";
-      if (this.isCapped) return "Shattered by Nameless";
-      if (this.isContinuumActive) return "Continuum: ";
-      return `Buy ${formatInt(this.howManyCanBuy)}`;
+      if (!this.isUnlocked) return i18n("consts", "locked");
+      if (this.isCapped) return i18n("other", "adRowModern_shattered");
+      if (this.isContinuumActive) return i18n("other", "adRowModern_contValue");
+      return i18n("other", "adRowModern_buyX", [formatInt(this.howManyCanBuy)]);
     },
     buttonValue() {
       if (this.isCapped) return "";
       if (this.isContinuumActive) return this.continuumString;
-      const prefix = this.showCostTitle(this.buyUntil10 ? this.until10Cost : this.singleCost) ? "Cost: " : "";
-      const suffix = this.isCostsAD ? this.costUnit : "AM";
-      const additional = this.costJumps.gt(0) ? ` (+${formatInt(this.costJumps)})` : "";
-      return `${prefix}${this.costDisplay} ${suffix}${additional}`;
+      return i18n("other", this.showCostTitle(this.singleCost) ? "adRowModern_ADcost" : "adRowModern_ADcostNoPrefix",
+        [format(this.singleCost), i18n("consts", "nth", [], true)[Math.max(1, this.tier - 2)]], true)
+        [this.isCostsAD ? 1 : 0];
     },
     hasLongText() {
       return this.buttonValue.length > 20;

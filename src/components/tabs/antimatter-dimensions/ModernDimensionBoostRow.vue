@@ -41,6 +41,12 @@ export default {
         "o-primary-btn--disabled": !this.isBuyable,
         "o-pelle-disabled-pointer": this.creditsClosed
       };
+    },
+    baseText() {
+      return i18n("other", "adDimboostModern_dimboost", [this.boostCountText()]);
+    },
+    reqText() {
+      return i18n("other", "adDimboostModern_dbCost", [formatInt(this.requirement.amount), this.dimName()]);
     }
   },
   methods: {
@@ -67,8 +73,8 @@ export default {
 
 <template>
   <div class="reset-container dimboost">
-    <h4>Dimension Boost ({{ boostCountText }})</h4>
-    <span>Requires: {{ formatInt(requirement.amount) }} {{ dimName }} Antimatter D</span>
+    <h4>{{ baseText }}</h4>
+    <span>{{ reqText }}</span>
     <button
       :class="classObject"
       @click.exact="dimensionBoost(true)"
